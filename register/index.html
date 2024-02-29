@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <title>frii.site - Register account</title>
+    <link href="../style.css" rel="stylesheet">
+    <link href="background.css" rel="stylesheet">
+    <link href="localstyle.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="">
+    <nav style="height: fit-content;"class=" fixed-top bg-dark w-100 navbar-nav-scrol">
+        <a style="font-size: 1.75em;" class="p-2 m-auto text-spin-p-p inter bold " href="/index.html">frii.site</a>
+        <a class="p-2 navbar-link inter bold text-decoration-none text-spin-p-p" href="/account/dashboard.html">Dashboard</a>
+        <a class="p-2 navbar-link inter bold text-decoration-none text-spin-p-p" href="/register/index.html">Register a new domain</a>
+    </nav>
+    <div class="container-fluid bg-dark-gradient bg-large text-white text-center">
+        <div class="presentation">
+            <h1 class=" inter bold shadow-lg">Check domain availability</h1>
+            <div class="input flex "> 
+                <input id="domain-input" class="ro-tl ro-bl no-ro-br no-ro-tr form-control " placeholder="example.frii.site">
+                <button onclick="check();" id="primary-button" type="button" class="btn btn-outline-success no-ro-tl no-ro-bl ro-tr ro-br"><p class="text-shadow">Check</p></button>
+            </div>
+            <button id="register" type="button" class="ro-a btn btn-primary mt-3">Register</button>
+            <h5 id="result"></h5>
+        </div>
+    </div>
+    <div id="bg-div" class="bg-effects">
+        <div style="display: none" id="triangle" class="bg-asset"></div>
+    </div>
+    <script src="domain.js"></script>
+    <script src="background.js"></script>
+</body>

@@ -1,0 +1,33 @@
+@keyframes rotate {
+    from {
+        left: 0;
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+        left: 100vw;
+    }
+}
+
+.bg-asset {
+    position: absolute;
+    --position: 0px;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(to bottom right, #ffffff6d 0%, #ffffff9d 10%, #ffffff00 20%, #ffffff00 30%);
+    filter: blur(1px);
+    opacity: 0.3;
+    animation: rotate 2s linear infinite;
+}
+
+body {
+    overflow: hidden;
+}

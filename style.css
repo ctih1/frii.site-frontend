@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+.text-large {
+    font-size: 8em;
+}
+
+.max-height {
+    height: 100vh;
+}
+.max-width {
+    width: 100vw;
+}
+
+.text-big {
+    font-size: 4em;
+}
+
+.bg-image {
+    background-image: url("https://i.ibb.co/HBfxNqK/IMG-5984-1.jpg");
+    mix-blend-mode:normal;
+}
+
+.bg-large {
+    display: flex;
+    background-size: cover;
+    background-position: center;
+    margin: auto;
+    height: 100vh;
+}
+
+.bg-dark-gray {
+    background-color: rgb(23, 23, 23);
+}
+
+.bg-dark-gradient {
+    background: radial-gradient(circle, rgb(12, 5, 15) 0%, rgb(9, 3, 8) 54%, rgba(0,0,0,1) 100%);
+}
+
+button p {
+    margin: 0px;
+}
+
+.hidden {
+    display: none;
+}
+
+.text-shadow {
+    text-shadow: 0px 0px 12px rgba(0,0,0,0.45);
+}
+
+.inter {
+    font-family:'Inter', sans-serif;
+}
+
+.bold {
+    font-weight: 650;
+}
+
+.text-spin-p-p {
+    /* Text spin pink -> purple */
+    background-image: -webkit-linear-gradient(92deg,#e226f3, #fe3aca);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hue_rotate 10s infinite linear;
+    -webkit-animation: hue_rotate 10s infinite linear;
+}
+
+.bg-signup {
+    background: linear-gradient(45deg,rgb(255, 74, 192),rgb(56, 56, 255));
+}
+.presentation {
+    margin:auto;
+}
+
+.how-it-works {
+    list-style: none;
+}
+.how-it-works * {
+    margin: 0px;
+}
+
+.notes * {
+    margin: 0px;
+}
+
+.invalid {
+    border-style: solid;
+    border-width: 8px;
+    border-color: rgba(255, 0, 0, 0.551);
+}
+
+.block {
+    display: block;
+}
+
+
+
+.flex {
+    display: flex;
+}
+
+@keyframes hue_rotate {
+    0% {
+      filter: hue-rotate(0deg);
+      -webkit-filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(-90deg);
+        -webkit-filter: hue-rotate(-90deg);
+    }
+    100% {
+        filter: hue-rotate(0deg);
+        -webkit-filter: hue-rotate(0deg);
+    }
+  }
+  
