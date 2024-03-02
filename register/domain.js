@@ -1,7 +1,7 @@
 const domainInput = document.getElementById("domain-input");
 const registerButton = document.getElementById("register");
 const result = document.getElementById("result")
-var server_domain = "http://127.0.0.1:5000";
+var server_domain = "https://server.frii.site";
 var domain;
 var isCompleteDomain;
 var validLogin

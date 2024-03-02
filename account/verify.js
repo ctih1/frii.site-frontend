@@ -2,7 +2,7 @@ const codeInput = document.getElementById("code");
 const codeHint = document.getElementById("code-hint");
 const verifyButton = document.getElementById("verify");
 const sendButton = document.getElementById("send");
-const server_domain = "http://127.0.0.1:5000";
+var server_domain = "https://server.frii.site";
 var validLogin;
 
 function isLoggedIn() {

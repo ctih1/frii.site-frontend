@@ -1,4 +1,4 @@
-const server_domain = "http://127.0.0.1:5000";
+var server_domain = "https://server.frii.site";
 
 async function digestMessage(message) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array

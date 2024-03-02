@@ -3,7 +3,7 @@ const table = document.getElementById("domain-table");
 const info = document.getElementById("result");
 
 var columns = 0;
-var server_domain = "http://server.s4hype.xyz:81";
+var server_domain = "https://server.frii.site";
 var domain_field;
 var ip_addr_field;
 var true_domain_field;
