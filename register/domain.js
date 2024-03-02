@@ -1,10 +1,12 @@
 const domainInput = document.getElementById("domain-input");
+const logoutButton = document.getElementById("logout");
 const registerButton = document.getElementById("register");
 const result = document.getElementById("result")
 var server_domain = "https://server.frii.site";
 var domain;
 var isCompleteDomain;
 var validLogin
+logoutButton.style.display = 'none';
 registerButton.style.display = 'none';
 async function check() {
     domain = domainInput.value;
@@ -118,5 +120,6 @@ window.onload = async function() {
     }
     else {
         registerButton.onclick = registerDomain
+        logoutButton.style.display = 'block'
     }
 }
