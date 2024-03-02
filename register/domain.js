@@ -1,7 +1,7 @@
 const domainInput = document.getElementById("domain-input");
 const registerButton = document.getElementById("register");
 const result = document.getElementById("result")
-var server_domain = "http://server.s4hype.xyz:81";
+var server_domain = "http://127.0.0.1:5000";
 var domain;
 var isCompleteDomain;
 var validLogin
@@ -99,6 +99,10 @@ async function registerDomain() {
                 break;
             case 409:
                 result.innerHTML = "Domain already exists or is invalid.";
+                result.style.color = "#DC3545"
+                break;
+            case 400:
+                result.innerHTML = "Please <a href='../account/verify.html'>verify</a> your email first.";
                 result.style.color = "#DC3545"
                 break;
         }

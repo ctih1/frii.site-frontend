@@ -1,3 +1,27 @@
 .w-fit {
     width: fit-content;
 }
+
+.no-ro-tr {
+    border-top-right-radius: 0em !important;
+}
+.no-ro-br {
+    border-bottom-right-radius: 0em !important;
+}
+.no-ro-tl {
+    border-top-left-radius: 0em !important;
+}
+.no-ro-bl {
+    border-bottom-left-radius: 0em !important;
+}
+
+.ro-tr {
+    border-top-right-radius: 1em !important;
+}
+.ro-br {
+    border-bottom-right-radius: 1em !important;
+}
+
+.ro-a {
+    border-radius: 1em !important;
+}

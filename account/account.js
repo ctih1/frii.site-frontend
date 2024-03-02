@@ -1,4 +1,4 @@
-const server_domain = "http://server.s4hype.xyz:81";
+const server_domain = "http://127.0.0.1:5000";
 
 async function digestMessage(message) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -124,7 +124,7 @@ async function Login(element) {
                 TOKEN = `${_password}|${_username}`;
                 localStorage.setItem("TOKEN",TOKEN);
             })
-            window.location.href = "../index.html";
+            window.location.href = "verify.html";
         }
             })
         })

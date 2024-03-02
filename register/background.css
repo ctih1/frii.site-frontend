@@ -22,8 +22,8 @@
     --position: 0px;
     width: 42px;
     height: 42px;
-    background: linear-gradient(to bottom right, #ffffff6d 0%, #ffffff9d 10%, #ffffff00 20%, #ffffff00 30%);
-    filter: blur(1px);
+    background: linear-gradient(to bottom right, #ffffff6d 0%, #ffffff9d 50%, #ffffff00 20%, #ffffff00 30%);
+    filter: blur(75px);
     opacity: 0.3;
     animation: rotate 2s linear infinite;
 }
