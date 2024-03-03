@@ -107,6 +107,10 @@ async function registerDomain() {
                 result.innerHTML = "Please <a href='../account/verify.html'>verify</a> your email first.";
                 result.style.color = "#DC3545"
                 break;
+            case 405:
+                result.innerHTML = "You have exceeded the maximum amount of domains.";
+                result.style.color = "#DC3545";
+                break;
         }
     })
 }
