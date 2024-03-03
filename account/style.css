@@ -25,3 +25,11 @@
 .ro-a {
     border-radius: 1em !important;
 }
+
+.table-very-dark {
+    background-color: black !important;
+}
+
+#dark-table {
+    background: rgba(12,12,12) !important;
+}
