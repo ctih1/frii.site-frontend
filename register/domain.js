@@ -117,6 +117,7 @@ async function registerDomain() {
                 result.style.color = "#DC3545";
                 window.location.href="../account/login.html?code=412";
                 break;
+
         }
     })
 }
