@@ -74,8 +74,9 @@ async function SignUp(element) {
     };
     await fetch(`${server_domain}/sign-up`, {
         method: "POST",
+        mode: "no-cors",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(creds)
     })
