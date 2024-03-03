@@ -7,18 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="">
-    <div class="container-fluid p-5 bg-dark text-white text-center max-height">
-        <h1>Verify Email</h1>
-        <h2 id="warning"></h2>
-        <div class="inputs text-center m-auto w-fit">
-            <div style="display: flex;">
-                <input type="text" class="form-control no-ro-br no-ro-tr" placeholder="code" id="code" aria-describedby="basic-addon1">
-                <button class="btn btn-primary  input-group-text no-ro-tl no-ro-bl" id="send">Send</button>
+    <div class="container-fluid p-5 bg-dark-gradient text-white max-height align-items-center align-content-center justify-content-center">
+        <div class="content justify-content-center text-center align-items-center w-fi">
+            <h1 class="">Verify Email</h1>
+            <h2 id="warning"></h2>
+            <div class="inputs text-center m-auto w-fit">
+                <div class="w-fit" style="display: flex;">
+                    <input type="text" class="form-control text-white bg-dark border-dark no-ro-tr no-ro-br" placeholder="code" id="code" aria-describedby="basic-addon1">
+                    <button class="btn btn-dark input-group-text no-ro-tl no-ro-bl" id="send">Send</button>
+                </div>
+                <p id="code-hint"></p>
+                <button class="placeholder-wave btn btn-primary w-100" type="button" id="verify">Verify</button>
             </div>
-            <p id="code-hint"></p>
         </div>
-
-        <button class="btn btn-primary" type="button" id="verify">Verify</button>
+        
     </div>
     <script src="verify.js"></script>
 </body>

@@ -62,6 +62,9 @@ async function verifyCode() {
             case 404:
                 codeHint.innerHTML = "This code has expired.";
                 break;
+            case 412: // user has not logged in
+                window.location.href="login.html";
+                break;
             case 200:
                 codeHint.innerHTML = "Succesfully verified! Redirecting...";
                 setTimeout(function() {

@@ -1,5 +1,6 @@
 .w-fit {
     width: fit-content;
+    width: -moz-fit-content;
 }
 
 .no-ro-tr {
@@ -32,4 +33,8 @@
 
 #dark-table {
     background: rgba(12,12,12) !important;
+}
+
+.inputs {
+
 }

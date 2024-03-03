@@ -67,6 +67,19 @@ async function modifyDomain(domain, ip, token) {
         switch(response.status) {
             case 200:
                 window.location.reload();
+                break;
+            case 401:
+                window.location.href="login.html?code=401"; 
+                break;
+            case 403:
+                window.location.href="../register/index.html?code=403";
+                break;
+            case 404:
+                window.location.href="register.html?code=404";
+                break;
+            case 412:
+                window.location.href="login.html?code=412";
+                break;
         }
     });
 }
