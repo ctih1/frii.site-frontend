@@ -5,23 +5,6 @@ const sendButton = document.getElementById("send");
 var server_domain = "https://server.frii.site";
 var validLogin;
 
-function isLoggedIn() {
-    var TOKEN = localStorage.getItem("TOKEN");
-    var statusCode
-    var creds = {
-        "TOKEN": TOKEN, 
-    }
-    fetch(`${server_domain}/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(creds)
-    })
-    .then(response=> {
-        return response.status===200;
-    });
-}
 
 async function sendVerification() {
     sendButton.setAttribute("disabled",true)
@@ -78,6 +61,9 @@ async function verifyCode() {
                 break;
             case 404:
                 codeHint.innerHTML = "This code has expired.";
+                break;
+            case 412: // user has not logged in
+                window.location.href="login.html";
                 break;
             case 200:
                 codeHint.innerHTML = "Succesfully verified! Redirecting...";

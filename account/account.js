@@ -87,7 +87,7 @@ async function SignUp(element) {
                 warning.innerHTML="Username taken!";
                 break;
             case 200:
-                window.location.href = "login.html"
+                window.location.href = "login.html?code=200"
                 break;
         }
         element.disabled = false;

@@ -35,6 +35,7 @@ async function check() {
                 break
             case 400:
                 result.innerHTML = `${domain+'.frii.site'} is not a valid domain.`;
+                break;
         }
     })
 }
@@ -111,6 +112,12 @@ async function registerDomain() {
                 result.innerHTML = "You have exceeded the maximum amount of domains.";
                 result.style.color = "#DC3545";
                 break;
+            case 412:
+                result.innerHTML = "Your token is invalid";
+                result.style.color = "#DC3545";
+                window.location.href="../account/login.html?code=412";
+                break;
+
         }
     })
 }

@@ -8,6 +8,26 @@ var domain_field;
 var ip_addr_field;
 var true_domain_field;
 var changedDomains = new Map();
+
+
+function isLoggedIn() {
+    var TOKEN = localStorage.getItem("TOKEN");
+    var statusCode
+    var creds = {
+        "TOKEN": TOKEN, 
+    }
+    fetch(`${server_domain}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(creds)
+    })
+    .then(response=> {
+        return response.status===200;
+    });
+}
+
 function changed(from) {
     changedDomains.set(from.parentNode.parentNode.children[0].textContent,from.value)
     console.log(changedDomains);
@@ -22,7 +42,7 @@ function addDomain(domain, ipv4, true_domain) {
     ip_addr_field = new_column.children[1];
     true_domain_field = new_column.children[2];
 
-    domain_field.innerHTML = `${domain}`;
+    domain_field.innerHTML = `${domain+".frii.site"}`;
     ip_addr_field.innerHTML = `<input onchange="changed(this);" style="color: inherit;" class="form-label bg-transparent text-white btn" value="${ipv4}">`;
     true_domain_field.innerHTML = `${true_domain}`;
     new_column.children = [domain_field,ip_addr_field,true_domain_field];
@@ -44,7 +64,23 @@ async function modifyDomain(domain, ip, token) {
         body: JSON.stringify(creds)
     })
     .then(response => {
-        return response.status
+        switch(response.status) {
+            case 200:
+                window.location.reload();
+                break;
+            case 401:
+                window.location.href="login.html?code=401"; 
+                break;
+            case 403:
+                window.location.href="../register/index.html?code=403";
+                break;
+            case 404:
+                window.location.href="register.html?code=404";
+                break;
+            case 412:
+                window.location.href="login.html?code=412";
+                break;
+        }
     });
 }
 
@@ -62,6 +98,11 @@ async function getDomains() {
     var creds = {
         "TOKEN": localStorage.getItem("TOKEN")
     }
+    if(localStorage.getItem("TOKEN")==null||localStorage.getItem("TOKEN")==undefined) {
+        window.location.href="../account/login.html";
+        return;
+    }
+
     await fetch(`${server_domain}/get-domains`, {
         method: "POST",
         headers: {
@@ -70,10 +111,12 @@ async function getDomains() {
         body: JSON.stringify(creds)
     })
     .then(response => response.json()).then(data => {
-        console.log(data);
         domains = new Map(Object.entries(data));
     })
-    
+    console.log(domains.size);
+    if(domains.size===0) {
+        window.location.href="../register/index.html";
+    } 
     for( var [key,value] of domains ){
         addDomain(key,value["ip"]);
     }
