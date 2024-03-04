@@ -87,7 +87,7 @@ async function modifyDomain(domain, ip, token) {
 function send() {
     result.textContent = "Please wait...";
     for(var [key,value] of changedDomains) {
-        modifyDomain(key,value,localStorage.getItem("TOKEN"));
+        modifyDomain(key.replace(".frii.site",""),value,localStorage.getItem("TOKEN")); // fixed it, my bad gang! 4.3.2024@18:43:38
     }
     result.textContent = "Please wait for the page to reload.";
 }
