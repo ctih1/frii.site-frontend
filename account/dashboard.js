@@ -2,6 +2,7 @@ const template = document.getElementById("col-0");
 const table = document.getElementById("domain-table");
 const info = document.getElementById("result");
 const error_messages = document.getElementById("error-messages");
+const delete_button = document.getElementById("delete-button");
 
 var record_dd;
 const loader = document.getElementById("loader");
@@ -50,12 +51,13 @@ function addDomain(domain, ipv4, true_domain, type) {
     domain_field = new_column.children[1];
     ip_addr_field = new_column.children[2];
     true_domain_field = new_column.children[3];
-
+    delete_button_field = new_column.children[4];
+    delete_button_field.innerHTML = `<button onclick="deleteDomain(this);" class="btn btn-danger">Delete</button>`;
     record_type_field.innerHTML = type;
     domain_field.innerHTML = `${domain+".frii.site"}`;
     ip_addr_field.innerHTML = `<input onchange="changed(this);" style="color: inherit;" class="form-label bg-transparent text-white btn" value="${ipv4}">`;
     true_domain_field.innerHTML = `${true_domain}`;
-    new_column.children = [record_type_field,domain_field,ip_addr_field,true_domain_field];
+    new_column.children = [record_type_field,domain_field,ip_addr_field,true_domain_field, delete_button_field];
     table.appendChild(new_column);
     return;
 }
@@ -103,6 +105,45 @@ async function saveCustomDomain(element) {
         });
     }
     console.log(type,content,value);
+}
+
+async function deleteDomain(element) {
+    var values = element.parentNode.parentNode; // the values of each field.    var type = values.children[0].children[0].children[0].textContent.trim();
+    var domain = values.children[1].innerHTML;
+
+    var creds = {
+        "domain": domain,
+        "TOKEN": localStorage.getItem("TOKEN")
+    }
+    await fetch(`${server_domain}/delete-domain`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(creds)
+    })
+    .then(response=>{
+        switch(response.status) {
+            case 200:
+                window.location.reload();
+                break;
+            case 500:
+                error_messages.innerHTML = "Something went wrong.";
+                break;
+            case 403:
+                error_messages.innerHTML = "You do not own this domain.";
+                break;
+            case 401:
+                window.location.href="login.html?code=401";
+                break;
+            case 404:
+                window.location.href="login.html?code=404";
+                break;
+            case 412:
+                window.location.href="login.html?code=412";
+                break;
+        }
+    })
 }
 
 function addInput() {
