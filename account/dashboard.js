@@ -206,7 +206,6 @@ async function getDomains() {
     } 
     for( var [key,value] of domains ){
         console.log(domains);
-        console.log(value["type"]===undefined);
         if(value["type"]!==undefined) {
             addDomain(key,value["ip"],value["true-domain"], value["type"]);
         }
