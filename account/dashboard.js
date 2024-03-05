@@ -206,10 +206,11 @@ async function getDomains() {
     } 
     for( var [key,value] of domains ){
         console.log(domains);
-
-        if(value["type"]!==undefined||value["type"]!==null) {
-
+        if(value["type"]!==undefined) {
             addDomain(key,value["ip"],value["true-domain"], value["type"]);
+        }
+        else {
+            continue;
         }
     }
     loader.remove();
