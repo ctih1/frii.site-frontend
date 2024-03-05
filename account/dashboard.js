@@ -15,10 +15,6 @@ var record_type_field;
 var changedDomains = new Map();
 var current_record;
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function isLoggedIn() {
     var TOKEN = localStorage.getItem("TOKEN");
     var statusCode
@@ -39,7 +35,6 @@ function isLoggedIn() {
 
 function changed(from) {
     changedDomains.set(from.parentNode.parentNode.children[0].textContent,from.value)
-    console.log(changedDomains);
 }
 
 function addDomain(domain, ipv4, true_domain, type) {
@@ -66,6 +61,10 @@ async function saveCustomDomain(element) {
     var values = element.parentNode.parentNode; // the values of each field.
     var type = values.children[0].children[0].children[0].textContent.trim();
     var content = values.children[1].children[0].value;
+    var isCompleteDomain = content.indexOf('frii.site')!==-1;
+    if(isCompleteDomain) {
+        content = content.replace('.frii.site',"");
+    }
     var value = values.children[2].children[0].value;
     if(type!==undefined&&content!==undefined&&value!==undefined){
         var creds = {
@@ -104,13 +103,16 @@ async function saveCustomDomain(element) {
             }
         });
     }
-    console.log(type,content,value);
 }
 
 async function deleteDomain(element) {
     var values = element.parentNode.parentNode; // the values of each field.    var type = values.children[0].children[0].children[0].textContent.trim();
     var domain = values.children[1].innerHTML;
 
+    var isCompleteDomain = domain.indexOf('frii.site')!==-1;
+    if(isCompleteDomain) {
+        domain = domain.replace('.frii.site',"");
+    }
     var creds = {
         "domain": domain,
         "TOKEN": localStorage.getItem("TOKEN")
@@ -241,13 +243,10 @@ async function getDomains() {
     .then(response => response.json()).then(data => {
         domains = new Map(Object.entries(data));
     })
-    console.log(domains.size);
     if(domains.size===0) {
         window.location.href="../register/index.html";
     } 
     for( var [key,value] of domains ){
-        console.log(domains);
-        console.log(value["type"]===undefined);
         if(value["type"]!==undefined) {
             addDomain(key,value["ip"],value["true-domain"], value["type"]);
         }
@@ -265,6 +264,5 @@ function createNewField() {
 
 function changeDropdown(element) {
     record_dd = document.getElementById("record-dropdown");
-    console.log(element);
     record_dd.innerHTML = element.textContent;
 }
