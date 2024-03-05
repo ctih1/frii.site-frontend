@@ -35,6 +35,7 @@ async function check() {
                 break
             case 400:
                 result.innerHTML = `${domain+'.frii.site'} is not a valid domain.`;
+                break;
         }
     })
 }
@@ -75,7 +76,8 @@ async function registerDomain() {
     var creds = {
         "TOKEN": TOKEN,
         "domain": domain,
-        "ip": "192.168.0.0"
+        "ip": "192.168.0.0",
+        "type":"A"
     }
     await fetch(`${server_domain}/register-domain`, {
         method: "POST",
@@ -106,6 +108,15 @@ async function registerDomain() {
             case 400:
                 result.innerHTML = "Please <a href='../account/verify.html'>verify</a> your email first.";
                 result.style.color = "#DC3545"
+                break;
+            case 405:
+                result.innerHTML = "You have exceeded the maximum amount of domains.";
+                result.style.color = "#DC3545";
+                break;
+            case 412:
+                result.innerHTML = "Your token is invalid";
+                result.style.color = "#DC3545";
+                window.location.href="../account/login.html?code=412";
                 break;
         }
     })

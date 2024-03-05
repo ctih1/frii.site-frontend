@@ -17,7 +17,6 @@ function goToDomainPanel() {
 }
 
 function goToRegister() {
-
     window.location.href = "/register/";
 }
 
