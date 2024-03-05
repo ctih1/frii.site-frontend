@@ -76,7 +76,8 @@ async function registerDomain() {
     var creds = {
         "TOKEN": TOKEN,
         "domain": domain,
-        "ip": "192.168.0.0"
+        "ip": "192.168.0.0",
+        "type":"A"
     }
     await fetch(`${server_domain}/register-domain`, {
         method: "POST",

@@ -1,14 +1,22 @@
 const template = document.getElementById("col-0");
 const table = document.getElementById("domain-table");
 const info = document.getElementById("result");
+const error_messages = document.getElementById("error-messages");
 
+var record_dd;
+const loader = document.getElementById("loader");
 var columns = 0;
 var server_domain = "https://server.frii.site";
 var domain_field;
 var ip_addr_field;
 var true_domain_field;
+var record_type_field;
 var changedDomains = new Map();
+var current_record;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function isLoggedIn() {
     var TOKEN = localStorage.getItem("TOKEN");
@@ -33,22 +41,100 @@ function changed(from) {
     console.log(changedDomains);
 }
 
-function addDomain(domain, ipv4, true_domain) {
+function addDomain(domain, ipv4, true_domain, type) {
     columns += 1;
     new_column = template.cloneNode(true);
     new_column.id = `col-${columns}`;
 
-    domain_field = new_column.children[0];
-    ip_addr_field = new_column.children[1];
-    true_domain_field = new_column.children[2];
+    record_type_field = new_column.children[0]
+    domain_field = new_column.children[1];
+    ip_addr_field = new_column.children[2];
+    true_domain_field = new_column.children[3];
 
+    record_type_field.innerHTML = type;
     domain_field.innerHTML = `${domain+".frii.site"}`;
     ip_addr_field.innerHTML = `<input onchange="changed(this);" style="color: inherit;" class="form-label bg-transparent text-white btn" value="${ipv4}">`;
     true_domain_field.innerHTML = `${true_domain}`;
-    new_column.children = [domain_field,ip_addr_field,true_domain_field];
+    new_column.children = [record_type_field,domain_field,ip_addr_field,true_domain_field];
     table.appendChild(new_column);
     return;
 }
+
+async function saveCustomDomain(element) {
+    var values = element.parentNode.parentNode; // the values of each field.
+    var type = values.children[0].children[0].children[0].textContent.trim();
+    var content = values.children[1].children[0].value;
+    var value = values.children[2].children[0].value;
+    if(type!==undefined&&content!==undefined&&value!==undefined){
+        var creds = {
+            "domain": content,
+            "ip": value,
+            "TOKEN": localStorage.getItem("TOKEN"),
+            "type": type,
+        }
+        await fetch(`${server_domain}/register-domain`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(creds)
+        })
+        .then(response => {
+            switch(response.status) {
+                case 200:
+                    window.location.reload();
+                    break;
+                case 400:
+                    window.location.href="verify.html?code=400";
+                    break;
+                case 401:
+                    window.location.href="login.html?code=401";
+                    break;
+                case 404:
+                    window.location.href="login.html?code=404";
+                    break;
+                case 405:
+                    error_messages.innerHTML = "You have exceeded your domain limit.";
+                    break;
+                case 409:
+                    error_messages.innerHTML = "The 'content' is not valid.";
+                    break;
+            }
+        });
+    }
+    console.log(type,content,value);
+}
+
+function addInput() {
+    columns += 1;
+    new_column = template.cloneNode(true);
+    new_column.id = `col-${columns}`;
+
+    record_type_field = new_column.children[0]
+    domain_field = new_column.children[1];
+    ip_addr_field = new_column.children[2];
+    true_domain_field = new_column.children[3];
+
+    record_type_field.innerHTML = `  
+    <div class="dropdown">
+        <button id="record-dropdown" type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+            A
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark">
+            <li onclick="changeDropdown(this);"><a class="dropdown-item">A</a></li>
+            <li onclick="changeDropdown(this);"><a class="dropdown-item">CNAME</a></li>
+            <li onclick="changeDropdown(this);"><a class="dropdown-item">TXT</a></li>
+        </ul>
+  </div>
+  `;
+    domain_field.innerHTML = `<input class="form-label bg-transparent text-white btn" placeholder="Name">`;
+    ip_addr_field.innerHTML = `<input class="form-label bg-transparent text-white btn" placeholder="Content">`;
+    true_domain_field.innerHTML = `<button onclick="saveCustomDomain(this);" class="btn btn-outline-primary">Save</button>`;
+    new_column.children = [record_type_field,domain_field,ip_addr_field,true_domain_field];
+    table.appendChild(new_column);
+    return;
+}
+
 
 async function modifyDomain(domain, ip, token) {
     var creds = {
@@ -94,6 +180,7 @@ function send() {
 
 domains = {}
 getDomains();
+
 async function getDomains() {
     var creds = {
         "TOKEN": localStorage.getItem("TOKEN")
@@ -118,6 +205,21 @@ async function getDomains() {
         window.location.href="../register/index.html";
     } 
     for( var [key,value] of domains ){
-        addDomain(key,value["ip"]);
+        console.log(domains);
+        if(value["Status"]===undefined) {
+            addDomain(key,value["ip"],value["true-domain"], value["type"]);
+        }
     }
+    loader.remove();
+}
+
+
+function createNewField() {
+    addInput();
+}
+
+function changeDropdown(element) {
+    record_dd = document.getElementById("record-dropdown");
+    console.log(element);
+    record_dd.innerHTML = element.textContent;
 }
