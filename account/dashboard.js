@@ -166,6 +166,7 @@ function addInput() {
         <ul class="dropdown-menu dropdown-menu-dark">
             <li onclick="changeDropdown(this);"><a class="dropdown-item">A</a></li>
             <li onclick="changeDropdown(this);"><a class="dropdown-item">CNAME</a></li>
+            <li onclick="changeDropdown(this);"><a class="dropdown-item">NS</a></li>
             <li onclick="changeDropdown(this);"><a class="dropdown-item">TXT</a></li>
         </ul>
   </div>
