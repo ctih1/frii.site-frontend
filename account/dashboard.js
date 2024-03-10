@@ -34,7 +34,7 @@ function isLoggedIn() {
 }
 
 function changed(from) {
-    changedDomains.set(from.parentNode.parentNode.children[0].textContent,from.value)
+    changedDomains.set(from.parentNode.parentNode.children[1].textContent,from.value)
 }
 
 function addDomain(domain, ipv4, true_domain, type) {
@@ -217,7 +217,12 @@ async function modifyDomain(domain, ip, token) {
 function send() {
     result.textContent = "Please wait...";
     for(var [key,value] of changedDomains) {
-        modifyDomain(key.replace(".frii.site",""),value,localStorage.getItem("TOKEN")); // fixed it, my bad gang! 4.3.2024@18:43:38
+        var content = key;
+        var isCompleteDomain = content.indexOf('frii.site')!==-1;
+        if(isCompleteDomain) {
+            content = content.replace('.frii.site',"");
+        }
+        modifyDomain(content,value,localStorage.getItem("TOKEN")); // fixed it, my bad gang! 4.3.2024@18:43:38
     }
     result.textContent = "Please wait for the page to reload.";
 }
