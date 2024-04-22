@@ -3,7 +3,9 @@ const table = document.getElementById("domain-table");
 const info = document.getElementById("result");
 const error_messages = document.getElementById("error-messages");
 const delete_button = document.getElementById("delete-button");
+const save_button = document.getElementById("save-changes");
 
+save_button.style.display = "none";
 var record_dd;
 const loader = document.getElementById("loader");
 var columns = 0;
@@ -34,7 +36,10 @@ function isLoggedIn() {
 }
 
 function changed(from) {
-    changedDomains.set(from.parentNode.parentNode.children[1].textContent,from.value)
+    changedDomains.set(from.parentNode.parentNode.children[1].textContent,from.value);
+    if(changedDomains.size!==0) {
+        save_button.style.display = "inline-block";
+    }
 }
 
 function addDomain(domain, ipv4, true_domain, type) {
