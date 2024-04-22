@@ -176,7 +176,7 @@ function addInput() {
   `;
     domain_field.innerHTML = `<input class="form-label bg-transparent text-white btn" placeholder="Name">`;
     ip_addr_field.innerHTML = `<input class="form-label bg-transparent text-white btn" placeholder="Content">`;
-    true_domain_field.innerHTML = `<button onclick="saveCustomDomain(this);" class="btn btn-outline-primary">Save</button>`;
+    true_domain_field.innerHTML = `<button onclick="saveCustomDomain(this);" class="btn btn-outline-primary">Save/Create</button>`;
     new_column.children = [record_type_field,domain_field,ip_addr_field,true_domain_field];
     table.appendChild(new_column);
     return;
