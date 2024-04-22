@@ -91,6 +91,9 @@ async function saveCustomDomain(element) {
                 case 401:
                     window.location.href="login.html?code=401";
                     break;
+                case 403:
+                    error_messages.innerHTML = "You don't own the subdomain root.";
+                    break;
                 case 404:
                     window.location.href="login.html?code=404";
                     break;
