@@ -65,7 +65,7 @@
     </tbody>
 </table>
 
-<Modal bind:this={modal} countdown={15} title="Are you sure you want to delete" description={""}></Modal>
+<Modal bind:this={modal} countdown={10} title="Are you sure you want to delete" description={""}></Modal>
 
 <style>
     thead {
