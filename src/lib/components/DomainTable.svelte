@@ -96,15 +96,6 @@
 
     }
 
-    input {
-        border-style: none;
-        width: 100%;
-        height:100%;
-        box-sizing: border-box;
-    }
-    input:focus {
-        outline-color: var(--primary);
-    }
     .row {
         margin: 0px;
         display: flex;

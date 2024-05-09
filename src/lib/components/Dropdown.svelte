@@ -8,13 +8,12 @@
     let toggled:boolean=false;
     let dropdown:HTMLDivElement;
     let button:HTMLButtonElement;
-
+    let value:string = defaultValue;
+    let selected:String;
+    export let args:string | null = null;
     onMount(()=> {
-        console.log(disabled);
         if(disabled) {
             button.onclick=(null);
-        }else {
-            button.onclick=toggleDropdown;
         }
     })
 
@@ -39,16 +38,17 @@
     }   
     function onDropdownChange(element:String):void { 
         dispatch("optionchange",element);
-        button.innerHTML = element.toString();
+        selected=element;
+        value = element.toString();
         toggleDropdown();
     }
     export function getValue():string {
-        return button.innerHTML;
+        return selected.toString();
     }
 </script>
 
 <div class="dropdown">
-    <button  class="dropdown-button" type="button" bind:this={button} on:click={()=>toggleDropdown()}>{defaultValue}</button>
+    <button  class="dropdown-button {args}" type="button" bind:this={button} on:click={()=>toggleDropdown()}>{value}<span class="material-symbols-outlined">arrow_drop_up</span></button>
     <div on:blur={()=>toggleDropdown()} class="dropdown-content" bind:this={dropdown}>
         <ul>
         {#each options as option}
@@ -71,11 +71,17 @@
         display: inline-block;
     }
     .dropdown-button {
+        display: flex;
         transition: background-color 100ms;
         border-style: none;
         background-color: #fff;
+        align-items: center;
         width: 100%;
         height: 100%;
+        border-radius: 0.5em;
+    }
+    .dropdown-button span {
+        margin-left: auto;
     }
     .dropdown-button:hover {
         background-color: #bdbdbd;
@@ -109,5 +115,8 @@
         cursor: pointer;
         background-color: var(--primary);
     }
-
+    .primary {
+        background-color: var(--primary);
+        color: white;
+    }
 </style>

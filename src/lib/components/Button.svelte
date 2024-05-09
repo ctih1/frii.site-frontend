@@ -31,7 +31,7 @@
     export function changeText(text:string) {
         button.innerHTML=text;
     }
-    export let args:string;
+    export let args:string|null = null;
 </script>
 
 <button bind:this={button} on:click={()=>click()} class="{args}">
@@ -86,6 +86,12 @@
 
     .margin {
         margin: 0.5em;
+    }
+    .square {
+        aspect-ratio: 1;
+    }
+    .borked-square {
+        aspect-ratio: 3/2;
     }
 
     .side-margin {

@@ -1,11 +1,17 @@
 <script lang="ts">
+	import Registrar from '$lib/components/Registrar.svelte';
     import DomainTable from "$lib/components/DomainTable.svelte";
     import Modal from "$lib/components/Modal.svelte";
+
 </script>
 
 <div class="holder">
     <h1>Your domains</h1>
     <DomainTable/>
+</div>
+
+<div class="holder">
+    <Registrar/>
 </div>
 
 <style>

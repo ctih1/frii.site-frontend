@@ -16,6 +16,19 @@
     :global(*) {
         font-family: "Inter",sans-serif;
     }
+    :global(input) {
+        transition: all 0.1s;
+        border-style: solid;
+        border-color: rgba(0,0,0,0.05);
+        border-radius: 0.5em;
+        width: 100%;
+        height:100%;
+        box-sizing: border-box;
+    }
+    :global(input:hover) {
+        outline-color: var(--primary);
+    }
+    
     main {
         position: absolute;
         left: 0px;
