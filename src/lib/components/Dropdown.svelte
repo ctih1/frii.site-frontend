@@ -75,6 +75,9 @@
         transition: background-color 100ms;
         border-style: none;
         background-color: #fff;
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--border-color);
         align-items: center;
         width: 100%;
         height: 100%;
@@ -82,6 +85,8 @@
     }
     .dropdown-button span {
         margin-left: auto;
+    }
+    .dropdown-button:active {
     }
     .dropdown-button:hover {
         background-color: #bdbdbd;

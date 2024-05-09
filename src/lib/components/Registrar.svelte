@@ -5,7 +5,6 @@
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<h2>Register a new domain</h2>
 
 <form>
     <div class="container"><Dropdown disabled={false} args={"primary"} options={["A","CNAME","NS","TXT"]} defaultValue={"A"}></Dropdown></div>

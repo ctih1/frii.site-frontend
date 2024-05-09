@@ -22,8 +22,6 @@
         z-index: 10;
     }
     header a {
-        text-decoration: none;
-        color: var(--primary);
         margin-left: 1em;
         margin-right: 1em;
     }

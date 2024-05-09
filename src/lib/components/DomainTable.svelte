@@ -20,22 +20,6 @@
         console.log(name,value,record);
     }   
 
-    function toggleEdit() {
-        for(let i=0;i<rowInputs.length;i++) {
-            console.log(rowInputs);
-            rowInputs[i][0].toggleDisable();
-            rowInputs[i][1].disabled=!rowInputs[i][1].disabled;
-            rowInputs[i][2].disabled=!rowInputs[i][2].disabled;
-        }
-        
-        if(!editing) {
-            editButton.changeText("Lock & Save");
-        }else {
-            editButton.changeText("Unlock");
-        }
-        editing=!editing;
-    }
-
 
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -46,8 +30,7 @@
             <th>Record Type</th>
             <th>Content</th>
             <th>Value</th>
-            <th style="width:20%; min-width:160px;"><a>Manage</a></th>
-            <Button bind:this={editButton} on:click={()=>toggleEdit()} args={"fill scale"}>Unlock</Button>
+            <th style="width:20%; min-width:160px;">Manage</th>
         </tr>
     </thead>
     <tbody>
@@ -77,6 +60,7 @@
         table-layout: fixed;
         background-color: rgb(255, 255, 255);
         border-collapse:collapse;
+        padding: 1em;
     }
     th {
         text-align: left;

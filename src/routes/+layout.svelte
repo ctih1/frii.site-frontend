@@ -11,6 +11,8 @@
 <style>
     :root {
         --primary: rgb(0, 123, 225);
+        --border-color: rgba(0,0,0,0.05);
+        overflow-x: hidden;
     }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     :global(*) {
@@ -19,7 +21,7 @@
     :global(input) {
         transition: all 0.1s;
         border-style: solid;
-        border-color: rgba(0,0,0,0.05);
+        border-color: var(--border-color);
         border-radius: 0.5em;
         width: 100%;
         height:100%;
@@ -27,6 +29,11 @@
     }
     :global(input:hover) {
         outline-color: var(--primary);
+    }
+
+    :global(a) {
+        text-decoration: none;
+        color: var(--primary);
     }
     
     main {
