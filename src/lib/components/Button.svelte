@@ -10,7 +10,7 @@
     button {
         transition: scale 50ms;
         background-color: rgb(0, 123, 255);
-        border-radius: 0.75em;
+        border-radius: 0.5em;
         border-style: none;
         color: white;
         -webkit-box-shadow: 0px 10px 105px -50px rgba(0,0,0,0.75);
@@ -27,6 +27,7 @@
         background-color: rgb(230,15,0);
     }
     .fill {
+        padding: 0px;
         width: 100%;
         height: 100%;
     }

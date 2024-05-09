@@ -2,6 +2,11 @@
     import Button from "./Button.svelte";
     import Dropdown from "./Dropdown.svelte";
     let domains = [["A","markus","192.168.100.1","No"]];
+
+    function dropdownChange(event:any) {
+        console.log(event.detail);
+    }
+
 </script>
 
 <table>
@@ -13,10 +18,10 @@
     </tr>
     {#each domains as domain}
         <tr>
-            <td><Dropdown/></td>
+            <td><Dropdown on:optionchange={dropdownChange} options={["A","CNAME","NS","TXT"]}/></td>
             <td><input value={domain[1]}></td>
             <td><input value={domain[2]}></td>
-            <Button args={"fill danger"} >Delete</Button>
+            <td><Button args={"fill danger"} >Delete</Button></td>
         </tr>
     {/each}
 </table>
