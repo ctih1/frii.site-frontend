@@ -3,7 +3,7 @@
     import Dropdown from "./Dropdown.svelte";
     import { ServerContactor } from "$lib/serverContactor";
 
-    let serverContactor:ServerContactor = new ServerContactor();
+    let serverContactor:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"));
     let domainInput:string;
     let selectedType:string;
 </script>
