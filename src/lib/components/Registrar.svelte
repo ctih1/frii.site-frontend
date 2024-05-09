@@ -1,17 +1,19 @@
 <script lang="ts">
     import Button from "./Button.svelte";
     import Dropdown from "./Dropdown.svelte";
+    import { ServerContactor } from "$lib/serverContactor";
 
+    let serverContactor:ServerContactor = new ServerContactor();
+    let domainInput:string;
+    let selectedType:string;
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <form>
-    <div class="container"><Dropdown disabled={false} args={"primary"} options={["A","CNAME","NS","TXT"]} defaultValue={"A"}></Dropdown></div>
-
-    <input placeholder="domain">
-    <div class="container"><Button args={"fill"}><span class="material-symbols-outlined">search</span></Button></div>
-    
+    <div class="container"><Dropdown on:optionchange={(event)=>selectedType=event.detail} disabled={false} args={"primary"} options={["A","CNAME","NS","TXT"]} defaultValue={"A"}></Dropdown></div>
+    <input bind:value={domainInput} placeholder="domain">
+    <div class="container"><Button on:click={()=>serverContactor.registerDomain(domainInput,"0.0.0.0",selectedType)} args={"fill"}><span class="material-symbols-outlined">search</span></Button></div>
 </form>
 
 <style>

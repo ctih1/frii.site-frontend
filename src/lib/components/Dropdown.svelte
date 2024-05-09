@@ -107,6 +107,8 @@
         background-color: #fff;
         border-bottom-left-radius: 0.5em;
         border-bottom-right-radius: 0.5em;
+        box-shadow: 0px 0px 73px -20px rgba(0,0,0,0.75);
+
     }
     li {
         list-style: none;

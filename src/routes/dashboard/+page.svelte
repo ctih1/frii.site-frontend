@@ -13,7 +13,7 @@
 
 <div class="holder">
     <h2>Register a new domain</h2>
-    <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="wikipedia.com">Wiki</a></p>
+    <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="https://wikipedia.com">Wiki</a></p>
 
     <Registrar/>
 </div>
