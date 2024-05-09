@@ -1,9 +1,14 @@
 <script lang="ts">
     import Button from "./Button.svelte";
+    import { onMount } from "svelte";
     import Dropdown from "./Dropdown.svelte";
-    import { ServerContactor } from "$lib/serverContactor";
-
-    let serverContactor:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"));
+    import { ServerContactor } from "../../serverContactor";
+    let authToken:string|null;
+    let serverContactor:ServerContactor 
+    onMount(()=>{
+        authToken=window.localStorage.getItem("auth-token");
+        serverContactor = new ServerContactor(authToken);
+    })
     let domainInput:string;
     let selectedType:string;
 </script>

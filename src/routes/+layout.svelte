@@ -35,7 +35,15 @@
         text-decoration: none;
         color: var(--primary);
     }
-    
+    :global(.holder) {
+        width: 50vw;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        border-radius: 0.5em;
+        padding: 2em;
+        margin-top: 2em;
+    }
     main {
         position: absolute;
         left: 0px;
