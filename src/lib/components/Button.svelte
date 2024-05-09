@@ -2,16 +2,36 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
     let button:HTMLButtonElement;
+    let disabled:boolean=false;
     function click() {
-        dispatch("click");
+        if(!disabled) {
+            dispatch("click");
+        }
+    }
+    export function disable() {
+        button.style.opacity = "0.5";
+        button.disabled = true;
+        disabled=true;
+    }
+    export function enable() {
+        button.style.opacity = "1.0";
+        button.disabled = false;
+        disabled=false;
+    }
+    export function toggleDisable() {
+        if(!disabled) {
+            button.style.opacity = "0.5";
+            button.disabled = true;
+        }else {
+            button.style.opacity = "1.0";
+            button.disabled = false;
+        }
+        disabled=!disabled;
     }
     export function changeText(text:string) {
         button.innerHTML=text;
     }
     export let args:string;
-    
-
-
 </script>
 
 <button bind:this={button} on:click={()=>click()} class="{args}">
@@ -34,8 +54,11 @@
         justify-content: center;
         align-items: center;
     }
-    button:active {
+    button:active:enabled {
         scale: 0.95;
+    }
+    button:hover:enabled  {
+        cursor: pointer;
     }
     .scale:active {
         scale: 0.85;
@@ -51,11 +74,23 @@
         width: 100%;
         height: 100%;
     }
+    .three-quarters {
+        width: 75%;
+    }
     .half {
         width: 50%;
     }
+    .quarter {
+        width: 25%;
+    }
+
     .margin {
         margin: 0.5em;
+    }
+
+    .side-margin {
+        margin-left: 0.25em;
+        margin-right: 0.25em;
     }
 
     .scale {
@@ -64,6 +99,4 @@
     .no-margin {
         margin: 0px;
     }
-
-
 </style>

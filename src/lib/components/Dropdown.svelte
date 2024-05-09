@@ -48,8 +48,8 @@
 </script>
 
 <div class="dropdown">
-    <button class="dropdown-button" type="button" bind:this={button} on:click={()=>toggleDropdown()}>{defaultValue}</button>
-    <div class="dropdown-content" bind:this={dropdown}>
+    <button  class="dropdown-button" type="button" bind:this={button} on:click={()=>toggleDropdown()}>{defaultValue}</button>
+    <div on:blur={()=>toggleDropdown()} class="dropdown-content" bind:this={dropdown}>
         <ul>
         {#each options as option}
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -86,6 +86,7 @@
         display: none;
         position: absolute;
         border-style: none;
+        z-index: 4;
     }
 
     ul {

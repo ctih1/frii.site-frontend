@@ -1,5 +1,6 @@
 <script lang="ts">
     import DomainTable from "$lib/components/DomainTable.svelte";
+    import Modal from "$lib/components/Modal.svelte";
 </script>
 
 <div class="holder">
