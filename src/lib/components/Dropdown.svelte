@@ -1,29 +1,54 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
     export let options:Array<String>;
+    export let defaultValue:string;
+    export let disabled:boolean;
     let toggled:boolean=false;
     let dropdown:HTMLDivElement;
     let button:HTMLButtonElement;
-    function toggleDropdown() {
-        dispatch("click")
+
+    onMount(()=> {
+        console.log(disabled);
+        if(disabled) {
+            button.onclick=(null);
+        }else {
+            button.onclick=toggleDropdown;
+        }
+    })
+
+    export function toggleDisable() {
+        if(!disabled) {
+            button.onclick=toggleDropdown;
+            dropdown.style.display="none";
+            toggled=false;
+        }else {
+            button.onclick=(null);
+        }
+        disabled=!disabled;
+    }
+
+    function toggleDropdown():void {
+        dispatch("click");
         if(!toggled) {
             dropdown.style.display="block";
-        }
-        else {
+        }else {
             dropdown.style.display="none";
-        }
-        toggled=!toggled;
+        }toggled=!toggled;
     }   
-    function onDropdownChange(element:String) { 
+    function onDropdownChange(element:String):void { 
         dispatch("optionchange",element);
         button.innerHTML = element.toString();
         toggleDropdown();
     }
+    export function getValue():string {
+        return button.innerHTML;
+    }
 </script>
 
 <div class="dropdown">
-    <button class="dropdown-button" type="button" bind:this={button} on:click={()=>toggleDropdown()}>Title</button>
+    <button class="dropdown-button" type="button" bind:this={button} on:click={()=>toggleDropdown()}>{defaultValue}</button>
     <div class="dropdown-content" bind:this={dropdown}>
         <ul>
         {#each options as option}
@@ -40,13 +65,20 @@
         transition: 100ms ease-in-out;
     }
     .dropdown {
-        width: 10em;
+        width: 100%;
+        height: 100%;
         position: relative;
         display: inline-block;
     }
     .dropdown-button {
+        transition: background-color 100ms;
         border-style: none;
+        background-color: #fff;
         width: 100%;
+        height: 100%;
+    }
+    .dropdown-button:hover {
+        background-color: #bdbdbd;
     }
 
     .dropdown-content {
@@ -55,6 +87,7 @@
         position: absolute;
         border-style: none;
     }
+
     ul {
         width: 100%;
         margin: 0px;
@@ -75,4 +108,5 @@
         cursor: pointer;
         background-color: var(--primary);
     }
+
 </style>
