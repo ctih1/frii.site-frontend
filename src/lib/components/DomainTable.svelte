@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from "./Button.svelte";
+    import Dropdown from "./Dropdown.svelte";
     let domains = [["A","markus","192.168.100.1","No"]];
 </script>
 
@@ -12,9 +13,9 @@
     </tr>
     {#each domains as domain}
         <tr>
-            <td>{domain[0]}</td>
-            <td>{domain[1]}</td>
-            <td>{domain[2]}</td>
+            <td><Dropdown/></td>
+            <td><input value={domain[1]}></td>
+            <td><input value={domain[2]}></td>
             <Button args={"fill danger"} >Delete</Button>
         </tr>
     {/each}
@@ -26,9 +27,5 @@
     }
     td {
         min-width: 10vw;
-    }
-    button {
-        width: 100%;
-        height: 100%;
     }
 </style>

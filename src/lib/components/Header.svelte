@@ -23,7 +23,7 @@
     }
     header a {
         text-decoration: none;
-        color: rgb(0, 123, 255);
+        color: var(--primary);
         margin-left: 1em;
         margin-right: 1em;
     }
