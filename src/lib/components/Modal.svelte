@@ -1,24 +1,41 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Button from "./Button.svelte";
-    export let countdown:number|undefined;
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+    
+    export let countdown:number|undefined=undefined;
     export let description:string;
     export let title:string;
+    export let options:Array<string>;
+    export let overrideDefault:boolean=false;
     let button:Button;
     let timeLeft:number;
     let onscreen:boolean=false;
     let timer:any;
+
     export function open(text:string,desc:string) {
         title=text;
         description = desc;
         onscreen=true;
         startTimer();
     }
+    function primaryButton() {
+        if(overrideDefault) {
+            dispatch("primary");
+        }
+        else {
+            close();
+        }
+    }
     export function close() {
         if(countdown!==undefined) {
             timeLeft = countdown;
         }
         onscreen=false;
+    }
+    export function secondaryButton() {
+        dispatch("secondary");
     }
 
     onMount(()=>{
@@ -59,8 +76,10 @@
                 <h3>{timeLeft}</h3>
             {/if}
             <div class="buttons">
-                <Button bind:this={button} args={"danger fill margin quarter"}>Continue</Button>
-                <Button on:click={()=>{close()}} args={"fill margin three-quarter"}>Cancel</Button>
+                {#if options.length!==1}
+                    <Button on:click={()=>secondaryButton()} bind:this={button} args={"danger fill margin quarter"}>{options[1]}</Button>
+                {/if}
+                <Button on:click={()=>{primaryButton()}} args={"fill margin three-quarter"}>{options[0]}</Button>
             </div>
         </div>
     </div>
