@@ -43,8 +43,11 @@
         {#each domains as domain, index}
             <tr>
                 <td><Dropdown bind:this={rowInputs[index][0]} on:optionchange={(event)=>domain[0]=event.detail} defaultValue={domain[0]} options={["A","CNAME","NS","TXT"]} disabled={true}/></td>
-                <td><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]} ></td>
-                <td><input bind:this={rowInputs[index][2]} type="text" bind:value={domain[2]} ></td>
+                <td><div class="container">
+                    <input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}>
+                    <input style="width: 25%; min-width:50px;" disabled value=".frii.site">
+                </div></td>
+                <td><input bind:this={rowInputs[index][2]} type="text" bind:value={domain[2]}></td>
                 <td data-index={index} style="display: flex; flex-direction: row;">
                     <Button on:click={()=>saveDomain(domain[1],domain[2],domain[0])} args={"fill three-quarters side-margin"}>Save</Button>
                     <Button on:click={()=>{modal.open("Are you sure you want to delete " + domain[1],warningString)}} args={"fill danger quarter side-margin"}><span class="material-symbols-outlined">delete</span></Button>
@@ -88,6 +91,10 @@
 
     .row {
         margin: 0px;
+        display: flex;
+        flex-direction: row;
+    }
+    .container {
         display: flex;
         flex-direction: row;
     }

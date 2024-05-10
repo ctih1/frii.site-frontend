@@ -28,5 +28,6 @@
         left:0px;
         height: 100vh;
         width: 0vw;
+        z-index: 9;
     }
 </style>
