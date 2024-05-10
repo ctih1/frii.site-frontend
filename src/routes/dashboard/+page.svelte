@@ -40,6 +40,9 @@
                 case 422:
                     modal.open("Invalid value","Please make sure your value field is correct.");
                     break;
+                case 500:
+                    modal.open("Something went wrong...","We don't know what happened either!");
+                    break;
                 case 200:
                     modal.open("Success","Succesfully modified domain.")
                     break;
