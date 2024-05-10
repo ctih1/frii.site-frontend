@@ -12,7 +12,6 @@
     let selectedDomain:string;
     let editButton:Button;
     let modal:Modal;
-    let warningString:string = "This is a destructive action, which cannot be undone. You will immediately lose access to this domain, which means it will be available to register. Re-registering the domain will not revert the DNS settings back to normal.";
     let rowInputs:Array<Array<any>> = domains.map(() => []);
 
     export function updateDomains(ndomains:Array<Array<string>>):void {
@@ -50,14 +49,14 @@
                 <td><input bind:this={rowInputs[index][2]} type="text" bind:value={domain[2]}></td>
                 <td data-index={index} style="display: flex; flex-direction: row;">
                     <Button on:click={()=>saveDomain(domain[1],domain[2],domain[0])} args={"fill three-quarters side-margin"}>Save</Button>
-                    <Button on:click={()=>{modal.open("Are you sure you want to delete " + domain[1],warningString)}} args={"fill danger quarter side-margin"}><span class="material-symbols-outlined">delete</span></Button>
+                    <Button on:click={()=>dispatcher("delete",{"domain":domain[1]})} args={"fill danger quarter side-margin"}><span class="material-symbols-outlined">delete</span></Button>
                 </td>
             </tr>
         {/each}
     </tbody>
 </table>
 
-<Modal bind:this={modal} options={["Continue","Cancel"]} countdown={10} title="Are you sure you want to delete" description={""}></Modal>
+<Modal bind:this={modal} options={["Cancel","Continue"]}  countdown={15} title="Are you sure you want to delete" description={""}></Modal>
 
 <style>
     thead {

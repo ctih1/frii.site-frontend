@@ -32,6 +32,10 @@
         button.innerHTML=text;
     }
     export let args:string|null = null;
+    export let startDisabled:string|undefined = undefined;
+    if(startDisabled) {
+        disabled=true;
+    }
 </script>
 
 <button bind:this={button} on:click={()=>click()} class="{args}">

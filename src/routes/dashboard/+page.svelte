@@ -7,6 +7,7 @@
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
     import { redirect } from '@sveltejs/kit';
+    let warningString:string = "This is a destructive action, which cannot be undone. You will immediately lose access to this domain, which means it will be available to register. Re-registering the domain will not revert the DNS settings back to normal.";
 
     let blurBackground:Blur;
     let domainTable:DomainTable;
@@ -14,10 +15,37 @@
     let domains:Map<any,any>;
     let domainlist:Array<Array<string>> = [];
     let serverContactor:ServerContactor
-
+    let domain2delete:string;
     function modalClose() {
         modal.close();
         blurBackground.hide();
+    }
+
+    function modalConfirm() {
+        serverContactor.deleteDomain(domain2delete).then(response=>{
+            switch(response.status) {
+                case 200:
+                    modal.open("Deleted "+domain2delete,domain2delete+" was deleted succesfully.");
+                    break;
+                default:
+                    modal.open("Could not delete domain","An unhandled error occured.");
+                    break;
+            }
+        })
+    }
+
+    function registerDomain(domain:string,type:string) {
+        blurBackground.show();
+        serverContactor.registerDomain(domain,type).then(response=>{
+            switch(response.status) {
+                case 200:
+                    modal.open("Succes!","Succesfully registered "+domain+"!");
+                    break;
+                default:
+                    modal.open("Could not register domain","An unhandled error occured.");
+                    break;
+            }
+        })
     }
 
     function modifyDomain(name:string,value:string,type:string) {
@@ -52,25 +80,27 @@
 
     onMount(()=>{
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
-        serverContactor.getDomains().then(response=>console.log(response.status));
-
-        serverContactor.getDomains().then(response=>response.json()).then(data=>{
-            domains = new Map(Object.entries(data))
+        serverContactor.getDomains().then(response=>console.log(response.json()));
+        serverContactor.getDomains().then(response=>console.log(new Map(Object.entries(response.json()))));
+        serverContactor.getDomains().then(response=>response.json()).then(data=> {
+            domains = new Map(Object.entries(data));
+            console.log(domains);
             for(let pair of domains) {
                 let [key,value] = pair;
                 value=new Map(Object.entries(value));
                 domainlist.push([value.get("type"),key,value.get("ip")]);
             }
+            console.log("Updating domainTable with "+domainlist.toString());
             domainTable.updateDomains(domainlist);
-        });
-    })
+        })
+    });
     
 </script>
 
 <div class="holder">
     <h1>Your domains</h1>
     <p>These are all the domains you own. You can modify each parameter of them by simply clicking on their respective input field.</p>
-    <DomainTable on:save={(event)=>modifyDomain(event.detail.name,
+    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open("Are you sure you want to delete " + domain2delete,warningString,15,["Cancel","Continue"])}} on:save={(event)=>modifyDomain(event.detail.name,
         event.detail.value,
         event.detail.type
     )} bind:this={domainTable} domains={domainlist}/>
@@ -79,10 +109,10 @@
 <div class="holder">
     <h2>Register a new domain</h2>
     <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="https://wikipedia.com">Wiki</a></p>
-    <Registrar/>
+    <Registrar on:click={(event)=>registerDomain(event.detail.domain,event.detail.type)}/>
 </div>
 
-<Modal overrideDefault={true} on:primary={()=>modalClose()} bind:this={modal} options={["OK"]} description={""} title={""}></Modal>
+<Modal overrideDefault={true} on:primary={()=>modalClose()} on:secondary={()=>modalConfirm()} bind:this={modal} options={["OK"]} description={""} title={""}></Modal>
 <Blur bind:this={blurBackground}/>
 <style>
     .holder {

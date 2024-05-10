@@ -14,11 +14,21 @@
     let onscreen:boolean=false;
     let timer:any;
 
-    export function open(text:string,desc:string) {
+    export function open(text:string,desc:string,time:number|undefined=undefined, buttons:Array<string>|undefined=undefined) {
         title=text;
         description = desc;
         onscreen=true;
         startTimer();
+        if(buttons!==undefined) {
+            options = buttons;
+        } else {
+            options = ["Continue"];
+        }
+        if(countdown!==undefined) {
+            countdown=time;
+        } else {
+            countdown=undefined;
+        }
     }
     function primaryButton() {
         if(overrideDefault) {

@@ -20,28 +20,7 @@ export class ServerContactor {
             redirectToLogin();
         };
     }
-    async registerDomain(domain:string,value:string,type:string):Promise<Response> {
-        // 412: Incorrect login-ish
-        // 404: User not found in db
-        // 405: Invalid type (not A CNAME TXT or NS)
-        // 400: User is not verified
-        // 401: Incorrect creds
-        // 409: Not a valid domain
-        // 405: Domain limit exceeded
-        let data = {
-            "TOKEN": this.token,
-            "domain":domain,
-            "type":type,
-            "value":value
-        };
-        return await fetch(`${this.serverURL}/register-domain`,{
-            method:"POST",
-            headers: {
-                "Content-Type":"application/json"   
-            },
-            body: JSON.stringify(data)
-        })
-    }
+
     async domainAvailable(domain:string):Promise<Response> {
         return await fetch(`${this.serverURL}/domain-is-available?domain=${domain}`);
     }
@@ -96,6 +75,37 @@ export class ServerContactor {
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify(data)
+        });
+    }
+    async registerDomain(domain:string,type:string):Promise<Response> {
+        // 412: Incorrect login-ish
+        // 404: User not found in db
+        // 405: Invalid type (not A CNAME TXT or NS)
+        // 400: User is not verified
+        // 401: Incorrect creds
+        // 409: Not a valid domain
+        // 405: Domain limit exceeded
+        let data = {
+            "TOKEN":this.token,
+            "domain":domain,
+            "ip":"0.0.0.0",
+            "type":type
+        };
+        return await fetch(`${this.serverURL}/register-domain`,{
+            method:"POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
+    async deleteDomain(domain:string):Promise<Response> {
+        let data = {
+            "TOKEN":this.token,
+            "domain":domain
+        };
+        return await fetch(`${this.serverURL}/delete-domain`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });
     }
