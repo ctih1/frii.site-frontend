@@ -3,6 +3,7 @@
 	import Registrar from '$lib/components/Registrar.svelte';
     import DomainTable from "$lib/components/DomainTable.svelte";
     import Modal from "$lib/components/Modal.svelte";
+    import Holder from '$lib/components/Holder.svelte';
     import { ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
@@ -79,6 +80,7 @@
     } 
 
     onMount(()=>{
+        blurBackground.show();
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
         serverContactor.getDomains().then(response=>console.log(response.json()));
         serverContactor.getDomains().then(response=>console.log(new Map(Object.entries(response.json()))));
@@ -92,36 +94,29 @@
             }
             console.log("Updating domainTable with "+domainlist.toString());
             domainTable.updateDomains(domainlist);
+            blurBackground.hide();
         })
     });
     
 </script>
 
-<div class="holder">
+<Holder>
     <h1>Your domains</h1>
     <p>These are all the domains you own. You can modify each parameter of them by simply clicking on their respective input field.</p>
     <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open("Are you sure you want to delete " + domain2delete,warningString,15,["Cancel","Continue"])}} on:save={(event)=>modifyDomain(event.detail.name,
         event.detail.value,
         event.detail.type
     )} bind:this={domainTable} domains={domainlist}/>
-</div>
+</Holder>
 
-<div class="holder">
+<Holder>
     <h2>Register a new domain</h2>
     <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="https://wikipedia.com">Wiki</a></p>
     <Registrar on:click={(event)=>registerDomain(event.detail.domain,event.detail.type)}/>
-</div>
+</Holder>
 
 <Modal overrideDefault={true} on:primary={()=>modalClose()} on:secondary={()=>modalConfirm()} bind:this={modal} options={["OK"]} description={""} title={""}></Modal>
-<Blur bind:this={blurBackground}/>
+<Blur reverse={false} bind:this={blurBackground}/>
 <style>
-    .holder {
-        width: 50vw;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: white;
-        border-radius: 0.5em;
-        padding: 2em;
-        margin-top: 2em;
-    }
+
 </style>

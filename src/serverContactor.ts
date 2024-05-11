@@ -33,7 +33,7 @@ export class ServerContactor {
             "TOKEN": this.token,
             "domain":domain,
             "type":type,
-            "value":value,
+            "ip":value,
         };
         return await fetch(`${this.serverURL}/modify-domain`, {
             method: "POST",
