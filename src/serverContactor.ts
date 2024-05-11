@@ -109,4 +109,19 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
+    
+    async register(username:string,password:string,email:string):Promise<Response> {
+        // 409: User already exists
+        let data = {
+            "username":username,
+            "password":password,
+            "email":email,
+            "language": navigator.language
+        };
+        return await fetch(`${this.serverURL}/sign-up`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
 }

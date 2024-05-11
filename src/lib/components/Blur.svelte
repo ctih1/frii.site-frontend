@@ -15,6 +15,7 @@
         }
     }
     export async function show() {
+        if(blur===undefined) { return; }
         if(!reverse) {
             for(let i=0;i<100;i++) {
                 await delay(10);

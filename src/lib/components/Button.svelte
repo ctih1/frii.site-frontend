@@ -3,6 +3,7 @@
     const dispatch = createEventDispatcher();
     let button:HTMLButtonElement;
     let disabled:boolean=false;
+    
     function click() {
         if(!disabled) {
             dispatch("click");
@@ -32,10 +33,6 @@
         button.innerHTML=text;
     }
     export let args:string|null = null;
-    export let startDisabled:string|undefined = undefined;
-    if(startDisabled) {
-        disabled=true;
-    }
 </script>
 
 <button bind:this={button} on:click={()=>click()} class="{args}">

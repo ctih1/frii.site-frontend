@@ -58,6 +58,20 @@
                 }
             });
         }
+        if(!login) {
+            if(password!==repeatPassword) {modal.open("Passwords don't match!","Please confirm that your passwords match.")}
+            serverContactor.register(username,password,email).then(response=>{
+                switch(response.status){
+                    case 200: 
+                        modal.open("Succesfully registered!","Please log in.");
+                        login=true;
+                        break;
+                    case 409:
+                        modal.open("Sign up failed (409)","Username is taken!");
+                        break;
+                }
+            })
+        }
     }
 </script>
 

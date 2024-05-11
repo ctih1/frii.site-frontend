@@ -1,11 +1,14 @@
 <script lang="ts">
-    
+    let header:HTMLElement
+    export function getHeight():number {
+        return Number(header.style.height.substring(0,header.style.height.length-2));
+    }
 </script>
 
-<header>
-    <a href="">Home</a>
-    <a href="">Dashboard</a>
-    <a href="">Account</a>
+<header bind:this={header}>
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/login">Account</a>
 </header>
 
 <style>
