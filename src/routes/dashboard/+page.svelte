@@ -17,6 +17,7 @@
     let domainlist:Array<Array<string>> = [];
     let serverContactor:ServerContactor
     let domain2delete:string;
+    let responseSave:Response;
     function modalClose() {
         modal.close();
         blurBackground.hide();
@@ -82,19 +83,24 @@
     onMount(()=>{
         blurBackground.show();
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
-        serverContactor.getDomains().then(response=>console.log(response.json()));
-        serverContactor.getDomains().then(response=>console.log(new Map(Object.entries(response.json()))));
-        serverContactor.getDomains().then(response=>response.json()).then(data=> {
-            domains = new Map(Object.entries(data));
-            console.log(domains);
-            for(let pair of domains) {
-                let [key,value] = pair;
-                value=new Map(Object.entries(value));
-                domainlist.push([value.get("type"),key,value.get("ip")]);
-            }
-            console.log("Updating domainTable with "+domainlist.toString());
-            domainTable.updateDomains(domainlist);
-            blurBackground.hide();
+        serverContactor.getDomains().then(response=>{responseSave=response}).then(response=> {
+            if(responseSave.status!==200) {
+                console.error(responseSave.status);
+                blurBackground.hide(); 
+                return;
+            } 
+            responseSave.json().then(data=>{
+                domains = new Map(Object.entries(data));
+                console.log(domains);
+                for(let pair of domains) {
+                    let [key,value] = pair;
+                    value=new Map(Object.entries(value));
+                    domainlist.push([value.get("type"),key,value.get("ip")]);
+                }
+                console.log("Updating domainTable with "+domainlist.toString());
+                domainTable.updateDomains(domainlist);
+                blurBackground.hide();
+            });
         })
     });
     
