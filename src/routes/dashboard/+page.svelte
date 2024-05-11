@@ -100,6 +100,10 @@
     
 </script>
 
+<svelte:head>
+    <title>Dashboard - frii.site</title>
+</svelte:head>
+
 <Holder>
     <h1>Your domains</h1>
     <p>These are all the domains you own. You can modify each parameter of them by simply clicking on their respective input field.</p>

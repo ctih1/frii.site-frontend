@@ -4,7 +4,9 @@
     let videoContainer:HTMLDivElement;
 
 </script>
-
+<svelte:head>
+    <title>frii.site</title>
+</svelte:head>
 
 <div class="content">
     <div bind:this={videoContainer} class="video-container" >
