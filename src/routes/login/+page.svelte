@@ -6,7 +6,7 @@
     import Blur from "$lib/components/Blur.svelte";
     import { ServerContactor } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
-
+    import Holder from "$lib/components/Holder.svelte";
     let serverContactor: ServerContactor|undefined = undefined;
     
     let username: string;
@@ -61,7 +61,7 @@
     }
 </script>
 
-<div class="holder">
+<Holder>
     
         <h1 >
             {#if login}
@@ -104,7 +104,7 @@
                 Log in instead
             {/if}</a>
     </form>
-</div>
+</Holder>
 
 <Blur bind:this={blur}/>
 
