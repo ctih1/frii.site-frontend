@@ -21,7 +21,7 @@
 
 <Holder>
     <h1p>Get started!</h1p>
-    <h2>To get free domains, please <a href="/login">make an account</a>.</h2>
+    <h2>To get started, please <a href="/login">make an account</a>.</h2>
     
     <div id="how-it-works">
         <h1>How it works</h1>
