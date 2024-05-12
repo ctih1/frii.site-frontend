@@ -92,6 +92,9 @@ export class ServerContactor {
             "ip":"0.0.0.0",
             "type":type
         };
+        if(type==="CNAME") {
+            data["type"]="example.com"
+        }
         return await fetch(`${this.serverURL}/register-domain`,{
             method:"POST",
             headers: {"Content-Type":"application/json"},
