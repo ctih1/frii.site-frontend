@@ -115,6 +115,9 @@
                 {/if}
             </Button>
         </div>
+        {#if !login}
+            <p>By creating an account, you agree to our <a href="/terms">Terms</a> and have acknowledged our <a href="/privacy">Privacy Policy</a></p>
+        {/if}
         <a on:click={()=>login=!login}>
             {#if login}
                 Sign up instead
