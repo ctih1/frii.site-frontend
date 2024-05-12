@@ -43,8 +43,23 @@
                 case 200:
                     modal.open("Succes!","Succesfully registered "+domain+"!");
                     break;
+                case 401:
+                    redirectToLogin(401);
+                    break;
+                case 403:
+                    modal.open("Could not regiser domain","You have exceeded your domain limit.");
+                    break;
+                case 404:
+                    redirectToLogin(404);
+                    break;
+                case 405:
+                    modal.open("Could not register domain","Invalid type. Type must be A, CNAME, TXT or NS.");
+                    break;
+                case 412:
+                    redirectToLogin(412);
+                    break;
                 default:
-                    modal.open("Could not register domain","An unhandled error occured.");
+                    modal.open(`Could not register domain (${response.status})`,"An unhandled error occured.");
                     break;
             }
         })
