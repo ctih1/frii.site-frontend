@@ -1,7 +1,9 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
+    import Analytics from "$lib/components/Analytics.svelte";
 </script>
 
+<Analytics/>
 <Header/>
 <main>
     <slot/>
