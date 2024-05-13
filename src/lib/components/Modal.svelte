@@ -19,13 +19,14 @@
         description = desc;
         onscreen=true;
         startTimer();
-        if(buttons!==undefined) {
+        if(buttons) {
             options = buttons;
         } else {
             options = ["Continue"];
         }
-        if(countdown!==undefined) {
+        if(time!==undefined) {
             countdown=time;
+            startTimer();
         } else {
             countdown=undefined;
         }
@@ -62,7 +63,6 @@
             timeLeft = countdown;
             timer = setInterval(timerFunction,1000);
             function timerFunction() {
-
                 if(onscreen) {
                     button?.disable()
                     timeLeft-=1;
@@ -87,7 +87,7 @@
             {/if}
             <div class="buttons">
                 {#if options.length!==1}
-                    <Button on:click={()=>secondaryButton()} bind:this={button} args={"danger fill margin quarter"}>{options[1]}</Button>
+                    <Button on:click={()=>secondaryButton()} bind:this={button} args={"danger fill margin quarter"} startDisabled={countdown!==undefined}>{options[1]}</Button>
                 {/if}
                 <Button on:click={()=>{primaryButton()}} args={"fill margin three-quarter"}>{options[0]}</Button>
             </div>

@@ -16,8 +16,8 @@ export class ServerContactor {
     constructor(token:string|null) {
         this.serverURL="https://server.frii.site";
         this.token=token;
-        if(this.token===null&&window.location.pathname!=="/login") {
-            redirectToLogin();
+        if(this.token===null&&window.location.pathname!=="/account") {
+            redirectToLogin(302);
         };
     }
 

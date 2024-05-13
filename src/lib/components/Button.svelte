@@ -3,31 +3,23 @@
     const dispatch = createEventDispatcher();
     let button:HTMLButtonElement;
     let disabled:boolean=false;
-    
+    export let startDisabled:boolean=false;
     function click() {
         if(!disabled) {
             dispatch("click");
         }
     }
     export function disable() {
-        button.style.opacity = "0.5";
         button.disabled = true;
         disabled=true;
     }
     export function enable() {
-        button.style.opacity = "1.0";
         button.disabled = false;
         disabled=false;
     }
     export function toggleDisable() {
-        if(!disabled) {
-            button.style.opacity = "0.5";
-            button.disabled = true;
-        }else {
-            button.style.opacity = "1.0";
-            button.disabled = false;
-        }
         disabled=!disabled;
+        button.disabled=disabled;
     }
     export function changeText(text:string) {
         button.innerHTML=text;
@@ -35,11 +27,14 @@
     export let args:string|null = null;
 </script>
 
-<button bind:this={button} on:click={()=>click()} class="{args}">
+<button disabled={startDisabled} bind:this={button} on:click={()=>click()} class="{args}">
     <slot></slot>
 </button>
 
 <style>
+    button:disabled {
+        opacity: 0.5;
+    }
     button {
         display: flex;
         height: 100%;
@@ -98,6 +93,10 @@
     .side-margin {
         margin-left: 0.25em;
         margin-right: 0.25em;
+    }
+
+    .padding {
+        padding: 0.5em;
     }
 
     .scale {
