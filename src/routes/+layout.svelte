@@ -33,6 +33,7 @@
     :global(a) {
         text-decoration: none;
         color: var(--primary);
+        font-size: inherit;
     }
     :global(.holder) {
 

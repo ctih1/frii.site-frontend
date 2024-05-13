@@ -127,4 +127,14 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
+    async deleteAccoint():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/delete-accountt`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
 }
