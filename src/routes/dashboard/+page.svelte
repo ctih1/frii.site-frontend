@@ -47,7 +47,7 @@
                     redirectToLogin(401);
                     break;
                 case 403:
-                    modal.open("Could not regiser domain","You have exceeded your domain limit.");
+                    modal.open("Could not regiser domain","You have exceeded your domain limit. Please consider purchasing more domains at https://ko-fi.com/s/123804db77");
                     break;
                 case 404:
                     redirectToLogin(404);
