@@ -16,6 +16,8 @@
     :root {
         --primary: rgb(0, 123, 225);
         --border-color: rgba(0,0,0,0.05);
+        --secondary-color: #bdbdbd;
+        --offwhite-color: #eeeeee;
         overflow-x: hidden; 
     }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
