@@ -24,12 +24,12 @@
 
 <Holder>
     <h1p>Get started!</h1p>
-    <h2>To get started, please <a href="/login">make an account</a>.</h2>
+    <h2>To get started, please <a href="/account">make an account</a>.</h2>
     
     <div id="how-it-works">
         <h1>How it works</h1>
         <ul>
-            <li>You <a href="/login">register</a> an account</li>
+            <li>You <a href="/account">register</a> an account</li>
             <li>You <a href="/dashboard">register a domain</a></li>
             <li>Our servers register the domain as yours, which means you are the only one that can access it</li>
             <li>You have full access to the domain in <a href="/dashboard">the dashboard</a></li>

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { updated } from "$app/stores";
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
@@ -28,6 +27,10 @@
     onMount(()=>{
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
         redirectURL=$page.url.searchParams.get("r");
+        if(localStorage.getItem("logged-in")==="y") {
+            window.location.href="/account/manage";
+            return;
+        }
     });
     let login:boolean=true;
 
@@ -49,6 +52,7 @@
                     case 200:
                         localStorage.setItem("auth-token",localStorage.getItem("temp-token")); // this should **never** break
                         localStorage.removeItem("temp-token");
+                        localStorage.setItem("logged-in","y");
                         modal.open("Succesfully signed in","You will be redirected soon...");
                         if(redirectURL===null) {
                             redirectURL = "/";
@@ -80,7 +84,6 @@
 </svelte:head>
 
 <Holder>
-    
         <h1 >
             {#if login}
                 Login
@@ -95,6 +98,7 @@
                 Now is the perfect time to sign up for a frii.site account!
             {/if}
         </p>
+        
     
 
     <form>
@@ -125,6 +129,7 @@
                 Log in instead
             {/if}</a>
     </form>
+
 </Holder>
 
 <Blur bind:this={blur}/>

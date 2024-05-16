@@ -1,9 +1,11 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import Analytics from "$lib/components/Analytics.svelte";
+    import Ads from "$lib/components/Ads.svelte"
 </script>
 
 <Analytics/>
+<Ads></Ads>
 <Header/>
 <main>
     <slot/>
@@ -33,6 +35,7 @@
     :global(a) {
         text-decoration: none;
         color: var(--primary);
+        font-size: inherit;
     }
     :global(.holder) {
 

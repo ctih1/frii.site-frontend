@@ -16,8 +16,8 @@ export class ServerContactor {
     constructor(token:string|null) {
         this.serverURL="https://server.frii.site";
         this.token=token;
-        if(this.token===null&&window.location.pathname!=="/login") {
-            redirectToLogin();
+        if(this.token===null&&window.location.pathname!=="/account") {
+            redirectToLogin(302);
         };
     }
 
@@ -123,6 +123,32 @@ export class ServerContactor {
         };
         return await fetch(`${this.serverURL}/sign-up`, {
             method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
+    async deleteAccoint():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/delete-user`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
+    async getAccountDetails():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/get-user-info`)
+    }
+    async getGDPR():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/gdpr-get`,{
+            method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });

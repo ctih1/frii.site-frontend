@@ -103,7 +103,20 @@
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
         serverContactor.getDomains().then(response=>{responseSave=response}).then(response=> {
             if(responseSave.status!==200) {
-                console.error(responseSave.status);
+                switch(responseSave.status) {
+                    case 412:
+                        redirectToLogin(412);
+                        break;
+                    case 404:
+                        modal.open("Now is the perfect time to register a domain!","It seems like you don't have a domain yet. This is the perfect opportunity to register one!");
+                        break;
+                    case 401:
+                        redirectToLogin(401);
+                        break;
+                    default:
+                        modal.open(`Could not load domains (${responseSave.status})`,"An unknown error occured while trying to get your domains. If you already have domains, we are most likely having an isuse.");
+                        break;
+                }   
                 blurBackground.hide(); 
                 return;
             } 

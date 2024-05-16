@@ -8,7 +8,8 @@
 <header bind:this={header}>
     <a href="/">Home</a>
     <a href="/dashboard">Dashboard</a>
-    <a href="/login">Account</a>
+    <a href="/account">Account</a>
+    <a href="/account/manage">Settings</a>
 </header>
 
 <style>
