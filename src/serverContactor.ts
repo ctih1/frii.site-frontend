@@ -131,8 +131,24 @@ export class ServerContactor {
         let data = {
             "TOKEN":this.token
         }
-        return await fetch(`${this.serverURL}/delete-accountt`, {
+        return await fetch(`${this.serverURL}/delete-user`, {
             method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
+    async getAccountDetails():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/get-user-info`)
+    }
+    async getGDPR():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/gdpr-get`,{
+            method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });
