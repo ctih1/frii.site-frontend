@@ -38,6 +38,7 @@
     :global(.holder) {
 
     }
+    
 
     @media (min-width:960px) {
         .holder {
