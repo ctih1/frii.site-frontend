@@ -10,9 +10,23 @@
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
+
+    let emailE:HTMLElement;
+    let usernameE:HTMLElement;
+
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"));
+        getData();
     })
+
+    function getData() {
+        serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
+            console.log(data);
+            emailE.innerHTML=`Email: ${data["email"]}`
+            usernameE.innerHTML=`Username: ${data["username"]}`
+        })
+    }
+
     function handleDelete() {
         if(noConfirm) {
             modal.open("Are you sure you want to delete your account?","This is a destructive action which cannot be undone. Are you sure you want to continue?",15,["Cancel","Continue"]);
@@ -50,12 +64,11 @@
 </script>
 
 <Holder>
-    <h1>Manage your account</h1>
+    <h1>Account management</h1>
     <Section title="Details" id="details">
         <div class="details">
-            <h3>Email</h3>
-            <h3>Username</h3>
-            <h3>Password</h3>
+            <h3 bind:this={emailE}>Email</h3>
+            <h3 bind:this={usernameE}>Username</h3>
         </div>
     </Section>
     <Section title="Manage" id="manage">
