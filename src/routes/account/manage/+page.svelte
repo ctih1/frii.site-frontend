@@ -11,8 +11,10 @@
     let modal:Modal;
     let noConfirm:boolean=true;
 
+
     let emailE:HTMLElement;
     let usernameE:HTMLElement;
+
 
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"));
@@ -69,6 +71,13 @@
         <div class="details">
             <h3 bind:this={emailE}>Email</h3>
             <h3 bind:this={usernameE}>Username</h3>
+    <h1>Manage your account</h1>
+    <Section title="Details" id="details">
+        <div class="details">
+            <h3>Email</h3>
+            <h3>Username</h3>
+            <h3>Password</h3>
+
         </div>
     </Section>
     <Section title="Manage" id="manage">
