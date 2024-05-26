@@ -9,16 +9,14 @@
 
     let serverContactor:ServerContactor;
     let modal:Modal;
-    let noConfirm:boolean=false;
+    let noConfirm:boolean=true;
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"));
     })
     function handleDelete() {
         if(noConfirm) {
             modal.open("Are you sure you want to delete your account?","This is a destructive action which cannot be undone. Are you sure you want to continue?",15,["Cancel","Continue"]);
-        }
-        else {
-            noConfirm=true;
+            noConfirm=false;
             return;
         }
         serverContactor.deleteAccoint().then(response=>{
