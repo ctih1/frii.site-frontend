@@ -5,20 +5,18 @@
     import { onMount } from 'svelte';
     import { redirectToLogin,createFile } from '../../../helperFuncs';
     import { ServerContactor } from '../../../serverContactor';
-
+    import Section from '$lib/components/Section.svelte';
 
     let serverContactor:ServerContactor;
     let modal:Modal;
-    let noConfirm:boolean=false;
+    let noConfirm:boolean=true;
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"));
     })
     function handleDelete() {
         if(noConfirm) {
             modal.open("Are you sure you want to delete your account?","This is a destructive action which cannot be undone. Are you sure you want to continue?",15,["Cancel","Continue"]);
-        }
-        else {
-            noConfirm=true;
+            noConfirm=false;
             return;
         }
         serverContactor.deleteAccoint().then(response=>{
@@ -53,19 +51,28 @@
 
 <Holder>
     <h1>Manage your account</h1>
-    <div class="buttons">
-        <Button on:click={()=>gpdrData()} args={"padding"}>Download your data</Button>
-        <Button on:click={()=>logOut()} args={"padding danger"}>Log out</Button>
-        <div class="danger">
-            <Button args={"danger padding"} on:click={()=>handleDelete()}>Delete your account</Button>
+    <Section title="Details" id="details">
+        <div class="details">
+            <h3>Email</h3>
+            <h3>Username</h3>
+            <h3>Password</h3>
         </div>
-    </div>
+    </Section>
+    <Section title="Manage" id="manage">
+        <div class="buttons">
+            <div><Button on:click={()=>gpdrData()} args={"padding"}>Download your data</Button></div>
+            <div><Button on:click={()=>logOut()} args={"padding danger"}>Log out</Button></div>
+            <div class="danger">
+                <Button args={"danger padding"} on:click={()=>handleDelete()}>Delete your account</Button>
+            </div>
+        </div>
+    </Section>
 </Holder>
 
 <Modal bind:this={modal} on:secondary={()=>handleDelete()} options={["Continue"]} title={""} description={""}></Modal>
 
 <style>
-    .buttons l {
+    .buttons div {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
     }

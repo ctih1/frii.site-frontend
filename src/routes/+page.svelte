@@ -16,7 +16,7 @@
             loop
             preload="metadata"
             muted
-            src="/fsstory4.mp4"
+            src="https://s4hype.xyz/assets/fsstory.mp4"
             type="video/mp4"
         />
     </div>

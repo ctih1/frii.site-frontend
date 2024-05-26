@@ -89,7 +89,7 @@
     .dropdown-button:active {
     }
     .dropdown-button:hover {
-        background-color: #bdbdbd;
+        background-color: var(--secondary-color);
     }
 
     .dropdown-content {
