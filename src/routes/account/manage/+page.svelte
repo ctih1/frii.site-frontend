@@ -73,15 +73,9 @@
         <div class="details">
             <h3 bind:this={emailE}>Email</h3>
             <h3 bind:this={usernameE}>Username</h3>
-    <h1>Manage your account</h1>
-    <Section title="Details" id="details">
-        <div class="details">
-            <h3>Email</h3>
-            <h3>Username</h3>
-            <h3>Password</h3>
-
         </div>
     </Section>
+    <h1>Manage your account</h1>
     <Section title="Manage" id="manage">
         <div class="buttons">
             <div><Button on:click={()=>gpdrData()} args={"padding"}>Download your data</Button></div>
