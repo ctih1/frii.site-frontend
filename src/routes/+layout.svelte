@@ -16,6 +16,7 @@
     :root {
         --primary: rgb(0, 123, 225);
         --border-color: rgba(0, 0, 0, 0.086);
+        --border-color: rgba(0,0,0,0.05);
         --secondary-color: #bdbdbd;
         --offwhite-color: #eeeeee;
         overflow-x: hidden; 

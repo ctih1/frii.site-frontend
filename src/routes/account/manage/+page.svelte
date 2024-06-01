@@ -11,7 +11,14 @@
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
+
     let blurElement:Blur;
+    let emailE:HTMLElement;
+    let usernameE:HTMLElement;
+
+
+
+
     let emailE:HTMLElement;
     let usernameE:HTMLElement;
 
@@ -21,11 +28,17 @@
     })
 
     function getData() {
+
         blurElement.show();
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
             emailE.innerHTML=`Email: ${data["email"]}`
             usernameE.innerHTML=`Username: ${data["username"]}`
             blurElement.hide();
+
+        serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
+            console.log(data);
+            emailE.innerHTML=`Email: ${data["email"]}`
+            usernameE.innerHTML=`Username: ${data["username"]}`
         })
     }
 
@@ -71,6 +84,13 @@
         <div class="details">
             <h3 bind:this={emailE}>Email</h3>
             <h3 bind:this={usernameE}>Username</h3>
+    <h1>Manage your account</h1>
+    <Section title="Details" id="details">
+        <div class="details">
+            <h3>Email</h3>
+            <h3>Username</h3>
+            <h3>Password</h3>
+
         </div>
     </Section>
     <Section title="Manage" id="manage">
