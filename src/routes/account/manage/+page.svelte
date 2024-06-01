@@ -6,11 +6,12 @@
     import { redirectToLogin,createFile } from '../../../helperFuncs';
     import { ServerContactor } from '../../../serverContactor';
     import Section from '$lib/components/Section.svelte';
+    import Blur from '$lib/components/Blur.svelte';
 
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
-
+    let blurElement:Blur;
     let emailE:HTMLElement;
     let usernameE:HTMLElement;
 
@@ -20,10 +21,11 @@
     })
 
     function getData() {
+        blurElement.show();
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            console.log(data);
             emailE.innerHTML=`Email: ${data["email"]}`
             usernameE.innerHTML=`Username: ${data["username"]}`
+            blurElement.hide();
         })
     }
 
@@ -62,7 +64,7 @@
         redirectToLogin(200);
     }
 </script>
-
+<Blur bind:this={blurElement}/>
 <Holder>
     <h1>Account management</h1>
     <Section title="Details" id="details">
