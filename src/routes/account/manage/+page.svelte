@@ -16,29 +16,18 @@
     let emailE:HTMLElement;
     let usernameE:HTMLElement;
 
-
-
-
-    let emailE:HTMLElement;
-    let usernameE:HTMLElement;
-
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"));
         getData();
     })
 
     function getData() {
-
         blurElement.show();
-        serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            emailE.innerHTML=`Email: ${data["email"]}`
-            usernameE.innerHTML=`Username: ${data["username"]}`
-            blurElement.hide();
-
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
             console.log(data);
             emailE.innerHTML=`Email: ${data["email"]}`
             usernameE.innerHTML=`Username: ${data["username"]}`
+            blurElement.hide();
         })
     }
 
