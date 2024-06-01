@@ -56,10 +56,13 @@
                     modal.open("Could not register domain","Invalid type. Type must be A, CNAME, TXT or NS.");
                     break;
                 case 409:
-                    modal.opem("Could not register domain","The domain is either invalid, or is already in use.");
+                    modal.open("Could not register domain","The domain is either invalid, or is already in use.");
                     break;
                 case 412:
                     redirectToLogin(412);
+                    break;
+                case 452:
+                    modal.open("Could not register domain",`Please register the domain ${domain}.frii.site first.`);
                     break;
                 default:
                     modal.open(`Could not register domain (${response.status})`,"An unhandled error occured.");
