@@ -124,6 +124,10 @@
         flex-direction: row;
         height: 5vh;
     }
+    @media(max-width: 960px) {
+        .card {
+            width: 80vw;
+        }
 
 
 </style>
