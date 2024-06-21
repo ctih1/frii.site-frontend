@@ -1,10 +1,10 @@
 <script lang="ts">
     let header:HTMLElement
+    
     export function getHeight():number {
         return Number(header.style.height.substring(0,header.style.height.length-2));
     }
 </script>
-
 <header bind:this={header}>
     <a href="/">Home</a>
     <a href="/dashboard">Dashboard</a>
@@ -24,6 +24,10 @@
         min-height: 50px;
         width: 100vw;
         z-index: 10;
+    }
+    header * {
+        align-items: center;
+        text-align: center;
     }
     header a {
         margin-left: 1em;

@@ -20,6 +20,14 @@
         --secondary-color: #bdbdbd;
         --offwhite-color: #eeeeee;
         overflow-x: hidden; 
+        
+    }
+    :root::-webkit-scrollbar{
+        display: none;
+    }
+    :root{
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     :global(*) {

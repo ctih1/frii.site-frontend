@@ -56,13 +56,10 @@
                     modal.open("Could not register domain","Invalid type. Type must be A, CNAME, TXT or NS.");
                     break;
                 case 409:
-                    modal.open("Could not register domain","The domain is either invalid, or is already in use.");
+                    modal.opem("Could not register domain","The domain is either invalid, or is already in use.");
                     break;
                 case 412:
                     redirectToLogin(412);
-                    break;
-                case 452:
-                    modal.open("Could not register domain",`Please register the domain ${domain}.frii.site first.`);
                     break;
                 default:
                     modal.open(`Could not register domain (${response.status})`,"An unhandled error occured.");
@@ -72,7 +69,6 @@
     }
 
     function modifyDomain(name:string,value:string,type:string) {
-        console.log(type);
         blurBackground.show();
         serverContactor.modifyDomain(name,value,type).then(response=>{
             switch(response.status) {
@@ -104,37 +100,15 @@
     onMount(()=>{
         blurBackground.show();
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
-        serverContactor.getDomains().then(response=>{responseSave=response}).then(response=> {
-            if(responseSave.status!==200) {
-                switch(responseSave.status) {
-                    case 412:
-                        redirectToLogin(412);
-                        break;
-                    case 404:
-                        modal.open("Now is the perfect time to register a domain!","It seems like you don't have a domain yet. This is the perfect opportunity to register one!");
-                        break;
-                    case 401:
-                        redirectToLogin(401);
-                        break;
-                    default:
-                        modal.open(`Could not load domains (${responseSave.status})`,"An unknown error occured while trying to get your domains. If you already have domains, we are most likely having an isuse.");
-                        break;
-                }   
-                blurBackground.hide(); 
-                return;
-            } 
-            responseSave.json().then(data=>{
-                domains = new Map(Object.entries(data));
-                console.log(domains);
-                for(let pair of domains) {
-                    let [key,value] = pair;
-                    value=new Map(Object.entries(value));
-                    domainlist.push([value.get("type"),key,value.get("ip")]);
-                }
-                console.log("Updating domainTable with "+domainlist.toString());
-                domainTable.updateDomains(domainlist);
-                blurBackground.hide();
-            });
+        serverContactor.getDomains().then(response=>response.json()).then(data=> {
+            domains = new Map(Object.entries(data));
+            for(let pair of domains) {
+                let [key,value] = pair;
+                value=new Map(Object.entries(value));
+                domainlist.push([value.get("type"),key,value.get("ip")]);
+            }
+            domainTable.updateDomains(domainlist);
+            blurBackground.hide();
         })
     });
     
