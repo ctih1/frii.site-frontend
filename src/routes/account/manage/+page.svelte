@@ -24,7 +24,6 @@
     function getData() {
         blurElement.show();
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            console.log(data);
             emailE.innerHTML=`Email: ${data["email"]}`
             usernameE.innerHTML=`Username: ${data["username"]}`
             blurElement.hide();
@@ -57,7 +56,6 @@
     function gpdrData() {
         serverContactor.getGDPR().then(response=>response.json()).then(data=>{
             createFile("data.json",JSON.stringify(data));
-            console.log(data);
         });
     }
     function logOut() {

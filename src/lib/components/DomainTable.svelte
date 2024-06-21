@@ -18,9 +18,6 @@
         rowInputs=domains.map(() => []);
         domains=ndomains;
     }
-
-    console.log(rowInputs);
-
     async function saveDomain(name:string, value:string, record:string) {
         dispatcher("save",{"name":name,"value":value,"type":record});
     }   

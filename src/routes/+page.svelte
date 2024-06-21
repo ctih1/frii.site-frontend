@@ -19,8 +19,8 @@
         <div class="div2"> 
             <div class="div2-content">
                 <div class="button-holder">
-                    <x class="bh"><Button args={"fill"}>Register an account</Button></x>
-                    <x class="bh"><Button args={"fill"}>Go to the Dashboard</Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}>Register an account</Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}>Go to the Dashboard</Button></x>
                 </div>  
             </div>  
         </div>
