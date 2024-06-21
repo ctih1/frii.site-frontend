@@ -108,7 +108,7 @@
     } 
     @media(max-width: 1030px) {
         h1pp {
-            font-size: 8em;
+            font-size: 7em;
         }
     }
     @media (orientation: portrait), (max-width: 745px) {
@@ -124,7 +124,7 @@
             margin-left: auto;
         }
         .button-holder x {
-            width: 48vw;
+            width: 40vw;
             height: 4em;
         }
         .parent div {
@@ -137,7 +137,7 @@
             margin-right: auto;
         }
         h1pp {
-            font-size: 14em;
+            font-size: 12em;
         }
         .text-container {
             text-align: center;
@@ -145,17 +145,17 @@
     }
     @media(max-width: 795px) {
         h1pp {
-            font-size: 12em;
+            font-size: 10em;
         }
     }
     @media(max-width: 690px) {
         h1pp {
-            font-size: 10em;
+            font-size: 8em;
         }
     }
     @media(max-width: 580px) {
         h1pp {
-            font-size: 8em;
+            font-size: 6em;
         }
     }
 
