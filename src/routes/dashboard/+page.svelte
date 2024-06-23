@@ -108,8 +108,8 @@
                 domainlist.push([value.get("type"),key,value.get("ip")]);
             }
             domainTable.updateDomains(domainlist);
-            blurBackground.hide();
-        })
+        });
+        blurBackground.hide();
     });
     
 </script>
