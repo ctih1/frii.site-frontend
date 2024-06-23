@@ -99,7 +99,7 @@
 
     onMount(()=>{
         blurBackground.show();
-		try {
+	try {
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
 	            domains = new Map(Object.entries(data));
@@ -110,9 +110,10 @@
 	            }
 	            domainTable.updateDomains(domainlist);
 				blurBackground.hide();
-	        });
-		}
-		catch(e) {console.log(e);blurBackground.hide();}
+	        }).catch(err=>{console.log(e);blurBackground.hide();});
+	}
+	catch(e) {console.log(e);blurBackground.hide();}
+	blurBackground.hide();
     });
 </script>
 
