@@ -99,25 +99,19 @@
 
     onMount(()=>{
         blurBackground.show();
-	console.log("Im desperate p1");
 	try {
-	console.log("Im desperate p2");
 		
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
-	console.log("Im desperate p3");
 	
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
-	console.log("Im desperate p4");
 
 	            domains = new Map(Object.entries(data));
-	console.log("Im desperate p5");
 
 	            for(let pair of domains) {
 	                let [key,value] = pair;
 	                value=new Map(Object.entries(value));
 	                domainlist.push([value.get("type"),key,value.get("ip")]);
 	            }
-	console.log("Im desperate p6");
 
 				blurBackground.hide();
 	            domainTable.updateDomains(domainlist);
