@@ -67,10 +67,8 @@
     .button-holder x {
         margin: 2px;
         display: flex;
-        width: 10vw;
-        height: 2vw;
-        min-width: 200px;
-        min-height: 50px;
+        width: 45%;
+        height: 100%;;
     }
     .div2-content {
         display: flex;
