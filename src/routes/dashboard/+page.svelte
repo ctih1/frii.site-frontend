@@ -108,8 +108,8 @@
 	                value=new Map(Object.entries(value));
 	                domainlist.push([value.get("type"),key,value.get("ip")]);
 	            }
-	            domainTable.updateDomains(domainlist);
 				blurBackground.hide();
+	            domainTable.updateDomains(domainlist);
 	        }).catch(err=>{console.log(e);blurBackground.hide();});
 	}
 	catch(e) {console.log(e);blurBackground.hide();}
