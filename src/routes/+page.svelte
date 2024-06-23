@@ -67,14 +67,15 @@
         margin-right:auto;
         height: 15%;
         width: 60%;
-        min-width: 80px;
-        min-height: 50px;
+
     }
     .button-holder x {
         margin: 2px;
         display: flex;
         width: 45%;
         height: 100%;
+        min-width: 80px;
+        min-height: 50px;
     }
     .div2-content {
         width: 100%;
