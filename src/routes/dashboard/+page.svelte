@@ -121,7 +121,7 @@
 
 				blurBackground.hide();
 	            domainTable.updateDomains(domainlist);
-	        }).catch(err=>{console.log(e);blurBackground.hide();});
+	        }).catch(err=>{console.log(err);blurBackground.hide();});
 	}
 	catch(e) {console.log(e);blurBackground.hide();}
 	blurBackground.hide();
