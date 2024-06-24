@@ -12,6 +12,8 @@
             await delay(5);
             blur.style.animation = "";
             blur.style.backdropFilter = `blur(${i/10}px)`;
+            blur.style["-webkit-backdrop-filter"]=`blur(${i/10}px)`;
+
         }
     }
     export async function show() {
@@ -22,6 +24,7 @@
                 blur.style.width = "100vw";
                 blur.style.animation = "";
                 blur.style.backdropFilter = `blur(${i/10}px)`;
+                blur.style["-webkit-backdrop-filter"]=`blur(${i/10}px)`;
             }
         } else {
             for(let i=100; i>startingPoint;i--) {
@@ -29,6 +32,7 @@
                 blur.style.width = "100vw";
                 blur.style.animation = "";
                 blur.style.backdropFilter = `blur(${i/10}px)`;
+                blur.style["-webkit-backdrop-filter"]=`blur(${i/10}px)`;
             }
         }
 

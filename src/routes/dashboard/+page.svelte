@@ -99,19 +99,27 @@
 
     onMount(()=>{
         blurBackground.show();
-        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
-        serverContactor.getDomains().then(response=>response.json()).then(data=> {
-            domains = new Map(Object.entries(data));
-            for(let pair of domains) {
-                let [key,value] = pair;
-                value=new Map(Object.entries(value));
-                domainlist.push([value.get("type"),key,value.get("ip")]);
-            }
-            domainTable.updateDomains(domainlist);
-            blurBackground.hide();
-        })
+	try {
+		
+	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
+	
+	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
+
+	            domains = new Map(Object.entries(data));
+
+	            for(let pair of domains) {
+	                let [key,value] = pair;
+	                value=new Map(Object.entries(value));
+	                domainlist.push([value.get("type"),key,value.get("ip")]);
+	            }
+
+				blurBackground.hide();
+	            domainTable.updateDomains(domainlist);
+	        }).catch(err=>{console.log(err);blurBackground.hide();});
+	}
+	catch(e) {console.log(e);blurBackground.hide();}
+	blurBackground.hide();
     });
-    
 </script>
 
 <svelte:head>

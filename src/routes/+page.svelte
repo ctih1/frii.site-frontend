@@ -51,6 +51,7 @@
         display: flex;
         flex-direction: column;
     }
+    
     .text-container {
         margin-top: auto;
         margin-bottom: auto;
@@ -63,16 +64,22 @@
     .button-holder {
         display: flex;
         flex-direction: row;
+        margin-right:auto;
+        height: 15%;
+        width: 60%;
+
     }
     .button-holder x {
         margin: 2px;
         display: flex;
-        width: 10vw;
-        height: 2vw;
-        min-width: 200px;
+        width: 45%;
+        height: 100%;
+        min-width: 80px;
         min-height: 50px;
     }
     .div2-content {
+        width: 100%;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
