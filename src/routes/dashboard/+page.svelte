@@ -116,6 +116,12 @@
 
 <svelte:head>
     <title>Dashboard - frii.site</title>
+    <meta content="frii.site dashboard" property="og:title" />
+    <meta content="Manage all of your domains here!" property="og:description" />
+    <meta content="Manage all of your domains here!" name="description" />
+    <meta content="https://frii.site/dashboard" property="og:url" />
+    <meta content="https://frii.site/fse1.webp" property="og:image" />
+    <meta content="#007be1" data-react-helmet="true" name="theme-color" />
 </svelte:head>
 
 <Holder>

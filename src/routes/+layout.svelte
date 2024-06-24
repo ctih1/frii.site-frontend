@@ -7,6 +7,14 @@
 <Analytics/>
 <Ads></Ads>
 <Header/>
+<svelte:head>
+    <meta content="frii.site" property="og:title" />
+    <meta content="A free domain hosting service. Sign up now for 100% free" property="og:description" />
+    <meta content="A free domain hosting service. Sign up now for 100% free" name="description" />
+    <meta content="https://frii.site" property="og:url" />
+    <meta content="https://frii.site/fse2.webp" property="og:image" />
+    <meta content="#007be1" data-react-helmet="true" name="theme-color" />
+</svelte:head>
 <main>
     <slot/>
 </main>
