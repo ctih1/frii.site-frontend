@@ -143,7 +143,7 @@
 
 <Holder>
     <h2>Register a new domain</h2>
-    <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="https://wikipedia.com">Wiki</a></p>
+    <p>Registering a new domain is just a few clicks away! You can always get help from our <a href="https://github.com/ctih1/frii.site-frontend/wiki">Wiki</a></p>
     <Registrar on:click={(event)=>registerDomain(event.detail.domain,event.detail.type)}/>
 </Holder>
 
