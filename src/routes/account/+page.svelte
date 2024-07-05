@@ -3,7 +3,7 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import Blur from "$lib/components/Blur.svelte";
-    import { ServerContactor } from "../../serverContactor";
+    import { createToken, ServerContactor } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
     let serverContactor: ServerContactor|undefined = undefined;
@@ -41,13 +41,16 @@
             serverContactor.login(username,password).then(response=>{
                 switch(response) {
                     case 404: 
-                        modal.open("Login failed (404)","There was an error while logging in. If this keeps happening, please contact support.");
+                        modal.open("Login failed","Username and password do not match.");
                         break;
                     case 401:
                         modal.open("Login failed (401)","There was an error while logging in. If this keeps happening, please contact support.");
                         break;
                     case 417:
-                        modal.open("Please verify your account","A verification code has been sent to your email. Please check your spam folder.");
+                        createToken(username,password).then(token=>{
+                            localStorage.setItem("verif-token",token);
+                            modal.open("Please verify your account","An email has been sent to your email. Please check your spam folder.",undefined,undefined,true);
+                        })
                         break;
                     case 200:
                         localStorage.setItem("auth-token",localStorage.getItem("temp-token")); // this should **never** break
