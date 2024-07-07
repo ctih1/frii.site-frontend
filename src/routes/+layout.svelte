@@ -27,6 +27,7 @@
         --border-color: rgba(0,0,0,0.05);
         --secondary-color: #bdbdbd;
         --offwhite-color: #eeeeee;
+        --background-color: rgb(216, 216, 216);
         overflow-x: hidden; 
         
     }

@@ -1,4 +1,6 @@
+import type { FetchFunction } from "vite";
 import { redirectToLogin } from "./helperFuncs";
+export const serverURL="http://127.0.0.1:5000";
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -16,6 +18,16 @@ export async function createToken(username:string,password:string):Promise<strin
     return token;
 }
 
+export function getReportStatus(id:string) {
+    fetch(`${serverURL}/vulnerability/get`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({"id":id})
+    }).then(response=>response.json()).then(data=>{
+        return data
+    })
+}
+
 export async function reportVulnerability(endpoint:string, expected:string, actual:string, importance:number, description:string, steps:string, impact:string, attacker:string, email:string):Promise<Response> {
     let data = {
         "endpoint":endpoint,
@@ -28,7 +40,7 @@ export async function reportVulnerability(endpoint:string, expected:string, actu
         "impact":impact,
         "attacker":attacker
     };
-    return await fetch(`https://server.frii.site/vulnerability/report`, {
+    return await fetch(`${serverURL}/vulnerability/report`, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify(data)
@@ -39,7 +51,7 @@ export async function resendEmail(token:string|null):Promise<Response> {
     let data = {
         "TOKEN": token
     };
-    return await fetch(`https://server.frii.site/resend-email`, {
+    return await fetch(`${serverURL}/resend-email`, {
         method: "POST",
         headers: {
             "Content-Type":"application/json"
@@ -52,7 +64,7 @@ export class ServerContactor {
     token:string|null;
     serverURL:string;
     constructor(token:string|null) {
-        this.serverURL="https://server.frii.site";
+        this.serverURL=serverURL;
         this.token=token;
         if(this.token===null&&window.location.pathname!=="/account") {
             redirectToLogin(302);
