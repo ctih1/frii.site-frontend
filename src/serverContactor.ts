@@ -9,6 +9,25 @@ async function digestMessage(message:string) {
     return hashHex;
 }
 
+export async function createToken(username:string,password:string):Promise<string> {
+    const psw = await digestMessage(password);
+    const usr = await digestMessage(username);
+    const token = `${psw}|${usr}`;
+    return token;
+}
+
+export async function resendEmail(token:string|null):Promise<Response> {
+    let data = {
+        "TOKEN": token
+    };
+    return await fetch(`https://server.frii.site/resend-email`, {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    });
+}
 
 export class ServerContactor {
     token:string|null;
@@ -43,6 +62,7 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
+
     async login(username: string, password: string): Promise<number> {
         try {
             const psw = await digestMessage(password);
