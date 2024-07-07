@@ -51,6 +51,17 @@
         box-sizing: border-box;
         outline-color: var(--primary);
     }
+    :global(textarea) {
+        transition: all 0.1s;
+        border-style: solid;
+        border-color: var(--border-color);
+        border-radius: 0.5em;
+        width: 100%;
+        height:100%;
+        box-sizing: border-box;
+        outline-color: var(--primary);
+        resize: vertical;
+    }
     :global(a) {
         text-decoration: none;
         color: var(--primary);

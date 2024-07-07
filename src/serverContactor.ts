@@ -16,6 +16,25 @@ export async function createToken(username:string,password:string):Promise<strin
     return token;
 }
 
+export async function reportVulnerability(endpoint:string, expected:string, actual:string, importance:number, description:string, steps:string, impact:string, attacker:string, email:string):Promise<Response> {
+    let data = {
+        "endpoint":endpoint,
+        "contact-email":email,
+        "expected":expected,
+        "actual":actual,
+        "importance":importance,
+        "description":description,
+        "steps":steps,
+        "impact":impact,
+        "attacker":attacker
+    };
+    return await fetch(`https://server.frii.site/vulnerability/report`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+    });
+}
+
 export async function resendEmail(token:string|null):Promise<Response> {
     let data = {
         "TOKEN": token
