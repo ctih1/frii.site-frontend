@@ -1,30 +1,54 @@
 <script lang="ts">
+	import Section from '$lib/components/Section.svelte';
     import Road from '$lib/components/Road.svelte';
     import Holder from '$lib/components/Holder.svelte';
+    import Scale from '$lib/components/Scale.svelte';
     export let data:Object;
     let reportData:Map<string,any> = new Map(Object.entries(data));
     let reportSteps:Map<string,any> = new Map(Object.entries(reportData.get("progress")));
+    let reportMains:Map<string,boolean> = reportSteps.get("steps");
     let reportProgress:Array<Object> = reportSteps.get("progress");
-    console.log(reportProgress);
 
+    let colors:Map<string,string> = new Map(Object.entries({
+        1:"var(--primary)",
+        2:"rgb(84,221,101)",
+        3:"rgb(237,220,52)",
+        4:"rgb(237,139,52)",
+        5:"rgb(237,52,52)"
+    }));
+    
     function epochToDate(epoch: number):string {
         let d = new Date(0);
         d.setSeconds(epoch);
         return d.toLocaleString();
     }
-
-    const getOrderedReports = (array:Array<any>) => {
-        return array.sort((a,b)=> {
-            console.log(new Map(Object.entries(b)).values().next().value);
-            return new Map(Object.entries(b)).values().next().value - new Map(Object.entries(a)).values().next().value();
-        });
+    console.log(reportMains);
+    console.log(reportData);
+    //@ts-ignore
+    const getOrderedReports = (array) => {
+        //@ts-ignore
+        return array.sort((a,b)=>{
+            let aValue=new Map(Object.entries(a)).values().next().value;
+            let bValue=new Map(Object.entries(b)).values().next().value
+            return bValue-aValue;
+        })
     }
+
+    function getCompleted(status:Map<string,boolean>):number {
+        let total:number=0;
+        status.forEach((value:boolean,key:string)=>{
+            //@ts-ignore
+            total+=value;
+        });
+        return total;
+    }
+
 </script>
 
 <Holder args="fill">
     <h1>Progress</h1>
     <p>Here you can see your report progress and the latest comments from developers.</p>
-    <Road points={["First stage","Second stage","Third stage","Forth stage","Fifth stage"]} color={"#FFF"} completed={2}></Road>
+    <Road points={["Seen","Reviewed","In development","Done"]} color={"#FFF"} completed={getCompleted(reportMains)}></Road>
     <ul>
         {#each getOrderedReports(reportProgress) as key, index} 
             <li>
@@ -36,6 +60,31 @@
                 <div class="line"></div>
             </li>
         {/each} 
+    </ul>
+</Holder>
+
+<Holder args="fill">
+    <h1>Information about your report</h1>
+    <div class="information">
+        <Section id="basic" title="Basic information">
+            <div class="lot-text">
+                <p>Endpoint: {reportData.get("endpoint")}</p>
+                <p>Expected behaviour: {reportData.get("expected")}</p>
+                <p>Actual behaviour: {reportData.get("actual")}</p>
+                <p>The impact: {reportData.get("impact")}</p>
+                <p>Contact email: {reportData.get("email")}</p>
+                <p style="height: 1em" class="importance"><span style="margin-right: 0.5em;">Importance:</span> <Scale max={5} value={reportData.get("importance")} trueColor={colors.get(reportData.get("importance").toString())} /></p>
+            </div>
+        </Section>
+        <Section id="in-depth" title="In-depth information">
+            <div class="lot-text">
+                <p>Description: {reportData.get("description")}</p>
+                <p>How this could be abused: {reportData.get("attacker")}</p>
+            </div>
+        </Section>
+    </div>
+    <ul>
+        
     </ul>
 </Holder>
 
@@ -89,5 +138,16 @@
         display: flex;
         text-align: center;
         align-items: center;    
+    }
+    .lot-text * {
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+    .importance {
+        display: flex;
+        flex-direction: row;
+        width: 25vw;
+        align-items: center;
+        height: fit-content;
     }
 </style>
