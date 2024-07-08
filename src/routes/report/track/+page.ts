@@ -9,5 +9,5 @@ export async function load({ url,fetch }) {
         body: JSON.stringify({"id":code})
     });
     const data = await dataRequest.json();
-    return { data };
+    return data;
 }  
