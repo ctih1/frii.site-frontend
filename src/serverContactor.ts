@@ -208,4 +208,92 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
+    async getVulns():Promise<Response> {
+        let data = {
+            "TOKEN":this.token
+        }
+        return await fetch(`${this.serverURL}/vulnerability/all`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify(data)
+        });
+    }
+
+    async reportProgress(id:string,progress:string):Promise<Response> {
+        return await fetch(`${this.serverURL}/vulnerability/progress`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":progress, "time":new Date().valueOf()/1000})
+        });
+    }
+    async reportSeen(id:string):Promise<Response> {
+        let data = {
+            "TOKEN": this.token,
+            "id":id,
+            "status":"seen",
+            "mode":true,
+            "d-importance": -1
+        };
+        return await fetch(`${this.serverURL}/vulnerability/status`, {
+            method: "POST",
+            headers:{"Content-Type":"application/json"}, 
+            body: JSON.stringify(data)
+        });
+    }
+    async reportReview(importance:number, id:string):Promise<Response> {
+        let data = {
+            "TOKEN": this.token,
+            "id":id,
+            "status":"review",
+            "mode":true,
+            "d-importance":importance
+        };
+        await fetch(`${this.serverURL}/vulnerability/progress`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Review approved", "time":new Date().valueOf()/1000})
+        });
+        return await fetch(`${this.serverURL}/vulnerability/status`, {
+            method: "POST",
+            headers:{"Content-Type":"application/json"}, 
+            body: JSON.stringify(data)
+        });
+    }
+    async reportFixing(id:string):Promise<Response> {
+        let data = {
+            "TOKEN": this.token,
+            "id":id,
+            "status":"fixing",
+            "mode":true,
+            "d-importance":-1
+        };
+        await fetch(`${this.serverURL}/vulnerability/progress`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Finished development", "time":new Date().valueOf()/1000})
+        });
+        return await fetch(`${this.serverURL}/vulnerability/status`, {
+            method: "POST",
+            headers:{"Content-Type":"application/json"}, 
+            body: JSON.stringify(data)
+        });
+    }
+    async reportFinished(id:string):Promise<Response> {
+        let data = {
+            "TOKEN": this.token,
+            "id":id,
+            "status":"done",
+            "mode":true,
+            "d-importance":-1
+        };
+        await fetch(`${this.serverURL}/vulnerability/progress`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Deployed", "time":new Date().valueOf()/1000})
+        });
+        return await fetch(`${this.serverURL}/vulnerability/status`, {
+            headers:{"Content-Type":"application/json"}, 
+            body: JSON.stringify(data)
+        });
+    }
 }

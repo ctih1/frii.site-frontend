@@ -1,14 +1,20 @@
 <script lang="ts">
+	import { ServerContactor } from './../../../../serverContactor.ts';
 	import Section from '$lib/components/Section.svelte';
     import Road from '$lib/components/Road.svelte';
     import Holder from '$lib/components/Holder.svelte';
     import Scale from '$lib/components/Scale.svelte';
+    import Button from "$lib/components/Button.svelte";
+    import { onMount } from 'svelte';
     export let data:Object;
     let reportData:Map<string,any> = new Map(Object.entries(data));
     let reportSteps:Map<string,any> = new Map(Object.entries(reportData.get("progress")));
     let reportMains:Map<string,boolean> = reportSteps.get("steps");
     let reportProgress:Array<Object> = reportSteps.get("progress");
-    
+    let importance:number=0;
+    let customReport:string="";
+    let id:string=0;
+    let sc:ServerContactor;
     function epochToDate(epoch: number):string {
         let d = new Date(0);
         d.setSeconds(epoch);
@@ -35,12 +41,35 @@
         return total;
     }
 
+    onMount(()=>{
+        sc = new ServerContactor(localStorage.getItem("auth-token"));
+        id = reportData.get("_id")
+    })
+
 </script>
 
 <Holder args="fill">
     <h1>Progress</h1>
     <p>Here you can see your report progress and the latest comments from developers.</p>
     <Road points={["Seen","Reviewed","In development","Done"]} color={"#FFF"} completed={getCompleted(reportMains)}></Road>
+    <div class="management">
+        <Button on:click={()=>{sc.reportReview(importance,id)}} args="fill padding">Report reviewed & importance</Button>
+        <Button on:click={()=>{sc.reportFixing(id)}} args="fill padding">Report fixed</Button>
+        <Button on:click={()=>{sc.reportFinished(id)}} args="fill padding">Report done</Button>
+    </div>
+    <div class="management">
+        <p>Importance: {importance}</p>
+        <input bind:value={importance} type="range" min=0 max=5 step=1>
+    </div>
+    <div class="management" style="margin-top: 0.5em;">
+        <Button on:click={()=>{sc.reportProgress(id,"Starting development")}} args="fill padding">Report started development</Button>
+        <Button on:click={()=>{sc.reportProgress(id,"Stopping development temporarily")}} args="fill padding">Report stopped development</Button>
+        <div class="custom" style="width: 100%; margin:0px;">
+            <input bind:value={customReport} style="width: 100%; height: 100%; padding: 0.5em; margin:0px;" placeholder="custom">
+            <Button on:click={()=>{sc.reportProgress(id,customReport)}} args="padding">Send</Button>
+        </div>
+    </div>
+
     <ul>
         {#each getOrderedReports(reportProgress) as key, index} 
             <li>
@@ -142,5 +171,20 @@
         width: 25vw;
         align-items: center;
         height: fit-content;
+    }
+    .management {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        text-align: center;
+        align-items: center;
+    }
+    .management * {
+        margin-left: 2em;
+        margin-right: 2em;
+    }
+    .custom {
+        display: flex;
+        flex-direction: row;
     }
 </style>
