@@ -3,12 +3,12 @@
     import { ServerContactor } from "../../../serverContactor";
     import { redirectToLogin } from "../../../helperFuncs";
     import Holder from "$lib/components/Holder.svelte";
-    import Scale from "$lib/components/Scale.svelte";
     import Button from "$lib/components/Button.svelte";
     import Collapse from "$lib/components/Collapse.svelte";
     import { redirect } from "@sveltejs/kit";
+    import Scale from "$lib/components/Scale.svelte";
 
-
+    let descriptionText:string;
     let reports:Array<any> = [];
     onMount(()=>{
         let sc:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"));
@@ -19,9 +19,10 @@
                     let report = data[index]
                     return report
                 });
-            })
+            });
         })
     });
+
     //@ts-ignore
     const getOrderedReports = (array) => {
         //@ts-ignore
@@ -32,16 +33,21 @@
             return bValue-aValue;
         })
     }
+    function getDescription(description:unknown|undefined) {
+        return description as string;
+    }
     $: console.log(reports);
 </script>
 
 {#each getOrderedReports(reports) as item}
     <Holder>
         {@const report=new Map(Object.entries(item))}
+        {@const descriptionText=getDescription(report.get("description"))}
+           
         <h1>{report.get("_id")}</h1>
         <div class="content">
             <p>Endpoint: {report.get("endpoint")}</p>
-            <p>Description: {(report.get("description").toString().length>50)?(report.get("description").toString().substring(0,50)+"..."):(report.get("description"))}</p>
+            <p>Description: {(descriptionText.toString().length>50)?(descriptionText.substring(0,50)+"..."):(report.get("description"))}</p>
             <p>Email: {report.get("email")}</p>
             <Scale max={5} value={new Number(report.get("importance")).valueOf()}></Scale>
             <Collapse title={"Advanced"}>
