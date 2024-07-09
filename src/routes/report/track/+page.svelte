@@ -40,7 +40,7 @@
 <Holder args="fill">
     <h1>Progress</h1>
     <p>Here you can see your report progress and the latest comments from developers.</p>
-    <Road points={["Seen","Reviewed","In development","Done"]} color={"#FFF"} completed={getCompleted(reportMains)}></Road>
+    <Road points={["Seen","Reviewed","Development done","Done"]} color={"#FFF"} completed={getCompleted(reportMains)}></Road>
     <ul>
         {#each getOrderedReports(reportProgress) as key, index} 
             <li>

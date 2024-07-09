@@ -1,6 +1,6 @@
 import type { FetchFunction } from "vite";
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="http://127.0.0.1:5000";
+export const serverURL="https://server.frii.site";
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -244,7 +244,7 @@ export class ServerContactor {
         let data = {
             "TOKEN": this.token,
             "id":id,
-            "status":"review",
+            "status":"reviewed",
             "mode":true,
             "d-importance":importance
         };
@@ -263,7 +263,7 @@ export class ServerContactor {
         let data = {
             "TOKEN": this.token,
             "id":id,
-            "status":"fixing",
+            "status":"currently_working",
             "mode":true,
             "d-importance":-1
         };
@@ -292,6 +292,7 @@ export class ServerContactor {
             body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Deployed", "time":new Date().valueOf()/1000})
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
+            method: "POST",
             headers:{"Content-Type":"application/json"}, 
             body: JSON.stringify(data)
         });

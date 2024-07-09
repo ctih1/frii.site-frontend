@@ -16,7 +16,9 @@
 <div class="points" bind:this={pointsDiv}>
     {#if completed>0}
         <div style="transform: translateY({buttonHeight/2}px); left: {(compartmentWidth/2)+offset}px; width:{compartmentWidth*(completed-1)}px;" class="line"></div>
-        <div style="transform: translateY({buttonHeight/2}px); left: {((compartmentWidth*completed)-compartmentWidth/2)+offset}px; width:{compartmentWidth}px;" class="line progress-line"></div>
+        {#if completed<points.length}
+            <div style="transform: translateY({buttonHeight/2}px); left: {((compartmentWidth*completed)-compartmentWidth/2)+offset}px; width:{compartmentWidth}px;" class="line progress-line"></div>
+        {/if}
     {/if}
     {#each points as point, index}
         <div bind:clientWidth={compartmentWidth} class="point">
@@ -64,6 +66,6 @@
         opacity: 0.5;
     }
     .progress-line {
-        opacity: 0.2;
+        opacity: 0.1;
     }   
 </style>

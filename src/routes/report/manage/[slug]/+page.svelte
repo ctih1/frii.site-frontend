@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ServerContactor } from './../../../../serverContactor.ts';
+	import { ServerContactor } from './../../../../serverContactor';
 	import Section from '$lib/components/Section.svelte';
     import Road from '$lib/components/Road.svelte';
     import Holder from '$lib/components/Holder.svelte';
@@ -11,9 +11,9 @@
     let reportSteps:Map<string,any> = new Map(Object.entries(reportData.get("progress")));
     let reportMains:Map<string,boolean> = reportSteps.get("steps");
     let reportProgress:Array<Object> = reportSteps.get("progress");
-    let importance:number=0;
+    let importance:number=reportData.get("deemed-importance");
     let customReport:string="";
-    let id:string=0;
+    let id:string="";
     let sc:ServerContactor;
     function epochToDate(epoch: number):string {
         let d = new Date(0);
@@ -44,6 +44,7 @@
     onMount(()=>{
         sc = new ServerContactor(localStorage.getItem("auth-token"));
         id = reportData.get("_id")
+        sc.reportSeen(id);
     })
 
 </script>
@@ -54,7 +55,7 @@
     <Road points={["Seen","Reviewed","In development","Done"]} color={"#FFF"} completed={getCompleted(reportMains)}></Road>
     <div class="management">
         <Button on:click={()=>{sc.reportReview(importance,id)}} args="fill padding">Report reviewed & importance</Button>
-        <Button on:click={()=>{sc.reportFixing(id)}} args="fill padding">Report fixed</Button>
+        <Button on:click={()=>{sc.reportFixing(id)}} args="fill padding">Report finished dev</Button>
         <Button on:click={()=>{sc.reportFinished(id)}} args="fill padding">Report done</Button>
     </div>
     <div class="management">

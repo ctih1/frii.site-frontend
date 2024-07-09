@@ -22,7 +22,9 @@
         reportVulnerability(endpoint,expected,actual,importance,description,reproduce,impact,attacker,contactEmail).then(response=>{
             blur.hide();
             if(response.status===200) {
-                modal.open("Succesfully report vulnerability","We will look into your report as soon as possible. Please monitor your email for a status tracking link");
+                response.json().then(data=>{
+                    modal.open("Succesfully report vulnerability",`We will look into your report as soon as possible. You can check the status of your report with the following link: <a href=/report/track?code=${data["code"]}>https://frii.site/report/track?code=${data["code"]}</a>`);
+                })
             } else {
                 modal.open("Failed to report vulnerability","Please contact us at urgent@frii.site");
             }
