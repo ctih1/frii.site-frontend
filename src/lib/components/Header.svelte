@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Dropdown from "./Dropdown.svelte";
     let header:HTMLElement
     
     export function getHeight():number {
@@ -10,6 +11,7 @@
     <a href="/dashboard">Dashboard</a>
     <a href="/account">Account</a>
     <a href="/account/manage">Settings</a>
+    <a href="/report">Report abuse or vulnerabilities</a>
 </header>
 
 <style>
@@ -34,4 +36,9 @@
         margin-right: 1em;
     }
     
+    @media(max-width: 550px) {
+        header a {
+            font-size: 0.7em;
+        }
+    }
 </style>

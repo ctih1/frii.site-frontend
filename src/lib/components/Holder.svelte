@@ -1,8 +1,8 @@
 <script lang="ts">
-    
+    export let args:string="";
 </script>
 
-<div class="card"><slot/></div>
+<div class="card {args}"><slot/></div>
 
 <style>
     .card {
@@ -13,6 +13,9 @@
         border-radius: 0.5em;
         padding: 2em;
         margin-top: 2em;
+    }
+    .fill.card{
+        width: 90vw;
     }
     @media(max-width: 960px) {
         .card {
