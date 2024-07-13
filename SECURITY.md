@@ -13,8 +13,10 @@ Here are the current versions of frii.site which are supported.
 | legacy.frii.site | :x: | 
 ## Reporting a Vulnerability
 
-To report a vulnerability, either go to https://frii.site/report/security for less urgent ulnerabilities, or contact urgent@frii.site for urgent ulnerabilities.
+To report a vulnerability, either go to https://frii.site/report/security , or contact urgent@frii.site on email.
+
 | Contact method | Expected time to give updates |
+| -------------- | ---------------------------- |
 | frii.site/report/security | 1-2 days |
 | urgent@frii.site | 10 minutes - 6 hours |
 * Note that response time may change based on the situation.
