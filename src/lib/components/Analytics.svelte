@@ -6,7 +6,7 @@
     // @ts-ignore
     if (typeof gtag !== 'undefined') {
         // @ts-ignore   
-        gtag('config', 'MEASUREMENT_ID', {
+        gtag('config', 'G-PHP66YQSWC', {
         page_title: document.title,
         page_path: $page.url.pathname,
         })
@@ -25,6 +25,6 @@
       dataLayer.push(arguments)
     }
     gtag('js', new Date())
-    gtag('config', 'MEASUREMENT_ID')
+    gtag('config', 'G-PHP66YQSWC')
   </script>
 </svelte:head>
