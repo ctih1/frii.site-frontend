@@ -84,7 +84,7 @@
     <div class="background">
         <div class="prompt">
             <h1>{title}</h1>
-            <p>{description}</p>
+            <p>{@html description}</p>
             {#if countdown!==undefined}
                 <h3>{timeLeft}</h3>
             {/if}

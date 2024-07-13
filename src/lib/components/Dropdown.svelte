@@ -61,6 +61,7 @@
 </div>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     li:not(:hover) {
         transition: 100ms ease-in-out;
     }
