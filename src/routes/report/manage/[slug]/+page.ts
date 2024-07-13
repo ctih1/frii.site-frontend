@@ -1,6 +1,6 @@
 import { serverURL } from '../../../../serverContactor';
 
-export async function load({ params,fetch }){
+export async function load({ params }){
     let code=params.slug;
 
     const dataRequest = await fetch(`${serverURL}/vulnerability/get`,{
