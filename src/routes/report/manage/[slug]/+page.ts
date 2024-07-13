@@ -5,7 +5,7 @@ export async function load({ params }){
 
     const dataRequest = await fetch(`${serverURL}/vulnerability/get`,{
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+        headers:{"Content-type":"application/x-www-form-urlencoded"},
         body: JSON.stringify({"id":code})
     });
     const data = await dataRequest.json();
