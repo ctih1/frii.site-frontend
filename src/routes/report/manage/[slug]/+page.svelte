@@ -42,7 +42,7 @@
     }
 
     onMount(()=>{
-        sc = new ServerContactor(localStorage.getItem("auth-token"));
+        sc = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
         id = reportData.get("_id")
         sc.reportSeen(id);
     })

@@ -10,7 +10,7 @@
     let serverContactor:ServerContactor 
     onMount(()=>{
         authToken=window.localStorage.getItem("auth-token");
-        serverContactor = new ServerContactor(authToken);
+        serverContactor = new ServerContactor(authToken,localStorage.getItem("server_url"));
     })
     let domainInput:string;
     let selectedType:string="A";
