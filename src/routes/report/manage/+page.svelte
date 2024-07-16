@@ -11,7 +11,7 @@
     let descriptionText:string;
     let reports:Array<any> = [];
     onMount(()=>{
-        let sc:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"));
+        let sc:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
         sc.getVulns().then(response=>{
             if(response.status!==200) { redirectToLogin(401); }
             response.json().then(data=>{
