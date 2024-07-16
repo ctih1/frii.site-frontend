@@ -76,6 +76,9 @@
                     case 409:
                         modal.open("Sign up failed (409)","Username is taken!");
                         break;
+                    case 400:
+                        modal.open("Sign up failed(400)","Email is in use!");
+                        break;
                 }
             })
         }
