@@ -95,7 +95,7 @@
                 <p>Actual behaviour: {reportData.get("actual")}</p>
                 <p>The impact: {reportData.get("impact")}</p>
                 <p>Contact email: {reportData.get("email")}</p>
-                <p style="height: 1em" class="importance"><span style="margin-right: 0.5em;">Importance:</span> <Scale max={5} value={reportData.get("importance")}  /></p>
+                <p style="height: 1em" class="importance"><span style="margin-right: 0.5em;">Importance:</span> <Scale max={5} value={reportData.get("importance")} /></p>
             </div>
         </Section>
         <Section id="in-depth" title="In-depth information">
