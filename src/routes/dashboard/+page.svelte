@@ -101,7 +101,7 @@
         blurBackground.show();
 	try {
 		
-	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
+	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
 	
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
 
