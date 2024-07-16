@@ -25,7 +25,7 @@
     }
 
     onMount(()=>{
-        serverContactor = new ServerContactor(localStorage.getItem("auth-token"));
+        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
         redirectURL=$page.url.searchParams.get("r");
         if(localStorage.getItem("logged-in")==="y") {
             window.location.href="/account/manage";
