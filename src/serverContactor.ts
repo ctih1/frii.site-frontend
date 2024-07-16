@@ -63,8 +63,11 @@ export async function resendEmail(token:string|null):Promise<Response> {
 export class ServerContactor {
     token:string|null;
     serverURL:string;
-    constructor(token:string|null) {
+    constructor(token:string|null, urlOverride:string|null=null) {
         this.serverURL=serverURL;
+        if(urlOverride) {
+            this.serverURL=urlOverride;
+        }
         this.token=token;
         if(this.token===null&&window.location.pathname!=="/account") {
             redirectToLogin(302);
