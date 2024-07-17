@@ -37,7 +37,7 @@
 <Modal bind:this={modal} title={""} description={""} options={["OK"]}></Modal>
 <Holder>
     <h1>{$t("common.security_report_title")}</h1>
-    <p>{$t("common.security_report_description_page")}</p>
+    <p>{@html $t("common.security_report_description_page")}</p>
 
     <form>
         <input type="text" bind:value={endpoint} placeholder={$t("common.security_report_endpoint")}>
