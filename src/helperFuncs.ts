@@ -9,3 +9,8 @@ export function createFile(filename:string,content:string):boolean {
     a.click();
     return true;
 }
+export function getFlagEmoji (countryCode:String):string {
+    if(countryCode=="en") {countryCode="gb"};
+	let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
+	return String.fromCodePoint(...codePoints);
+}

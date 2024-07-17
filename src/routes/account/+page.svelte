@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { t } from '$lib/translations';
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
@@ -41,22 +42,23 @@
             serverContactor.login(username,password).then(response=>{
                 switch(response) {
                     case 404: 
-                        modal.open("Login failed","Username and password do not match.");
+                        modal.open($t("common.login_failed"),$t("common.login_failed_description"));
                         break;
                     case 401:
-                        modal.open("Login failed (401)","There was an error while logging in. If this keeps happening, please contact support.");
+                        modal.open($t("common.login_failed"),$t("common.login_generic_error"));
                         break;
                     case 417:
                         createToken(username,password).then(token=>{
                             localStorage.setItem("verif-token",token);
-                            modal.open("Please verify your account","An email has been sent to your email. Please check your spam folder.",undefined,undefined,true);
+                            modal.open($t("common.login_failed_verify"),$t("common.login_failed_verify_description"),undefined,undefined,true);
                         })
                         break;
                     case 200:
+                        //@ts-ignore
                         localStorage.setItem("auth-token",localStorage.getItem("temp-token")); // this should **never** break
                         localStorage.removeItem("temp-token");
                         localStorage.setItem("logged-in","y");
-                        modal.open("Succesfully signed in","You will be redirected soon...");
+                        modal.open($t("common.login_succeed"),$t("common.login_succeed_description"));
                         if(redirectURL===null) {
                             redirectURL = "/";
                         }
@@ -66,18 +68,18 @@
             });
         }
         if(!login) {
-            if(password!==repeatPassword) {modal.open("Passwords don't match!","Please confirm that your passwords match.")}
+            if(password!==repeatPassword) {modal.open($t("common.signup_password_not_match"),$t("common.signup_password_not_match_description"));return}
             serverContactor.register(username,password,email).then(response=>{
                 switch(response.status){
                     case 200: 
-                        modal.open("Succesfully registered!","Please log in.");
+                        modal.open($t("common.signup_success"),$t("common.signup_success_description"));
                         login=true;
                         break;
                     case 409:
-                        modal.open("Sign up failed (409)","Username is taken!");
+                        modal.open($t("common.signup_fail"),$t("common.signup_fail_username"));
                         break;
                     case 400:
-                        modal.open("Sign up failed(400)","Email is in use!");
+                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
                         break;
                 }
             })
@@ -86,53 +88,51 @@
 </script>
 
 <svelte:head>
-    <title>Log in</title>
+    <title>{$t("common.account_title_on_tab")}</title>
 </svelte:head>
 
 <Holder>
         <h1 >
             {#if login}
-                Login
+                {$t("common.login_text")}
             {:else}
-                Sign up
+                {$t("common.signup_text")}   
             {/if}
         </h1>
         <p >
             {#if login} 
-             Please sign into your frii.site account.
+                {$t("common.login_description")}
             {:else} 
-                Now is the perfect time to sign up for a frii.site account!
+                {$t("common.signup_description")}
             {/if}
         </p>
-        
-    
 
     <form>
         {#if !login} 
             <div class="inp"><input bind:value={email} placeholder="email" type="email"></div>
         {/if}
-        <div class="inp"><input bind:value={username} placeholder="username" type="username"></div>
-        <div class="inp"><input bind:value={password} placeholder="password" type="password"></div>
+        <div class="inp"><input bind:value={username} placeholder={$t("common.username_placeholder")} type="username"></div>
+        <div class="inp"><input bind:value={password} placeholder={$t("common.password_placeholder")} type="password"></div>
         {#if !login}
-            <div class="inp"><input bind:value={repeatPassword} placeholder="confirm password" type="password"></div>
+            <div class="inp"><input bind:value={repeatPassword} placeholder={$t("common.confirm_password_placeholder")} type="password"></div>
         {/if}
         <div class="button-holder">
             <Button on:click={()=>accountActionButtonClick()} args={"fill"}>
                 {#if login}
-                    Sign in
+                    {$t("common.login_button")}
                 {:else}
-                    Sign up
+                    {$t("common.signup_button")}
                 {/if}
             </Button>
         </div>
         {#if !login}
-            <p>By creating an account, you agree to our <a href="/terms">Terms</a> and have acknowledged our <a href="/privacy">Privacy Policy</a></p>
+            <p>{$t("common.legal_text")}</p>
         {/if}
         <a on:click={()=>login=!login}>
             {#if login}
-                Sign up instead
+                {$t("common.signup_instead")}
             {:else}
-                Log in instead
+                {$t("common.login_instead")}
             {/if}</a>
     </form>
 
