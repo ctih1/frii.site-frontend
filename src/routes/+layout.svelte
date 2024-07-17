@@ -19,7 +19,6 @@
     <slot/>
 </main>
 
-
 <style>
     :root {
         --primary: rgb(0, 123, 225);

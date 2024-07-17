@@ -1,8 +1,10 @@
 <script lang="ts">
+    //@ts-ignore
+    import { t } from '$lib/translations';
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Button from "$lib/components/Button.svelte";
 </script>
-<svelte:head>
+<svelte:head>   
     <title>frii.site</title>
 </svelte:head>
 
@@ -12,15 +14,15 @@
         <div class="div1"> 
             <div class="text-container">
                 <h1pp><strong>frii.site</strong></h1pp>
-                <p style="font-size: 1.5em;"><i>Go get your subdomain now!</i></p>
+                <p style="font-size: 1.5em;"><i>{ $t("common.index_description") }</i></p>
             </div>
         </div>
 
         <div class="div2"> 
             <div class="div2-content">
                 <div class="button-holder">
-                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}>Register an account</Button></x>
-                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}>Go to the Dashboard</Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}>{$t("common.index_register_account")}</Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}>{$t("common.index_goto_dashboard")}</Button></x>
                 </div>  
             </div>  
         </div>

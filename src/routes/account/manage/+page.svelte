@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
@@ -7,6 +8,7 @@
     import { ServerContactor } from '../../../serverContactor';
     import Section from '$lib/components/Section.svelte';
     import Blur from '$lib/components/Blur.svelte';
+    import { t, locale, locales, addArguements } from '$lib/translations';
 
     let serverContactor:ServerContactor;
     let modal:Modal;
@@ -21,18 +23,20 @@
         getData();
     })
 
+
+
     function getData() {
         blurElement.show();
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            emailE.innerHTML=`Email: ${data["email"]}`
-            usernameE.innerHTML=`Username: ${data["username"]}`
+            emailE.innerHTML=addArguements($t("common.account_email"),{"%email%":data["email"]});
+            usernameE.innerHTML=addArguements($t("common.account_username"),{"%username%":data["username"]});
             blurElement.hide();
         })
     }
 
     function handleDelete() {
         if(noConfirm) {
-            modal.open("Are you sure you want to delete your account?","This is a destructive action which cannot be undone. Are you sure you want to continue?",15,["Cancel","Continue"]);
+            modal.open($t("common.account_deletion_confirm"),$t("common.account_delete_confirm_description"),15,[$t("common.modal_cancel"),$t("common.modal_continue")]);
             noConfirm=false;
             return;
         }
@@ -42,13 +46,13 @@
                     redirectToLogin(412);
                     break;
                 case 404:
-                    modal.open("Failed to delete account (404)","Account deletion failed. Make sure your account exists.")
+                    modal.open($t("common.account_deletion_fail"),$t("common.account_deletion_fail_description"))
                     break;
                 case 401:
                     redirectToLogin(401);
                     break;
                 case 200:
-                    modal.open("Please check your email.","A link to delete your account has been sent to your email.");
+                    modal.open($t("common.account_check_email"),$t("common.account_check_email_description"));
                     break;
             }
         })
@@ -66,26 +70,26 @@
 </script>
 <Blur bind:this={blurElement}/>
 <Holder>
-    <h1>Account management</h1>
-    <Section title="Details" id="details">
+    <h1>{$t("common.account_management")}</h1>
+    <Section title={$t("common.account_details")} id="details">
         <div class="details">
             <h3 bind:this={emailE}>Email</h3>
             <h3 bind:this={usernameE}>Username</h3>
         </div>
     </Section>
-    <h1>Manage your account</h1>
-    <Section title="Manage" id="manage">
+    <h1>{$t("common.account_manage_account")}</h1>
+    <Section title={$t("common.account_manage")} id="manage">
         <div class="buttons">
-            <div><Button on:click={()=>gpdrData()} args={"padding"}>Download your data</Button></div>
-            <div><Button on:click={()=>logOut()} args={"padding danger"}>Log out</Button></div>
+            <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
+            <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
             <div class="danger">
-                <Button args={"danger padding"} on:click={()=>handleDelete()}>Delete your account</Button>
+                <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
             </div>
         </div>
     </Section>
 </Holder>
 
-<Modal bind:this={modal} on:secondary={()=>handleDelete()} options={["Continue"]} title={""} description={""}></Modal>
+<Modal bind:this={modal} on:secondary={()=>handleDelete()} options={[$t("common.continue_modal")]} title={""} description={""}></Modal>
 
 <style>
     .buttons div {
