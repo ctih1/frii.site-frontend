@@ -6,10 +6,18 @@ export const defaultLocale = "en";
 const config = ({
 	fallbackLocale:"en",
 	translations: { // add your language here, and +lang.js it makes the language selector show the language in its native language (en->English)
+	    de: {lang},
 		en: {lang},
 		fi: {lang}
 	},
 	loaders: [
+	    {
+			"locale":"de",
+			"key":"common",
+			loader: async() => (
+				await import("../locales/de.json")
+			).default,
+		},
 		{
 			"locale":"en",
 			"key":"common",
