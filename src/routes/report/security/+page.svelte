@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { t,l,locale,addArguements } from '$lib/translations'
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import Blur from "$lib/components/Blur.svelte";
@@ -35,20 +36,20 @@
 <Blur bind:this={blur}></Blur>
 <Modal bind:this={modal} title={""} description={""} options={["OK"]}></Modal>
 <Holder>
-    <h1>Report a vulnerability</h1>
-    <p>This is the page for reporting a vulnerability in frii.site. Please refer to <a href="https://github.com/ctih1/frii.ste-frontend/SECURITY.md">the vulnerability reporting guide</a></p>
+    <h1>{$t("common.security_report_title")}</h1>
+    <p>{$t("common.security_report_description_page")}</p>
 
     <form>
-        <input type="text" bind:value={endpoint} placeholder="API Endpoint or website URL">
-        <input type="text" bind:value={expected} placeholder="Expected behaviour">
-        <input type="text" bind:value={actual} placeholder="Actual behaviour">
-        <input type="number" bind:value={importance} max=5 min=0 placeholder="Importance (0-5, 5 being the most urgent)">
-        <textarea placeholder="Vulnerability description" bind:value={description}></textarea>
-        <textarea placeholder="Steps to reproduce" bind:value={reproduce}></textarea>
-        <input type="text" bind:value={impact} placeholder="Impact of the issue">
-        <input type="text" bind:value={attacker} placeholder="How an attacker could use this">
-        <input type="email" bind:value={contactEmail} placeholder="An email address where we can contact you for updates">
-        <Button on:click={()=>onFormSubmit()} args={"fill padding"}>Submit</Button>
+        <input type="text" bind:value={endpoint} placeholder={$t("common.security_report_endpoint")}>
+        <input type="text" bind:value={expected} placeholder={$t("common.security_report_expected")}>
+        <input type="text" bind:value={actual} placeholder={$t("common.security_report_actual")}>
+        <textarea placeholder={$t("common.security_report_description")} bind:value={description}></textarea>
+        <textarea placeholder={$t("common.security_report_steps")} bind:value={reproduce}></textarea>
+        <input type="number" bind:value={importance} max=5 min=0 placeholder={$t("common.security_report_importance")}>
+        <input type="text" bind:value={impact} placeholder={$t("common.security_report_impact")}>
+        <input type="text" bind:value={attacker} placeholder={$t("common.security_report_attacker")}>
+        <input type="email" bind:value={contactEmail} placeholder={$t("common.security_report_email")}>
+        <Button on:click={()=>onFormSubmit()} args={"fill padding"}>{$t("common.security_report_submit")}</Button>
     </form>
 </Holder>
 

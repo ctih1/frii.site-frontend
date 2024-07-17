@@ -1,21 +1,32 @@
 <script lang="ts">
-    import Dropdown from "./Dropdown.svelte";
+	import Modal  from './Modal.svelte';
+    import { t, locale, locales } from '$lib/translations';
+    import {getFlagEmoji} from "../../helperFuncs";
     let header:HTMLElement
-    
+    let modal:Modal;
     export function getHeight():number {
         return Number(header.style.height.substring(0,header.style.height.length-2));
     }
+
+    const handleChange = ({ currentTarget }) => {
+        const { value } = currentTarget;
+
+        document.cookie = `lang=${value} ;`;
+    };
 </script>
 <header bind:this={header}>
-    <a href="/">Home</a>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/account">Account</a>
-    <a href="/account/manage">Settings</a>
-    <a href="/report">Report abuse or vulnerabilities</a>
+    <a href="/">{$t("common.dashboard_home")}</a>
+    <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
+    <a href="/account">{$t("common.dashboard_account")}</a>
+    <a href="/report">{$t("common.dashboard_abuse")}</a>
+    <select bind:value="{$locale}" on:change={handleChange}>
+        {#each $locales as value}
+            <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+        {/each}
+    </select>
 </header>
 
 <style>
-
     header {
         position: asbolute;
         display: flex;
@@ -40,5 +51,12 @@
         header a {
             font-size: 0.7em;
         }
+    }
+    select {
+        border-style: none;
+        background-color: none;
+    }
+    select * {
+        color: var(--primary)
     }
 </style>
