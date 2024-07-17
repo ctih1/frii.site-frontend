@@ -126,7 +126,7 @@
             </Button>
         </div>
         {#if !login}
-            <p>{$t("common.legal_text")}</p>
+            <p>{@html $t("common.legal_text")}</p>
         {/if}
         <a on:click={()=>login=!login}>
             {#if login}
