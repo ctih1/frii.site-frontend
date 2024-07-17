@@ -76,7 +76,7 @@
     "login_instead":"Log in instead",
     "signup_instead":"Sign up instead",
     "security_report_title":"Report a vulnerability",
-    "security_report_description_page":"This is the page for reporting a vulnerability in frii.site. Please refer to <a href=\"https://github.com/ctih1/frii.ste-frontend/SECURITY.md\">the vulnerability reporting guide</a>",
+    "security_report_description_page":"This is the page for reporting a vulnerability in frii.site. Please refer to <a href=\"https://github.com/ctih1/frii.site-frontend/blob/master/SECURITY.md\">the vulnerability reporting guide</a>",
     "security_report_endpoint":"API Endpoint or website URL",
     "security_report_expected":"Expected behaviour",
     "security_report_actual":"Actual behaviour",

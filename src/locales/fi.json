@@ -76,7 +76,7 @@
     "login_instead":"Sen sijaan kirjaudu sisään",
     "signup_instead":"Sen sijaan rekisteröi",
     "security_report_title":"Ilmoita tietoturva-aukko",
-    "security_report_description_page":"Tämä sivusto on tarkoitettu ilmoittaa tietoturva-aukkoja frii.sitessä. Katso ohje <a href=\"https://github.com/ctih1/frii.ste-frontend/SECURITY.md\">täältä</a>",
+    "security_report_description_page":"Tämä sivusto on tarkoitettu ilmoittaa tietoturva-aukkoja frii.sitessä. Katso ohje <a href=\"https://github.com/ctih1/frii.site-frontend/blob/master/SECURITY.md\">täältä</a>",
     "security_report_endpoint":"API Endpoint tai verkkosivun URL",
     "security_report_expected":"Odotettu käyttäytyminen",
     "security_report_actual":"Käyttäytyminen oikeasti",
