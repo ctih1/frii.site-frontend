@@ -85,7 +85,7 @@
                         modal.open("Sign up failed(400)","Email is in use!");
                         break;
                     case 400:
-                        modal.open("Sign up failed(400)","Email is in use!");
+                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
                         break;
                 }
             })
