@@ -36,7 +36,7 @@
 <Modal bind:this={modal} title={""} description={""} options={["OK"]}></Modal>
 <Holder>
     <h1>Report a vulnerability</h1>
-    <p>This is the page for reporting a vulnerability in frii.site. Please refer to <a href="https://github.com/ctih1/frii.ste-frontend/SECURITY.md">the vulnerability reporting guide</a></p>
+    <p>This is the page for reporting a vulnerability in frii.site. Please refer to <a href="https://github.com/ctih1/frii.site-frontend/blob/master/SECURITY.md#reporting-a-vulnerability">the vulnerability reporting guide</a></p>
 
     <form>
         <input type="text" bind:value={endpoint} placeholder="API Endpoint or website URL">
