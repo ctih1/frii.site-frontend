@@ -1,0 +1,54 @@
+<script lang="ts">
+    let balls = randomLocations();
+    const ballAmount:number=15;
+    
+    function randomLocations() {
+        return Array.from({length:ballAmount},()=>({
+            x: Math.round(Math.random()*100)+"vw",
+            y: Math.round(Math.random()*100)+"vh",
+        }));
+    }
+    setInterval(() => balls = randomLocations(), 15000);
+    randomLocations();
+</script>
+
+<div class="balls">
+    <div class="circles">
+        {#each balls as {x,y}}
+            <div class="bubble" 
+            style=
+                "width: {Math.max(Math.random(),0.3)*25}vw; opacity: {Math.random()*0.1}; top:{y}; left:{x};">
+            </div>
+        {/each}
+    </div>
+    <div class="main">
+        <slot></slot>
+    </div>
+</div>
+
+<style>
+    
+    .bubble {
+        transition: all 15s linear;
+        aspect-ratio: 1;
+        position: absolute;
+        background-color: var(--primary);
+        border-radius: 100%;
+        opacity: 0.02;
+        z-index: 0;
+    }
+    .circles {
+        pointer-events: none;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .balls {  
+        width: 100vw;
+        height: 100vh; 
+    }
+</style>
