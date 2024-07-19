@@ -36,7 +36,9 @@ const config = ({
 })
 
 export function addArguements(translation:string, replaced:Object):string {
+	console.log("translation: " + translation);
 	for(const [key,value] of Object.entries(replaced)) {
+		console.log(`Replacing ${key} with ${value}`)
 		translation = translation.replace(key,value);
 	}
 	return translation;
