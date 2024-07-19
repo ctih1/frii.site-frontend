@@ -2,6 +2,7 @@
 	import { resendEmail } from './../../serverContactor';
     import { onMount } from "svelte";
     import Button from "./Button.svelte";
+    import {t} from "$lib/translations";
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
     export let countdown:number|undefined=undefined;
@@ -25,7 +26,7 @@
         if(buttons) {
             options = buttons;
         } else {
-            options = ["Continue"];
+            options = [$t("common.continue_modal")];
         }
         if(time!==undefined) {
             countdown=time;
@@ -72,7 +73,7 @@
                 }
                 if(timeLeft<=0) {
                     clearInterval(timer);
-                    button.enable();
+                    button?.enable();
                 }
             }
         }
