@@ -29,9 +29,9 @@
 <table>
     <thead>
         <tr>
-            <th>Record Type</th>
+            <th style="width: 15%; min-width: 90px;">Record Type</th>
             <th>Content</th>
-            <th>Value</th>
+            <th style="width: 25%;">Value</th>
             <th style="width:20%; min-width:160px;">Manage</th>
         </tr>
     </thead>
@@ -94,5 +94,9 @@
         display: flex;
         flex-direction: row;
         height: 100%;
+    }
+
+    input:focus {
+        transform: scale(1.05);
     }
 </style>
