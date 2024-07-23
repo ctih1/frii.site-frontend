@@ -22,4 +22,9 @@
             width: 80vw;
         }
     }
+    @media(orientation:portrait) {
+        .card {
+            width: 80vw;
+        }
+    }
 </style>
