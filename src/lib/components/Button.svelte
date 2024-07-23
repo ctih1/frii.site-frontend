@@ -95,6 +95,11 @@
         margin-right: 0.25em;
     }
 
+    .margin-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .padding {
         padding: 0.5em;
     }
