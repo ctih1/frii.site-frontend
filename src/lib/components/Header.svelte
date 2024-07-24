@@ -10,15 +10,27 @@
 
     const handleChange = ({ currentTarget }) => {
         const { value } = currentTarget;
-
         document.cookie = `lang=${value} ;`;
     };
 </script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <header bind:this={header}>
-    <a href="/">{$t("common.dashboard_home")}</a>
-    <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
-    <a href="/account">{$t("common.dashboard_account")}</a>
-    <a href="/report">{$t("common.dashboard_abuse")}</a>
+    <div class="item">
+        <a href="/">{$t("common.dashboard_home")}</a>
+    </div>
+
+    <div class="item">
+        <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
+    </div>
+
+    <div class="item">
+        <a href="/account">{$t("common.dashboard_account")}</a>
+    </div>
+
+    <div class="item">
+        <a href="/report">{$t("common.dashboard_abuse")}</a>
+    </div>
+
     <select bind:value="{$locale}" on:change={handleChange}>
         {#each $locales as value}
             <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
@@ -42,10 +54,6 @@
         align-items: center;
         text-align: center;
     }
-    header a {
-        margin-left: 1em;
-        margin-right: 1em;
-    }
     
     @media(max-width: 550px) {
         header a {
@@ -57,6 +65,18 @@
         background-color: none;
     }
     select * {
+        color: var(--primary)
+    }
+    .item {
+        display: flex;
+        align-items: center;
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+    .item * {   
+        height: 100%;
+    }
+    span {
         color: var(--primary)
     }
 </style>
