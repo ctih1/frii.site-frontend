@@ -64,7 +64,6 @@
         height: 100%;
         font-weight: 500;
     }
-
     @media(max-width: 550px) {
         header a {
             font-size: 0.7em;
@@ -76,7 +75,13 @@
     }
 
     @media(orientation:portrait) {
-
+        header a {
+            font-size: 0.7em;
+        }
+        .item {
+            margin-left: 0.25em;
+            margin-right: 0.25em;
+        }
     }
     select {
         border-style: none;
