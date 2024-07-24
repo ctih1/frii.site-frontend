@@ -64,6 +64,7 @@
         height: 100%;
         font-weight: 500;
     }
+
     @media(max-width: 550px) {
         header a {
             font-size: 0.7em;
