@@ -1,9 +1,12 @@
 <script lang="ts">
+    import { fade } from 'svelte/transition';
     import Button from "./Button.svelte";
     import Dropdown from "./Dropdown.svelte";
     import Modal from "./Modal.svelte";
+    import Placeholder from "./Placeholder.svelte";
     import { createEventDispatcher } from "svelte";
     export let domains:Array<Array<string>>;
+    
     let dispatcher = createEventDispatcher();
     let dropdown:Dropdown;
     let editing:boolean;
@@ -11,10 +14,12 @@
     let value:HTMLInputElement;
     let selectedDomain:string;
     let editButton:Button;
+    let loaded:boolean=false;
     let modal:Modal;
     let rowInputs:Array<Array<any>> = domains.map(() => []);
 
     export function updateDomains(ndomains:Array<Array<string>>):void {
+        loaded=true;
         rowInputs=domains.map(() => []);
         domains=ndomains;
     }
@@ -24,7 +29,7 @@
 
 
 </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <table>
     <thead>
@@ -36,6 +41,22 @@
         </tr>
     </thead>
     <tbody>
+        {#if !loaded}
+            {#each Array(Number(3)) as _, i} 
+            <tr>
+                <td><Placeholder/></td>
+                <td><div class="container">
+                    <div style="width: 75%" class="container"><Placeholder/></div>
+                    <div style="width: 25%; min-width:55px;"><Placeholder/></div>
+                </div></td>
+                <td><Placeholder/></td>
+                <td style="display: flex; flex-direction: row;">
+                    <Placeholder/>
+                    <Placeholder/>
+                </td>
+            </tr>
+            {/each}
+        {/if}
         {#each domains as domain, index}
             <tr>
                 <td><Dropdown bind:this={rowInputs[index][0]} on:optionchange={(event)=>domain[0]=event.detail} defaultValue={domain[0]} options={["A","CNAME","NS","TXT"]} disabled={true}/></td>
