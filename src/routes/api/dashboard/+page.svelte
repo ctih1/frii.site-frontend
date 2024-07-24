@@ -24,23 +24,20 @@
     let domains:{displayText:string,valueText:string}[] = [];
 
     function formatDomains(data:Map<string,any>) {
-        console.log(data);
         new Map(Object.entries(data)).forEach((key,value)=>{
-            console.log(key,value);
             domains.push({displayText:value+(key["type"]==="TXT"?"":".frii.site"), valueText:value});
         })
         domains = [...domains]
     }
 
     function addItem(pool:Pool,detail:{displayText:string,valueText:string}) {
-        console.log("Addding permissions "+detail.displayText);
         pool.addItem(detail);
     }
 
     function undoRemove(ic:InputCompletor,item:{displayText:string,valueText:string}):void {
         ic.removeFromDeleted(item);
     }
-    $: domains, console.log(domains);
+
 </script>
 
 <Holder>
@@ -101,5 +98,8 @@
         margin-top: 0px;
         margin-left: 0.25em;
         margin-right: 0.25em;
+    }
+    @media(max-width: 1220px) {
+        
     }
 </style>

@@ -91,7 +91,7 @@
             {/if}
             <div class="html">
                 {#if _isLogin}
-                    <a class="msx" on:click={()=>{resendEmail(localStorage.getItem("verif-token")).then(response=>{console.log(response.status)})}}>Resend verification code</a>
+                    <a class="msx" on:click={()=>{resendEmail(localStorage.getItem("verif-token")).then(response=>{console.log("Resend code status:"+ response.status.toString())})}}>Resend verification code</a>
                 {/if}
             </div>
             <div class="buttons">
