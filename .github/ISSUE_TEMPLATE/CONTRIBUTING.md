@@ -2,7 +2,7 @@
 
 ### Found a bug?
 
->[!CAUTION]
+>[!CAUTIPON]
 Found a vulnerability? Do **NOT** make an issue about it. Follow our [security policy](https://github.com/ctih1/frii.site-frontend/blob/master/SECURITY.md)
 
 Have you come accross any bugs in frii.site? Repot them in the issues tab of this GitHub repo
