@@ -8,7 +8,20 @@
 <Ads></Ads>
 <Header/>
 <svelte:head>
+    <meta content="frii.site" property="og:title" />
+    <meta property="og:type" content="website">
+    <meta content="A free domain hosting service. Sign up now for 100% free" property="og:description" />
+    <meta content="A free domain hosting service. Sign up now for 100% free" name="description" />
+    <meta content="https://frii.site" property="og:url" />
+    <meta content="https://repository-images.githubusercontent.com/765252166/ea20ba11-9b83-457e-8db8-2481a83f5cb2" property="og:image" />
+    <meta content="#007be1" data-react-helmet="true" name="theme-color" />
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="frii.site">
+    <meta property="twitter:url" content="https://frii.site">
+    <meta name="twitter:title" content="frii.site">
+    <meta name="twitter:description" content="A free domain hosting service. Sign up now for 100% free">
+    <meta name="twitter:image" content="https://repository-images.githubusercontent.com/765252166/ea20ba11-9b83-457e-8db8-2481a83f5cb2">
 </svelte:head>
 <main>
     <slot/>
