@@ -3,7 +3,6 @@ import { locales, loadTranslations, translations, defaultLocale } from '$lib/tra
 /** @type {import('@sveltejs/kit').ServerLoad} */
 export const load = async ({ url, cookies, request }) => {
   const { pathname } = url;
-  console.log(cookies.get("lang"));
   let locale = (cookies.get("lang") || "").toLowerCase();
   if (!locale) {
     locale = `${`${request.headers.get("accept-language")}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();

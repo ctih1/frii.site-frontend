@@ -36,7 +36,6 @@
     function getDescription(description:unknown|undefined) {
         return description as string;
     }
-    $: console.log(reports);
 </script>
 
 {#each getOrderedReports(reports) as item}

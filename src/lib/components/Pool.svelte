@@ -7,7 +7,6 @@
     export function addItem(item:{displayText:string,valueText:string}):void {
         items.push(item);
         items=[...items];
-        console.log(items);
     }
     export function removeItem(target:{displayText:string,valueText:string}):void {
         items=items.filter(function(item) {

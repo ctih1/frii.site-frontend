@@ -3,6 +3,7 @@
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
+    import Placeholder from '$lib/components/Placeholder.svelte';
     import { onMount } from 'svelte';
     import { redirectToLogin,createFile } from '../../../helperFuncs';
     import { ServerContactor } from '../../../serverContactor';
@@ -15,8 +16,9 @@
     let noConfirm:boolean=true;
 
     let blurElement:Blur;
-    let emailE:HTMLElement;
-    let usernameE:HTMLElement;
+    let emailE:string;
+    let usernameE:string;
+    let loaded:boolean=false;
 
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
@@ -26,11 +28,10 @@
 
 
     function getData() {
-        blurElement.show();
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            emailE.innerHTML=addArguements($t("common.account_email"),{"%email%":data["email"]});
-            usernameE.innerHTML=addArguements($t("common.account_username"),{"%username%":data["username"]});
-            blurElement.hide();
+            emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
+            usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
+            loaded=true;
         })
     }
 
@@ -73,8 +74,13 @@
     <h1>{$t("common.account_management")}</h1>
     <Section title={$t("common.account_details")} id="details">
         <div class="details">
-            <h3 bind:this={emailE}>Email</h3>
-            <h3 bind:this={usernameE}>Username</h3>
+            {#if loaded} 
+                <h3>{emailE}</h3>
+                <h3>{usernameE}</h3>
+            {:else} 
+                <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
+                <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
+            {/if}
         </div>
     </Section>
     <h1>{$t("common.account_manage_account")}</h1>

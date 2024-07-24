@@ -25,13 +25,11 @@
     }
 
     function getCompleted(status:Object):number {
-        console.log(typeof(status));
         let total:number=0;
         new Map(Object.entries(status)).forEach((value:boolean,key:string)=>{
             //@ts-ignore
             total+=value;
         });
-        console.log(total);
         return total;
     }
 
