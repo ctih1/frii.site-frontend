@@ -45,4 +45,4 @@ export function addArguements(translation:string, replaced:Object):string {
 }
 
 export const { t, loading, locales, locale, translations, loadTranslations, addTranslations, setLocale, setRoute,l } = new i18n(config);
-
+loading.subscribe(($loading) => $loading && console.log('Loading translations...'));
