@@ -32,7 +32,7 @@
         </div>
 
     <div class="item">
-        <a href="/account">{$t("common.dashboard_account")}</a>
+        <a href="/account/manage">{$t("common.dashboard_account")}</a>
     </div>
 
     <div class="item">
