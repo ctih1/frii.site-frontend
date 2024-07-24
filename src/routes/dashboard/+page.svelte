@@ -100,7 +100,7 @@
     } 
 
     onMount(()=>{
-        blurBackground.show();
+
 	try {
 		
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
@@ -113,8 +113,6 @@
 	                value=new Map(Object.entries(value));
 	                domainlist.push([value.get("type"),key,value.get("ip")]);
 	            }
-
-				blurBackground.hide();
 	            domainTable.updateDomains(domainlist);
 	        }).catch(err=>{console.log(err);blurBackground.hide();});
 	}
