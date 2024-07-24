@@ -1,12 +1,6 @@
 # frii.site
-A free subdomain hosting website that has a dashboard and an API
 
 
-![frii site](https://github.com/user-attachments/assets/81506c74-981e-4f73-a440-6ce7d4f95513)
-
-
-<details>
-<summary>Getting started</summary>
 ## Getting started
 
 To get yourself a free subdomain, register an account at https://frii.site/account.
@@ -54,24 +48,3 @@ To get yourself a free subdomain, register an account at https://frii.site/accou
 
 ## Missing something?
 More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend/wiki)
-
-</details>
-
-## Languages available
-
-| Language | Contrubutor |
-| -------- | ----------- | 
-| Finnish | [ctih1](https://github.com/ctih1) |
-| English | [ctih1](https://github.com/ctih1) |
-| German  | [Lugosieben](https://github.com/lugosieben)
-
-Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
-
-## Information about us
-frii.site is an open-source project written in Svelte(Kit). We use MongoDB for our database, Cloudflare for DNS (Becoming self-hosted soon?), Vercel for website and backend hosting, and Resend for emails. This project has no sponsors, or advertisments on the website [Information about frii.site (analytics, price to run, users etc)](https://github.com/ctih1/frii.site-frontend/discussions/88) . 
-
-## API
-Our API is completely free to use. To get started, [read our post about it](https://github.com/ctih1/frii.site-frontend/discussions/90). If you wish to create apps using our API, you can submit them to the [partner program](https://github.com/ctih1/frii.site-frontend/discussions/67) to get rewards.
-
-## Contributing
-If you wish to contribute to frii.site, read our [contribution guidelines](https://github.com/ctih1/frii.site-frontend/blob/master/.github/CONTRIBUTING.md). We greatly appreciate any contributons!
