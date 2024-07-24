@@ -54,19 +54,6 @@
         align-items: center;
         text-align: center;
     }
-    
-    @media(max-width: 550px) {
-        header a {
-            font-size: 0.7em;
-        }
-    }
-    select {
-        border-style: none;
-        background-color: none;
-    }
-    select * {
-        color: var(--primary)
-    }
     .item {
         display: flex;
         align-items: center;
@@ -75,6 +62,33 @@
     }
     .item * {   
         height: 100%;
+        font-weight: 500;
+    }
+    @media(max-width: 550px) {
+        header a {
+            font-size: 0.7em;
+        }
+        .item {
+            margin-left: 0.25em;
+            margin-right: 0.25em;
+        }
+    }
+
+    @media(orientation:portrait) {
+        header a {
+            font-size: 0.7em;
+        }
+        .item {
+            margin-left: 0.25em;
+            margin-right: 0.25em;
+        }
+    }
+    select {
+        border-style: none;
+        background-color: none;
+    }
+    select * {
+        color: var(--primary)
     }
     span {
         color: var(--primary)
