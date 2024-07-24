@@ -32,6 +32,9 @@
         </div>
 
     <div class="item">
+        </div>
+
+    <div class="item">
         <a href="/account/manage">{$t("common.dashboard_account")}</a>
     </div>
 
