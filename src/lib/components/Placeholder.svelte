@@ -25,7 +25,7 @@
         animation-timing-function: linear;
         background: #f6f7f8;
         background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-        background-size: 1000px 100%;
+        background-size: 500% 100%;
         overflow: hidden;
         border-radius: 0.5em;
     }
