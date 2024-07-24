@@ -16,19 +16,31 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <header bind:this={header}>
     <div class="item">
+        <div class="item">
         <a href="/">{$t("common.dashboard_home")}</a>
     </div>
+
+    <div class="item">
+        </div>
 
     <div class="item">
         <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
     </div>
 
     <div class="item">
+        </div>
+
+    <div class="item">
         <a href="/account">{$t("common.dashboard_account")}</a>
     </div>
 
     <div class="item">
+        </div>
+
+    <div class="item">
         <a href="/report">{$t("common.dashboard_abuse")}</a>
+    </div>
+
     </div>
 
     <select bind:value="{$locale}" on:change={handleChange}>
@@ -76,7 +88,13 @@
     }
 
     @media(orientation:portrait) {
-
+        header a {
+            font-size: 0.7em;
+        }
+        .item {
+            margin-left: 0.25em;
+            margin-right: 0.25em;
+        }
     }
     select {
         border-style: none;
