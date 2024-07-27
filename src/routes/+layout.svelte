@@ -4,9 +4,9 @@
     import Ads from "$lib/components/Ads.svelte"
 </script>
 
+<Header/>
 <Analytics/>
 <Ads></Ads>
-<Header/>
 <svelte:head>
 
 </svelte:head>
