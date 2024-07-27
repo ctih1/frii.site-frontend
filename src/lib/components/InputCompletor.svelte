@@ -40,7 +40,6 @@
     }
 
     function resultClicked(event:any) {
-        console.log(event);
     }
 
     function sendInput(choice:choices|undefined):void {

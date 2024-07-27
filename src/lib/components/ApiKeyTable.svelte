@@ -32,7 +32,6 @@
     let keyTarget:string;
 
     function showKey():void {
-        console.log(keyTarget);
         modal.open($t("common.api_dashboard_key_title"),addArguements($t("common.api_dashboard_key_description"),{"%key%":keyTarget}));
         keyTarget="";
     }

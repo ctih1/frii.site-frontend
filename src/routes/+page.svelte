@@ -1,6 +1,7 @@
 <script lang="ts">
     //@ts-ignore
     import { t } from '$lib/translations';
+    import Holder from '$lib/components/Holder.svelte';
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Button from "$lib/components/Button.svelte";
 </script>
@@ -13,7 +14,7 @@
     <div class="parent">
         <div class="div1"> 
             <div class="text-container">
-                <h1pp><strong>frii.site</strong></h1pp>
+                <h1><strong>frii.site</strong></h1>
                 <p style="font-size: 1.5em;"><i>{ $t("common.index_description") }</i></p>
             </div>
         </div>
@@ -21,8 +22,8 @@
         <div class="div2"> 
             <div class="div2-content">
                 <div class="button-holder">
-                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}>{$t("common.index_register_account")}</Button></x>
-                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}>{$t("common.index_goto_dashboard")}</Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}><a style="color: #ffffff;" href="/account">{$t("common.index_register_account")}</a></Button></x>
+                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}><a style="color: #ffffff;" href="/dashboard">{$t("common.index_goto_dashboard")}</a></Button></x>
                 </div>  
             </div>  
         </div>
@@ -34,6 +35,24 @@
         <div class="div4">
 
         </div>
+    </div>
+</div>
+<div class="content">
+    <div class="parent">
+        <div class="div1"> 
+            <div class="text-container">
+                <h1 style="font-size: 8em;"><strong>{$t("common.index_aboutus")}</strong></h1>
+            </div>
+        </div>
+
+        <div class="div2"> 
+            <div class="div2-content">
+                <div class="button-holder">
+                    <h2 class="info">{@html $t("common.index_aboutus_description")}</h2>
+                </div>  
+            </div>  
+        </div>
+
     </div>
 </div>
 </BubbleBackground>
@@ -93,8 +112,10 @@
     .div3 { grid-area: 1 / 1 / 2 / 3; }
     .div4 { grid-area: 3 / 1 / 4 / 3; }
 
-    h1pp {
+    h1 {
         font-size: 10em;
+        font-weight: 500;
+        margin-bottom: 0px;
     }
     .content {
         display: flex;
@@ -104,7 +125,7 @@
     }
 
     @media(max-width: 1330px) {
-        .text-container h1pp strong, .text-container h1pp{
+        .text-container h1 strong, .text-container h1{
             margin-left: 20px;
         }
         .text-container {
@@ -116,7 +137,7 @@
 
     } 
     @media(max-width: 1030px) {
-        h1pp {
+        h1 {
             font-size: 7em;
         }
     }
@@ -145,7 +166,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        h1pp {
+        h1 {
             font-size: 12em;
         }
         .text-container {
@@ -153,19 +174,22 @@
         }
     }
     @media(max-width: 795px) {
-        h1pp {
+        h1 {
             font-size: 10em;
         }
     }
     @media(max-width: 690px) {
-        h1pp {
+        h1 {
             font-size: 8em;
         }
     }
     @media(max-width: 580px) {
-        h1pp {
+        h1 {
             font-size: 6em;
         }
+    }
+    .info {
+        font-weight: 500;
     }
 
 </style>

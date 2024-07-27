@@ -9,7 +9,8 @@
         }));
     }
     setInterval(() => balls = randomLocations(), 15000);
-    randomLocations();
+    balls = randomLocations();
+    balls = [...balls];
 </script>
 
 <div class="balls">
@@ -42,13 +43,13 @@
         position: absolute;
         top: 0px;
         left: 0px;
-        height: 100vh;
-        width: 100vw;
+        height: 400vw;
+        width: 100%;
         overflow: hidden;
     }
 
     .balls {  
         width: 100vw;
-        height: 100vh; 
+        height: 100vw; 
     }
 </style>
