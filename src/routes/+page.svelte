@@ -47,9 +47,7 @@
 
         <div class="div2"> 
             <div class="div2-content">
-                <div class="button-holder">
-                    <h2 class="info">{@html $t("common.index_aboutus_description")}</h2>
-                </div>  
+                <h2 style="height: fit-content" class="info">{@html $t("common.index_aboutus_description")}</h2>
             </div>  
         </div>
 
