@@ -55,6 +55,20 @@
     <h2>Termination</h2>
     <p>We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions.</p>
     <p>Upon termination, Your right to use the Service will cease immediately.</p>
+    <h2>Do's</h2>
+    <p>You agree that you:</p>
+    <ol>
+        <li>Use our services fairly</li>
+        <li>Are using your real email</li>
+        <li>Provide accurate information in reports (such as vulnerabilities, abuse etc)</li>
+    </ol>
+    <h2>Don'ts</h2>
+    <p>You agree that you will not:</p>
+    <ol>
+        <li>Create alternative accounts (AKA Alt-accounts)</li>
+        <li>Try to make the user experience worse for other users</li>
+        <li>Contact our support team without a proper reason</li>
+    </ol>
     <h2>Limitation of Liability</h2>
     <p>Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.</p>
     <p>To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.</p>
