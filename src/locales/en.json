@@ -34,7 +34,7 @@
     "dashboard_register_new_domain":"Register a new domain",
     "dashboard_register_description":"Registering a new domain is just a few clicks away! You can always get help from our <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",
     "dashboard_delete_error":"Could not delete domain",
-    "unhandled_error":"An unhandled erorr occured.",
+    "unhandled_error":"An unhandled error occured.",
     "dashboard_delete_success": "Succesfully deleted %domain%",
     "dashboard_delete_sucess_description":"%domain% was deleted succesfully",
     "dashboard_register_success":"Succesfully registered %domain%!",
