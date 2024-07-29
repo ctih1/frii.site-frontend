@@ -119,7 +119,8 @@
         display: flex;
         flex-direction: row;
         width: 100vw;
-        height: 100vh ;
+        min-height: 100vh;
+        height: 100%;
     }
 
     @media(max-width: 1330px) {
