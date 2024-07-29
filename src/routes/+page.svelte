@@ -4,12 +4,12 @@
 	import Button from "$lib/components/ui/button/button.svelte";
 	import Label from "$lib/components/ui/label/label.svelte";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import LastFM from "$lib/LastFM.svelte";
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsCheckCircleRounded from "~icons/material-symbols/check-circle-rounded";
 	import MaterialSymbolsKeyboardArrowDownRounded from "~icons/material-symbols/keyboard-arrow-down-rounded";
 	import { m } from "../paraglide/messages.js";
 	import { localizeHref } from "../paraglide/runtime.js";
-
 	//@ts-ignore
 
 	let { data } = $props();
@@ -55,6 +55,7 @@
 					onclick={_ => goto(localizeHref("/dashboard"))}
 					class="w-[49%]">{m.index_goto_dashboard()}</Button>
 			</div>
+			<LastFM/>
 		</div>
 	</div>
 
