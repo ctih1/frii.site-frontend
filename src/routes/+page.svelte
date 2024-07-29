@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import Github from "$lib/assets/github.svg";
-	import Footer from "$lib/components/Footer.svelte";
 	import Button from "$lib/components/ui/button/button.svelte";
 	import Label from "$lib/components/ui/label/label.svelte";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
@@ -111,7 +110,7 @@
 				<p>{m.home_see_more()}</p>
 				<Button
 					href="https://guides.frii.site/translation/getting_started.html"
-					variant={"secondary"}>{m.home_translate_contribute()}</Button>
+					variant={"ghost"}>{m.home_translate_contribute()}</Button>
 				<Button href="https://github.com/ctih1/frii.site-frontend" variant={"ghost"}
 					>{m.home_frontend_link()}</Button>
 				<Button href="https://github.com/ctih1/frii.site-backend" variant={"ghost"}
@@ -121,7 +120,6 @@
 	</div>
 </div>
 
-<Footer />
 
 {#if scrollY < 50}
 	<div transition:fade={{ duration: 100 }}>
