@@ -41,13 +41,13 @@
     <div class="parent">
         <div class="div1"> 
             <div class="text-container">
-                <h1 style="font-size: 8em;"><strong>{$t("common.index_aboutus")}</strong></h1>
+                <h2><strong>{$t("common.index_aboutus")}</strong></h2>
             </div>
         </div>
 
         <div class="div2"> 
             <div class="div2-content">
-                <h2 style="height: fit-content" class="info">{@html $t("common.index_aboutus_description")}</h2>
+                <h3 style="height: fit-content; margin-right: 1em;" class="info">{@html $t("common.index_aboutus_description")}</h3>
             </div>  
         </div>
 
@@ -138,6 +138,12 @@
         h1 {
             font-size: 7em;
         }
+        h2 {
+            font-size: 5em;
+        }
+        h3 {
+            font-size: 1.5em;
+        }
     }
     @media (orientation: portrait), (max-width: 745px) {
         .parent {
@@ -190,4 +196,10 @@
         font-weight: 500;
     }
 
+    h2 {
+        font-size: 6em;
+    }
+    h3 {
+        font-size: 2em;
+    }
 </style>
