@@ -79,6 +79,7 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
+        height: fit-content;
         background-color: rgb(216, 216, 216);
     }
 </style>
