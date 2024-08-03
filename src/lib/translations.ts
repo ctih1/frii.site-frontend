@@ -32,6 +32,13 @@ const config = ({
 			loader: async() => (
 				await import("../locales/fi.json")
 			).default
+	    	},
+	        {
+			"locale":"it",
+			"key":"common",
+			loader: async() => (
+				await import("../locales/it.json")
+			).default
 	    	}
 	]
 })
