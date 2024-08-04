@@ -41,11 +41,11 @@
         if(login) { 
             serverContactor.login(username,password).then(response=>{
                 switch(response) {
-                    case 404: 
-                        modal.open($t("common.login_failed"),$t("common.login_failed_description"));
+                    case 422: 
+                        modal.open($t("common.login_failed"),$t("common.login_generic_error"));
                         break;
                     case 401:
-                        modal.open($t("common.login_failed"),$t("common.login_generic_error"));
+                        modal.open($t("common.login_failed"),$t("common.login_failed_description"));
                         break;
                     case 417:
                         createToken(username,password).then(token=>{
@@ -78,13 +78,7 @@
                     case 409:
                         modal.open($t("common.signup_fail"),$t("common.signup_fail_username"));
                         break;
-                    case 400:
-                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
-                        break;
-                    case 400:
-                        modal.open("Sign up failed(400)","Email is in use!");
-                        break;
-                    case 400:
+                    case 422:
                         modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
                         break;
                 }

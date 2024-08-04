@@ -1,6 +1,5 @@
-import type { FetchFunction } from "vite";
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://server.frii.site";
+export const serverURL="https://api.frii.site";
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -19,10 +18,8 @@ export async function createToken(username:string,password:string):Promise<strin
 }
 
 export function getReportStatus(id:string) {
-    fetch(`${serverURL}/vulnerability/get`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({"id":id})
+    fetch(`${serverURL}/vulnerability/get?id=${id}`,{
+        method:"GET",
     }).then(response=>response.json()).then(data=>{
         return data
     })
@@ -48,27 +45,23 @@ export async function reportVulnerability(endpoint:string, expected:string, actu
 }
 
 export async function resendEmail(token:string|null):Promise<Response> {
-    let data = {
-        "TOKEN": token
-    };
     return await fetch(`${serverURL}/resend-email`, {
-        method: "POST",
+        method: "GET",
         headers: {
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify(data)
+            "X-Auth-Token":token as string
+        }
     });
 }
 
 export class ServerContactor {
-    token:string|null;
+    token:string;
     serverURL:string;
     constructor(token:string|null, urlOverride:string|null=null) {
         this.serverURL=serverURL;
         if(urlOverride) {
             this.serverURL=urlOverride;
         }
-        this.token=token;
+        this.token=token as string;
         if(this.token===null&&window.location.pathname!=="/account") {
             redirectToLogin(302);
         };
@@ -83,15 +76,15 @@ export class ServerContactor {
         // 401: Wrong credentials
         // 404: The user does not exist
         let data = {
-            "TOKEN": this.token,
             "domain":domain,
             "type":type,
-            "ip":value,
+            "content":value,
         };
         return await fetch(`${this.serverURL}/modify-domain`, {
-            method: "POST",
+            method: "PATCH",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "X-Auth-Token":this.token
             },
             body: JSON.stringify(data)
         });
@@ -103,14 +96,10 @@ export class ServerContactor {
             const usr = await digestMessage(username);
             const token = `${psw}|${usr}`;
             
-            const data = {
-                "TOKEN": token
-            };
             localStorage.setItem("temp-token",token)
             const response = await fetch(`${this.serverURL}/login`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                headers: { "Content-Type": "application/json","X-Auth-Token":token },
             });
     
             return response.status;
@@ -121,15 +110,12 @@ export class ServerContactor {
         }
     }
     async getDomains():Promise<Response> {
-        let data = {
-            "TOKEN": this.token
-        };
         return await fetch(`${this.serverURL}/get-domains`, {
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-Auth-Token":this.token
             },
-            body: JSON.stringify(data)
         });
     }
     async registerDomain(domain:string,type:string):Promise<Response> {
@@ -141,9 +127,8 @@ export class ServerContactor {
         // 409: Not a valid domain
         // 405: Domain limit exceeded
         let data = {
-            "TOKEN":this.token,
             "domain":domain,
-            "ip":"0.0.0.0",
+            "content":"0.0.0.0",
             "type":type
         };
         if(type==="CNAME") {
@@ -151,18 +136,17 @@ export class ServerContactor {
         }
         return await fetch(`${this.serverURL}/register-domain`,{
             method:"POST",
-            headers: {"Content-Type":"application/json"},
+            headers: {"Content-Type":"application/json", "X-Auth-Token":this.token},
             body: JSON.stringify(data)
         });
     }
     async deleteDomain(domain:string):Promise<Response> {
         let data = {
-            "TOKEN":this.token,
             "domain":domain
         };
         return await fetch(`${this.serverURL}/delete-domain`,{
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
+            method: "DELETE",
+            headers: {"Content-Type":"application/json", "X-Auth-Token":this.token},
             body: JSON.stringify(data)
         });
     }
@@ -182,121 +166,101 @@ export class ServerContactor {
         });
     }
     async deleteAccoint():Promise<Response> {
-        let data = {
-            "TOKEN":this.token
-        }
         return await fetch(`${this.serverURL}/delete-user`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify(data)
+            method: "DELETE",
+            headers: {"Content-Type":"application/json", "X-Auth-Token":this.token},
         });
     }
     async getAccountDetails():Promise<Response> {
-        let data = {
-            "TOKEN":this.token
-        }
         return await fetch(`${this.serverURL}/get-user-info`,{
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify(data)
+            method: "GET",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
         })
     }
     async getGDPR():Promise<Response> {
-        let data = {
-            "TOKEN":this.token
-        }
         return await fetch(`${this.serverURL}/gdpr-get`,{
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify(data)
+            method:"GET",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
         });
     }
     async getVulns():Promise<Response> {
-        let data = {
-            "TOKEN":this.token
-        }
         return await fetch(`${this.serverURL}/vulnerability/all`, {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify(data)
+            method:"GET",
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token},
         });
     }
 
     async reportProgress(id:string,progress:string):Promise<Response> {
         return await fetch(`${this.serverURL}/vulnerability/progress`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":progress, "time":new Date().valueOf()/1000})
+            method: "PATCH",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"id":id,"progress":progress, "time":new Date().valueOf()/1000})
         });
     }
     async reportSeen(id:string):Promise<Response> {
         let data = {
-            "TOKEN": this.token,
             "id":id,
             "status":"seen",
             "mode":true,
             "d-importance": -1
         };
         return await fetch(`${this.serverURL}/vulnerability/status`, {
-            method: "POST",
-            headers:{"Content-Type":"application/json"}, 
+            method: "PATCH",
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
     async reportReview(importance:number, id:string):Promise<Response> {
         let data = {
-            "TOKEN": this.token,
             "id":id,
             "status":"reviewed",
             "mode":true,
             "d-importance":importance
         };
         await fetch(`${this.serverURL}/vulnerability/progress`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Review approved", "time":new Date().valueOf()/1000})
+            method: "PATCH",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"id":id,"progress":"Review approved", "time":new Date().valueOf()/1000})
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
-            method: "POST",
-            headers:{"Content-Type":"application/json"}, 
+            method: "PATCH",
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
     async reportFixing(id:string):Promise<Response> {
         let data = {
-            "TOKEN": this.token,
             "id":id,
             "status":"currently_working",
             "mode":true,
             "d-importance":-1
         };
         await fetch(`${this.serverURL}/vulnerability/progress`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Finished development", "time":new Date().valueOf()/1000})
+            method: "PATCH",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"id":id,"progress":"Finished development", "time":new Date().valueOf()/1000})
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
-            method: "POST",
-            headers:{"Content-Type":"application/json"}, 
+            method: "PATCH",
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
     async reportFinished(id:string):Promise<Response> {
         let data = {
-            "TOKEN": this.token,
             "id":id,
             "status":"done",
             "mode":true,
             "d-importance":-1
         };
         await fetch(`${this.serverURL}/vulnerability/progress`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({"TOKEN":this.token,"id":id,"progress":"Deployed", "time":new Date().valueOf()/1000})
+            method: "PATCH",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"id":id,"progress":"Deployed", "time":new Date().valueOf()/1000})
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
-            method: "POST",
-            headers:{"Content-Type":"application/json"}, 
+            method: "PATCH",
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
