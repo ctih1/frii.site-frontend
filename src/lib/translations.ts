@@ -8,7 +8,8 @@ const config = ({
 	translations: { // add your language here, and +lang.js it makes the language selector show the language in its native language (en->English)
 		de: {lang},
 		en: {lang},
-		fi: {lang}
+		fi: {lang},
+		it: {lang}
 	},
 	loaders: [
 	    	{
@@ -30,6 +31,13 @@ const config = ({
 			"key":"common",
 			loader: async() => (
 				await import("../locales/fi.json")
+			).default
+	    	},
+	        {
+			"locale":"it",
+			"key":"common",
+			loader: async() => (
+				await import("../locales/it.json")
 			).default
 	    	}
 	]
