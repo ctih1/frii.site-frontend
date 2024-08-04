@@ -38,7 +38,7 @@
     "dashboard_delete_success": "Succesfully deleted %domain%",
     "dashboard_delete_sucess_description":"%domain% was deleted succesfully",
     "dashboard_register_success":"Succesfully registered %domain%!",
-    "dashboard_register_fail":"Failed to regsiter %domain%",
+    "dashboard_register_fail":"Failed to register %domain%",
     "dashboard_register_success_description":"You now own the domain. Don't know how to set something up? Visit our <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",
     "dashboard_domain_limit":"Domain limit exceeded",
     "dashboard_invalid":"The domain is invalid",
@@ -108,5 +108,7 @@
     "###COMMENT###":"For the next translation (api_dashboard_comment_placeholder) feel free to come up with a joke that works in your own language :)",
     "api_dashboard_comment_placeholder":"For testing my super cool app",
     "index_aboutus":"About us",
-    "index_aboutus_description":"We are a free subdomain hosting service that has been around for 6 months. During that times we have registered over 150 domains for over 200 users worldwide. We greatly value transparency, and that is why we are open-source, have a <strong>free</strong> API, and publish updates to our community over on <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>"
+    "index_aboutus_description":"We are a free subdomain hosting service that has been around for 6 months. During that times we have registered over 150 domains for over 200 users worldwide. We greatly value transparency, and that is why we are open-source, have a <strong>free</strong> API, and publish updates to our community over on <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>",
+    "dashboard_domain_use":"The requested domain has already been registered!",
+    "dashboard_domain_permissions":"You must own all parts of the requested domain."
 }
