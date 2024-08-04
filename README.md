@@ -59,7 +59,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 
 ## Languages available
 
-| Language | Contrubutor |
+| Language | Contributor |
 | -------- | ----------- | 
 | Finnish | [ctih1](https://github.com/ctih1) |
 | English | [ctih1](https://github.com/ctih1) |
