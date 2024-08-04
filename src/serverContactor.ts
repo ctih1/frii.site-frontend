@@ -264,4 +264,16 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
+    async createApi(domains:string[],perms:string[],comment:string[]):Promise<Response> {
+        const data = {
+            domains:domains,
+            perms:perms,
+            comment:comment
+        }
+        return await fetch(`${this.serverURL}/create-api`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify(data)
+        })
+    }
 }
