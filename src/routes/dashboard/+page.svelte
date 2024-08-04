@@ -41,6 +41,7 @@
     function registerDomain(domain:string,type:string) {
         blurBackground.show();
         serverContactor.registerDomain(domain,type).then(response=>{
+            const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
@@ -49,22 +50,22 @@
                     redirectToLogin(401);
                     break;
                 case 403:
-                    modal.open(addArguements($t("common.dashboard_register_fail"),{"%domain%":domain}),"You have exceeded your domain limit. Please consider purchasing more domains at https://ko-fi.com/s/123804db77");
-                    break;
-                case 404:
-                    redirectToLogin(404);
+                    modal.open(errorMessage,$t("common.login_failed_verify"))
+                case 429:
+                    modal.open(errorMessage,$t("common.dashboard_domain_limit"));
                     break;
                 case 405:
-                    modal.open(addArguements($t("common.dashboard_register_fail"),{"%domain%":domain}),$t("common.dashboard_domain_limit"));
+                    modal.open(errorMessage,$t("commmon.dashboard_domain_permissions"));
+                    break;
+                case 406:
+                case 400:
+                    modal.open(errorMessage,$t("common.dashboard_invalid"));
                     break;
                 case 409:
-                    modal.open(addArguements($t("common.dashboard_register_fail"),{"%domain%":domain}), $t("common.dashboard_invalid"));
-                    break;
-                case 412:
-                    redirectToLogin(412);
+                    modal.open(errorMessage, $t("common.dashboard_domain_use"));
                     break;
                 default:
-                    modal.open(addArguements($t("common.dashboard_register_fail"),{"%domain%":domain}),$t("common.unhandled_error"));
+                    modal.open(errorMessage,$t("common.unhandled_error"));
                     break;
             }
         })
@@ -73,27 +74,28 @@
     function modifyDomain(name:string,value:string,type:string) {
         blurBackground.show();
         serverContactor.modifyDomain(name,value,type).then(response=>{
+            const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name})
             switch(response.status) {
                 case 401:
                     redirectToLogin(401);
                     break;
+                case 409:
+                    modal.open(errorMessage,$t("common.dashboard_domain_not_owned"));
+                    break;
+                case 405:
+                    modal.open(errorMessage,$t("common.dashboard_domain_permissions"));
+                    break;
+                case 406:
+                    modal.open(errorMessage, $t("common.dashboard_invalid_value"));
+                    break;
                 case 403:
-                    modal.open(addArguements($t("common.dashboard_modify_fail"),{"%domain%":name}),$t("common.dashboard_domain_not_owned"));
-                    break;
-                case 404:
-                    redirectToLogin(404);
-                    break;
-                case 412:
-                    redirectToLogin(412);
-                    break;
-                case 422:
-                    modal.open(addArguements($t("common.dashboard_modify_fail"),{"%domain%":name}), $t("common.dashboard_invalid_value"));
+                    modal.open(errorMessage,$t("common.dashboard_domain_not_owned"));
                     break;
                 case 500:
-                    modal.open(addArguements($t("common.dashboard_modify_fail"),{"%domain%":name}),$t("common.unhandled_error"));
+                    modal.open(errorMessage,$t("common.unhandled_error"));
                     break;
                 case 200:
-                    modal.open($t("common.dashboard_modify_success"),$t("common.dashboard_modify_success_description"))
+                    modal.open(addArguements($t("common.dashboard_modify_success"),{"%domain%":name}),$t("common.dashboard_modify_success_description"))
                     break;
             }
         })
@@ -102,12 +104,9 @@
     onMount(()=>{
 
 	try {
-		
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
-
 	            domains = new Map(Object.entries(data));
-
 	            for(let pair of domains) {
 	                let [key,value] = pair;
 	                value=new Map(Object.entries(value));
