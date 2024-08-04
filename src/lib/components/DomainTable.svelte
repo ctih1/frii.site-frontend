@@ -5,6 +5,7 @@
     import Modal from "./Modal.svelte";
     import Placeholder from "./Placeholder.svelte";
     import { createEventDispatcher } from "svelte";
+    import { t } from '$lib/translations';
     export let domains:Array<Array<string>>;
     
     let dispatcher = createEventDispatcher();
@@ -34,10 +35,10 @@
 <table>
     <thead>
         <tr>
-            <th style="width: 15%; min-width: 90px;">Record Type</th>
-            <th>Content</th>
-            <th style="width: 25%;">Value</th>
-            <th style="width:20%; min-width:160px;">Manage</th>
+            <th style="width: 15%; min-width: 90px;">{$t("common.dashboardt_record")}</th>
+            <th>{$t("common.dashboardt_content")}</th>
+            <th style="width: 25%;">{$t("common.dashboardt_value")}</th>
+            <th style="width:20%; min-width:160px;">{$t("common.dashboardt_manage")}</th>
         </tr>
     </thead>
     <tbody>
