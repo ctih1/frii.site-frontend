@@ -110,7 +110,7 @@
     "index_aboutus":"About us",
     "index_aboutus_description":"We are a free subdomain hosting service that has been around for 6 months. During that times we have registered over 150 domains for over 200 users worldwide. We greatly value transparency, and that is why we are open-source, have a <strong>free</strong> API, and publish updates to our community over on <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>",
     "dashboard_domain_use":"The requested domain has already been registered!",
-    "dashboard_domain_permissions":"You must own all parts of the requested domain."
+    "dashboard_domain_permissions":"You must own all parts of the requested domain.",
     "dashboardt_record":"Record Type",
     "dashboardt_content":"Content",
     "dashboardt_value":"Value",
