@@ -39,9 +39,9 @@
         })
     }
 
-    function registerDomain(domain:string) {
+    function registerDomain(domain:string,type:string) {
         blurBackground.show();
-        serverContactor.registerDomain(domain).then(response=>{
+        serverContactor.registerDomain(domain,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
             switch(response.status) {
                 case 200:
@@ -152,7 +152,7 @@
 <Holder>
     <h2>{$t("common.dashboard_register_new_domain")}</h2>
     <p>{@html $t("common.dashboard_register_description")}</p>
-    <Registrar on:click={(event)=>registerDomain(event.detail.domain)}/>
+    <Registrar on:click={(event)=>registerDomain(event.detail.domain,event.detail.type)}/>
 </Holder>
 
 <Modal overrideDefault={true} on:primary={()=>modalClose()} on:secondary={()=>modalConfirm()} bind:this={modal} options={[$t("common.modal_ok")]} description={""} title={""}></Modal>
