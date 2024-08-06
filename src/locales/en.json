@@ -114,5 +114,8 @@
     "dashboardt_record":"Record Type",
     "dashboardt_content":"Content",
     "dashboardt_value":"Value",
-    "dashboardt_manage":"Manage"
+    "dashboardt_manage":"Manage",
+    "account_username_tooltip":"This is the SHA256 hash of your username.",
+    "account_domain_del_cooldown":"Domain deletion warning countdown time reduction",
+    "account_version_testing":"I want to test new frii.site features"
 }
