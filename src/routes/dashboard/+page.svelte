@@ -29,7 +29,8 @@
         serverContactor.deleteDomain(domain2delete).then(response=>{
             switch(response.status) {
                 case 200:
-                    modal.open($l("common.dashboard_delete_success",domain2delete),$l("common.dashboard_delete_success_description",domain2delete));
+                    modal.open(addArguements($t("common.dashboard_delete_success"),{"%domain%":domain2delete}),addArguements($t("common.dashboard_delete_success_description"),{"%domain%":domain2delete}));
+                    removeDomain(domain2delete)
                     break;
                 default:
                     modal.open($t("common.dashboard_delete_error"),$t("common.unhandled_error"));
@@ -45,6 +46,8 @@
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
+                    domainlist.push(["A",domain,"0.0.0.0"]);
+                    domainTable.updateDomains(domainlist);
                     break;
                 case 401:
                     redirectToLogin(401);
@@ -101,6 +104,13 @@
         })
     } 
 
+    function removeDomain(name:string) {
+        domainlist=domainlist.filter(function(domain) {
+            return domain.at(1)!==name
+        });
+        domainTable.updateDomains(domainlist);
+    }
+
     onMount(()=>{
 
 	try {
@@ -112,6 +122,7 @@
 	                value=new Map(Object.entries(value));
 	                domainlist.push([value.get("type"),key,value.get("ip")]);
 	            }
+                console.log(domainlist);
 	            domainTable.updateDomains(domainlist);
 	        }).catch(err=>{console.log(err);blurBackground.hide();});
 	}
