@@ -118,7 +118,7 @@ export class ServerContactor {
             },
         });
     }
-    async registerDomain(domain:string):Promise<Response> {
+    async registerDomain(domain:string,type:string):Promise<Response> {
         // 412: Incorrect login-ish
         // 404: User not found in db
         // 405: Invalid type (not A CNAME TXT or NS)
@@ -126,7 +126,6 @@ export class ServerContactor {
         // 401: Incorrect creds
         // 409: Not a valid domain
         // 405: Domain limit exceeded
-        const type:string = "A";
         let data = {
             "domain":domain,
             "content":"0.0.0.0",
