@@ -182,15 +182,24 @@
         h1 {
             font-size: 10em;
         }
+        h2 {
+            font-size: 8em;
+        }
     }
     @media(max-width: 690px) {
         h1 {
             font-size: 8em;
         }
+        h2 {
+            font-size: 6em;
+        }
     }
     @media(max-width: 580px) {
         h1 {
             font-size: 6em;
+        }
+        h2 {
+            font-size: 4em;
         }
     }
     .info {
