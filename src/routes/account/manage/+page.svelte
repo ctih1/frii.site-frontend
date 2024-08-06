@@ -10,6 +10,7 @@
     import Section from '$lib/components/Section.svelte';
     import Blur from '$lib/components/Blur.svelte';
     import { t, locale, locales, addArguements } from '$lib/translations';
+    import Switch from '$lib/components/Switch.svelte';
 
     let serverContactor:ServerContactor;
     let modal:Modal;
@@ -85,6 +86,11 @@
     </Section>
     <h1>{$t("common.account_manage_account")}</h1>
     <Section title={$t("common.account_manage")} id="manage">
+        <div class="switch">
+            <p>Domain deletion warning countdown</p>
+            <Switch on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
+        </div>
+        
         <div class="buttons">
             <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
             <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
@@ -101,5 +107,16 @@
     .buttons div {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
+    }
+    .switch {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+    }
+    .switch * {
+        width: fit-content;
+    }
+    .switch p {
+        margin-right: 1em;
     }
 </style>
