@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://api.frii.site";
+export const serverURL="http://localhost:5000";
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
