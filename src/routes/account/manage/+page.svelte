@@ -87,8 +87,8 @@
     <h1>{$t("common.account_manage_account")}</h1>
     <Section title={$t("common.account_manage")} id="manage">
         <div class="switch">
-            <p>Domain deletion warning countdown</p>
-            <Switch on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
+            <p>Domain deletion warning countdown time reduction</p>
+            <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
         </div>
         
         <div class="buttons">

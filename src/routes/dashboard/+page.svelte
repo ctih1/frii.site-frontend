@@ -24,6 +24,7 @@
         blurBackground.hide();
     }
 
+    let modalTime:number = 15;
 
     function modalConfirm() {
         serverContactor.deleteDomain(domain2delete).then(response=>{
@@ -112,7 +113,10 @@
     }
 
     onMount(()=>{
-
+        // stupid typescript done got fooled by the simplest trick in the book
+        if(localStorage.getItem("del-count")??null===true) { 
+            modalTime = 3;
+        }
 	try {
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
@@ -144,7 +148,7 @@
 <Holder>
     <h1>{$t("common.dashboard_your_domains")}</h1>
     <p>{$t("common.dashboard_domain_explanation")}</p>
-    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open(addArguements($t("common.dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("common.dashboard_domain_deletion_description"),15,[$t("common.cancel_modal"),$t("common.continue_modal")])}} on:save={(event)=>modifyDomain(event.detail.name,
+    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open(addArguements($t("common.dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("common.dashboard_domain_deletion_description"),modalTime,[$t("common.cancel_modal"),$t("common.continue_modal")])}} on:save={(event)=>modifyDomain(event.detail.name,
         event.detail.value,
         event.detail.type
     )} bind:this={domainTable} domains={domainlist}/>

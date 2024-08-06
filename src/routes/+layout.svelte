@@ -46,6 +46,13 @@
         box-sizing: border-box;
         outline-color: var(--primary);
     }
+    :global(input[type=checkbox]) {
+        transition: all 0.3s;
+        width: 100%;
+        max-width: 2em;
+        aspect-ratio: 1;
+        accent-color: var(--primary);
+    }
     :global(textarea) {
         transition: all 0.1s;
         border-style: solid;
