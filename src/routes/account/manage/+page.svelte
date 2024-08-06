@@ -30,6 +30,7 @@
 
     function getData() {
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
+            console.log(data);
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
