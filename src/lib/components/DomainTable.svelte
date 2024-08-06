@@ -62,8 +62,12 @@
             <tr>
                 <td><Dropdown bind:this={rowInputs[index][0]} on:optionchange={(event)=>domain[0]=event.detail} defaultValue={domain[0]} options={["A","CNAME","NS","TXT"]} disabled={true}/></td>
                 <td><div class="container">
-                    <div style="width: 75%" class="container"><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
-                    <div style="width: 25%; min-width:55px;"><input style="width: 100%; min-width:55px;" disabled value=".frii.site"></div>
+                    {#if domain[0]!=="TXT"}
+                        <div style="width: 75%" class="container"><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
+                        <div style="width: 25%; min-width:55px;"><input style="width: 100%; min-width:55px;" disabled value=".frii.site"></div>
+                    {:else}
+                        <div style="width: 100%" class="container"><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
+                    {/if}
                 </div></td>
                 <td><input bind:this={rowInputs[index][2]} type="text" bind:value={domain[2]}></td>
                 <td data-index={index} style="display: flex; flex-direction: row;">
@@ -120,5 +124,14 @@
 
     input:focus {
         transform: scale(1.05);
+        z-index: 11;
     }
+    @media(orientation:portrait) {
+        input:focus{
+            transform: scale(1.3);
+            font-size: 0.6em;
+            z-index: 11;
+        }
+    }
+
 </style>
