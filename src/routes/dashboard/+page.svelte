@@ -112,27 +112,29 @@
         domainTable.updateDomains(domainlist);
     }
 
-    onMount(()=>{
+onMount(()=>{
         // stupid typescript done got fooled by the simplest trick in the book
         if(localStorage.getItem("del-count")??null===true) { 
             modalTime = 3;
         }
-	try {
-	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
-	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
-	            domains = new Map(Object.entries(data));
-	            for(let pair of domains) {
-	                let [key,value] = pair;
-	                value=new Map(Object.entries(value));
-	                domainlist.push([value.get("type"),key,value.get("ip")]);
-	            }
-                console.log(domainlist);
-	            domainTable.updateDomains(domainlist);
-	        }).catch(err=>{console.log(err);blurBackground.hide();});
-	}
-	catch(e) {console.log(e);blurBackground.hide();}
-	blurBackground.hide();
-    });
+        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
+        serverContactor.getDomains().then(response=>{
+            if(response.status===401){redirectToLogin(401)}
+            if(response.status===404){domainTable.updateDomains([[""]])}
+
+            response.json().then(data=> {
+                domains = new Map(Object.entries(data));
+                for(let pair of domains) {
+                    let [key,value] = pair;
+                    value=new Map(Object.entries(value));
+                    domainlist.push([value.get("type"),key,value.get("ip")]);
+                }
+                domainTable.updateDomains(domainlist);
+            }
+        )
+    }
+)});
+
 </script>
 
 <svelte:head>

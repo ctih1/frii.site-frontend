@@ -128,5 +128,6 @@
     "account_recovery_sent":"A verification email has been sent to your email.",
     "account_recovery_sent_description":"If you cannot find it, please check your spam box.",
     "account_recovery_start_fail":"Failed to send verification code",
-    "account_recovery_start_fail_description":"Did you enter the correct username? It is case sensitive."
+    "account_recovery_start_fail_description":"Did you enter the correct username? It is case sensitive.",
+    "password_forget_intro":"Forgot your password?"
 }

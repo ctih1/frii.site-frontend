@@ -127,7 +127,10 @@
         </div>
         {#if !login}
             <p>{@html $t("common.legal_text")}</p>
+        {:else}
+            <h4 style="margin-top: 5px; margin-bottom: 5px;"><a href="/account/recover">{$t("common.password_forget_intro")}</a></h4>
         {/if}
+
         <a on:click={()=>login=!login}>
             {#if login}
                 {$t("common.signup_instead")}
