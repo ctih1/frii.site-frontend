@@ -153,6 +153,9 @@
             width: 45%;
             height: 4em;
         }
+        .button-holder x button a {
+            font-size: 40em !important;
+        }
         .button-holder x:last-child {
             margin-left: 4px;
         }

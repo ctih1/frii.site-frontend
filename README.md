@@ -65,6 +65,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | English | [ctih1](https://github.com/ctih1) |
 | German  | [Lugosieben](https://github.com/lugosieben) |
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
+| Polish | [Win81VMUser](https://github.com/win81vmuser) | 
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
