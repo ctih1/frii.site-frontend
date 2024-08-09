@@ -15,7 +15,7 @@
 
     .tooltip .tooltiptext {
         visibility: hidden;
-        min-width: 120px;
+        min-width: 140px;
         max-width: 400px;
         width: fit-content;
         background-color: var(--background-color);
