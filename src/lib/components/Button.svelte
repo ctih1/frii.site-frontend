@@ -100,6 +100,10 @@
         margin-right: auto;
     }
 
+    .margin-1em-top {
+        margin-top: 1em;
+    }
+
     .padding {
         padding: 0.5em;
     }
