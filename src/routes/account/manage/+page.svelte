@@ -81,7 +81,7 @@
         <div class="details">
             {#if loaded} 
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
-                <h3>{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
+                <h3 id="username">{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
             {:else} 
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
@@ -137,5 +137,10 @@
     }
     verified span {
         color: white;
+    }
+
+    #username {
+        overflow-wrap: break-word;
+        word-break: break-all;
     }
 </style>
