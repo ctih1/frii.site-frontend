@@ -22,6 +22,11 @@
     let usernameE:string;
     let loaded:boolean=false;
     let verified:boolean=false;
+    let maxDomains = 0;
+    let wildcards=false;
+    let admin=false;
+    let vuln=false;
+    let monitoring=false;
     onMount(()=>{
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
         getData();
@@ -35,6 +40,11 @@
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
             verified=data["verified"];
+            maxDomains=data["permissions"]["max-domains"]??4;
+            wildcards=data["permissions"]["wildcards"]??false;
+            admin=data["permissions"]["admin"]??false;
+            vuln=data["permissions"]["reports"]??false;
+            monitoring=data["permissions"]["userdetails"]??false;
         })
     }
 
@@ -88,6 +98,30 @@
             {#if loaded} 
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
                 <h3 id="username">{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
+                <div class="permission">
+                    <span class="material-symbols-outlined">lock</span><p>{$t("common.dashboard_permission_domains")}:  <strong>{maxDomains}</strong></p>
+                </div>
+                {#if wildcards}
+                    <div class="permission">
+                        <span class="material-symbols-outlined">asterisk</span><p>{$t("common.dashboard_permission_wildcards")}:  <strong>{wildcards}</strong></p>
+                    </div>
+                {/if}
+                {#if admin}
+                    <div class="permission">
+                        <span class="material-symbols-outlined">shield_person</span><p>{$t("common.dashboard_permission_admin")}:  <strong>{admin}</strong></p>
+                    </div>
+                {/if}
+                {#if vuln}
+                <div class="permission">
+                    <span class="material-symbols-outlined">handyman</span><p>{$t("common.dashboard_permission_vulnerabilities")}:  <strong>{vuln}</strong></p>
+                </div>
+                {/if}
+                {#if monitoring}
+                <div class="permission">
+                    <span class="material-symbols-outlined">groups</span><p>{$t("common.dashboard_permission_monitoring")}:  <strong>{monitoring}</strong></p>
+                </div>
+                {/if}
+                
             {:else} 
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
@@ -148,5 +182,10 @@
     #username {
         overflow-wrap: break-word;
         word-break: break-all;
+    }
+    .permission {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 </style>

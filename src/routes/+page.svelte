@@ -154,7 +154,8 @@
             height: 4em;
         }
         .button-holder x button a {
-            font-size: 40em !important;
+            font-size: 1.25em !important;
+            font-weight: 500;
         }
         .button-holder x:last-child {
             margin-left: 4px;
