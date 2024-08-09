@@ -21,7 +21,9 @@
 <form>
     <div class="container"><Dropdown on:optionchange={(event)=>selectedType=event.detail} disabled={false} args={"primary"} options={["A","CNAME","NS","TXT"]} defaultValue={"A"}></Dropdown></div>
     <input bind:value={domainInput} placeholder="domain">
-    <div style="width: 25%; min-width:55px;"><input style="width: 100%; min-width:55px;" disabled value=".frii.site"></div>
+    {#if selectedType!=="TXT"}
+        <div style="width: 25%; min-width:55px;"><input style="width: 100%; min-width:55px;" disabled value=".frii.site"></div>
+    {/if}
     <div class="container"><Button on:click={()=>dispatch("click",{"domain":domainInput,"type":selectedType})} args={"fill"}><span class="material-symbols-outlined">search</span></Button></div>
 </form>
 

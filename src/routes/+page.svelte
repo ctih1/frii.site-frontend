@@ -47,7 +47,7 @@
 
         <div class="div2"> 
             <div class="div2-content">
-                <h3 style="height: fit-content; margin-right: 1em;" class="info">{@html $t("common.index_aboutus_description")}</h3>
+                <h3 style="height: fit-content; margin-right: 1em; margin-left: 1em;" class="info">{@html $t("common.index_aboutus_description")}</h3>
             </div>  
         </div>
 
@@ -182,15 +182,24 @@
         h1 {
             font-size: 10em;
         }
+        h2 {
+            font-size: 8em;
+        }
     }
     @media(max-width: 690px) {
         h1 {
             font-size: 8em;
         }
+        h2 {
+            font-size: 6em;
+        }
     }
     @media(max-width: 580px) {
         h1 {
             font-size: 6em;
+        }
+        h2 {
+            font-size: 4em;
         }
     }
     .info {
@@ -199,6 +208,8 @@
 
     h2 {
         font-size: 6em;
+        max-width: 90vw;
+        overflow-wrap: break-word;
     }
     h3 {
         font-size: 2em;

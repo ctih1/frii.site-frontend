@@ -36,7 +36,7 @@
     "dashboard_delete_error":"Could not delete domain",
     "unhandled_error":"An unhandled error occured.",
     "dashboard_delete_success": "Succesfully deleted %domain%",
-    "dashboard_delete_sucess_description":"%domain% was deleted succesfully",
+    "dashboard_delete_success_description":"%domain% was deleted succesfully",
     "dashboard_register_success":"Succesfully registered %domain%!",
     "dashboard_register_fail":"Failed to register %domain%",
     "dashboard_register_success_description":"You now own the domain. Don't know how to set something up? Visit our <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",
@@ -114,5 +114,8 @@
     "dashboardt_record":"Record Type",
     "dashboardt_content":"Content",
     "dashboardt_value":"Value",
-    "dashboardt_manage":"Manage"
+    "dashboardt_manage":"Manage",
+    "account_username_tooltip":"This is the SHA256 hash of your username.",
+    "account_domain_del_cooldown":"Domain deletion warning countdown time reduction",
+    "account_version_testing":"I want to test new frii.site features"
 }

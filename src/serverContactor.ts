@@ -1,5 +1,6 @@
 import { redirectToLogin } from "./helperFuncs";
 export const serverURL="https://api.frii.site";
+
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -263,5 +264,17 @@ export class ServerContactor {
             headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
+    }
+    async createApi(domains:string[],perms:string[],comment:string[]):Promise<Response> {
+        const data = {
+            domains:domains,
+            perms:perms,
+            comment:comment
+        }
+        return await fetch(`${this.serverURL}/create-api`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify(data)
+        })
     }
 }

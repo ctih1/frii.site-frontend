@@ -24,12 +24,14 @@
         blurBackground.hide();
     }
 
+    let modalTime:number = 15;
 
     function modalConfirm() {
         serverContactor.deleteDomain(domain2delete).then(response=>{
             switch(response.status) {
                 case 200:
-                    modal.open($l("common.dashboard_delete_success",domain2delete),$l("common.dashboard_delete_success_description",domain2delete));
+                    modal.open(addArguements($t("common.dashboard_delete_success"),{"%domain%":domain2delete}),addArguements($t("common.dashboard_delete_success_description"),{"%domain%":domain2delete}));
+                    removeDomain(domain2delete)
                     break;
                 default:
                     modal.open($t("common.dashboard_delete_error"),$t("common.unhandled_error"));
@@ -45,6 +47,8 @@
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
+                    domainlist.push(["A",domain,"0.0.0.0"]);
+                    domainTable.updateDomains(domainlist);
                     break;
                 case 401:
                     redirectToLogin(401);
@@ -101,8 +105,18 @@
         })
     } 
 
-    onMount(()=>{
+    function removeDomain(name:string) {
+        domainlist=domainlist.filter(function(domain) {
+            return domain.at(1)!==name
+        });
+        domainTable.updateDomains(domainlist);
+    }
 
+    onMount(()=>{
+        // stupid typescript done got fooled by the simplest trick in the book
+        if(localStorage.getItem("del-count")??null===true) { 
+            modalTime = 3;
+        }
 	try {
 	        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
 	        serverContactor.getDomains().then(response=>response.json()).then(data=> {
@@ -112,6 +126,7 @@
 	                value=new Map(Object.entries(value));
 	                domainlist.push([value.get("type"),key,value.get("ip")]);
 	            }
+                console.log(domainlist);
 	            domainTable.updateDomains(domainlist);
 	        }).catch(err=>{console.log(err);blurBackground.hide();});
 	}
@@ -133,7 +148,7 @@
 <Holder>
     <h1>{$t("common.dashboard_your_domains")}</h1>
     <p>{$t("common.dashboard_domain_explanation")}</p>
-    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open(addArguements($t("common.dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("common.dashboard_domain_deletion_description"),15,[$t("common.cancel_modal"),$t("common.continue_modal")])}} on:save={(event)=>modifyDomain(event.detail.name,
+    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open(addArguements($t("common.dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("common.dashboard_domain_deletion_description"),modalTime,[$t("common.cancel_modal"),$t("common.continue_modal")])}} on:save={(event)=>modifyDomain(event.detail.name,
         event.detail.value,
         event.detail.type
     )} bind:this={domainTable} domains={domainlist}/>
