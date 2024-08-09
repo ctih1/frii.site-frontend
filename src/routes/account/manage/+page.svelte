@@ -31,7 +31,6 @@
 
     function getData() {
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            console.log(data);
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
@@ -61,6 +60,13 @@
                     break;
             }
         })
+    }
+    function handleBeta(mode:boolean) {
+        if(mode) {
+            serverContactor.joinBeta()
+        } else {
+            serverContactor.leaveBeta()
+        }
     }
     function gpdrData() {
         serverContactor.getGDPR().then(response=>response.json()).then(data=>{
@@ -96,7 +102,7 @@
         </div>
         <div class="switch">
             <p>{$t("common.account_version_testing")}</p>
-            <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail)}}/>
+            <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
         </div>
         <div class="buttons">
             <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>

@@ -293,4 +293,16 @@ export class ServerContactor {
             body: JSON.stringify(data)
         })
     }
+    async joinBeta() {
+        return await fetch(`${this.serverURL}/join/beta`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        });
+    }
+    async leaveBeta() {
+        return await fetch(`${this.serverURL}/leave/beta`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        });
+    }
 }
