@@ -124,9 +124,6 @@
     }
 
     @media(max-width: 1330px) {
-        .text-container h1 strong, .text-container h1{
-            margin-left: 20px;
-        }
         .text-container {
             text-align: left;
         }
