@@ -229,6 +229,9 @@
         h2 {
             font-size: 3em;
         }
+        h2 {
+            font-size: 4em;
+        }
     }
     .info {
         font-weight: 500;

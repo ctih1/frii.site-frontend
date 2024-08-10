@@ -36,6 +36,7 @@
 
     function getData() {
         serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
+            console.log(data);
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
@@ -121,7 +122,7 @@
                     <span class="material-symbols-outlined">groups</span><p>{$t("common.dashboard_permission_monitoring")}:  <strong>{monitoring}</strong></p>
                 </div>
                 {/if}
-                
+             
             {:else} 
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
@@ -178,7 +179,6 @@
     verified span {
         color: white;
     }
-
     #username {
         overflow-wrap: break-word;
         word-break: break-all;
