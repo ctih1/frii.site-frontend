@@ -70,6 +70,18 @@ export async function resendEmail(token:string|null):Promise<Response> {
     });
 }
 
+export async function getLanguagePercentages():Promise<Response> {
+    return await fetch(`${serverURL}/translation/percentages`, {
+       method: "GET" 
+    });
+}
+
+export async function getTranslationKeys(code:string):Promise<Response> {
+    return await fetch(`${serverURL}/translation/${code}/missing`, {
+        method: "GET"
+    })
+}
+
 export class ServerContactor {
     token:string;
     serverURL:string;
