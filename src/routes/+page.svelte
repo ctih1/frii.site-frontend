@@ -39,7 +39,7 @@
 </div>
 <div class="content">
     <div class="parent">
-        <div class="div1"> 
+        <div id="about-us" class="div1"> 
             <div class="text-container">
                 <h2><strong>{$t("common.index_aboutus")}</strong></h2>
             </div>
@@ -47,7 +47,7 @@
 
         <div class="div2"> 
             <div class="div2-content">
-                <h3 style="height: fit-content; margin-right: 1em; margin-left: 1em;" class="info">{@html $t("common.index_aboutus_description")}</h3>
+                <h3 style="height: fit-content;" class="info">{@html $t("common.index_aboutus_description")}</h3>
             </div>  
         </div>
 
@@ -86,7 +86,6 @@
         margin-right:auto;
         height: 15%;
         width: 60%;
-
     }
     .button-holder x {
         margin: 2px;
@@ -124,12 +123,7 @@
     }
 
     @media(max-width: 1330px) {
-        .text-container {
-            text-align: left;
-        }
-        .text-container p {
-            margin-left: 30px;
-        }
+
 
     } 
     @media(max-width: 1030px) {
@@ -143,7 +137,7 @@
             font-size: 1.5em;
         }
     }
-    @media (orientation: portrait), (max-width: 745px) {
+    @media (orientation: portrait), (max-width: 870px) {
         .parent {
             margin-top: auto;
             margin-bottom: auto;
@@ -156,13 +150,29 @@
             margin-left: auto;
         }
         .button-holder x {
-            width: 40vw;
+            width: 45%;
             height: 4em;
         }
+        .button-holder x button a {
+            font-size: 1.25em !important;
+            font-weight: 500;
+        }
+        .button-holder x:last-child {
+            margin-left: 4px;
+        }
+        .button-holder x:first-child {
+            margin-right: 4px;
+        }
+        .info {
+            font-weight: 300;
+            margin-left: 2em;
+            margin-right: 2em;
+        }  
         .parent div {
             grid-area: auto/auto/auto/auto;
             width: 100vw;
             height: fit-content;
+            
         }
         .parent div * {
             margin-left: auto;
@@ -174,8 +184,14 @@
         .text-container {
             text-align: center;
         }
+        .info {
+            font-weight: 500;
+            margin-right: 2em !important;
+            margin-left: 2em !important;
+            max-width: 80ch;
+        }   
     }
-    @media(max-width: 795px) {
+    @media(max-width: 795px), (orientation: landscape) {
         h1 {
             font-size: 10em;
         }
@@ -191,9 +207,27 @@
             font-size: 6em;
         }
     }
-    @media(max-width: 580px) {
+    @media(max-width: 450px) {
         h1 {
-            font-size: 6em;
+            font-size: 7em;
+        }
+        h2 {
+            font-size: 5em;
+        }
+        .button-holder {
+            width: 100%;
+        }
+        .info {
+            margin-right: 1em !important;
+            margin-left: 1em !important;
+        }   
+    }
+    @media(max-width: 300px) {
+        h1 {
+            font-size: 5em;
+        }
+        h2 {
+            font-size: 3em;
         }
         h2 {
             font-size: 4em;
@@ -201,7 +235,9 @@
     }
     .info {
         font-weight: 500;
-    }
+        margin-right: 10vw;
+        max-width: 80ch;
+    }   
 
     h2 {
         font-size: 6em;

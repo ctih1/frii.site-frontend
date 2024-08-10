@@ -117,5 +117,22 @@
     "dashboardt_manage":"Manage",
     "account_username_tooltip":"This is the SHA256 hash of your username.",
     "account_domain_del_cooldown":"Domain deletion warning countdown time reduction",
-    "account_version_testing":"I want to test new frii.site features"
+    "account_version_testing":"I want to test new frii.site features",
+    "account_recovery_title_new":"Create a new password",
+    "account_recovery_title":"Account recovery",
+    "account_recovery_description":"Please enter the username for your frii.site account. An email verification code will be sent to you.",
+    "account_recovery_success":"Succesfully changed password!",
+    "account_recovery_success_description":"You can now log in using your new password",
+    "account_recovery_fail":"Failed to change password",
+    "account_recovery_fail_description":"Perhaps the code has expired?",
+    "account_recovery_sent":"A verification email has been sent to your email.",
+    "account_recovery_sent_description":"If you cannot find it, please check your spam box.",
+    "account_recovery_start_fail":"Failed to send verification code",
+    "account_recovery_start_fail_description":"Did you enter the correct username? It is case sensitive.",
+    "password_forget_intro":"Forgot your password?",
+    "dashboard_permission_domains":"Maximum domains",
+    "dashboard_permission_wildcards":"Wildcards",
+    "dashboard_permission_admin":"Administrator",
+    "dashboard_permission_vulnerabilities":"Vulnerabilities",
+    "dashboard_permission_monitoring":"Monitoring"
 }

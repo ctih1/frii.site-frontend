@@ -3,7 +3,7 @@
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<div class="tooltip"><span class="material-symbols-outlined">info</span>
+<div role="tooltip" class="tooltip"><span class="material-symbols-outlined">info</span>
     <span class="tooltiptext"><slot/></span>
 </div> 
 
@@ -15,7 +15,7 @@
 
     .tooltip .tooltiptext {
         visibility: hidden;
-        min-width: 120px;
+        min-width: 140px;
         max-width: 400px;
         width: fit-content;
         background-color: var(--background-color);

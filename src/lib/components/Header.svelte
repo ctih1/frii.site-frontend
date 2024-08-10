@@ -15,43 +15,36 @@
     };
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
 <header bind:this={header}>
+    <a class="item" href="/">
+        <span class="material-symbols-outlined">home</span>
+        {$t("common.dashboard_home")}
+    </a>
+
+    <a class="item" href="/dashboard">
+        <span class="material-symbols-outlined">apps</span>
+        {$t("common.dashboard_navbar")}
+    </a>
+
+    <a class="item" href="/account/manage">
+        <span class="material-symbols-outlined">person</span>
+        {$t("common.dashboard_account")}
+    </a>
+    
+    <a class="item" href="/report">
+        <span class="material-symbols-outlined">flag</span>
+        {$t("common.dashboard_abuse")}
+    </a>
+
     <div class="item">
-        <div class="item">
-        <a href="/">{$t("common.dashboard_home")}</a>
+        <span class="material-symbols-outlined">language</span>
+        <select style="color: var(--primary);" bind:value="{$locale}" on:change={handleChange}>
+            {#each $locales as value}
+                <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+            {/each}
+        </select>
     </div>
-
-    <div class="item">
-        </div>
-
-    <div class="item">
-        <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
-    </div>
-
-    <div class="item">
-        </div>
-
-    <div class="item">
-        </div>
-
-    <div class="item">
-        <a href="/account/manage">{$t("common.dashboard_account")}</a>
-    </div>
-
-    <div class="item">
-        </div>
-
-    <div class="item">
-        <a href="/report">{$t("common.dashboard_abuse")}</a>
-    </div>
-
-    </div>
-
-    <select bind:value="{$locale}" on:change={handleChange}>
-        {#each $locales as value}
-            <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
-        {/each}
-    </select>
 </header>
 
 <style>

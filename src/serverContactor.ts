@@ -18,6 +18,22 @@ export async function createToken(username:string,password:string):Promise<strin
     return token;
 }
 
+export async function sendForgotCode(username:string): Promise<Response>  {
+    return await fetch(`${serverURL}/reset-password`, {
+        method: "PATCH",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({"username":username})
+    })
+}
+
+export async function confirmPasswordChange(id:string,password:string): Promise<Response> {
+    return await fetch(`${serverURL}/account-recovery/${id}`, {
+        method: "PATCH",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({"password":password})
+    })
+}
+
 export function getReportStatus(id:string) {
     fetch(`${serverURL}/vulnerability/get?id=${id}`,{
         method:"GET",
@@ -276,5 +292,17 @@ export class ServerContactor {
             headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
             body: JSON.stringify(data)
         })
+    }
+    async joinBeta() {
+        return await fetch(`${this.serverURL}/join/beta`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        });
+    }
+    async leaveBeta() {
+        return await fetch(`${this.serverURL}/leave/beta`,{
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        });
     }
 }
