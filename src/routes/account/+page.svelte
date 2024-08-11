@@ -75,6 +75,9 @@
                         modal.open($t("common.signup_success"),$t("common.signup_success_description"));
                         login=true;
                         break;
+                    case 400:
+                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
+                        break;
                     case 409:
                         modal.open($t("common.signup_fail"),$t("common.signup_fail_username"));
                         break;
