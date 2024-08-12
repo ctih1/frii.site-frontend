@@ -37,7 +37,7 @@
         <p>WARNING: This page is still in beta. You are allowed to share screenshots or videos of this page :D.</p>
         <p>Your credits: {credits}</p>
 
-        <Button on:click={()=>{}} args="fill padding">Convert 200 credits to one extra domain (check on frii.site/account/manage. It may take up to 30 seconds to invalidate the cache)</Button>
+        <Button on:click={()=>{convertCredits();}} args="fill padding">Convert 200 credits to one extra domain (check on frii.site/account/manage. It may take up to 30 seconds to invalidate the cache)</Button>
     </Holder>
 
 
