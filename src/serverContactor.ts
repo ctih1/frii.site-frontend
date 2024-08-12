@@ -317,4 +317,18 @@ export class ServerContactor {
             headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
         });
     }
+
+    async convertCredits() {
+        return await fetch(`${this.serverURL}/credits/convert`,{
+            method:"POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        })
+    };
+
+    async getCredits() {
+        return await fetch(`${this.serverURL}/credits/get`,{
+            method:"GET",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        })
+    }
 }
