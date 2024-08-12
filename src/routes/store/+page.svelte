@@ -6,7 +6,6 @@
     import {redirectToLogin} from "../../helperFuncs";
     import Holder from "$lib/components/Holder.svelte";
     let credits:number = 0;
-
     let sc = new ServerContactor(localStorage.getItem("auth-token"));
     let modal:Modal;
     let loaded:boolean=false;
@@ -17,6 +16,7 @@
         }
         response.json().then(data=>{
             credits = data["credits"];
+            loaded=true;
         })
     });
 
