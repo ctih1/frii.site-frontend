@@ -63,10 +63,10 @@
                 <td><Dropdown bind:this={rowInputs[index][0]} on:optionchange={(event)=>domain[0]=event.detail} defaultValue={domain[0]} options={["A","CNAME","NS","TXT"]} disabled={true}/></td>
                 <td><div class="container">
                     {#if domain[0]!=="TXT"}
-                        <div style="width: 75%" class="container"><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
-                        <div style="width: 25%; min-width:55px;"><input style="width: 100%; min-width:55px;" disabled value=".frii.site"></div>
+                        <div style="width: 75%" class="container"><input disabled bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
+                        <div style="width: 25%; min-width:55px;"><input disabled style="width: 100%; min-width:55px;" value=".frii.site"></div>
                     {:else}
-                        <div style="width: 100%" class="container"><input bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
+                        <div style="width: 100%" class="container"><input disabled bind:this={rowInputs[index][1]} type="text" bind:value={domain[1]}></div>
                     {/if}
                 </div></td>
                 <td><input bind:this={rowInputs[index][2]} type="text" bind:value={domain[2]}></td>
