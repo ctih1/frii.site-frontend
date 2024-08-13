@@ -26,6 +26,7 @@
                 modal.open("Something went wrong","Something went wrong while converting domains!");
             } else {
                 modal.open("Success!","Succesfully converted");
+                credits-=200;
             }
         })
     }
@@ -34,7 +35,7 @@
 {#if loaded}
     <Modal title="" description="" options={["OK"]} bind:this={modal}></Modal>
     <Holder>
-        <p>WARNING: This page is still in beta. You are allowed to share screenshots or videos of this page :D.</p>
+        <p>WARNING: This page is still in beta. The styling, way credits work, or item prices have not been determined yet.</p>
         <p>Your credits: {credits}</p>
 
         <Button on:click={()=>{convertCredits();}} args="fill padding">Convert 200 credits to one extra domain (check on frii.site/account/manage. It may take up to 30 seconds to invalidate the cache)</Button>
