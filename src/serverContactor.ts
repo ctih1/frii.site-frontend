@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://api.frii.site";
+export const serverURL="https://api.friisite";
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -330,5 +330,13 @@ export class ServerContactor {
             method:"GET",
             headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
         })
+    }
+    async submitLanguageContribution(language:string, contribution:{key:string,val:string}[]) {
+        return await fetch(`${this.serverURL}/translations/${language}/contribute`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"contributions":contribution})
+        }
+        )
     }
 }
