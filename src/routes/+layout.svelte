@@ -1,9 +1,11 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import Analytics from "$lib/components/Analytics.svelte";
+    import Banner from "$lib/components/Banner.svelte";
     import Ads from "$lib/components/Ads.svelte"
 </script>
 
+<Banner/>
 <Header/>
 <Analytics/>
 <Ads></Ads>

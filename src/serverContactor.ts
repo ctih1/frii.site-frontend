@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://api.friisite";
+export const serverURL="https://api.frii.site";
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -16,6 +16,10 @@ export async function createToken(username:string,password:string):Promise<strin
     const usr = await digestMessage(username);
     const token = `${psw}|${usr}`;
     return token;
+}
+
+export async function getStatus():Promise<Response> {
+    return await fetch(`${serverURL}/status`);
 }
 
 export async function sendForgotCode(username:string): Promise<Response>  {
