@@ -114,4 +114,7 @@
     .no-margin {
         margin: 0px;
     }
+    .height-unset {
+        height: unset;
+    }
 </style>

@@ -31,20 +31,44 @@
         })
     }
 </script>
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 {#if loaded}
     <Modal title="" description="" options={["OK"]} bind:this={modal}></Modal>
     <Holder>
+        <h1>Store</h1>
         <p>WARNING: This page is still in beta. The styling, way credits work, or item prices have not been determined yet.</p>
-        <p>Your credits: {credits}</p>
-
-        <Button on:click={()=>{convertCredits();}} args="fill padding">Convert 200 credits to one extra domain (check on frii.site/account/manage. It may take up to 30 seconds to invalidate the cache)</Button>
+        <p style="display: flex; align-items: center;">{credits} <span style="color: var(--primary)" class="material-symbols-outlined">poker_chip</span></p>
+        <div class="shop">
+            <div class="shop-item">
+                <h3>Extra domain</h3>
+                <p style="display: flex; align-items: center;">Price: 200 <span style="color: var(--primary)" class="material-symbols-outlined">poker_chip</span></p>
+                <Button on:click={()=>{convertCredits();}} args="padding fill height-unset">Purchase</Button>
+            </div>
+        </div>
     </Holder>
 
 
 {:else}
     <Holder>
         <Placeholder />
-        <Placeholder />
+        <Placeholder /> 
     </Holder>
 {/if}
+
+<style>
+    .shop {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        grid-template-rows: repeat(auto,auto);
+    }
+    .shop-item {
+        background-color: var(--offwhite-color);
+        padding: 20px;
+        border-radius: 0.5em;
+    }
+    @media(orientation:portrait) {
+        .shop {
+            grid-template-columns: repeat(1,1fr);
+        }
+    }
+</style>
