@@ -134,5 +134,7 @@
     "dashboard_permission_wildcards":"Wildcards",
     "dashboard_permission_admin":"Administrator",
     "dashboard_permission_vulnerabilities":"Vulnerabilities",
-    "dashboard_permission_monitoring":"Monitoring"
+    "dashboard_permission_monitoring":"Monitoring",
+    "translation_clarification":"Here are all the untranslated parts of frii.site in your language. Scroll down to save changes",
+    "translation_input":"Your translation"
 }

@@ -121,7 +121,6 @@ onMount(()=>{
         serverContactor.getDomains().then(response=>{
             if(response.status===401){redirectToLogin(401)}
             if(response.status===404){domainTable.updateDomains([[""]])}
-
             response.json().then(data=> {
                 domains = new Map(Object.entries(data));
                 for(let pair of domains) {

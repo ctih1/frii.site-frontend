@@ -18,6 +18,10 @@ export async function createToken(username:string,password:string):Promise<strin
     return token;
 }
 
+export async function getStatus():Promise<Response> {
+    return await fetch(`${serverURL}/status`);
+}
+
 export async function sendForgotCode(username:string): Promise<Response>  {
     return await fetch(`${serverURL}/reset-password`, {
         method: "PATCH",
@@ -68,6 +72,18 @@ export async function resendEmail(token:string|null):Promise<Response> {
             "X-Auth-Token":token as string
         }
     });
+}
+
+export async function getLanguagePercentages():Promise<Response> {
+    return await fetch(`${serverURL}/translation/percentages`, {
+       method: "GET" 
+    });
+}
+
+export async function getTranslationKeys(code:string):Promise<Response> {
+    return await fetch(`${serverURL}/translation/${code}/missing`, {
+        method: "GET"
+    })
 }
 
 export class ServerContactor {
@@ -304,5 +320,26 @@ export class ServerContactor {
             method: "POST",
             headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
         });
+    }
+    async convertCredits() {
+        return await fetch(`${this.serverURL}/credits/convert`,{
+            method:"POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        })
+    };
+
+    async getCredits() {
+        return await fetch(`${this.serverURL}/credits/get`,{
+            method:"GET",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
+        })
+    }
+    async submitLanguageContribution(language:string, contribution:{key:string,val:string}[]) {
+        return await fetch(`${this.serverURL}/translations/${language}/contribute`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json","X-Auth-Token":this.token},
+            body: JSON.stringify({"contributions":contribution})
+        }
+        )
     }
 }

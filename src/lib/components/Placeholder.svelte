@@ -18,6 +18,7 @@
     .placeholder {
         width: 100%;
         height: 100%;
+        min-height: 20px;
         animation-duration: 1.2s;
         animation-fill-mode: forwards;
         animation-iteration-count: infinite;
