@@ -321,7 +321,6 @@ export class ServerContactor {
             headers: {"Content-Type":"application/json","X-Auth-Token":this.token}
         });
     }
-
     async convertCredits() {
         return await fetch(`${this.serverURL}/credits/convert`,{
             method:"POST",
