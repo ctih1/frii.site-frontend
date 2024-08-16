@@ -19,22 +19,22 @@
 <header bind:this={header}>
     <a class="item" href="/">
         <span class="material-symbols-outlined">home</span>
-        {$t("common.dashboard_home")}
+        <p>{$t("common.dashboard_home")}</p>
     </a>
 
     <a class="item" href="/dashboard">
         <span class="material-symbols-outlined">apps</span>
-        {$t("common.dashboard_navbar")}
+        <p>{$t("common.dashboard_navbar")}</p>
     </a>
 
     <a class="item" href="/account/manage">
         <span class="material-symbols-outlined">person</span>
-        {$t("common.dashboard_account")}
+        <p>{$t("common.dashboard_account")}</p>
     </a>
     
     <a class="item" href="/report">
         <span class="material-symbols-outlined">flag</span>
-        {$t("common.dashboard_abuse")}
+        <p>{$t("common.dashboard_abuse")}</p>
     </a>
 
     <div class="item">
@@ -91,6 +91,16 @@
         .item {
             margin-left: 0.25em;
             margin-right: 0.25em;
+        }
+        .item p {
+            display: none;
+        }
+        .material-symbols-outlined {
+            font-size: 40px;
+        }
+        header {
+            display: flex;
+            justify-content: space-around;
         }
     }
     select {
