@@ -8,7 +8,6 @@
 <Banner />
 <Header />
 <Analytics />
-
 <Ads></Ads>
 <svelte:head></svelte:head>
 <main>
