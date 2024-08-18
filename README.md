@@ -63,7 +63,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | -------- | ----------- | 
 | Finnish | [ctih1](https://github.com/ctih1) |
 | English | [ctih1](https://github.com/ctih1) |
-| German  | [Lugosieben](https://github.com/lugosieben) |
+| German  | [Lugosieben](https://github.com/lugosieben) and [Planethac](https://github.com/Planethac) |
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
 | Polish | [Win81VMUser](https://github.com/win81vmuser) | 
 
