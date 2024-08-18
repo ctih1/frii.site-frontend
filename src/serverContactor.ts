@@ -165,7 +165,7 @@ export class ServerContactor {
             "type":type
         };
         if(type==="CNAME") {
-            data["type"]="example.com"
+            data["content"]="example.com"
         }
         return await fetch(`${this.serverURL}/register-domain`,{
             method:"POST",

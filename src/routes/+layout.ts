@@ -4,6 +4,7 @@ import { addTranslations, setLocale, setRoute } from '$lib/translations';
 export const ssr = false;
 /** @type {import('@sveltejs/kit').Load} */
 export const load = async ({ data }) => {
+  if(data===null) {return;}
   const { i18n, translations } = data;
   const { locale, route } = i18n;
   const initLocale = get(prefLocale) ? get(prefLocale) : "en";
