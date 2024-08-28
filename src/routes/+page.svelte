@@ -65,9 +65,11 @@
         </div>
 
         <div class="div4">
-
+           
         </div>
+        <p style="color: grey;">this version of frii.site is mantained by <a style="color: grey; " href="https://github.com/whatdidyouexpect"><u>whatdidyouexpect</u></a> on github!</p>
     </div>
+    
 </div>
 
 
