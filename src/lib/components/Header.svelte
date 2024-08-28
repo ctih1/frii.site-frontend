@@ -54,10 +54,12 @@
         align-items: center;
         top: 0px;
         left: 0px;
-        background-color: rgb(65, 65, 65);
+        background-color: rgb(61, 61, 61);
         min-height: 50px;
         width: 100vw;
+
         z-index: 10;
+        border-radius: 20px;
     }
     header * {
         align-items: center;

@@ -23,6 +23,7 @@
         --border-color: rgba(0,0,0,0.05);
         --secondary-color: #000000;
         --offwhite-color: #000000;
+        background-color: black;
         --background-color: rgb(0, 0, 0);
 
         overflow-x: hidden; 
