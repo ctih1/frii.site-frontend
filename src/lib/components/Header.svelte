@@ -21,8 +21,9 @@
     import { onMount } from 'svelte';
 
     onMount(() => {
-    serverUrl = localStorage.getItem('server_url') || localStorage.setItem('server_url', "https://api.frii.site");
-    });
+    serverUrl = localStorage.getItem('server_url') || "https://api.frii.site"; // why would i think that would work ffs
+});
+
 
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
