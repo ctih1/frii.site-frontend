@@ -3,6 +3,8 @@
 	import Modal  from './Modal.svelte';
     import { t, locale, locales } from '$lib/translations';
     import {getFlagEmoji} from "../../helperFuncs";
+    import { serverURL } from '../../serverContactor';
+
     let header:HTMLElement
     let modal:Modal;
     export function getHeight():number {
@@ -13,6 +15,15 @@
         const { value } = currentTarget;
         prefLocale.set(value);
     };
+
+    let serverUrl = '';
+
+    import { onMount } from 'svelte';
+
+    onMount(() => {
+    serverUrl = localStorage.getItem('server_url') || 'No Server URL found';
+    });
+
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
@@ -37,6 +48,11 @@
         <p>{$t("common.dashboard_abuse")}</p>
     </a>
 
+    <a class="item" href="#">
+        <span class="material-symbols-outlined">computer</span>
+        <p>{serverUrl}</p>
+    </a>
+
     <div class="item">
         <span class="material-symbols-outlined">language</span>
         <select style="color: var(--primary);" bind:value="{$locale}" on:change={handleChange}>
@@ -45,6 +61,8 @@
             {/each}
         </select>
     </div>
+
+
 </header>
 
 <style>
