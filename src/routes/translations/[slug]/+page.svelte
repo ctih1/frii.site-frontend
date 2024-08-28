@@ -101,7 +101,8 @@
         {/if}
     </div>
     <Button on:click={() => handleClick()} args="fill padding argin-1em-top"
-        >{$t("common.security_report_submit")}</Button>
+        >{$t("common.security_report_submit")}</Button
+    >
 </Holder>
 
 <style>
