@@ -1,10 +1,12 @@
+
+
 <script lang="ts">
     //@ts-ignore
     import { t } from '$lib/translations';
     import Holder from '$lib/components/Holder.svelte';
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Button from "$lib/components/Button.svelte";
-    import { serverURL } from '../serverContactor';
+
 </script>
 <svelte:head>   
     <title>frii.site</title>
@@ -15,57 +17,23 @@
     <div class="parent">
         <div class="div1"> 
             <div class="text-container">
-                <h1 style="color: white;"><strong>frii.site</strong></h1>
-                <p style="color: white; font-size: 1.5em;"><i>{ $t("common.index_description") }</i></p>
-            </div>
-        </div>
-
-        <div class="div2"> 
-            <div class="div2-content">
-                <div class="button-holder">
-                    <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}><a style="color: #ffffff;" href="/account">{$t("common.index_register_account")}</a></Button></x>
-                    <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}><a style="color: #ffffff;" href="/dashboard">{$t("common.index_goto_dashboard")}</a></Button></x>
-                    <p style="color: black">hello!</p>
-                    <p></p>
-                    <x class="bh">
-                      
-                        <Button on:click={() => {
-                          const token = prompt('Please enter your token:');
-                          if (token) {
-                            localStorage.setItem('auth-token', token);
-                            alert('Token saved successfully!');
-                          } else {
-                            alert('No token entered. Token not saved.');
-                          }
-                        }}>
-                          <a style="color: #ffffff;" href="/dashboard">{$t("common.index_token_login")}</a>
-                        </Button>
-                      </x>
-
-                      <x class="bh">
-                        <Button on:click={() => {
-                          const token = prompt('Please enter Server URL:');
-                          if (token) {
-                            localStorage.setItem('server_url', token);
-                            alert('URL saved successfully!');
-                          } else {
-                            alert('No URL entered. URL not saved.');
-                          }
-                        }}>
-                          <a style="color: #ffffff;" href="/dashboard">{$t("common.index_set_server")}</a>
-                        </Button>
-                      </x>
-                </div>  
+                <div class="content">
+                    <div class="parent">
+                        <div id="about-us" class="div1"> 
+                            <div class="text-container">
+                                <h2><strong>{$t("common.index_aboutus")}</strong></h2>
+                            </div>
+                        </div>
                 
-            </div>  
-        </div>
-
-        <div class="div3">
-    
-        </div>
-
-        <div class="div4">
-
+                        <div class="div2"> 
+                            <div class="div2-content">
+                                <h3 style="height: fit-content;" class="info">{@html $t("common.index_aboutus_description")}</h3>
+                            </div>  
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

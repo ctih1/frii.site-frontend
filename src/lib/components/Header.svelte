@@ -47,7 +47,10 @@
         <span class="material-symbols-outlined">flag</span>
         <p>{$t("common.dashboard_abuse")}</p>
     </a>
-
+    <a class="item" href="/aboutus">
+        <span class="material-symbols-outlined">book</span>
+        <p>{$t("common.dashboard_aboutus")}</p>
+    </a>
     <a class="item" href="#">
         <span class="material-symbols-outlined">computer</span>
         <p>{serverUrl}</p>
