@@ -21,7 +21,7 @@
     import { onMount } from 'svelte';
 
     onMount(() => {
-    serverUrl = localStorage.getItem('server_url') || 'No Server URL found';
+    serverUrl = localStorage.getItem('server_url') || localStorage.setItem('server_url', "https://api.frii.site");
     });
 
 </script>
