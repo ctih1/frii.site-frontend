@@ -14,8 +14,8 @@
     <div class="parent">
         <div class="div1"> 
             <div class="text-container">
-                <h1><strong>frii.site</strong></h1>
-                <p style="font-size: 1.5em;"><i>{ $t("common.index_description") }</i></p>
+                <h1 style="color: white;"><strong>frii.site</strong></h1>
+                <p style="color: white; font-size: 1.5em;"><i>{ $t("common.index_description") }</i></p>
             </div>
         </div>
 

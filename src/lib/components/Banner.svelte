@@ -1,3 +1,5 @@
+<script>console.log("incase any of you were wondering YES i did remove the banner")</script>
+<!--
 <script lang="ts">
     import { getStatus } from "../../serverContactor";
     let height:number;
@@ -51,3 +53,4 @@
         color: white;
     }
 </style>
+-->

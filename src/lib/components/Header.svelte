@@ -41,7 +41,7 @@
         <span class="material-symbols-outlined">language</span>
         <select style="color: var(--primary);" bind:value="{$locale}" on:change={handleChange}>
             {#each $locales as value}
-                <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+                <option style="color: black;" value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
             {/each}
         </select>
     </div>
@@ -49,12 +49,12 @@
 
 <style>
     header {
-        position: asbolute;
+        position: absolute;
         display: flex;
         align-items: center;
         top: 0px;
         left: 0px;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(65, 65, 65);
         min-height: 50px;
         width: 100vw;
         z-index: 10;

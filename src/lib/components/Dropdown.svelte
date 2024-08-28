@@ -126,6 +126,6 @@
     }
     .primary {
         background-color: var(--primary);
-        color: white;
+        color: rgb(54, 54, 54);
     }
 </style>
