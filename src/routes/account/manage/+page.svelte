@@ -2,6 +2,7 @@
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
+    import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Placeholder from '$lib/components/Placeholder.svelte';
     import { onMount } from 'svelte';
@@ -89,7 +90,16 @@
         localStorage.removeItem("auth-token");
         redirectToLogin(200);
     }
+
+    let token = '';
+
+    onMount(() => {
+    token = localStorage.getItem('token') || 'No Token found';
+    });
+
+
 </script>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <Blur bind:this={blurElement}/>
 <Holder>
@@ -98,7 +108,10 @@
         <div class="details">
             {#if loaded} 
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
-                <h3 id="username">{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
+                <h3 id="username">{usernameE} <Tooltip><p style="color: white;">{$t("common.account_username_tooltip")}</p></Tooltip></h3>
+                <div class="token-container">
+                <h3>{$t("common.account_token")}</h3><span class="token">{token}</span>
+                </div>
                 <div class="permission">
                     <span class="material-symbols-outlined">lock</span><p>{$t("common.dashboard_permission_domains")}:  <strong>{maxDomains}</strong></p>
                 </div>
@@ -144,14 +157,40 @@
             <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
             <div class="danger">
                 <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
+                
             </div>
         </div>
-</div>
+        
+    </div>
 </Holder>
 
 <Modal bind:this={modal} on:secondary={()=>handleDelete()} options={[$t("common.continue_modal")]} title={""} description={""}></Modal>
 
+
 <style>
+  .token-container {
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .token {
+    display: none;
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    white-space: nowrap;
+    z-index: 10;
+   }
+
+   .token-container:hover .token {
+    display: block;
+  }
+
     .buttons {
         background-color: white;
     }

@@ -30,6 +30,7 @@
     "index_goto_dashboard":"Vai alla dashboard",
     "index_token_login":"Accedi con Token",
     "dashboard_title":"Dashboard",
+    
     "dashboard_your_domains":"I tuoi domini",
     "dashboard_domain_explanation":"Questi sono tutti domini che hai. Puoi modificare ogni singolo parametro di essi semplicemente cliccando sulla loro apposita casella di testo.",
     "dashboard_domain_deletion_alert":"Sei sicuro di eliminare %domain%?",
@@ -66,6 +67,7 @@
     "signup_fail_username":"Il nome utente è già stato preso.",
     "signup_fail_email":"L'email è già in uso",
     "account_title_on_tab":"Account - frii.site",
+    "account_token":"Passa il mouse sopra di me per il tuo token! Non divulgarlo né condividerlo!",
     "signup_text":"Registrati",
     "login_text":"Accedi",
     "login_description":"Per favore accedi con il tuo account frii.site.",

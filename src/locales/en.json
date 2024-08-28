@@ -119,6 +119,7 @@
     "dashboardt_value":"Value",
     "dashboardt_manage":"Manage",
     "account_username_tooltip":"This is the SHA256 hash of your username.",
+    "account_token":"Hover over me for your token! Dont leak or share this!",
     "account_domain_del_cooldown":"Domain deletion warning countdown time reduction",
     "account_version_testing":"I want to test new frii.site features",
     "account_recovery_title_new":"Create a new password",
