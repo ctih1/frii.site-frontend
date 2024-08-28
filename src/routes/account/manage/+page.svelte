@@ -93,8 +93,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <Blur bind:this={blurElement}/>
 <Holder>
+<div class="divvy">
     <h1>{$t("common.account_management")}</h1>
-    <Section title={$t("common.account_details")} id="details">
         <div class="details">
             {#if loaded} 
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
@@ -128,9 +128,9 @@
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
             {/if}
         </div>
-    </Section>
-    <h1>{$t("common.account_manage_account")}</h1>
-    <Section title={$t("common.account_manage")} id="manage">
+
+    <h1 style="background-color: white;">{$t("common.account_manage_account")}</h1>
+
         <div class="switch">
             <p>{$t("common.account_domain_del_cooldown")}</p>
             <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
@@ -146,12 +146,15 @@
                 <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
             </div>
         </div>
-    </Section>
+</div>
 </Holder>
 
 <Modal bind:this={modal} on:secondary={()=>handleDelete()} options={[$t("common.continue_modal")]} title={""} description={""}></Modal>
 
 <style>
+    .buttons {
+        background-color: white;
+    }
     .buttons div {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
@@ -160,12 +163,14 @@
         align-items: center;
         display: flex;
         flex-direction: row;
+        background-color: white;
     }
     .switch * {
         width: fit-content;
     }
     .switch p {
         margin-right: 1em;
+        
     }
     verified {
         align-items: center;
@@ -188,4 +193,11 @@
         flex-direction: row;
         align-items: center;
     }
+    .details {
+        background-color: white;
+    }
+    .white-section {
+    background-color: white;
+    color: black;
+  }
 </style>

@@ -37,7 +37,7 @@
     }
     function primaryButton() {
         if(overrideDefault) {
-            dispatch("primary");
+            dispatch("secondary");
         }
         else {
             close();
@@ -114,7 +114,7 @@
         left:0px;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0,0,0,0.75);
+        background-color: rgba(255, 255, 255, 0.75);
         z-index: 15;
         overflow: hidden;
     }
