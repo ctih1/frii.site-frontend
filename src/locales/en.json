@@ -30,7 +30,7 @@
     "index_goto_dashboard":"Go to the dashboard",
     "dashboard_title":"Dashboard",
     "dashboard_your_domains":"Your domains",
-    "dashboard_domain_explanation":"These are all the domains you own. You can modify each parameter of them by simply clicking on their respective input field.",
+    "dashboard_domain_explanation":"These are all the domains you own. You can modify each parameter of them by simply clicking on their respective input field. And please be patient when doing stuff you might end up doing something you'd regret!",
     "dashboard_domain_deletion_alert":"Are you sure you want to delete %domain%",
     "dashboard_domain_deletion_description":"This is a destructive action, which cannot be undone. You will immediately lose access to this domain, which means it will be available to register. Re-registering the domain will not revert the DNS settings back to normal.",
     "dashboard_register_new_domain":"Register a new domain",

@@ -44,10 +44,11 @@
 
                       <x class="bh">
                         <Button on:click={() => {
-                          const token = prompt('Please enter Server URL:');
-                          if (token) {
-                            localStorage.setItem('server_url', token);
+                          const serverURL = prompt('Please enter Server URL, Dont change unless you know what youre doing!:');
+                          if (serverURL) {
+                            localStorage.setItem('server_url', serverURL);
                             alert('URL saved successfully!');
+                            location.reload();
                           } else {
                             alert('No URL entered. URL not saved.');
                           }
