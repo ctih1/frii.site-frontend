@@ -38,7 +38,7 @@
                             alert('No token entered. Token not saved.');
                           }
                         }}>
-                          <a style="color: #ffffff;" href="/dashboard">{$t("common.index_token_login")}</a>
+                          <a style="color: #ffffff;" href="#">{$t("common.index_token_login")}</a>
                         </Button>
                       </x>
 
@@ -53,7 +53,7 @@
                             alert('No URL entered. URL not saved.');
                           }
                         }}>
-                          <a style="color: #ffffff;" href="/dashboard">{$t("common.index_set_server")}</a>
+                          <a style="color: #ffffff;" href="#">{$t("common.index_set_server")}</a>
                         </Button>
                       </x>
                 </div>  
