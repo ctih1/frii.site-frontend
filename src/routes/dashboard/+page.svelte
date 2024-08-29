@@ -47,7 +47,7 @@
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
-                    domainlist.push(["A",domain,"0.0.0.0"]);
+                    domainlist.push([type,domain,"0.0.0.0"]);
                     domainTable.updateDomains(domainlist);
                     break;
                 case 401:
