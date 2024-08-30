@@ -26,6 +26,7 @@
 		"lodash": "^4.17.21",
 		"svelte-i18n": "^4.0.0",
 		"svelte-i18next": "^2.2.2",
+		"svelte-markdown": "^0.4.1",
 		"sveltekit-i18n": "^2.4.2"
 	}
 }
