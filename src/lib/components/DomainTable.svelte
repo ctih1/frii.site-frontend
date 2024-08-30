@@ -7,6 +7,7 @@
     import { createEventDispatcher } from "svelte";
     import { t } from "$lib/translations";
     export let domains: Array<Array<string>>;
+
     let dispatcher = createEventDispatcher();
     let dropdown: Dropdown;
     let editing: boolean;
@@ -17,6 +18,7 @@
     let loaded: boolean = false;
     let modal: Modal;
     let rowInputs: Array<Array<any>> = domains.map(() => []);
+
     export function updateDomains(ndomains: Array<Array<string>>): void {
         loaded = true;
         rowInputs = domains.map(() => []);
@@ -159,14 +161,34 @@
         padding: 1em;
     }
     th {
-	@@ -107,8 +174,7 @@
+        text-align: left;
+    }
+    tr {
+        background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    td {
+        min-width: 10vw;
+        width: 100%;
+        height: 2em;
         justify-content: center;
     }
     tr:not(:last-child) {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
+
     .row {
-	@@ -126,12 +192,11 @@
+        margin: 0px;
+        display: flex;
+        flex-direction: row;
+    }
+    .container {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    input:focus {
         transform: scale(1.05);
         z-index: 11;
     }
