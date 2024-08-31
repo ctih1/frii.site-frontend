@@ -39,7 +39,7 @@
         display: flex;
         height: 100%;
         transition: scale 50ms;
-        background-color: rgb(0, 123, 255);
+        background-color: rgb(255, 0, 0);
         border-radius: 0.5em;
         border-style: none;
         color: white;

@@ -17,13 +17,16 @@
 
 <style>
     :root {
-        --primary: rgb(0, 123, 225);
+        --primary: rgb(255, 0, 0); /* red */
         --border-color: rgba(0, 0, 0, 0.086);
-        --border-color: rgba(0, 0, 0, 0.05);
-        --secondary-color: #bdbdbd;
-        --offwhite-color: #eeeeee;
-        --background-color: rgb(216, 216, 216);
-        overflow-x: hidden;
+        --border-color: rgba(0,0,0,0.05);
+        --secondary-color: #000000;
+        --offwhite-color: #000000;
+        background-color: black;
+        --background-color: rgb(0, 0, 0);
+
+        overflow-x: hidden; 
+        
     }
     :root::-webkit-scrollbar {
         display: none;
@@ -84,6 +87,6 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        background-color: rgb(216, 216, 216);
+        background-color: rgb(0, 0, 0);
     }
 </style>
