@@ -18,7 +18,7 @@
 
 <style>
     :root {
-        --primary: rgb(255, 0, 0);
+        --primary: rgb(255, 0, 0); /* red */
         --border-color: rgba(0, 0, 0, 0.086);
         --border-color: rgba(0,0,0,0.05);
         --secondary-color: #000000;
