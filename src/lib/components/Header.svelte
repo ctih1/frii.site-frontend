@@ -67,11 +67,6 @@
         <span class="material-symbols-outlined">person</span>
         <p>{$t("common.ugc_header")}</p>
     </a>
-    <a class="item" href="#">
-        <span class="material-symbols-outlined">computer</span>
-        <p>{serverUrl}</p>
-    </a>
-
     <div class="item">
         <span class="material-symbols-outlined">language</span>
         <select style="color: red; background-color: rgb(56, 39, 39);" bind:value="{$locale}" on:change={handleChange}>
@@ -80,6 +75,12 @@
             {/each}
         </select>
     </div>
+    <a class="item" href="#">
+        <span class="material-symbols-outlined">computer</span>
+        <p>{serverUrl}</p>
+    </a>
+
+
     
     
 
