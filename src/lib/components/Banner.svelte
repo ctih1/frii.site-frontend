@@ -78,7 +78,7 @@ X################,      -$=X#######@:
            .,-=;+$@###X:    ;/=.
                   .,/X$;   .::,   
 `;
-
+console.log(heart)
     import { onMount } from 'svelte';
 
     function setupConsoleCommandListener() {
