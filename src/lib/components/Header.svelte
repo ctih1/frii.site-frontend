@@ -76,7 +76,7 @@
         align-items: center;
         top: 0px;
         left: 0px;
-        background-color: rgb(61, 61, 61);
+        background-color: rgb(56, 39, 39);
         min-height: 50px;
         width: 100vw;
 

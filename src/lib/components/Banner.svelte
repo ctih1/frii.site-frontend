@@ -1,27 +1,29 @@
-<script>console.log("incase any of you were wondering YES i did remove the banner")</script>
-<!--
-<script lang="ts">
+<!-- 
+ <script lang="ts">
     import { getStatus } from "../../serverContactor";
     let height:number;
     let loaded:boolean=false;
     let danger:boolean=false;
     let message:string;
-    if(Number(localStorage.getItem("notification-tocheck")).valueOf() < Date.now()) {
+
+    if (Number(localStorage.getItem("notification-tocheck")).valueOf() >= Date.now()) {
+
         getStatus().then(response=> {
             if(response.status===204) {
                 danger=false;
                 loaded=true;
-            } else if(response.status!==404) {
+            } else if(response.status!==403) {
                 response.text().then(data=>{
                     console.log(data);
                     danger=true;
-                    message=data;
+                    message="balls";
                     loaded=true;
                 })
             }
         });
         localStorage.setItem("notification-tocheck",(Date.now()+5*60).toString());
-        localStorage.setItem("notification-message","Our owner is getting CBT");
+        localStorage.setItem("notification-message", message);
+
         loaded=true;
     } else {
         message = localStorage.getItem("notification-message") as string;
