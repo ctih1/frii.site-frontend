@@ -57,7 +57,7 @@
     <h1>User Sites</h1>
 
     <div>
-        <input type="text" bind:value={newWord} placeholder="Enter a Subdomain" />
+        <input type="text" bind:value={newWord} placeholder="Enter a Subdomain (Just the subdomain not .frii.site!)" />
         <div class="buttons">
             <div><Button on:click={submitWord} args={"padding"}>Send!</Button></div>
         </div>
