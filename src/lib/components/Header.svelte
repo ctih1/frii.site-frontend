@@ -65,7 +65,7 @@
     </a>
     <a class="item" href="/ugc">
         <span class="material-symbols-outlined">person</span>
-        <p>User Sites</p>
+        <p>{$t("common.ugc_header")}</p>
     </a>
     <a class="item" href="#">
         <span class="material-symbols-outlined">computer</span>
@@ -74,12 +74,14 @@
 
     <div class="item">
         <span class="material-symbols-outlined">language</span>
-        <select style="color: var(--primary);" bind:value="{$locale}" on:change={handleChange}>
+        <select style="color: red; background-color: rgb(56, 39, 39);" bind:value="{$locale}" on:change={handleChange}>
             {#each $locales as value}
-                <option style="color: black;" value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+                <option style="color: red; background-color: rgb(56, 39, 39)" value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
             {/each}
         </select>
     </div>
+    
+    
 
 </header>
 

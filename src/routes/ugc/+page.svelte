@@ -56,12 +56,12 @@
 </script>
 
 <Holder>
-    <h1>User Sites</h1>
+    <h1>{$t("common.ugc_h1")}</h1>
 
     <div>
-        <input type="text" bind:value={newWord} placeholder="Enter a Subdomain (Just the subdomain not .frii.site!)" />
+        <input type="text" bind:value={newWord} placeholder={$t("common.ugc_placeholder")} />
         <div class="buttons">
-            <div><Button on:click={submitWord} args={"padding"}>Send!</Button></div>
+            <div><Button on:click={submitWord} args={"padding"}>{$t("common.ugc_send")}</Button></div>
         </div>
     </div>
 
