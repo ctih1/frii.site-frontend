@@ -52,6 +52,10 @@
         <span class="material-symbols-outlined">book</span>
         <p>{$t("common.dashboard_aboutus")}</p>
     </a>
+    <a class="item" href="/ugc">
+        <span class="material-symbols-outlined">person</span>
+        <p>User Sites</p>
+    </a>
     <a class="item" href="#">
         <span class="material-symbols-outlined">computer</span>
         <p>{serverUrl}</p>
