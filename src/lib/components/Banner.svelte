@@ -119,7 +119,7 @@ So if you only have one chance
 You oughta try your best to live as you like
 One day you're going to die
 `
-//im sorry to whoevers trying to read this and seeing this horrible formatting and coding
+//im sorry to whoever is trying to read this and seeing this horrible formatting and coding
 console.log(heart)
     import { onMount } from 'svelte';
 
