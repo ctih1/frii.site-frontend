@@ -156,7 +156,7 @@
         width: 100%;
         height: 100%;
         table-layout: fixed;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(56, 39, 39);
         border-collapse: collapse;
         padding: 1em;
     }
@@ -166,7 +166,9 @@
     tr {
         background-color: rgba(0, 0, 0, 0.01);
     }
-
+    input {
+        color: black;
+    }
     td {
         min-width: 10vw;
         width: 100%;

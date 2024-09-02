@@ -142,7 +142,7 @@
             {/if}
         </div>
 
-    <h1 style="background-color: white;">{$t("common.account_manage_account")}</h1>
+    <h1 style="background-color: rgb(56, 39, 39);">{$t("common.account_manage_account")}</h1>
 
         <div class="switch">
             <p>{$t("common.account_domain_del_cooldown")}</p>
@@ -192,7 +192,7 @@
   }
 
     .buttons {
-        background-color: white;
+        background-color: rgb(56, 39, 39);
     }
     .buttons div {
         margin-top: 0.5em;
@@ -202,7 +202,7 @@
         align-items: center;
         display: flex;
         flex-direction: row;
-        background-color: white;
+        background-color: rgb(56, 39, 39);
     }
     .switch * {
         width: fit-content;
@@ -233,10 +233,10 @@
         align-items: center;
     }
     .details {
-        background-color: white;
+        background-color: rgb(56, 39, 39);
     }
     .white-section {
-    background-color: white;
+    background-color: rgb(56, 39, 39);
     color: black;
   }
 </style>

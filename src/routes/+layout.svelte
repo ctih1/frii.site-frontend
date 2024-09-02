@@ -68,6 +68,12 @@
         outline-color: var(--primary);
         resize: vertical;
     }
+    :global(input) {
+        color: black;
+    }
+    :global(li){
+        color: black;
+    }
     :global(a) {
         text-decoration: none;
         color: var(--primary);
