@@ -3,8 +3,10 @@
     import DomainTable from "$lib/components/DomainTable.svelte";
     import Holder from '$lib/components/Holder.svelte';
     import Button from '$lib/components/Button.svelte';
+    import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import { t, l, locale, addArguements } from '$lib/translations';
     import { onMount } from 'svelte';
+    
 
     let domains = [];
     let newWord = '';
@@ -72,4 +74,5 @@
     {:else}
         <p>No domains available</p>
     {/if}
+    
 </Holder>

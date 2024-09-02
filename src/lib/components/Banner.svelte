@@ -56,3 +56,56 @@
     }
 </style>
 -->
+<script>
+    const heart = `
+                          .,---.
+                        ,/XM#MMMX;,
+                      -%##########M%,
+                     -@######%  $###@=
+      .,--,         -H#######$   $###M:
+   ,;$M###MMX;     .;##########$;HM###X=
+,/@###########H=      ;################+
+-+#############M/,      %##############+
+%M###############=      /##############:
+H################      .M#############;.
+@###############M      ,@###########M:.
+X################,      -$=X#######@:
+/@##################%-     +######$-
+.;##################X     .X#####+,
+ .;H################/     -X####+.
+   ,;X##############,       .MM/
+      ,:+$H@M#######M#$-    .$$=
+           .,-=;+$@###X:    ;/=.
+                  .,/X$;   .::,   
+`;
+
+    import { onMount } from 'svelte';
+
+    function setupConsoleCommandListener() {
+        const originalConsoleLog = console.log;
+
+        console.log = function (...args) {
+            if (args.includes('i really like will wood')) {
+                clearConsole();
+                playMusic();
+            }
+            originalConsoleLog.apply(console, args);
+        };
+
+        function clearConsole() {
+            if (console.clear) {
+                console.clear();
+            }
+        }
+
+        function playMusic() {
+            const audio = new Audio('https://play.whatdidyouexpect.eu/momentomori.mp3');
+            audio.play();
+            originalConsoleLog(heart);
+        }
+    }
+
+    onMount(() => {
+        setupConsoleCommandListener();
+    });
+</script>
