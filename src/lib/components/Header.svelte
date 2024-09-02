@@ -1,31 +1,42 @@
 <script lang="ts">
-	import { prefLocale } from './../../routes/stores';
-	import Modal  from './Modal.svelte';
+	import { onMount, onDestroy } from 'svelte';
+    import { prefLocale } from './../../routes/stores';
+    import Modal  from './Modal.svelte';
     import { t, locale, locales } from '$lib/translations';
-    import {getFlagEmoji} from "../../helperFuncs";
+    import { getFlagEmoji } from "../../helperFuncs";
     import { serverURL } from '../../serverContactor';
 
-    let header:HTMLElement
-    let modal:Modal;
-    export function getHeight():number {
-        return Number(header.style.height.substring(0,header.style.height.length-2));
-    }
+    let header: HTMLElement;
+    let modal: Modal;
+    let serverUrl = '';
+    let inputBuffer = '';
+    //thanks to someone on stackoverflow for this cant remember who you were though :(
+    onMount(() => {
+        serverUrl = localStorage.getItem('server_url') || "https://api.frii.site";
 
+        document.addEventListener('keypress', handleKeyPress);
+        header.addEventListener('mouseover', handleMouseOver);
+    });
+    onDestroy(() => {
+        document.removeEventListener('keypress', handleKeyPress);
+        header.removeEventListener('mouseover', handleMouseOver);
+    });
+    const handleKeyPress = (event: KeyboardEvent) => {
+        inputBuffer += event.key;
+        if (inputBuffer.includes('expect')) {
+            window.location.href = 'https://www.whatdidyouexpect.eu';
+        }
+    };
+    const handleMouseOver = () => {
+        inputBuffer = '';
+    };
     const handleChange = ({ currentTarget }) => {
         const { value } = currentTarget;
         prefLocale.set(value);
     };
 
-    let serverUrl = '';
-
-    import { onMount } from 'svelte';
-
-    onMount(() => {
-    serverUrl = localStorage.getItem('server_url') || "https://api.frii.site"; // why would i think that would work ffs
-});
-
-
 </script>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <header bind:this={header}>
@@ -70,7 +81,6 @@
         </select>
     </div>
 
-
 </header>
 
 <style>
@@ -83,7 +93,6 @@
         background-color: rgb(56, 39, 39);
         min-height: 50px;
         width: 100vw;
-
         z-index: 10;
         border-radius: 20px;
     }
