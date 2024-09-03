@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "de": "Deutsch",
   "en": "English",
   "fi": "Suomi",
@@ -7,4 +8,12 @@
   "ar": "العربية",
   "ro": "Română",
   "bg": "български"
+=======
+    "de":"Deutsch",
+    "en":"English",
+    "fi":"Suomi",
+    "it":"Italiano",
+    "pl":"Polski",
+    "ar":"العربية"
+>>>>>>> 12a82cf (added Arabic)
 }
