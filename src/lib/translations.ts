@@ -9,7 +9,8 @@ const config = ({
 		de: {lang},
 		en: {lang},
 		fi: {lang},
-		it: {lang}
+		it: {lang},
+		la: {lang}
 	},
 	loaders: [
 	    	{
@@ -41,12 +42,27 @@ const config = ({
 			).default
 	    	},
 			{
+			"locale":"la",
+			"key":"common",
+			loader: async() => (
+				await import("../locales/la.json")
+			).default
+	    	},
+			{
+				"locale":"uwu",
+				"key":"common",
+				loader: async() => (
+					await import("../locales/uwu.json")
+				).default
+			},
+			{
 				"locale":"pl",
 				"key":"common",
 				loader: async() => (
 					await import("../locales/pl.json")
 				).default
 				}
+			
 	]
 })
 
