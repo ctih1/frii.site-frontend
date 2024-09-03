@@ -41,27 +41,46 @@ const config = ({
 				await import("../locales/it.json")
 			).default
 	    	},
-			{
-			"locale":"la",
-			"key":"common",
-			loader: async() => (
-				await import("../locales/la.json")
-			).default
-	    	},
-			{
-				"locale":"uwu",
-				"key":"common",
-				loader: async() => (
-					await import("../locales/uwu.json")
-				).default
-			},
+
 			{
 				"locale":"pl",
 				"key":"common",
 				loader: async() => (
 					await import("../locales/pl.json")
 				).default
-				}
+				},
+				
+				{
+					"locale":"bg",
+					"key":"common",
+					loader: async() => (
+						await import("../locales/bg.json")
+					).default
+					},
+					
+
+				{
+					
+					"locale":"ar",
+					"key":"common",
+					loader: async() => (
+						await import("../locales/ar.json")
+					).default
+					},
+					{
+					"locale":"la",
+					"key":"common",
+					loader: async() => (
+						await import("../locales/la.json")
+					).default
+					},
+					{
+						"locale":"uwu",
+						"key":"common",
+						loader: async() => (
+							await import("../locales/uwu.json")
+						).default
+					}
 			
 	]
 })

@@ -65,7 +65,9 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | English | [ctih1](https://github.com/ctih1) |
 | German  | [Lugosieben](https://github.com/lugosieben) and [Planethac](https://github.com/Planethac) |
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
-| Polish | [Win81VMUser](https://github.com/win81vmuser) | 
+| Polish  | [Win81VMUser](https://github.com/win81vmuser) | 
+| Arabic  | [rock3tsprocket](https://github.com/rock3tsprocket) |
+| Bulgarian| [nikolan](https://github.com/nikolan123)
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
@@ -77,3 +79,6 @@ Our API is completely free to use. To get started, [read our post about it](http
 
 ## Contributing
 If you wish to contribute to frii.site, read our [contribution guidelines](https://github.com/ctih1/frii.site-frontend/blob/master/.github/CONTRIBUTING.md). We greatly appreciate any contributons!
+
+## Notices
+This branch isnt as updated as main as the [main branch!](https://github.com/ctih1/frii.site-frontend) since this isnt my top priority but it will be getting the same updates more or less
