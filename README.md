@@ -68,6 +68,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | Polish  | [Win81VMUser](https://github.com/win81vmuser) | 
 | Arabic  | [rock3tsprocket](https://github.com/rock3tsprocket) |
 | Bulgarian| [nikolan](https://github.com/nikolan123)
+| Maltese | exvitilus
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
