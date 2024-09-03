@@ -42,7 +42,7 @@
     "dashboard_delete_error":"Could not delete domain",
     "unhandled_error":"An unhandled error occurred.",
     "dashboard_delete_success": "Successfully deleted %domain%",
-    "dashboard_delete_success_description":"%domain% was deleted successfully",
+    "dashboard_delete_success_description":"%domain% was deleted uccessfully",
     "dashboard_register_success":"Successfully registered %domain%!",
     "dashboard_register_fail":"Failed to register %domain%",
     "dashboard_register_success_description":"You now own the domain. Don't know how to set something up? Visit our <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",

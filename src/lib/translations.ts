@@ -41,7 +41,13 @@ const config = ({
 				await import("../locales/it.json")
 			).default
 	    	},
-
+			{
+				"locale":"mt",
+				"key":"common",
+				loader: async() => (
+					await import("../locales/mt.json")
+				).default
+				},
 			{
 				"locale":"pl",
 				"key":"common",
