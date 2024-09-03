@@ -10,6 +10,7 @@ const config = ({
 		en: {lang},
 		fi: {lang},
 		it: {lang},
+		mt: {lang},
 		la: {lang}
 	},
 	loaders: [

@@ -78,6 +78,9 @@ X################,      -$=X#######@:
            .,-=;+$@###X:    ;/=.
                   .,/X$;   .::,   
 `;
+const dontbeanidiot = `
+DONT SHARE LOCALSTORAGE!!!                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+`
 const lyrics = `
 One day you'll look up at the ceiling above
 If you're lucky you'll be surrounded by the ones that you love when
@@ -120,7 +123,13 @@ You oughta try your best to live as you like
 One day you're going to die
 `
 //im sorry to whoever is trying to read this and seeing this horrible formatting and coding
+if (import.meta.env.MODE === 'development') {
+    console.warn = () => {};
+}
 console.log(heart)
+console.log(dontbeanidiot)
+console.log(dontbeanidiot)
+console.log(dontbeanidiot)
     import { onMount } from 'svelte';
 
     function setupConsoleCommandListener() {

@@ -76,3 +76,9 @@
     {/if}
     
 </Holder>
+<Holder>
+    <center>
+        <iframe width="314" height="321" scrolling="no" src="https://gifypet.neocities.org/pet/pet.html?name=hampter&dob=1725376108&gender=f&element=Water&pet=hamster.gif&map=hills.jpg&background=&tablecolor=%23ff486e&textcolor=white" frameborder="0"></iframe>
+    </center>
+</Holder>
+
