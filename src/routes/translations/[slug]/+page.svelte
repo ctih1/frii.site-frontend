@@ -77,7 +77,8 @@
         {#if loaded}
             {#each keys as key, index}
                 <div class="key">
-                    <span style="display: flex; align-items: center;"
+                    <span
+                        style="display: flex; align-items: center; width: fit-content;"
                         ><p class="reference" style="margin-right: 1em;">
                             {key.ref}
                         </p>
@@ -106,11 +107,22 @@
 </Holder>
 
 <style>
+    .keys {
+        display: grid;
+        gap: 1em;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr auto;
+        grid-auto-rows: auto;
+    }
     .key {
         background-color: var(--offwhite-color);
         border-radius: 0.5em;
         padding: 1em;
         margin: 1em 0em 0em 0em;
+        opacity: 0.7;
+    }
+    .key:hover {
+        opacity: 1;
     }
     .reference::before {
         content: '"';
