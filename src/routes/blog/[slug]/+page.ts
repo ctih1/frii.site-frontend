@@ -8,7 +8,7 @@ export async function load({ params }) {
     body: string;
   }
   let articleName = params.slug;
-  const dataRequest = await fetch(`${serverURL}/blog/${articleName}`, {
+  const dataRequest = await fetch(`https://frii-site-emulator.vercel.app/blog/${articleName}`, {
     method: "GET",
   });
   let data: article;
