@@ -67,6 +67,8 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
 | Polish | [Win81VMUser](https://github.com/win81vmuser) | 
 | Arabic | [rock3tsprocket](https://github.com/rock3tsprocket) |
+| UWU(lang)| [whatdidyouexpect](https://github.com/whatdidyouexpect) |
+| LOLCAT | [rock3tsprocket](https://github.com/rock3tsprocket) |
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
