@@ -24,7 +24,25 @@
                 <div class="button-holder">
                     <x class="bh"><Button on:click={()=>{window.location.href="/account";}} args={"fill"}><a style="color: #ffffff;" href="/account">{$t("common.index_register_account")}</a></Button></x>
                     <x class="bh"><Button on:click={()=>{window.location.href="/dashboard";}} args={"fill"}><a style="color: #ffffff;" href="/dashboard">{$t("common.index_goto_dashboard")}</a></Button></x>
+              
+                    <p></p>
+                    <x class="bh">
+                      
+                        <Button on:click={() => {
+                          const token = prompt('Please enter your token:');
+                          if (token) {
+                            localStorage.setItem('auth-token', token);
+                            alert('Token saved successfully!');
+                          } else {
+                            alert('No token entered. Token not saved.');
+                          }
+                        }}>
+                          <a style="color: #ffffff;" href="#">{$t("common.index_token_login")}</a>
+                        </Button>
+                      </x>
+
                 </div>  
+                
             </div>  
         </div>
 
