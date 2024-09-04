@@ -102,7 +102,14 @@ const config = ({
 						loader: async() => (
 							await import("../locales/lc.json")
 						).default
-						}
+						},
+						{
+							"locale":"pi",
+							"key":"common",
+							loader: async() => (
+								await import("../locales/pi.json")
+							).default
+							}
 			
 	]
 })

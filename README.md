@@ -67,6 +67,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
 | Polish  | [Win81VMUser](https://github.com/win81vmuser) | 
 | Arabic  | [rock3tsprocket](https://github.com/rock3tsprocket) |
+| LOLCAT  | [rock3tsprocket](https://github.com/rock3tsprocket) |
 | Bulgarian| [nikolan](https://github.com/nikolan123)
 | Maltese | exvitilus
 

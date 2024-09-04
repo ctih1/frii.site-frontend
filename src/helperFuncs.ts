@@ -24,6 +24,10 @@ export function getFlagEmoji (countryCode:String):string {
     if (countryCode === "lc") {
         // i really have to replace this instead of it being just if statements
         return "🤯";
+    }
+    if (countryCode === "pi") {
+        // i really have to replace this instead of it being just if statements
+        return "🏴‍☠️";
     } 
 	let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
 	return String.fromCodePoint(...codePoints);
