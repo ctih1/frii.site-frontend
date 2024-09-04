@@ -37,7 +37,7 @@
     "dashboard_domain_explanation":"Acestea sunt toate domain-urile pe care le dețineți. Puteți modifica fiecare parametrele acestora prin a apăsa pe input field-ul respectiv. Și aveți răbdare când faceți ceva, s-ar putea să faceți ceva ce ați putea regreta!",
     "dashboard_domain_deletion_alert":"Suneți sigur(ă) ca vreți să Ștergeți %domain%",
     "dashboard_domain_deletion_description":"Aceasta este o acțiune distructivă și irreversibilă . Veți pierde access la domain immediat, ce înseamnă că poate fii înregistrat. Re-înregistrarea domain-ului nu va re-aduce setările DNS-ului înapoi la normal.",
-    "dashboard_register_new_domain":"Înregistrați un domain nou"
+    "dashboard_register_new_domain":"Înregistrați un domain nou",
     "dashboard_register_description":"înregistrarea domain-ului este la câțiva pași distanță! Ne puteți ajuta mereu la  <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",
     "dashboard_delete_error":"Ștergerea domain-ului a eșuat",
     "unhandled_error":"O eroare a apărut.",
