@@ -95,7 +95,14 @@ const config = ({
 						loader: async() => (
 							await import("../locales/uwu.json")
 						).default
-					}
+					},
+					{
+						"locale":"lc",
+						"key":"common",
+						loader: async() => (
+							await import("../locales/lc.json")
+						).default
+						}
 			
 	]
 })

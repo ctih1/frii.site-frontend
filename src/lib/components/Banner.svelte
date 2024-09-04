@@ -33,13 +33,12 @@
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-{#if loaded && danger}
     <div bind:clientHeight={height} class="bar">
         <span style="margin-left: 1em;" class="material-symbols-outlined">warning</span>
         <p>{message}</p>
     </div>
     <div style="height: {height}px" class="pusher"></div>
-{/if}
+
 <style>
     .bar {
         position: absolute;
