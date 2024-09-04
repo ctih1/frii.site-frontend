@@ -14,6 +14,12 @@ export function getFlagEmoji (countryCode:String):string {
     if (countryCode === "ar") {
         return "🇦🇪";
     }
+    if (countryCode === "lc") {
+        return "🐈"
+    }
+    if (countryCode === "uwu") {
+        return "🐈‍⬛"
+    }
 	let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
 	return String.fromCodePoint(...codePoints);
 }
