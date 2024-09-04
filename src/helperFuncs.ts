@@ -23,7 +23,7 @@ export function getFlagEmoji (countryCode:String):string {
     }
     if (countryCode === "lc") {
         // i really have to replace this instead of it being just if statements
-        return "🤯";
+        return "🐈‍⬛";
     }
     if (countryCode === "pi") {
         // i really have to replace this instead of it being just if statements
