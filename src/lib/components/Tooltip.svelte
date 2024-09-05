@@ -18,7 +18,7 @@
         min-width: 140px;
         max-width: 400px;
         width: fit-content;
-        background-color: var(--background-color);
+        background-color: black;
         text-align: center;
         padding: 0.5em;
         position: absolute;
@@ -26,7 +26,7 @@
         bottom: 75%;
         left: 50%;
         margin-left: -60px;
-        opacity: 0;
+        opacity: 50;
         transition: opacity 200ms;
     }
 
