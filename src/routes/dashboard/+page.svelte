@@ -4,6 +4,7 @@
     import DomainTable from "$lib/components/DomainTable.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from '$lib/components/Holder.svelte';
+    import Loader from "$lib/components/Loader.svelte";
     import { t,l,locale,addArguements } from '$lib/translations';
     import { ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
@@ -17,7 +18,7 @@
     let domainlist:Array<Array<string>> = [];
     let serverContactor:ServerContactor
     let domain2delete:string;
-
+    let loader:Loader;
     let responseSave:Response;
     function modalClose() {
         modal.close();
@@ -76,7 +77,7 @@
     }
 
     function modifyDomain(name:string,value:string,type:string) {
-        blurBackground.show();
+        loader.show($t("common.loading"),$t("common.modify_l_description"));
         serverContactor.modifyDomain(name,value,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name})
             switch(response.status) {
@@ -103,7 +104,7 @@
                     break;
             }
         })
-    } 
+    }
 
     function removeDomain(name:string) {
         domainlist=domainlist.filter(function(domain) {
@@ -114,7 +115,7 @@
 
 onMount(()=>{
         // stupid typescript done got fooled by the simplest trick in the book
-        if(localStorage.getItem("del-count")??null===true) { 
+        if(localStorage.getItem("del-count")??null===true) {
             modalTime = 3;
         }
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
@@ -145,6 +146,8 @@ onMount(()=>{
     <meta content="https://frii.site/fse1.webp" property="og:image" />
     <meta content="#007be1" data-react-helmet="true" name="theme-color" />
 </svelte:head>
+
+<Loader bind:this={loader}/>
 
 <Holder>
     <h1>{$t("common.dashboard_your_domains")}</h1>
