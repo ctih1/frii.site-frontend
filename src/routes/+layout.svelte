@@ -83,6 +83,6 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        color: black;
+        color: lightblue;
     }
 </style>
