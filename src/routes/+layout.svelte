@@ -21,11 +21,10 @@
         --border-color: rgba(0, 0, 0, 0.05);
         --secondary-color: #000000;
         --offwhite-color: #000000;
-        --background-color: rgb(0, 0, 0);
+        --background-color: grey;
         color: green;
         border: green;
         background: black;
-        background-color: black;
         overflow-x: hidden;
     }
 
@@ -88,7 +87,6 @@
             width: 100vw;
             margin-left: 2em;
             margin-right: 2em;
-            color: black;
         }
     }
     main {
