@@ -37,7 +37,7 @@
     }
     @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
     :global(*) {
-        font-family: "Comic Sans MS", sans-serif
+        font-family: "Comic Sans MS", sans-serif;
         font-weight: 400;
         font-style: normal;
     }
