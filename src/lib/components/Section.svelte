@@ -10,8 +10,7 @@
 
 <style>
     .section {
-        background-color: var(--offwhite-color);
-        border-radius: 0.5em;
+        background-color: grey;
         padding: 0.5em;
         margin-top: 0.5em;
         margin-bottom: 0.5em;

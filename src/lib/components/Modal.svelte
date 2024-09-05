@@ -127,8 +127,7 @@
     .prompt {
         padding: 2em;
         width: 50vw;
-        border-radius: 0.5em;
-        background-color: white;
+        background-color: grey;
         margin-left: auto;
         margin-right: auto;
     }

@@ -40,8 +40,6 @@
         height: 100%;
         transition: scale 50ms;
         background-color: rgb(146, 195, 119);
-        border-radius: 0.5em;
-        border-style: none;
         color: white;
         -webkit-box-shadow: 0px 10px 105px -50px rgba(0,0,0,0.75);
         -moz-box-shadow: 0px 10px 105px -50px rgba(0,0,0,0.75);

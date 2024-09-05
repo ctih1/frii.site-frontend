@@ -157,7 +157,6 @@
         height: 100%;
         table-layout: fixed;
         background-color: grey;
-        border-collapse: collapse;
         padding: 1em;
     }
     th {
@@ -174,7 +173,6 @@
         justify-content: center;
     }
     tr:not(:last-child) {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .row {

@@ -67,10 +67,8 @@
     }
 
     .slider.round {
-        border-radius: 1em;
     }
 
     .slider.round:before {
-        border-radius: 50%;
     } 
 </style>

@@ -21,7 +21,6 @@
         background-color: var(--background-color);
         text-align: center;
         padding: 0.5em;
-        border-radius: 0.5em;
         position: absolute;
         z-index: 10;
         bottom: 75%;

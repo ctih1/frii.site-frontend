@@ -104,7 +104,6 @@
         }
     }
     select {
-        border-style: none;
         background-color: grey;
     }
     select * {
