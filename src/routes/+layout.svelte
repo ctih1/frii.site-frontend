@@ -16,14 +16,19 @@
 
 <style>
     :root {
-        --primary: rgb(0, 123, 225);
+        --primary: rgb(146, 195, 119);
         --border-color: rgba(0, 0, 0, 0.086);
         --border-color: rgba(0, 0, 0, 0.05);
-        --secondary-color: #bdbdbd;
-        --offwhite-color: #eeeeee;
-        --background-color: rgb(216, 216, 216);
+        --secondary-color: #000000;
+        --offwhite-color: #000000;
+        --background-color: rgb(0, 0, 0);
+        color: green;
+        border: green;
+        background: black;
+        background-color: black;
         overflow-x: hidden;
     }
+
     :root::-webkit-scrollbar {
         display: none;
     }
@@ -31,19 +36,22 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
     :global(*) {
-        font-family: "Inter", sans-serif;
+        font-family: "Impact", sans-serif;
+        font-weight: 400;
+        font-style: normal;
     }
     :global(input) {
         transition: all 0.1s;
         border-style: solid;
-        border-color: var(--border-color);
-        border-radius: 0.5em;
+        border-color: rgb(0, 0, 0);
+        border-radius: 0.25em;
         width: 100%;
         height: 100%;
         box-sizing: border-box;
         outline-color: var(--primary);
+        background-color: rgb(146, 195, 119);
     }
     :global(input[type="checkbox"]) {
         transition: all 0.3s;
@@ -51,6 +59,7 @@
         max-width: 2em;
         aspect-ratio: 1;
         accent-color: var(--primary);
+        background-color: black;
     }
     :global(textarea) {
         transition: all 0.1s;
@@ -62,11 +71,14 @@
         box-sizing: border-box;
         outline-color: var(--primary);
         resize: vertical;
+        background-color: rgb(146, 195, 119);
     }
     :global(a) {
         text-decoration: none;
         color: var(--primary);
         font-size: inherit;
+        color: #92c377;
+
     }
     :global(.holder) {
     }
@@ -76,6 +88,7 @@
             width: 100vw;
             margin-left: 2em;
             margin-right: 2em;
+            color: black;
         }
     }
     main {
@@ -83,6 +96,6 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        background-color: rgb(216, 216, 216);
+        color: green;
     }
 </style>

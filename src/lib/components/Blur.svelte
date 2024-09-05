@@ -49,6 +49,7 @@
         height: 100vh;
         width: 0vw;
         z-index: 9;
+        color: rgb(146, 195, 119);
     }
     @keyframes pulse {
         0% {
