@@ -150,13 +150,13 @@
 
 <style>
     thead {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: grey;
     }
     table {
         width: 100%;
         height: 100%;
         table-layout: fixed;
-        background-color: rgb(255, 255, 255);
+        background-color: grey;
         border-collapse: collapse;
         padding: 1em;
     }
@@ -164,7 +164,7 @@
         text-align: left;
     }
     tr {
-        background-color: rgba(0, 0, 0, 0.01);
+        background-color: grey;
     }
 
     td {
