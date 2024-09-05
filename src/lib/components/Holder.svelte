@@ -9,7 +9,7 @@
         width: 50vw;
         margin-left: auto;
         margin-right: auto;
-        background-color: lime;
+        background-color: grey;
         border-radius: 0.5em;
         padding: 2em;
         margin-top: 2em;
