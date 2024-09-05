@@ -17,13 +17,10 @@
 <style>
     :root {
         --primary: rgb(146, 195, 119);
-        --border-color: rgba(0, 0, 0, 0.086);
-        --border-color: rgba(0, 0, 0, 0.05);
         --secondary-color: #000000;
         --offwhite-color: #000000;
         --background-color: grey;
         color: green;
-        border: green;
         background: black;
         overflow-x: hidden;
     }
@@ -35,7 +32,6 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
     :global(*) {
         font-family: "Comic Sans MS", sans-serif;
         font-weight: 400;
@@ -43,9 +39,6 @@
     }
     :global(input) {
         transition: all 0.1s;
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        border-radius: 0.25em;
         width: 100%;
         height: 100%;
         box-sizing: border-box;
@@ -62,19 +55,15 @@
     }
     :global(textarea) {
         transition: all 0.1s;
-        border-style: solid;
-        border-color: var(--border-color);
-        border-radius: 0.5em;
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-        outline-color: var(--primary);
+        outline-color: rgb(146, 195, 119);
         resize: vertical;
         background-color: rgb(146, 195, 119);
     }
     :global(a) {
         text-decoration: none;
-        color: var(--primary);
         font-size: inherit;
         color: #92c377;
 
@@ -94,6 +83,6 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        color: white;
+        color: black;
     }
 </style>
