@@ -14,22 +14,12 @@
     onMount(() => {
         serverUrl = localStorage.getItem('server_url') || "https://api.frii.site";
 
-        document.addEventListener('keypress', handleKeyPress);
-        header.addEventListener('mouseover', handleMouseOver);
+
     });
     onDestroy(() => {
-        document.removeEventListener('keypress', handleKeyPress);
-        header.removeEventListener('mouseover', handleMouseOver);
+
     });
-    const handleKeyPress = (event: KeyboardEvent) => {
-        inputBuffer += event.key;
-        if (inputBuffer.includes('expect')) {
-            window.location.href = 'https://www.whatdidyouexpect.eu';
-        }
-    };
-    const handleMouseOver = () => {
-        inputBuffer = '';
-    };
+
     const handleChange = ({ currentTarget }) => {
         const { value } = currentTarget;
         prefLocale.set(value);
