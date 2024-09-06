@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Blur from '$lib/components/Blur.svelte';
 	import Registrar from '$lib/components/Registrar.svelte';
     import DomainTable from "$lib/components/DomainTable.svelte";
     import Modal from "$lib/components/Modal.svelte";
@@ -9,9 +8,7 @@
     import { ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
-    import { redirect } from '@sveltejs/kit';
 
-    let blurBackground:Blur;
     let domainTable:DomainTable;
     let modal:Modal;
     let domains:Map<any,any>;
@@ -22,12 +19,12 @@
     let responseSave:Response;
     function modalClose() {
         modal.close();
-        blurBackground.hide();
     }
 
     let modalTime:number = 15;
 
     function modalConfirm() {
+      loader.show(undefined,$t("common.dashboard_delete_loading_desc"))
         serverContactor.deleteDomain(domain2delete).then(response=>{
             switch(response.status) {
                 case 200:
@@ -42,7 +39,7 @@
     }
 
     function registerDomain(domain:string,type:string) {
-        blurBackground.show();
+        loader.show($t("common.loading"), $t("common.dashboard_register_load_desc"));
         serverContactor.registerDomain(domain,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
             switch(response.status) {
@@ -80,6 +77,7 @@
         loader.show($t("common.loading"),$t("common.modify_l_description"));
         serverContactor.modifyDomain(name,value,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name})
+            loader.hide();
             switch(response.status) {
                 case 401:
                     redirectToLogin(401);
@@ -164,7 +162,6 @@ onMount(()=>{
 </Holder>
 
 <Modal overrideDefault={true} on:primary={()=>modalClose()} on:secondary={()=>modalConfirm()} bind:this={modal} options={[$t("common.modal_ok")]} description={""} title={""}></Modal>
-<Blur reverse={false} bind:this={blurBackground}/>
 <style>
 
 </style>
