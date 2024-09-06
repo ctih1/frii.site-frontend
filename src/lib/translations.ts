@@ -4,6 +4,9 @@ import lang from "../locales/+lang.json";
 export const defaultLocale = "en";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e64176a (added romanian and fixed formatting on translation.ts)
 const config = {
   fallbackLocale: "en",
   translations: {
@@ -50,6 +53,7 @@ const config = {
       key: "common",
       loader: async () => (await import("../locales/ro.json")).default,
     },
+<<<<<<< HEAD
     {
       locale: "bg",
       key: "common",
@@ -112,6 +116,10 @@ const config = ({
 	]
 })
 >>>>>>> 12a82cf (added Arabic)
+=======
+  ],
+};
+>>>>>>> e64176a (added romanian and fixed formatting on translation.ts)
 
 export function addArguements(translation: string, replaced: Object): string {
   for (const [key, value] of Object.entries(replaced)) {
