@@ -62,7 +62,6 @@
                 <h2><strong>{$t("common.index_aboutus")}</strong></h2>
             </div>
         </div>
-
         <div class="div2"> 
             <div class="div2-content">
                 <h3 style="height: fit-content;" class="info">{@html $t("common.index_aboutus_description")}</h3>
@@ -265,4 +264,6 @@
     h3 {
         font-size: 2em;
     }
+
+
 </style>

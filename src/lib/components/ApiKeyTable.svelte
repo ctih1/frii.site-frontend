@@ -93,7 +93,6 @@
         height: 100%;
         table-layout: fixed;
         background-color: rgb(255, 255, 255);
-        border-collapse:collapse;
         padding: 1em;
     }
     th {
