@@ -31,7 +31,7 @@
         <span class="material-symbols-outlined">person</span>
         <p>{$t("common.dashboard_account")}</p>
     </a>
-    
+
     <a class="item" href="/report">
         <span class="material-symbols-outlined">flag</span>
         <p>{$t("common.dashboard_abuse")}</p>
@@ -40,7 +40,7 @@
     <div class="item">
         <span class="material-symbols-outlined">language</span>
         <select style="color: var(--primary);" bind:value="{$locale}" on:change={handleChange}>
-            {#each $locales as value}
+            {#each $locales.sort((a,b)=> $t(`lang.${a}`) > $t(`lang.${b}`)) as value}
                 <option value={value} selected={$locale===value}>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
             {/each}
         </select>
@@ -69,7 +69,7 @@
         margin-left: 1em;
         margin-right: 1em;
     }
-    .item * {   
+    .item * {
         height: 100%;
         font-weight: 500;
     }
