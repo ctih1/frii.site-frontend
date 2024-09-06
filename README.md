@@ -18,7 +18,7 @@ To get yourself a free subdomain, register an account at https://frii.site/accou
 
 
  ## Managing your domain
- Managing your domain using frii.site is very easy. 
+ Managing your domain using frii.site is very easy.
 
  ### Changing types
  Select your domain on the dashboard, and click the type dropdown. ![image-2](https://github.com/ctih1/frii.site-frontend/assets/78687256/00e658d0-851c-49b2-aaed-a56f650770a1)
@@ -27,7 +27,7 @@ To get yourself a free subdomain, register an account at https://frii.site/accou
 
  ### Changing your domains content
  Changing your domains "content" is by changing the value field. ![image-3](https://github.com/ctih1/frii.site-frontend/assets/78687256/ca6f8dc9-3087-47f8-ae7d-0df8526a392a)
- 
+
  ### Deleting your domain
  Sometimes you don't want to own a domain anymore, in that case hit the red recycle bin button next to the save button. You have to wait 15 seconds to confirm this action. ![image-4](https://github.com/ctih1/frii.site-frontend/assets/78687256/51abef48-7ca8-476c-b704-28314eb26d79)
 
@@ -48,7 +48,7 @@ To get yourself a free subdomain, register an account at https://frii.site/accou
 ![image-5](https://github.com/ctih1/frii.site-frontend/assets/78687256/1c90a630-22a4-4d86-972c-58845bbeadb3)
 
  After a short while, you should see that a download has started for your account data.
- 
+
 ![image-8](https://github.com/ctih1/frii.site-frontend/assets/78687256/e4c14858-ffa3-4f0c-b9bd-68fc7057810b)
 
 
@@ -60,18 +60,20 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 ## Languages available
 
 | Language | Contributor |
-| -------- | ----------- | 
+| -------- | ----------- |
 | Finnish | [ctih1](https://github.com/ctih1) |
 | English | [ctih1](https://github.com/ctih1) |
 | German  | [Lugosieben](https://github.com/lugosieben) and [Planethac](https://github.com/Planethac) |
 | Italian | [DanielProfessional](https://github.com/danielprofessional) |
-| Polish | [Win81VMUser](https://github.com/win81vmuser) | 
+| Polish | [Win81VMUser](https://github.com/win81vmuser) |
 | Arabic | [rock3tsprocket](https://github.com/rock3tsprocket) |
+| Romanian | [KotlVeridian](https://github.com/KotlVeridian) |
+| Bulgarian | [Nikolan123](https://github.com/nikolan123) |
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
 ## Information about us
-frii.site is an open-source project written in Svelte(Kit). We use MongoDB for our database, Cloudflare for DNS (Becoming self-hosted soon?), Vercel for website and backend hosting, and Resend for emails. This project has no sponsors, or advertisments on the website [Information about frii.site (analytics, price to run, users etc)](https://github.com/ctih1/frii.site-frontend/discussions/88) . 
+frii.site is an open-source project written in Svelte(Kit). We use MongoDB for our database, Cloudflare for DNS (Becoming self-hosted soon?), Vercel for website and backend hosting, and Resend for emails. This project has no sponsors, or advertisments on the website [Information about frii.site (analytics, price to run, users etc)](https://github.com/ctih1/frii.site-frontend/discussions/88) .
 
 ## API
 Our API is completely free to use. To get started, [read our post about it](https://github.com/ctih1/frii.site-frontend/discussions/90). If you wish to create apps using our API, you can submit them to the [partner program](https://github.com/ctih1/frii.site-frontend/discussions/67) to get rewards.
