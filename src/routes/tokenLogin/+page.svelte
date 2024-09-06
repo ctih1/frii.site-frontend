@@ -12,15 +12,18 @@
     let options: string[] = ["Continue"];
   
     function storeToken(): void {
-      if (modal) {
-        localStorage.setItem("auth_token", `${authToken}`);
-        modal.open(title, description);
-      }
+        if (modal) {
+            localStorage.setItem("auth-token", authToken);
+            modal.open(title, description);
+        }
+
+
     }
   
     function modalClose(): void {
       if (modal) {
         modal.close();
+        window.location.href = "/dashboard";
       }
     }
   
@@ -35,10 +38,28 @@
 <Holder>
 <h1>{$t("common.index_token_login")}</h1>
 <p>{$t("common.login_description")}</p>
-<div class=inp><input placeholder="Token" type="text"/></div>
+<div class="inp">
+    <input 
+        placeholder="Token" 
+        type="text" 
+        bind:value={authToken} 
+    />
+</div>
 <sbr>
-<div class="buttons"> <Button on:click={storeToken} args={"padding fill"}>Sign in</Button></div>
-<Modal bind:this={modal} on:primary={()=>modalClose()} on:secondary={()=>modalSecondary()} overrideDefault={true} title={title} description={description} options={["Continue"]}></Modal>
+<div class="buttons"> 
+    <Button on:click={storeToken} args={"padding fill"}>
+        Sign in
+    </Button>
+</div>
+<Modal 
+    bind:this={modal} 
+    on:primary={() => modalClose()} 
+    on:secondary={() => modalSecondary()} 
+    overrideDefault={true} 
+    title={title} 
+    description={description} 
+    options={["Continue"]}
+/>
 
 </Holder>
 <style>
