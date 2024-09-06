@@ -49,6 +49,11 @@ const config = {
       key: "common",
       loader: async () => (await import("../locales/ro.json")).default,
     },
+    {
+      locale: "bg",
+      key: "common",
+      loader: async () => (await import("../locales/bg.json")).default,
+    },
   ],
 };
 
