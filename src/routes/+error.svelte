@@ -18,9 +18,11 @@
         min-width: 100vw;
         width: 100%;
         min-height: 100vh;
+        color: white;
         height: 100%;
     }
     .container h1, p {
+        color: white;
         margin-top: 5px;
         margin-bottom:  5px;
     }
