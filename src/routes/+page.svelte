@@ -29,15 +29,7 @@
                     <p></p>
                     <x class="bh">
                       
-                        <Button on:click={() => {
-                          const token = prompt('Please enter your token:');
-                          if (token) {
-                            localStorage.setItem('auth-token', token);
-                            alert('Token saved successfully!');
-                          } else {
-                            alert('No token entered. Token not saved.');
-                          }
-                        }}>
+                        <Button on:click={()=>{window.location.href="/tokenLogin";}} args={"fill"}>
                           <a style="color: #ffffff;" href="#">{$t("common.index_token_login")}</a>
                         </Button>
                       </x>
