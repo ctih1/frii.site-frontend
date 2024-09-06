@@ -24,8 +24,9 @@
     let modalTime:number = 15;
 
     function modalConfirm() {
-      loader.show(undefined,$t("common.dashboard_delete_loading_desc"))
+      loader.show(undefined,addArguements($t("common.dashboard_delete_loading_desc"),{"%domain%":domain2delete}))
         serverContactor.deleteDomain(domain2delete).then(response=>{
+          loader.hide();
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_delete_success"),{"%domain%":domain2delete}),addArguements($t("common.dashboard_delete_success_description"),{"%domain%":domain2delete}));
@@ -39,9 +40,10 @@
     }
 
     function registerDomain(domain:string,type:string) {
-        loader.show($t("common.loading"), $t("common.dashboard_register_load_desc"));
+        loader.show($t("common.loading"), addArguements($t("common.dashboard_register_load_desc"),{"%domain%":domain}));
         serverContactor.registerDomain(domain,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
+            loader.hide();
             switch(response.status) {
                 case 200:
                     modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
@@ -74,7 +76,7 @@
     }
 
     function modifyDomain(name:string,value:string,type:string) {
-        loader.show($t("common.loading"),$t("common.modify_l_description"));
+        loader.show($t("common.loading"),addArguements($t("common.dashboard_modify_load_desc"),{"%domain%":name}));
         serverContactor.modifyDomain(name,value,type).then(response=>{
             const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name})
             loader.hide();

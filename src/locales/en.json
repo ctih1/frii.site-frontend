@@ -138,5 +138,8 @@
   "translation_clarification": "Here are all the untranslated parts of frii.site in your language. Scroll down to save changes",
   "translation_input": "Your translation",
   "loading": "Please wait",
-  "modify_l_description": "We are modifying your domain..."
+  "modify_l_description": "We are modifying your domain...",
+  "dashboard_delete_loading_desc": "Deleting domain %domain%...",
+  "dashboard_register_load_desc": "Registering domain %domain%...",
+  "dashboard_modify_load_desc": "Modifying domain %domain%..."
 }
