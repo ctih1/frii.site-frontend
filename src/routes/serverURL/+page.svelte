@@ -7,13 +7,13 @@
   
     let authToken: string = '';
     let modal: Modal | undefined; 
-    let description: string = "You've been logged in with your token!";
-    let title: string = "Token Saved Successfully!";
+    let description: string = "Switched Servers!";
+    let title: string = "Switched Servers Successfully! (we hope!)";
     let options: string[] = ["Continue"];
   
     function storeToken(): void {
       if (modal) {
-        localStorage.setItem("auth_token", `${authToken}`);
+        localStorage.setItem("server_url", `${authToken}`);
         modal.open(title, description);
       }
     }
@@ -21,23 +21,18 @@
     function modalClose(): void {
       if (modal) {
         modal.close();
+        location.reload()
       }
     }
   
-    onMount(() => {
-      if (localStorage.getItem("logged-in") === "y") {
-        window.location.href = "/account/manage";
-        return;
-      }
-    });
   </script>
   
 <Holder>
-<h1>{$t("common.index_token_login")}</h1>
-<p>{$t("common.login_description")}</p>
-<div class=inp><input placeholder="Token" type="text"/></div>
+<h1>{$t("common.index_set_server")}</h1>
+<p>we got nothing here</p>
+<div class=inp><input placeholder="https://example.org" type="text"/></div>
 <sbr>
-<div class="buttons"> <Button on:click={storeToken} args={"padding fill"}>Sign in</Button></div>
+<div class="buttons"> <Button on:click={storeToken} args={"padding fill"}>Switch Servers</Button></div>
 <Modal bind:this={modal} on:primary={()=>modalClose()} on:secondary={()=>modalSecondary()} overrideDefault={true} title={title} description={description} options={["Continue"]}></Modal>
 
 </Holder>

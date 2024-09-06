@@ -35,18 +35,10 @@
                       </x>
 
                       <x class="bh">
-                        <Button on:click={() => {
-                          const serverURL = prompt('Please enter Server URL, Dont change unless you know what youre doing!:');
-                          if (serverURL) {
-                            localStorage.setItem('server_url', serverURL);
-                            alert('URL saved successfully!');
-                            location.reload();
-                          } else {
-                            alert('No URL entered. URL not saved.');
-                          }
-                        }}>
-                          <a style="color: #ffffff;" href="#">{$t("common.index_set_server")}</a>
-                        </Button>
+                        <Button on:click={()=>{window.location.href="/serverURL";}} args={"fill"}>
+                            <a style="color: #ffffff;" href="#">{$t("common.index_set_server")}</a>
+                        </Button> 
+
                       </x>
                 </div>  
                 
