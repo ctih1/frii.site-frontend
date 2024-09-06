@@ -34,7 +34,6 @@
         aspect-ratio: 1;
         position: absolute;
         background-color: var(--primary);
-        border-radius: 100%;
         opacity: 0.02;
         z-index: 0;
     }
