@@ -3,7 +3,7 @@
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
-    import Blur from "$lib/components/Blur.svelte";
+    import Loader from '$lib/components/Loader.svelte';
     import { createToken, ServerContactor } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
@@ -15,11 +15,20 @@
     let email:string
     let modal:Modal;
     let redirectURL:string|null; 
-    let blur:Blur;
-    
+    let loader;
+
+    function openLoader() {
+        if (loader) {
+            loader.show('Loading', '');
+        }
+    }
+    function closeLoader() {
+        if (loader) {
+            loader.hide();
+        }
+    }
     function modalClose() {
         modal.close();
-        blur.hide();
     }
     function modalSecondary() {
 
@@ -35,59 +44,97 @@
     });
     let login:boolean=true;
 
-    function accountActionButtonClick() {
-        blur.show();
-        if(serverContactor===undefined) { return };
-        if(login) { 
-            serverContactor.login(username,password).then(response=>{
-                switch(response) {
-                    case 422: 
-                        modal.open($t("common.login_failed"),$t("common.login_generic_error"));
-                        break;
-                    case 401:
-                        modal.open($t("common.login_failed"),$t("common.login_failed_description"));
-                        break;
-                    case 417:
-                        createToken(username,password).then(token=>{
-                            localStorage.setItem("verif-token",token);
-                            modal.open($t("common.login_failed_verify"),$t("common.login_failed_verify_description"),undefined,undefined,true);
-                        })
-                        break;
+    async function accountActionButtonClick() {
+    openLoader();
+    if (serverContactor === undefined) {
+        return;
+    }
+
+    try {
+        let modalTitle = '';
+        let modalDescription = '';
+        let modalOptions: string[] = [];
+
+        if (login) {
+            const response = await serverContactor.login(username, password);
+
+            switch (response) {
+                case 422:
+                    modalTitle = $t("common.login_failed");
+                    modalDescription = $t("common.login_generic_error");
+                    break;
+                case 401:
+                    modalTitle = $t("common.login_failed");
+                    modalDescription = $t("common.login_failed_description");
+                    break;
+                case 417:
+                    const token = await createToken(username, password);
+                    localStorage.setItem("verif-token", token);
+                    modalTitle = $t("common.login_failed_verify");
+                    modalDescription = $t("common.login_failed_verify_description");
+                    modalOptions = ["Resend Verification Code"]; // Set specific options for this case
+                    break;
+                case 200:
+                    //@ts-ignore
+                    localStorage.setItem("auth-token", localStorage.getItem("temp-token")); // this should **never** break
+                    localStorage.removeItem("temp-token");
+                    localStorage.setItem("logged-in", "y");
+                    if (redirectURL === null) {
+                        redirectURL = "/";
+                    }
+                    closeLoader();
+                    window.location.href = redirectURL;
+                    return; // Exit function here as redirect will cause a page reload
+            }
+        } else {
+            if (password !== repeatPassword) {
+                modalTitle = $t("common.signup_password_not_match");
+                modalDescription = $t("common.signup_password_not_match_description");
+            } else {
+                const response = await serverContactor.register(username, password, email);
+
+                switch (response.status) {
                     case 200:
-                        //@ts-ignore
-                        localStorage.setItem("auth-token",localStorage.getItem("temp-token")); // this should **never** break
-                        localStorage.removeItem("temp-token");
-                        localStorage.setItem("logged-in","y");
-                        modal.open($t("common.login_succeed"),$t("common.login_succeed_description"));
-                        if(redirectURL===null) {
-                            redirectURL = "/";
-                        }
-                        window.location.href=redirectURL;
-                        break;
-                }
-            });
-        }
-        if(!login) {
-            if(password!==repeatPassword) {modal.open($t("common.signup_password_not_match"),$t("common.signup_password_not_match_description"));return}
-            serverContactor.register(username,password,email).then(response=>{
-                switch(response.status){
-                    case 200: 
-                        modal.open($t("common.signup_success"),$t("common.signup_success_description"));
-                        login=true;
+                        modalTitle = $t("common.signup_success");
+                        modalDescription = $t("common.signup_success_description");
+                        login = true;
                         break;
                     case 400:
-                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
+                        modalTitle = $t("common.signup_fail");
+                        modalDescription = $t("common.signup_fail_email");
                         break;
                     case 409:
-                        modal.open($t("common.signup_fail"),$t("common.signup_fail_username"));
+                        modalTitle = $t("common.signup_fail");
+                        modalDescription = $t("common.signup_fail_username");
                         break;
                     case 422:
-                        modal.open($t("common.signup_fail"),$t("common.signup_fail_email"));
+                        modalTitle = $t("common.signup_fail");
+                        modalDescription = $t("common.signup_fail_email");
                         break;
                 }
-            })
+            }
         }
+
+        // Close the loader first
+        closeLoader();
+
+        // Only open the modal if there was an issue or success message
+        if (modalTitle) {
+            modal.open(modalTitle, modalDescription, undefined, undefined, modalOptions.includes("Resend Verification Code"));
+        }
+    } catch (error) {
+        console.error(error);
+        closeLoader();
+        modal.open($t("common.error"), $t("common.generic_error_description"));
     }
+}
+
+
+
+
+    onMount(() => {
+        closeLoader()
+    });
 </script>
 
 <svelte:head>
@@ -144,7 +191,7 @@
 
 </Holder>
 
-<Blur bind:this={blur}/>
+<Loader bind:this={loader} />
 
 <Modal bind:this={modal} on:primary={()=>modalClose()} on:secondary={()=>modalSecondary()} overrideDefault={true} description="" title="" options={["Continue"]}></Modal>
 

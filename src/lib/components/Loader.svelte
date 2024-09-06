@@ -9,7 +9,7 @@
         _title = title;
         _description = description;
         visible = true;
-        progress.offsetHeight; // resets animation (aka puts the width to 0%)
+        
     }
 
     export function hide() {
@@ -18,6 +18,7 @@
 </script>
 
 {#if visible}
+<div class="full-screen-overlay">
     <div class="modal-wrapper">
         <div class="modal">
             <h1>{_title}</h1>
@@ -30,9 +31,22 @@
             </div>
         </div>
     </div>
+</div>
 {/if}
 
 <style>
+    .full-screen-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10; 
+    }
     .modal-wrapper {
         position: fixed;
         z-index: 50;
