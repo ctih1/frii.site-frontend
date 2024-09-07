@@ -143,5 +143,9 @@
   "dashboard_register_load_desc": "Registering domain %domain%...",
   "dashboard_modify_load_desc": "Modifying domain %domain%...",
   "account_login_loading_desc": "Logging in...",
-  "account_signup_loading_desc": "Signing up..."
+  "account_signup_loading_desc": "Signing up...",
+  "store_title": "Credit store",
+  "store_extra_domains": "Additional domain",
+  "store_extra_domains_description": "Raises your domain limit by one.",
+  "shop_buy": "Price: %price%"
 }
