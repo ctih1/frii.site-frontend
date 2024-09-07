@@ -141,5 +141,7 @@
   "modify_l_description": "We are modifying your domain...",
   "dashboard_delete_loading_desc": "Deleting domain %domain%...",
   "dashboard_register_load_desc": "Registering domain %domain%...",
-  "dashboard_modify_load_desc": "Modifying domain %domain%..."
+  "dashboard_modify_load_desc": "Modifying domain %domain%...",
+  "account_login_loading_desc": "Logging in...",
+  "account_signup_loading_desc": "Signing up..."
 }
