@@ -51,7 +51,7 @@
 
     function handleDelete() {
         if(noConfirm) {
-            modal.open($t("common.account_deletion_confirm"),$t("common.account_delete_confirm_description"),15,[$t("common.modal_cancel"),$t("common.modal_continue")]);
+            modal.open($t("common.account_deletion_confirm"),$t("common.account_delete_confirm_description"),15,[$t("common.cancel_modal"),$t("common.continue_modal")]);
             noConfirm=false;
             return;
         }
@@ -172,7 +172,6 @@
         justify-content: center;
         display: flex;
         background-color: var(--primary);
-        border-radius: 50%;
         height: 1.5em;
         width: 1.5em;
     }
