@@ -87,18 +87,18 @@ export async function getTranslationKeys(code:string):Promise<Response> {
         method: "GET"
     })
 }
-
 export class ServerContactor {
-    token: string;
-    serverURL: string;
-
-    constructor(token: string | null, urlOverride: string | null = null) {
-        this.serverURL = urlOverride || localStorage.getItem('serverURL') || 'https://api.frii.site';
-        this.token = token as string;
-
-        if (this.token === null && window.location.pathname !== '/account') {
-            redirectToLogin(302);
+    token:string;
+    serverURL:string;
+    constructor(token:string|null, urlOverride:string|null=null) {
+        this.serverURL=serverURL;
+        if(urlOverride) {
+            this.serverURL=urlOverride;
         }
+        this.token=token as string;
+        if(this.token===null&&window.location.pathname!=="/account") {
+            redirectToLogin(302);
+        };
     }
 
     async domainAvailable(domain:string):Promise<Response> {
