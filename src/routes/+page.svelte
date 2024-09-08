@@ -5,6 +5,28 @@
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Button from "$lib/components/Button.svelte";
     import { serverURL } from '../serverContactor';
+    import { onMount } from 'svelte';
+
+  let responseText = 'Loading...';
+
+  const serverURL2 = String(localStorage.getItem("server_url"));
+
+
+  onMount(async () => {
+    try {
+      const response = await fetch(serverURL2);
+      if (response.ok) {
+        responseText = await response.text();
+      } else {
+        responseText = 'Error: Unable to fetch data';
+      }
+    } catch (error) {
+      responseText = 'Error: ' + error.message;
+    }
+  });
+
+
+
 </script>
 <svelte:head>   
     <title>frii.site</title>
@@ -52,7 +74,9 @@
         <div class="div4">
            
         </div>
-        <p style="color: grey;">this version of frii.site is mantained by <a style="color: grey; " href="https://github.com/whatdidyouexpect"><u>whatdidyouexpect</u></a> on github!</p>
+        <p style="color: grey;">this version of frii.site is mantained by <a style="color: grey; " href="https://github.com/whatdidyouexpect"><u>whatdidyouexpect</u></a> on github!</p><p style="color: grey; position: absolute; right: 0; bottom: 0; margin: 10px;">Server Response: {responseText}</p>
+
+        
     </div>
     
 </div>

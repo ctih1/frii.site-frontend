@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://api.frii.site";
+export const serverURL="https://frii-site-emulator.vercel.app";
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -10,6 +10,8 @@ async function digestMessage(message:string) {
       .join(""); // convert bytes to hex string
     return hashHex;
 }
+
+export const getServerURL = () => localStorage.getItem('serverURL') || 'https://api.frii.site';
 
 export async function createToken(username:string,password:string):Promise<string> {
     const psw = await digestMessage(password);
@@ -87,17 +89,16 @@ export async function getTranslationKeys(code:string):Promise<Response> {
 }
 
 export class ServerContactor {
-    token:string;
-    serverURL:string;
-    constructor(token:string|null, urlOverride:string|null=null) {
-        this.serverURL=serverURL;
-        if(urlOverride) {
-            this.serverURL=urlOverride;
-        }
-        this.token=token as string;
-        if(this.token===null&&window.location.pathname!=="/account") {
+    token: string;
+    serverURL: string;
+
+    constructor(token: string | null, urlOverride: string | null = null) {
+        this.serverURL = urlOverride || localStorage.getItem('serverURL') || 'https://api.frii.site';
+        this.token = token as string;
+
+        if (this.token === null && window.location.pathname !== '/account') {
             redirectToLogin(302);
-        };
+        }
     }
 
     async domainAvailable(domain:string):Promise<Response> {
