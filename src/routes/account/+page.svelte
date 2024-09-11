@@ -45,6 +45,7 @@
         if (login) {
             loader.show(undefined,$t("common.account_login_loading_desc"))
             serverContactor.login(username, password).then((response) => {
+                loader.hide();
                 switch (response) {
                     case 422:
                         modal.open(
