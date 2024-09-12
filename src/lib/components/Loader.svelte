@@ -1,15 +1,19 @@
 <script lang="ts">
     import Spinner from "./Spinner.svelte";
+    import { t } from "$lib/translations";
     let progress: HTMLElement;
-    let visible = true;
+    let visible = false;
     let _title: string = "";
     let _description: string = "";
 
-    export function show(title: string, description: string) {
+    export function show(
+        title: string = $t("common.loading"),
+        description: string = $t("common.loader_description"),
+    ) {
+        visible = true;
         _title = title;
         _description = description;
-        visible = true;
-        
+        progress?.offsetHeight; // resets animation (aka puts the width to 0%) might be undefined if its the first time loading, since its defined in an #if statement
     }
 
     export function hide() {
@@ -18,8 +22,9 @@
 </script>
 
 {#if visible}
-<div class="full-screen-overlay">
-    <div class="modal-wrapper">
+    <div class="wrapper"></div>
+    <!-- So svelte doesn't disregard class open styles for not being used -->
+    <div class="modal-wrapper open">
         <div class="modal">
             <h1>{_title}</h1>
             <p>{_description}</p>
@@ -31,21 +36,20 @@
             </div>
         </div>
     </div>
-</div>
 {/if}
 
 <style>
-    .full-screen-overlay {
+    .wrapper {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10; 
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        min-width: 100vw;
+        background-color: rgba(0, 0, 0);
+        opacity: 0.5;
+        z-index: 15;
+        min-height: 100vh;
     }
     .modal-wrapper {
         position: fixed;
@@ -69,6 +73,10 @@
         padding: 1em;
     }
 
+    .open {
+        animation: open 0.2s ease-in;
+    }
+
     .spinner-container {
         margin-left: auto;
         margin-right: auto;
@@ -88,6 +96,15 @@
         }
         to {
             width: 100%;
+        }
+    }
+
+    @keyframes open {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
         }
     }
 </style>
