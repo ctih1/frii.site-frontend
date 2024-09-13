@@ -4,20 +4,12 @@
     import Modal from "./Modal.svelte";
     import { t,addArguements } from '$lib/translations';
     import { createEventDispatcher } from "svelte";
-
+    let deleting:boolean=false;
     let visible:Map<string,boolean> = new Map();
     interface key {
         key:string;
         comment:string;
-        permissions: {
-            edit: {
-                content: boolean;
-                type: boolean;
-                domain: boolean;
-            };
-            view: boolean;
-            delete: boolean;
-        };
+        perms: string[];
         domains: string[];
     }
     function getEmoji(input:boolean): string {
@@ -27,13 +19,27 @@
         return "<span class='material-symbols-outlined'>close</span>"
     }
     export let keys:key[];
+    console.log(keys);
     let dispatcher = createEventDispatcher();
     let modal:Modal;
     let keyTarget:string;
 
     function showKey():void {
-        modal.open($t("common.api_dashboard_key_title"),addArguements($t("common.api_dashboard_key_description"),{"%key%":keyTarget}));
-        keyTarget="";
+        if(!deleting) {
+          modal.open($t("common.api_dashboard_key_title"),addArguements($t("common.api_dashboard_key_description"),{"%key%":keyTarget}));
+          keyTarget="";
+        } else {
+
+        }
+
+    }
+
+    function getPermName(permission:string):string {
+      const  modifyPrefix:string[] = ["domain","type","content"]
+      if(modifyPrefix.includes(permission)) {
+        return "modify_"+permission
+      } if(permission==="details") {return "view"}
+      return permission;
     }
 
 </script>
@@ -54,14 +60,13 @@
                 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
                 <td>{apiKey.comment}</td>
                 <td>
-                    <span class="perms">
-                        {#if apiKey.permissions.delete}{$t("common.api_dashboard_delete_perm")+","}{/if}
-                        {#if apiKey.permissions.view}{$t("common.api_dashboard_view_perm")+","}{/if}
-                        {#if apiKey.permissions.edit.content}{$t("common.api_dashboard_modify_content_perm")+","}{/if}
-                        {#if apiKey.permissions.edit.domain}{$t("common.api_dashboard_modify_domain_perm")+","}{/if}
-                        {#if apiKey.permissions.edit.type}{$t("common.api_dashboard_modify_type_perm")+","}{/if}
-                    </span>
+                    <div class="perms">
+                        {#each apiKey.perms as permission}
+                            <span>{$t(`common.api_dashboard_${getPermName(permission)}_perm`)}</span>
+                        {/each}
+                    </div>
                 </td>
+
                 <td>
                     <div class="domains">
                         {#each apiKey.domains as domain}
@@ -70,10 +75,10 @@
                     </div>
                 </td>
                 <td style="width: fit-content; align-items: center; display:flex;">
-                    <Button args="margin" on:click={()=>{keyTarget=apiKey.key;modal.open($t("common.api_dashboard_key_warning"),$t("common.api_dashboard_key_warning_description"),3,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
+                    <Button args="margin" on:click={()=>{deleting=false;keyTarget=apiKey.key;modal.open($t("common.api_dashboard_key_warning"),$t("common.api_dashboard_key_warning_description"),3,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
                         <span class="material-symbols-outlined">key</span>
                     </Button>
-                    <Button args="danger margin" on:click={()=>{modal.open(addArguements($t("common.api_dashboard_key_deletion"),{"%key_comment%":apiKey.comment}),$t("common.api_dashboard_key_deletion_description"),7,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
+                    <Button args="danger margin" on:click={()=>{deleting=true;keyTarget=apiKey.key;modal.open(addArguements($t("common.api_dashboard_key_deletion"),{"%key_comment%":apiKey.comment}),$t("common.api_dashboard_key_deletion_description"),7,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
                         <span class="material-symbols-outlined">delete_forever</span>
                     </Button>
                 </td>
@@ -81,7 +86,6 @@
         {/each}
     </tbody>
 </table>
-
 <Modal bind:this={modal} options={["Cancel","Continue"]}  countdown={3} on:secondary={()=>{showKey()}} title="Are you sure you want to delete" description={""}></Modal>
 
 <style>
@@ -141,7 +145,8 @@
         width: fit-content;
     }
     .perms {
+        display: grid;
         word-wrap: normal;
         overflow-wrap:normal;
     }
-</style>    
+</style>

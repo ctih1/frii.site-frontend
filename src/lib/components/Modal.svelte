@@ -6,9 +6,9 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
     export let countdown:number|undefined=undefined;
-    export let description:string;
-    export let title:string;
-    export let options:Array<string>;
+    export let description:string="";
+    export let title:string ="";
+    export let options:Array<string> = [$t("common.continue_modal")];
     export let overrideDefault:boolean=false;
     let button:Button;
     let _isLogin:boolean=false;

@@ -3,7 +3,7 @@
     import { createEventDispatcher } from "svelte";
     let dispatcher=createEventDispatcher();
     export let items:{displayText:string, valueText:string}[]
-    
+
     export function addItem(item:{displayText:string,valueText:string}):void {
         items.push(item);
         items=[...items];
@@ -14,10 +14,14 @@
         });
         dispatcher("remove",target);
     }
+    export function get():{displayText:string,valueText:string}[] {
+      return items
+    }
+
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-
+{#if items.length != 0}
 <div class="box">
     <div class="items">
         {#each items as item}
@@ -30,6 +34,7 @@
         {/each}
     </div>
 </div>
+{/if}
 
 <style>
     .box {

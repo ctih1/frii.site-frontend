@@ -147,5 +147,11 @@
   "store_title": "Credit store",
   "store_extra_domains": "Additional domain",
   "store_extra_domains_description": "Raises your domain limit by one.",
-  "shop_buy": "Price: %price%"
+  "shop_buy": "Price: %price%",
+  "api_dashboard_create_loading_desc":"Creating API key...",
+  "api_dashboard_create_fail":"Failed to create an API key",
+  "api_dashboard_create_fail_domains":"You have to own every domain you want the API key to affect. If you feel like this is a bug, contact us at contact@frii.site.",
+  "api_dashboard_create_success":"Succesfully created an API key.",
+  "api_dashboard_create_success_description":"You can now use this API key.",
+  "api_dashboard_loading":"Loading API keys..."
 }
