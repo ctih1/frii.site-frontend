@@ -85,4 +85,5 @@
         min-width: 100vw;
         color: lightblue;
     }
+	
 </style>
