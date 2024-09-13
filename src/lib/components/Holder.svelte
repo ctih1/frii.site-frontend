@@ -6,6 +6,7 @@
 
 <style>
     .card {
+        z-index: -2;
         width: 50vw;
         margin-left: auto;
         margin-right: auto;

@@ -12,7 +12,7 @@
     export let removeUsed:boolean;
     let results:choices[]=[];
     let input:HTMLInputElement;
-
+    let closed:boolean=false;
     if(!requiresLetter) {
         results=suggestions;
     }
@@ -29,7 +29,7 @@
         });
         updateResults();
     }
-    
+
     function updateResults(): void {
         results=[];
         suggestions.forEach((suggestion)=>{
@@ -73,20 +73,28 @@
     }
 </script>
 
-<div class="holder">
-    <input  bind:this={input} on:focus={()=>{choices.style.visibility="visible"; updateResults()}} bind:value={search} on:input={()=>updateResults()} on:keydown={handleKey} placeholder={inputPlaceholder}>
+{#if !closed}
+    <div on:click={()=>closed=true} class="input-eater" style="min-width: 100vw; min-height: 100vh; height:100%; width: 100%; z-index:0; position:fixed; top:0px; left:0px;"/>
+{/if}
+
+{#if results.length!=0}
+<div class="holder" style="z-index: 1">
+    <input on:click={()=>closed=false} style="margin-bottom: 0px;"  bind:this={input} on:focus={()=>{choices.style.visibility="visible"; updateResults()}} bind:value={search} on:input={()=>updateResults()} on:keydown={handleKey} placeholder={inputPlaceholder}>
     <div bind:this={choices} class="choices">
-        <ul class="choice-list">
-            {#each results as result, index}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-                <li bind:this={resultElements[index]} on:mouseover={()=>{resultIndex=index;resultElements[index].classList.add("selected")}} on:mouseleave={()=>{resultElements[index].classList.remove("selected")}} on:click={()=>{sendInput(result)}}><span>{result.displayText}</span> <span style="margin-right: 0px; margin-left: auto;" class="material-symbols-outlined">add_circle</span></li>
-            { /each}
-        </ul>
+        {#if !closed}
+            <ul class="choice-list">
+                {#each results as result, index}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                    <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+                    <li bind:this={resultElements[index]} on:mouseover={()=>{resultIndex=index;resultElements[index].classList.add("selected")}} on:mouseleave={()=>{resultElements[index].classList.remove("selected")}} on:click={()=>{sendInput(result)}}><span>{result.displayText}</span> <span style="margin-right: 0px; margin-left: auto;" class="material-symbols-outlined">add_circle</span></li>
+                { /each}
+            </ul>
+        {/if}
     </div>
     <div class="selected"></div> <!-- Fixes selte issue where selected class isnt rendered because its unused-->
 </div>
+{/if}
 
 
 <style>
@@ -94,8 +102,17 @@
         visibility: hidden;
     }
     .choice-list {
+        transition: all 0.3s;
         list-style: none;
         padding: 0px;
+        margin: 0px;
+        padding-top: 2px;
+        background-color: var(--offwhite-color);
+        border-radius: 0.5em;
+        border-top-left-radius: 0em;
+        border-top-right-radius: 0em;
+        filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5))
+
     }
     .choice-list:first {
         background-color: var(--primary);
@@ -103,11 +120,11 @@
     li {
         border-radius: 0.25em;
         padding-left: 2px;
-        padding-right: 2px; 
+        padding-right: 2px;
         box-shadow: 0px 10px 42px -18px rgba(0,0,0,0.75);
         margin: 0.25em;
     }
-    
+
     li:hover {
         cursor: pointer;
     }
