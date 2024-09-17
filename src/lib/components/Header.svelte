@@ -49,10 +49,6 @@
         <span class="material-symbols-outlined">flag</span>
         <p>{$t("common.dashboard_abuse")}</p>
     </a>
-    <a class="item" href="/aboutus">
-        <span class="material-symbols-outlined">book</span>
-        <p>{$t("common.dashboard_aboutus")}</p>
-    </a>
     <a class="item" href="/ugc">
         <span class="material-symbols-outlined">person</span>
         <p>{$t("common.ugc_header")}</p>
