@@ -70,7 +70,7 @@
 <BubbleBackground>
     <div class="head">
         <h1 class="title" style="font-size: 10em; color: white;">frii.site</h1>
-        <p class="tagline">{$t("common.index_tagline")}</p>
+        <p class="tagline"><i>{$t("common.index_tagline")}</i></p>
         <div class="buttons">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("common.index_register_account")}</p></Button>
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("common.index_goto_dashboard")}</p></Button>
