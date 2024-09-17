@@ -9,6 +9,7 @@
         <a href="mailto: urgent@frii.site">{$t("common.footer_contact_urgent")}</a>
         <a href="mailto: support@frii.site">{$t("common.footer_contact_social")}</a>
         <a href="https://discord.gg/FjujyhvbMY">{$t("common.footer_contact_discord")}</a>
+        <a href="mailto: whatdoyouwant@whatdidyouexpect.xyz">Fork Maintainer: whatdoyouwant@whatdidyouexpect.xyz</a>
     </div>
     <div class="starting">
         <h3>{$t("common.footer_started")}</h3>
