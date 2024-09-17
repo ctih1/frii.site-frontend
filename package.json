@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"faker-js": "^1.0.0",
 		"i18next": "^23.12.1",
 		"i18next-http-backend": "^2.5.2",
 		"lodash": "^4.17.21",
