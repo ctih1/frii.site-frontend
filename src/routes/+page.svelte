@@ -204,7 +204,8 @@
     .latest-releases {
       display: grid;
       grid-template-columns: repeat(3,1fr);
-      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: repeat(1, 1fr);
+      margin-bottom: 25vh;
       gap: 20px;
       padding: 2em;
     }
@@ -275,6 +276,9 @@
       }
       .bottom-hooker p {
           font-size: 1.5em;
+      }
+      .title {
+          font-size: 6em !important;
       }
     }
 
