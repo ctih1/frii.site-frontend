@@ -20,8 +20,11 @@
     interface Iblog {
       url:string,
       created:number,
+<<<<<<< HEAD
       body:string,
       title:string
+=======
+>>>>>>> 41221a1 (remade index)
     }
 
     let reviews: Ireview[] = [
@@ -44,7 +47,11 @@
     let blogs: Iblog[] = [];
     onMount(()=>{
       async function load() {
+<<<<<<< HEAD
         await fetch(`${serverURL}/blog/get/all?n=3&content=80`).then(response=>{
+=======
+        await fetch(`${serverURL}/blog/get/all?n=6`).then(response=>{
+>>>>>>> 41221a1 (remade index)
           if(response.status!==200) { blogsShouldBeShown=false; console.log("Failed to load blogs"); return; }
           response.json().then(data=>{
             blogs = data as Iblog[];
@@ -102,7 +109,11 @@
         <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">Latest updates</h3>
         <div class="latest-releases">
             {#each blogs as blog}
+<<<<<<< HEAD
                 <BlogCard title={blog.title} description={blog.body} date={blog.created} url={blog.url}/>
+=======
+                <BlogCard urlTitle={blog.url}/>
+>>>>>>> 41221a1 (remade index)
             {/each}
         </div>
     </div>
@@ -206,8 +217,12 @@
     .latest-releases {
       display: grid;
       grid-template-columns: repeat(3,1fr);
+<<<<<<< HEAD
       grid-template-rows: repeat(1, 1fr);
       margin-bottom: 25vh;
+=======
+      grid-template-rows: repeat(2, 1fr);
+>>>>>>> 41221a1 (remade index)
       gap: 20px;
       padding: 2em;
     }
@@ -279,9 +294,12 @@
       .bottom-hooker p {
           font-size: 1.5em;
       }
+<<<<<<< HEAD
       .title {
           font-size: 6em !important;
       }
+=======
+>>>>>>> 41221a1 (remade index)
     }
 
     @keyframes textChange {
