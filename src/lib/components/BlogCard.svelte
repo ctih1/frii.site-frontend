@@ -59,5 +59,6 @@
         border-radius: 0.5em;
         padding: 1em;
         z-index: 15;
+        border-left: 10px solid var(--primary);
     }
 </style>
