@@ -117,4 +117,9 @@
     .height-unset {
         height: unset;
     }
+    .secondary {
+        background-color: rgba(0,0,0,0);
+        border:2px solid var(--primary);
+        color: black;
+    }
 </style>

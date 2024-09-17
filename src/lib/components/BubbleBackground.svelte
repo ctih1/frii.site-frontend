@@ -1,7 +1,7 @@
 <script lang="ts">
     let balls = randomLocations();
     const ballAmount:number=15;
-    
+
     function randomLocations() {
         return Array.from({length:ballAmount},()=>({
             x: Math.round(Math.random()*100)+"%",
@@ -9,14 +9,16 @@
         }));
     }
     balls = randomLocations();
-    setTimeout(()=> balls = randomLocations(), 100);
-    setInterval(() => balls = randomLocations(), 15000);
+    if(localStorage.getItem("toaster-mode")!="true") {
+      setTimeout(()=> balls = randomLocations(), 100);
+      setInterval(() => balls = randomLocations(), 15000);
+    }
 </script>
 
 <div class="balls">
     <div class="circles">
         {#each balls as {x,y}}
-            <div class="bubble" 
+            <div class="bubble"
             style=
                 "width: {Math.max(Math.random(),0.3)*25}vw; opacity: {Math.random()*0.1}; top:{y}; left:{x};">
             </div>
@@ -28,7 +30,7 @@
 </div>
 
 <style>
-    
+
     .bubble {
         transition: all 15s linear;
         aspect-ratio: 1;
@@ -48,7 +50,7 @@
         overflow: hidden;
     }
 
-    .balls {  
+    .balls {
         min-height: 100vh;
         width: 100vw;
         height: 100%;
