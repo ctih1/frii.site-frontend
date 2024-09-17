@@ -76,7 +76,10 @@
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("common.index_goto_dashboard")}</p></Button>
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("Login With Token")}</p></Button>
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("Set Server URL")}</p></Button>
+
+
         </div>
+        <p style="color: grey;">you can scroll down now</p>
     </div>
     <div class="introduction-wrapper">
         <div class="center">
