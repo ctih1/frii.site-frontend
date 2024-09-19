@@ -9,6 +9,7 @@
     import { onMount,onDestroy } from 'svelte'
 
     import BlogCard from "$lib/components/BlogCard.svelte"
+    import UpdateCard from "$lib/components/UpdateCard.svelte"
     import { serverURL } from '../serverContactor';
     let blogsShouldBeShown:boolean=true
 
@@ -51,6 +52,7 @@
       }
     ]
     let blogs: Iblog[] = [];
+    let blogs2: Iblog[] = [];
     onMount(()=>{
       async function load() {
         await fetch(`https://devserver.frii.site/blog/get/all?n=6`).then(response=>{
@@ -62,6 +64,21 @@
       }
       load();
     })
+    onMount(() => {
+        async function load2() {
+            await fetch(`https://frii-site-emulator.vercel.app/blog/get/all?n=6`).then(response => {
+                if (response.status !== 200) { 
+                    console.log("Failed to load updates"); 
+                    return; 
+                }
+                response.json().then(data => {
+                    blogs2 = data as Iblog[]; // fart
+                });
+            });
+        }
+        load2();
+    });
+
 </script>
 <svelte:head>
     <title>frii.site</title>
@@ -122,6 +139,16 @@
             {/each}
 
         </div>
+        <div class="blogs2">
+          <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto; color: white;">Site Updates</h3>
+          <div class="latest-releases">
+              {#each blogs2 as blog}
+                  <UpdateCard urlTitle={blog.url}/>
+              {:else}
+                  <p style="color: white; ">Failed to load blogs 😔, Please try again later.</p>
+              {/each}
+  
+          </div>
     </div>
     <div class="bottom-hooker">
         <h1>{$t("common.index_bottom_hook")}</h1>
@@ -224,6 +251,13 @@
 
     .blogs {
         margin-top: 25vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .blogs2 {
+        margin-top: -26vh;
         display: flex;
         justify-content: center;
         flex-direction: column;
