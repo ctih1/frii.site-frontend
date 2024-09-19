@@ -20,6 +20,8 @@
     interface Iblog {
       url:string,
       created:number,
+      body:string,
+      title:string
     }
 
     let reviews: Ireview[] = [
@@ -42,7 +44,7 @@
     let blogs: Iblog[] = [];
     onMount(()=>{
       async function load() {
-        await fetch(`${serverURL}/blog/get/all?n=6`).then(response=>{
+        await fetch(`${serverURL}/blog/get/all?n=3&content=80`).then(response=>{
           if(response.status!==200) { blogsShouldBeShown=false; console.log("Failed to load blogs"); return; }
           response.json().then(data=>{
             blogs = data as Iblog[];
@@ -100,7 +102,7 @@
         <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">Latest updates</h3>
         <div class="latest-releases">
             {#each blogs as blog}
-                <BlogCard urlTitle={blog.url}/>
+                <BlogCard title={blog.title} description={blog.body} date={blog.created} url={blog.url}/>
             {/each}
         </div>
     </div>
