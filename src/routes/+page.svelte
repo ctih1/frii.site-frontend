@@ -140,7 +140,7 @@
 
         </div>
         <div class="blogs2">
-          <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto; color: white;">Site Updates</h3>
+          <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto; color: white;">random crap</h3>
           <div class="latest-releases">
               {#each blogs2 as blog}
                   <UpdateCard urlTitle={blog.url}/>
