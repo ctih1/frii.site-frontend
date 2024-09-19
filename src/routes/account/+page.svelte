@@ -4,7 +4,6 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import Blur from "$lib/components/Blur.svelte";
-    import Loader from "$lib/components/Loader.svelte";
     import { createToken, ServerContactor } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
@@ -17,10 +16,10 @@
     let modal: Modal;
     let redirectURL: string | null;
     let blur: Blur;
-    let loader:Loader;
+
     function modalClose() {
         modal.close();
-        loader?.hide();
+        blur.hide();
     }
     function modalSecondary() {}
 
@@ -38,14 +37,12 @@
     let login: boolean = true;
 
     function accountActionButtonClick() {
-
+        blur.show();
         if (serverContactor === undefined) {
             return;
         }
         if (login) {
-            loader.show(undefined,$t("common.account_login_loading_desc"))
             serverContactor.login(username, password).then((response) => {
-                loader.hide();
                 switch (response) {
                     case 422:
                         modal.open(
@@ -93,7 +90,6 @@
             });
         }
         if (!login) {
-          loader.show(undefined,$t("common.account_signup_loading_desc"))
             if (password !== repeatPassword) {
                 modal.open(
                     $t("common.signup_password_not_match"),
@@ -104,7 +100,6 @@
             serverContactor
                 .register(username, password, email)
                 .then((response) => {
-                  loader.hide();
                     switch (response.status) {
                         case 200:
                             modal.open(
@@ -141,8 +136,6 @@
     <title>{$t("common.account_title_on_tab")}</title>
 </svelte:head>
 
-
-<Loader bind:this={loader}/>
 <Holder>
     <h1>
         {#if login}
