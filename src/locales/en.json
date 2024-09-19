@@ -182,5 +182,7 @@
   "index_blogs":"Latest updates",
   "index_reviews":"Reviews",
   "index_bottom_hook":"What are you waiting for!",
-  "index_bottom_hook_desc":"Go register your subdomain - I mean it's free"
+  "index_bottom_hook_desc":"Go register your subdomain - I mean it's free",
+  "blogs_title":"Blog posts",
+  "blogs_description":"Read the latest news about frii.site here!"
 }

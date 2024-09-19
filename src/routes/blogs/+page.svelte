@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import { error } from "@sveltejs/kit";
   import { serverURL } from "../../serverContactor";
+  import { t } from "$lib/translations";
+  import BlogCard from "$lib/components/BlogCard.svelte";
   import SvelteMarkdown from "svelte-markdown";
   import Holder from "$lib/components/Holder.svelte";
   interface Iblog {
@@ -31,12 +33,10 @@
 </script>
 
 <Holder>
+    <h1>{$t("common.blogs_title")}</h1>
+    <p>{$t("common.blogs_description")}</p>
     {#each blogs as blog}
-        <div class="blog-holder">
-            <h1><a href={`https://www.frii.site/blog/${blog.url}`}>{blog.title}</a></h1>
-            <p>{new Date(blog.created*1000).toDateString()}</p>
-            <p><SvelteMarkdown source={blog.body+"..."}/></p>
-        </div>
+        <BlogCard inline={true} title={blog.title} description={blog.body} date={blog.created} url={blog.url} />
     {/each}
 </Holder>
 
