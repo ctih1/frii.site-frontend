@@ -38,6 +38,8 @@
             <a href="/">{$t("common.dashboard_home")}</a>
             <a href="/profile">{$t("common.dashboard_navbar")}</a>
             <a href="/settings">{$t("common.dashboard_account")}</a>
+            <a href="/tokenLogin">Login With Token</a>
+            <a href="/serverURL">Set Server url</a>
         </div>
     </div>
 
@@ -54,6 +56,9 @@
 </header>
 
 <style>
+    #hatred {
+        white-space: pre;
+    }
     .dropdown {
         position: relative;
         display: inline-block;
@@ -84,16 +89,19 @@
     }
 
     .dropdown-content a {
-        color: var(--primary);
+        display: block;
         padding: 12px 16px;
         text-decoration: none;
-        display: block;
+        color: var(--primary);
         border-radius: 20px;
+        padding-right: 10px;
     }
+
 
     .dropdown-content a:hover {
         background-color: #3a1c1c;
         color: rgb(255, 255, 255);
+        
         border-radius: 20px;
     }
 
@@ -101,6 +109,7 @@
         display: block;
         transform: translateY(0);
         animation: slideOut 0.3s ease-out;
+        font-size: 25px;
     }
 
     .dropdown:hover .dropbtn {

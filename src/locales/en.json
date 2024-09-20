@@ -164,6 +164,8 @@
     "ugc_h1":"User-Made Sites",
     "ugc_placeholder":"Send Your .frii.site Subdomain away!",
     "ugc_send":"Send!",
+    "index_set_server":"Switch Servers",
+    "index_token_login":"Login With Token",
     "footer_started_faq":"Frequently asked questions",
     "footer_started_register":"Creating an account",
     "footer_started_modify":"Modifying domains",

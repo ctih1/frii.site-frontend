@@ -54,7 +54,7 @@
         color: white;
     }
 </style>
--->
+<!--
 <script>
     const heart = `
                           .,---.
@@ -160,3 +160,4 @@ console.log(dontbeanidiot)
         setupConsoleCommandListener();
     });
 </script>
+-->

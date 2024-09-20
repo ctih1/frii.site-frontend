@@ -15,6 +15,7 @@
         if (modal) {
             localStorage.setItem("auth-token", authToken);
             modal.open(title, description);
+            localStorage.setItem("logged-in", "y");
         }
 
 
@@ -28,10 +29,7 @@
     }
   
     onMount(() => {
-      if (localStorage.getItem("logged-in") === "y") {
-        window.location.href = "/account/manage";
-        return;
-      }
+
     });
   </script>
   

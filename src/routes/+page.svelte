@@ -82,22 +82,35 @@
 </script>
 <svelte:head>
     <title>frii.site</title>
+    
 </svelte:head>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <BubbleBackground>
     <div class="head">
         <h1 class="title" style="font-size: 10em; color: white;">frii.site</h1>
+        <div class="ourownerisgettingcbt">
+            <!--dont ask mmkay?-->
+            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc.</p>
+            <p>not the OFFICAL website!!!!</p>
+            <img src="/imgs/violent.png">
+        </div>
+        <div class="ourownerisgettingcbt2">
+            <!--dont ask mmkay?-->
+            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
+            <p>though i would like to flex this</p>
+            <p style="margin-top: -18px;">is a branch in the main repo</p>
+        </div>
         <p class="tagline"><i>{$t("common.index_tagline")}</i></p>
         <div class="buttons">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("common.index_register_account")}</p></Button>
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("common.index_goto_dashboard")}</p></Button>
-            <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("Login With Token")}</p></Button>
-            <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("Set Server URL")}</p></Button>
-
-
+            <Button on:click={()=>window.location.href="/tokenLogin"} args="padding fill margin secondary"><p class="button-text">{$t("Login With Token")}</p></Button>
+            <Button on:click={()=>window.location.href="/serverURL"} args="padding fill margin secondary"><p class="button-text">{$t("Set Server URL")}</p></Button>
         </div>
         <p style="color: grey;">you can scroll down now</p>
     </div>
+
     <div class="introduction-wrapper">
         <div class="center">
             <h1 style="font-size: 5em; margin-bottom: 0px; color: white;"><strong>{$t("common.index_aboutus")}</strong></h1>
@@ -162,6 +175,47 @@
 
 
 <style>
+    .ourownerisgettingcbt {
+        /* silence wuntch */
+        transition: all 0.3s;
+        box-shadow: 1px 6px 20px rgba(0,0,0,0.2);
+        background-color: rgb(39, 39, 39);
+        width: fit-content;
+        padding: 1em;
+        max-width: 20em;
+        border-radius: 5px;
+        border: 2px red solid;
+        margin-left: 100px;
+        border-radius: 2px;
+        color: white;
+        transform: rotate(15deg);
+        text-align: center;
+        position: absolute;
+        top: 100;
+        left: 155vh;
+    }
+
+    .ourownerisgettingcbt2 {
+        /* silence wuntch */
+        transition: all 0.3s;
+        box-shadow: 1px 6px 20px rgba(0,0,0,0.2);
+        background-color: rgb(39, 39, 39);
+        width: fit-content;
+        padding: 1em;
+        max-width: 20em;
+        border-radius: 5px;
+        border: 2px red solid;
+        margin-left: 100px;
+        border-radius: 2px;
+        color: white;
+        transform: rotate(9deg);
+        text-align: center;
+        position: absolute;
+        top: 53vh;
+        left: 153vh;
+        padding-bottom: 48px;
+    }
+
     .head {
         display: flex;
         flex-direction: column;
