@@ -25,30 +25,31 @@
     }
 
     let reviews: Ireview[] = [
+
       {
-        author:"Rage65",
-        description: "I have been using (frii.site) to get a domain for my website for a while now and it's been great!",
+        author: "barack obama",
+        description: "hello former president of the united states here, i like red",
         stars: 5
       },
       {
-        author: "Luka Rantalainen",
-        description: "frii.site has served me well for my domain registraation needs.",
-        stars: 4
-      },
-      {
-        author: "Planethac",
-        description: "Good service for a good price!",
-        stars: 4
-      },
-      {
-        author: "WhatDidYouExpect",
-        description: "pretty cool i can access my crap server",
-        stars: 4
-      },
-      {
-        author: "Barack Obama",
-        description: "beer",
+        author: "bob the minion",
+        description: "banana",
         stars: 5
+      },
+      {
+        author: "alien from area 51",
+        description: "zeep zorp",
+        stars: 3
+      },
+      {
+        author: "api.frii.site",
+        description: "OK",
+        stars: 1
+      },
+      {
+        author: "thatwardrobeguy",
+        description: "idk man 7/10 erm how do i boot into safe mode nvm i got it",
+        stars: 7
       }
     ]
     let blogs: Iblog[] = [];
@@ -101,6 +102,18 @@
             <p>though i would like to flex this</p>
             <p style="margin-top: -18px;">is a branch in the main repo</p>
         </div>
+        <div class="ourownerisgettingcbt3">
+            <!--dont ask mmkay?-->
+            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
+            <p>dont think the rules of the real</p>
+            <p style="margin-top: -18px;">site dont apply here sly guy</p>
+        </div>
+        <div class="ourownerisgettingcbt4">
+            <!--dont ask mmkay?-->
+            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
+            <p>the modified about me sec-</p>
+            <p style="margin-top: -18px;">tion is just a silly joke!!!!!!!!!</p>
+        </div>
         <p class="tagline"><i>{$t("common.index_tagline")}</i></p>
         <div class="buttons">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("common.index_register_account")}</p></Button>
@@ -133,7 +146,9 @@
             <h2><span class="material-symbols-outlined">encrypted</span>{$t("common.index_tp_privacy")}</h2>
             <p>{$t("common.index_tp_privacy_desc")}</p>
         </div>
+        
     </div>
+    <p style="font-size: 10px; color: grey; transform: rotate(-5deg);">hi ctih dont sue please thanks</p>
     <div class="reviews">
         <h1 style="font-size: 3em; color: white;">{$t("common.index_reviews")}</h1>
         <div class="review-cards">
@@ -213,6 +228,48 @@
         position: absolute;
         top: 53vh;
         left: 153vh;
+        padding-bottom: 48px;
+    }
+
+    .ourownerisgettingcbt3 {
+        /* silence wuntch */
+        transition: all 0.3s;
+        box-shadow: 1px 6px 20px rgba(0,0,0,0.2);
+        background-color: rgb(39, 39, 39);
+        width: fit-content;
+        padding: 1em;
+        max-width: 20em;
+        border-radius: 5px;
+        border: 2px red solid;
+        margin-left: 100px;
+        border-radius: 2px;
+        color: white;
+        transform: rotate(4deg);
+        text-align: center;
+        position: absolute;
+        top: 63vh;
+        left: 153vh;
+        padding-bottom: 48px;
+    }
+
+    .ourownerisgettingcbt4 {
+        /* silence wuntch */
+        transition: all 0.3s;
+        box-shadow: 1px 6px 20px rgba(0,0,0,0.2);
+        background-color: rgb(39, 39, 39);
+        width: fit-content;
+        padding: 1em;
+        max-width: 20em;
+        border-radius: 5px;
+        border: 2px red solid;
+        margin-left: 100px;
+        border-radius: 2px;
+        color: white;
+        transform: rotate(-4deg);
+        text-align: center;
+        position: absolute;
+        top: 70.99vh;
+        left: 152vh;
         padding-bottom: 48px;
     }
 

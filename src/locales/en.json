@@ -108,7 +108,7 @@
     "###COMMENT###": "For the next translation (api_dashboard_comment_placeholder) feel free to come up with a joke that works in your own language :)",
     "api_dashboard_comment_placeholder": "For testing my super cool app",
     "index_aboutus": "About us",
-    "index_aboutus_description": "We are a free subdomain hosting service that has been around for 6 months. During that times we have registered over 150 domains for over 200 users worldwide. We greatly value transparency, and that is why we are open-source, have a <strong>free</strong> API, and publish updates to our community over on <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>",
+    "index_aboutus_description": "We are a free subdomain hosting service that has been around for 7 months. During that times we have registered over 150 domains for over 200 users worldwide. We greatly value transparency, and that is why we are open-source, have a <strong>free</strong> API, and publish updates to our community over on <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>, Also Radix suspended us for <strong>3 days</strong> for phising cause some idiot made a phising site!",
     "dashboard_domain_use": "The requested domain has already been registered!",
     "dashboard_domain_permissions": "You must own all parts of the requested domain.",
     "dashboardt_record": "Record Type",
@@ -177,17 +177,17 @@
     "footer_dev_partner":"Partner program",
     "index_tagline":"Now Comes in Black and Red!",
     "blog_read":"Read more...",
-    "index_tp_freedom":"Freedom",
-    "index_tp_freedom_desc":"Register domains without a hassle.",
-    "index_tp_security":"Security",
-    "index_tp_security_desc":"We make sure your domains are handled securely.",
-    "index_tp_support":"Support",
-    "index_tp_support_desc":"3 words. Guides & Real people.",
+    "index_tp_freedom":"Freedom?",
+    "index_tp_freedom_desc":"Register domains without a hassle, Except when the api randomly shuts off.",
+    "index_tp_security":"Mostly Security",
+    "index_tp_security_desc":"We make sure your domains are handled securely, Most of the time?",
+    "index_tp_support":"Zeep Zorp",
+    "index_tp_support_desc":"3 words. Guides & Real Aliens.",
     "index_tp_privacy":"Privacy",
     "index_tp_privacy_desc":"We don't share any of your personal data*.",
     "index_blogs":"Latest updates",
     "index_reviews":"Reviews",
     "index_bottom_hook":"What are you waiting for!",
-    "index_bottom_hook_desc":"Go register your subdomain - I mean it's free"
+    "index_bottom_hook_desc":"Go register your subdomain - I mean it's free, or is it?"
   }
   
