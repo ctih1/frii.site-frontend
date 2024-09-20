@@ -36,7 +36,7 @@
         width: 100%;
         padding-bottom: 2em;
         text-align: center;
-        background-color: #fff;
+        background-color: grey;
     }
     .footer * {
         display: flex;
