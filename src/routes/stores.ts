@@ -14,5 +14,3 @@ function persisted(key:string,placeholder:string)
 }
 
 export const prefLocale = persisted("preferredLocale", "en");
-export const warnCheck = persisted("warnCheck", Date.now().toString());
-export const warnCheck = persisted("warnMessage", "We are recieving heavy traffic. Some of our services may not work properly");
