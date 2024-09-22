@@ -56,7 +56,7 @@
         left: 0px;
         background-color: rgb(255, 255, 255);
         min-height: 50px;
-        width: 100vw;
+        max-width: 100vw;
         z-index: 10;
     }
     header * {

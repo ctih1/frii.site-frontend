@@ -1,30 +1,23 @@
 <script lang="ts">
+    import { get } from "svelte/store"
     import { getStatus } from "../../serverContactor";
     let height:number;
     let loaded:boolean=false;
     let danger:boolean=false;
     let message:string;
-    if(Number(localStorage.getItem("notification-tocheck")).valueOf() < Date.now()) {
-        getStatus().then(response=> {
-            if(response.status===204) {
-                danger=false;
+    getStatus().then(response=> {
+        if(response.status===204) {
+            danger=false;
+            loaded=true;
+        } else if(response.status!==404) {
+            response.text().then(data=>{
+                console.log(data);
+                danger=true;
+                message=data;
                 loaded=true;
-            } else if(response.status!==404) {
-                response.text().then(data=>{
-                    console.log(data);
-                    danger=true;
-                    message=data;
-                    loaded=true;
-                })
-            }
-        });
-        localStorage.setItem("notification-tocheck",(Date.now()+5*60).toString());
-        localStorage.setItem("notification-message","Our owner is getting CBT");
-        loaded=true;
-    } else {
-        message = localStorage.getItem("notification-message") as string;
-        loaded=true;
-    }
+            })
+        }})
+      loaded=true;
     let hidden:boolean=(localStorage.getItem("notification-hidden")??false) as boolean;
 </script>
 
