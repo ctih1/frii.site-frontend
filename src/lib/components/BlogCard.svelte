@@ -9,7 +9,6 @@
     export let date:number;
     export let url:string;
     export let inline:boolean=false;
-
 </script>
 
 <div class={`wrapper ${(!inline)?"border-shown":"border-hidden"}`}>
