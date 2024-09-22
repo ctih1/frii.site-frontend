@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { browser } from "$app/environment"
     let balls = randomLocations();
     const ballAmount:number=15;
 
@@ -9,7 +10,8 @@
         }));
     }
     balls = randomLocations();
-    if(localStorage.getItem("toaster-mode")!="true") {
+
+    if(browser && localStorage.getItem("toaster-mode")!="true") {
       setTimeout(()=> balls = randomLocations(), 100);
       setInterval(() => balls = randomLocations(), 15000);
     }

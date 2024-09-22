@@ -2,7 +2,7 @@ import i18n from "sveltekit-i18n";
 import lang from "../locales/+lang.json";
 
 export const defaultLocale = "en";
-)
+
 const config = {
   fallbackLocale: "en",
   translations: {
