@@ -102,18 +102,7 @@
             <p>though i would like to flex this</p>
             <p style="margin-top: -18px;">is a branch in the main repo</p>
         </div>
-        <div class="ourownerisgettingcbt3">
-            <!--dont ask mmkay?-->
-            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
-            <p>dont think the rules of the real</p>
-            <p style="margin-top: -18px;">site dont apply here sly guy</p>
-        </div>
-        <div class="ourownerisgettingcbt4">
-            <!--dont ask mmkay?-->
-            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
-            <p>the modified about me sec-</p>
-            <p style="margin-top: -18px;">tion is just a silly joke!!!!!!!!!</p>
-        </div>
+        
         <p class="tagline"><i>{$t("common.index_tagline")}</i></p>
         <div class="buttons">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("common.index_register_account")}</p></Button>

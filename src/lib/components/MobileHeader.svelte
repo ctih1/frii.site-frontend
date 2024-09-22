@@ -10,6 +10,8 @@
     let modal: Modal;
     let serverUrl = "";
     let inputBuffer = "";
+    let dropdownOpen = false;
+
     //thanks to someone on stackoverflow for this cant remember who you were though :(
     onMount(() => {
         serverUrl =
@@ -21,6 +23,10 @@
         const { value } = currentTarget;
         prefLocale.set(value);
     };
+
+    const toggleDropdown = () => {
+        dropdownOpen = !dropdownOpen;
+    };
 </script>
 
 <link
@@ -30,14 +36,14 @@
 
 <header bind:this={header}>
     <div class="dropdown">
-        <button class="dropbtn">
+        <button class="dropbtn" on:click={toggleDropdown}>
             <span class="material-symbols-outlined">menu</span>
             <p>Menu </p>
         </button>
         <div class="dropdown-content">
             <a href="/">{$t("common.dashboard_home")}</a>
-            <a href="/profile">{$t("common.dashboard_navbar")}</a>
-            <a href="/settings">{$t("common.dashboard_account")}</a>
+            <a href="/dashboard">{$t("common.dashboard_navbar")}</a>
+            <a href="/account/manage">{$t("common.dashboard_account")}</a>
             <a href="/tokenLogin">Login With Token</a>
             <a href="/serverURL">Set Server url</a>
         </div>

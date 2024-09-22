@@ -29,10 +29,7 @@
     }
   
     onMount(() => {
-      if (localStorage.getItem("logged-in") === "y") {
-        window.location.href = "/account/manage";
-        return;
-      }
+
     });
   </script>
   
