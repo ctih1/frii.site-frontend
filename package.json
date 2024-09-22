@@ -24,6 +24,7 @@
     "i18next": "^23.12.1",
     "i18next-http-backend": "^2.5.2",
     "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
     "svelte-i18n": "^4.0.0",
     "svelte-i18next": "^2.2.2",
     "svelte-markdown": "^0.4.1",
