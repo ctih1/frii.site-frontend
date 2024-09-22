@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://devserver.frii.site";
+export const serverURL="https://api.frii.site";
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
