@@ -10,10 +10,25 @@
     let source = data.body;
     const time = new Date(0);
     time.setSeconds(data.date);
+
+    function calculateReadTime():string {
+      let guess1 = Math.round(data.body.length / 500);
+      let guess2 = Math.round(data.body.length / 1000);
+      if(guess2===guess1) {
+        return `~ ${guess1} minute read`
+
+      } else {
+        return `~ ${guess1} to ${guess2} minute read`
+      }
+
+    }
 </script>
 
 <svelte:head>
-    <meta content={`${data.title} - frii.site`}>
+    <meta content={`${data.title} - frii.site`} name="title">
+    <meta content={`${data.title} - frii.site`} name="og:title">
+    <meta content={`${data.body.substring(0,32)}...`} name="og:description">
+    <meta content={`${data.body.substring(0,32)}...`} name="description">
 </svelte:head>
 
 <link
@@ -22,12 +37,28 @@
 />
 <Holder>
     <h1>{data.title}</h1>
-    <p style="display: flex; align-items:center; opacity: 0.5;">
-        <span class="material-symbols-outlined">schedule</span>
-        {time}
-    </p>
+    <div class="data">
+        <p style="opacity: 0.5;">
+            <span class="material-symbols-outlined">edit_calendar</span>
+            {time}
+        </p>
+        <p><span class="material-symbols-outlined">schedule</span>{calculateReadTime()}</p>
+    </div>
+    <hr style="opacity: 0.1"/>
+
     <SvelteMarkdown {source} />
 </Holder>
 
 <style>
+    p {
+        display: flex;
+        align-items:center;
+    }
+    .data * {
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+    .material-symbols-outlined {
+        margin-right: 10px;
+    }
 </style>

@@ -1,7 +1,7 @@
 import { writable } from "svelte/store"
 import { browser } from "$app/environment"
 
-function persisted(key:string,placeholder:string) 
+function persisted(key:string,placeholder:string)
 {
     let value:string|null=null;
     if(browser) {value=localStorage.getItem(key);}
