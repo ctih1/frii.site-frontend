@@ -1,7 +1,7 @@
 import { prefLocale } from './stores.js';
 import { get } from "svelte/store"
 import { addTranslations, setLocale, setRoute } from '$lib/translations';
-export const ssr = false;
+export const ssr = true;
 /** @type {import('@sveltejs/kit').Load} */
 export const load = async ({ data }) => {
   if(data===null) {return;}
