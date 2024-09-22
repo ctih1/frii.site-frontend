@@ -3,6 +3,24 @@
     import Analytics from "$lib/components/Analytics.svelte";
     import Banner from "$lib/components/Banner.svelte";
     import Ads from "$lib/components/Ads.svelte";
+    import {navigating} from '$app/stores'
+    import NProgress from 'nprogress'
+    import '$lib/nprogress.css'
+
+    NProgress.configure({
+      minimum: 0.6,
+      trickle: true,
+      trickleSpeed: 200
+    });
+
+    $: {
+        if ($navigating) {
+          NProgress.start();
+        }
+        if (!$navigating) {
+          NProgress.done();
+        }
+    }
 </script>
 
 <Banner />
@@ -34,6 +52,9 @@
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
     :global(*) {
         font-family: "Inter", sans-serif;
+    }
+    :global(#nprogress .bar) {
+        color: var(--primary)
     }
     :global(input) {
         transition: all 0.1s;

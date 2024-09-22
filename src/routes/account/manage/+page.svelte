@@ -12,6 +12,7 @@
     import { t, locale, locales, addArguements } from '$lib/translations';
     import Switch from '$lib/components/Switch.svelte';
     import Tooltip from '$lib/components/Tooltip.svelte';
+    import { browser } from '$app/environment';
 
     let serverContactor:ServerContactor;
     let modal:Modal;
@@ -96,7 +97,7 @@
     <h1>{$t("common.account_management")}</h1>
     <Section title={$t("common.account_details")} id="details">
         <div class="details">
-            {#if loaded} 
+            {#if loaded}
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
                 <h3 id="username">{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
                 <div class="permission">
@@ -122,8 +123,8 @@
                     <span class="material-symbols-outlined">groups</span><p>{$t("common.dashboard_permission_monitoring")}:  <strong>{monitoring}</strong></p>
                 </div>
                 {/if}
-             
-            {:else} 
+
+            {:else}
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
             {/if}
@@ -131,21 +132,23 @@
     </Section>
     <h1>{$t("common.account_manage_account")}</h1>
     <Section title={$t("common.account_manage")} id="manage">
-        <div class="switch">
-            <p>{$t("common.account_domain_del_cooldown")}</p>
-            <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
-        </div>
-        <div class="switch">
-            <p>{$t("common.account_version_testing")}</p>
-            <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
-        </div>
-        <div class="buttons">
-            <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
-            <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
-            <div class="danger">
-                <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
+        {#if browser}
+            <div class="switch">
+                <p>{$t("common.account_domain_del_cooldown")}</p>
+                <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
             </div>
-        </div>
+            <div class="switch">
+                <p>{$t("common.account_version_testing")}</p>
+                <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
+            </div>
+            <div class="buttons">
+                <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
+                <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
+                <div class="danger">
+                    <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
+                </div>
+            </div>
+        {/if}
     </Section>
 </Holder>
 

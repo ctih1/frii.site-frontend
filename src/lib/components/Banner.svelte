@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { get } from "svelte/store"
     import { getStatus } from "../../serverContactor";
+    import { browser } from "$app/environment";
     let height:number;
     let loaded:boolean=false;
     let danger:boolean=false;
@@ -18,7 +18,11 @@
             })
         }})
       loaded=true;
-    let hidden:boolean=(localStorage.getItem("notification-hidden")??false) as boolean;
+
+    let hidden:boolean = false;
+    if(browser) {
+      hidden = (localStorage.getItem("notification-hidden")??false) as boolean;
+    }
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
