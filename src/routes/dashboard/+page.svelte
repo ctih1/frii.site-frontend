@@ -121,9 +121,10 @@ onMount(()=>{
         serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
         serverContactor.getDomains().then(response=>{
             if(response.status===401){redirectToLogin(401)}
-            if(response.status===404){domainTable.updateDomains([[""]])}
+            if(response.status===404){domainTable.updateDomains([[""]]); return;}
             response.json().then(data=> {
                 domains = new Map(Object.entries(data));
+
                 for(let pair of domains) {
                     let [key,value] = pair;
                     value=new Map(Object.entries(value));
