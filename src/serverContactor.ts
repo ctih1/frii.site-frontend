@@ -1,5 +1,18 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="http://localhost:5123"
+import { browser } from "$app/environment";
+
+export let serverURL="https://api.frii.site"
+if(browser) {
+  let subdomain = window.location.hostname.split(".")[0]
+  if(subdomain === "canary") {
+    serverURL = "https://devserver.frii.site"
+  };
+  if(localStorage.getItem("url_override")) {
+    serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
+  }
+  console.debug("Switched server url to " + serverURL)
+}
+
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
