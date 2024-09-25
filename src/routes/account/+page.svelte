@@ -46,7 +46,7 @@
             loader.show(undefined,$t("common.account_login_loading_desc"))
             serverContactor.login(username, password).then((response) => {
                 loader.hide();
-                switch (response) {
+                switch (response.status) {
                     case 422:
                         modal.open(
                             $t("common.login_failed"),
@@ -61,7 +61,6 @@
                         break;
                     case 417:
                         createToken(username, password).then((token) => {
-                            localStorage.setItem("verif-token", token);
                             modal.open(
                                 $t("common.login_failed_verify"),
                                 $t("common.login_failed_verify_description"),
@@ -73,10 +72,11 @@
                         break;
                     case 200:
                         //@ts-ignore
-                        localStorage.setItem(
-                            "auth-token",
-                            localStorage.getItem("temp-token"),
-                        ); // this should **never** break
+                        response.text().then(session=>{
+                          localStorage.setItem(
+                              "auth-token", session
+                          );
+                        })
                         localStorage.removeItem("temp-token");
                         localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
                         localStorage.setItem("logged-in", "y");

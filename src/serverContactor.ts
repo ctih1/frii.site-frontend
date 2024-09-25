@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://devserver.frii.site";
+export const serverURL="http://localhost:5123"
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -14,7 +14,7 @@ async function digestMessage(message:string) {
 export async function createToken(username:string,password:string):Promise<string> {
     const psw = await digestMessage(password);
     const usr = await digestMessage(username);
-    const token = `${psw}|${usr}`;
+    const token = `${usr}|${psw}`;
     return token;
 }
 
@@ -123,19 +123,17 @@ export class ServerContactor {
         });
     }
 
-    async login(username: string, password: string): Promise<number> {
+    async login(username: string, password: string):Promise<Response> {
         try {
             const psw = await digestMessage(password);
             const usr = await digestMessage(username);
-            const token = `${psw}|${usr}`;
+            const token = `${usr}|${psw}`;
 
             localStorage.setItem("temp-token",token)
-            const response = await fetch(`${this.serverURL}/login`, {
+            return await fetch(`${this.serverURL}/login`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json","X-Auth-Token":token },
+                headers: { "Content-Type": "application/json","X-Auth-Request":token },
             });
-
-            return response.status;
         } catch (error) {
             // Handle errors here
             console.error("Login error:", error);
