@@ -20,6 +20,10 @@
     let rowInputs: Array<Array<any>> = domains.map(() => []);
 
     export function updateDomains(ndomains: Array<Array<string>>): void {
+        if(domains.length === 0) {
+          loaded = true;
+          return;
+        }
         loaded = true;
         rowInputs = domains.map(() => []);
         domains = ndomains;
