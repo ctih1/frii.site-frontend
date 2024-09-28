@@ -4,7 +4,7 @@
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Placeholder from '$lib/components/Placeholder.svelte';
-    import { onMount } from 'svelte';
+    import { UAParser } from 'ua-parser-js';
     import { redirectToLogin,createFile } from '../../../helperFuncs';
     import { ServerContactor } from '../../../serverContactor';
     import Section from '$lib/components/Section.svelte';
@@ -13,11 +13,19 @@
     import Switch from '$lib/components/Switch.svelte';
     import Tooltip from '$lib/components/Tooltip.svelte';
     import { browser } from '$app/environment';
+    import { onMount } from 'svelte';
+
+    interface Session {
+      hash: string,
+      user_agent:string,
+      ip: string,
+      expire: number
+    }
 
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
-
+    let sessions:Session[] = []
     let blurElement:Blur;
     let emailE:string;
     let usernameE:string;
@@ -29,15 +37,18 @@
     let vuln=false;
     let monitoring=false;
     onMount(()=>{
+        async function __GetData() {
+          await getData();
+          await serverContactor.getSessions().then(response=>response.json()).then(json=>{
+              sessions = json as Session[];
+          })
+        }
         serverContactor=new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
-        getData();
+        __GetData();
     })
 
-
-
-    function getData() {
-        serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            console.log(data);
+    async function getData() {
+        await serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
@@ -48,6 +59,7 @@
             vuln=data["permissions"]["reports"]??false;
             monitoring=data["permissions"]["userdetails"]??false;
         })
+
     }
 
     function handleDelete() {
@@ -150,6 +162,26 @@
             </div>
         {/if}
     </Section>
+    <Section title={$t("common.account_manage_sessions")} id="sessions">
+        {#each sessions as session}
+            {@const parser = new UAParser(session.user_agent)}
+            <div class="session">
+                <h3 class="session-header">
+                        <span class="material-symbols-outlined">
+                            {#if (parser.getDevice().type === "mobile")}
+                                smartphone
+                            {:else}
+                                desktop_windows
+                            {/if}
+                        </span>
+                    {parser.getOS().name??"Unknown OS"} {parser.getOS().version??""} - {parser.getBrowser().name??"Unknown browser"} {parser.getBrowser().version??""}
+                </h3>
+                <p class="ip">{session.ip}</p>
+                <p style="display: flex; align-items: center;"><span class="material-symbols-outlined">update</span>Expires: {new Date(session.expire*1000).toUTCString()}</p>
+                <Button args="danger" on:click={()=>serverContactor.deleteSession(session.hash)}>Remove</Button>
+            </div>
+        {/each}
+    </Section>
 </Holder>
 
 <Modal bind:this={modal} on:secondary={()=>handleDelete()} options={[$t("common.continue_modal")]} title={""} description={""}></Modal>
@@ -190,5 +222,23 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    .session {
+        width: fit-content;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        background-color: var(--background-color);
+    }
+    .session-header {
+        display: flex;
+        align-items: center;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .ip {
+        margin-top: 0px;
     }
 </style>
