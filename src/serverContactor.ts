@@ -382,7 +382,7 @@ export class ServerContactor {
     return await fetch(`${this.serverURL}/session/delete`, {
       method: "DELETE",
       body: JSON.stringify({"id":id}),
-      headers: { "X-Auth-Token": this.token }
+      headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
     });
   }
 }

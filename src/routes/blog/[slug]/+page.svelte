@@ -18,7 +18,7 @@
         return `~ ${guess1} minute read`
 
       } else {
-        return `~ ${guess1} to ${guess2} minute read`
+        return `~ ${guess2} to ${guess1} minute read`
       }
 
     }
@@ -45,11 +45,13 @@
         <p><span class="material-symbols-outlined">schedule</span>{calculateReadTime()}</p>
     </div>
     <hr style="opacity: 0.1"/>
-
-    <SvelteMarkdown {source} />
+    <div class="md">
+        <SvelteMarkdown {source} />
+    </div>
 </Holder>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
     p {
         display: flex;
         align-items:center;
@@ -60,5 +62,14 @@
     }
     .material-symbols-outlined {
         margin-right: 10px;
+    }
+
+    .md :global(em) {
+        background-color: var(--offwhite-color);
+    }
+    .md :global(code) {
+        background-color: var(--offwhite-color);
+        font-family: "Fira Code", monospace;
+        font-weight: 500;
     }
 </style>
