@@ -12,6 +12,7 @@
     import { t, locale, locales, addArguements } from '$lib/translations';
     import Switch from '$lib/components/Switch.svelte';
     import Tooltip from '$lib/components/Tooltip.svelte';
+    import Loader from "$lib/components/Loader.svelte";
     import { browser } from '$app/environment';
     import { onMount } from 'svelte';
 
@@ -21,7 +22,7 @@
       ip: string,
       expire: number
     }
-
+    let loader:Loader;
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
@@ -102,9 +103,24 @@
         localStorage.removeItem("auth-token");
         redirectToLogin(200);
     }
+    function deleteSession(sessionHash:string) {
+      loader.show(undefined, $t("common.account_manage_sessions_delete_loader"))
+      serverContactor.deleteSession(sessionHash).then(response=>{
+        if(response.ok) {
+          loader.hide();
+          sessions = sessions.filter((object:Session)=>{
+            object.hash === sessionHash
+          });
+          sessions = [...sessions]; // to get svelte to update the component
+        }
+      })
+
+
+    }
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <Blur bind:this={blurElement}/>
+<Loader bind:this={loader}/>
 <Holder>
     <h1>{$t("common.account_management")}</h1>
     <Section title={$t("common.account_details")} id="details">
@@ -178,7 +194,7 @@
                 </h3>
                 <p class="ip">{session.ip}</p>
                 <p style="display: flex; align-items: center;"><span class="material-symbols-outlined">update</span>Expires: {new Date(session.expire*1000).toUTCString()}</p>
-                <Button args="danger" on:click={()=>serverContactor.deleteSession(session.hash)}>Remove</Button>
+                <Button args="danger" on:click={()=>deleteSession(session.hash)}>Remove</Button>
             </div>
         {/each}
     </Section>

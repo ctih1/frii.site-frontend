@@ -185,5 +185,6 @@
   "index_bottom_hook_desc":"Go register your subdomain - I mean it's free",
   "blogs_title":"Blog posts",
   "blogs_description":"Read the latest news about frii.site here!",
-  "account_manage_sessions":"Logged in devices"
+  "account_manage_sessions":"Logged in devices",
+  "account_manage_sessions_delete_loader": "Signing session out..."
 }
