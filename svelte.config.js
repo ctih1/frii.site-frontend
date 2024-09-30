@@ -14,7 +14,6 @@ const config = {
 		adapter: adapter({
 		  maxDuration: 8
 		})
-	}
 };
 
 export default config;
