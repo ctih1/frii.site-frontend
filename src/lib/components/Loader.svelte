@@ -102,4 +102,19 @@
             transform: scale(1);
         }
     }
+
+    @media(max-width: 960px) {
+        .modal-wrapper {
+            margin-left: calc(80vw / 2 * -1);
+            margin-top: calc(80vw / 2 * -1);
+            width: 80vw;
+        }
+    }
+    @media(orientation:portrait) {
+        .modal-wrapper {
+            margin-left: calc(80vw / 2 * -1);
+            margin-top: calc(80vw / 2 * -1);
+            width: 80vw;
+        }
+    }
 </style>
