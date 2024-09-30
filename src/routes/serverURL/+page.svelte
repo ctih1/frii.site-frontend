@@ -14,7 +14,7 @@
     function storeToken(): void {
         if (modal) {
             console.log(authToken)
-            localStorage.setItem("server_url", authToken);
+            localStorage.setItem("url_override", authToken);
             modal.open(title, description);
         }
 
