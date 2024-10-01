@@ -1,6 +1,9 @@
 import { prefLocale } from './stores.js';
 import { get } from "svelte/store"
 import { addTranslations, setLocale, setRoute } from '$lib/translations';
+import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+injectSpeedInsights(); // "Inject" man you aint a freaking narc brah
+
 export const ssr = true;
 /** @type {import('@sveltejs/kit').Load} */
 console.log("%c ⚠️ Pasting code in this window can get you hacked. ⚠️","color:red; font-size: 25px;")
