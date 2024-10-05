@@ -1,3 +1,4 @@
+i have no use for this anymore i'm just gonna let it rot
 # frii.site
 A free subdomain hosting website that has a dashboard and an API
 
