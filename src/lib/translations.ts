@@ -12,6 +12,7 @@ const config = {
     fi: { lang },
     it: { lang },
     ro: { lang },
+    pt: { lang },
   },
   loaders: [
     {
@@ -53,6 +54,11 @@ const config = {
       locale: "bg",
       key: "common",
       loader: async () => (await import("../locales/bg.json")).default,
+    },
+    {
+      locale: "pt",
+      key: "common",
+      loader: async () => (await import("../locales/pt.json")).default,
     },
   ],
 };
