@@ -25,10 +25,11 @@
 </script>
 
 <svelte:head>
-    <meta content={`${data.title} - frii.site`} name="title">
-    <meta content={`${data.title} - frii.site`} name="og:title">
-    <meta content={`${data.body.substring(0,32)}...`} name="og:description">
-    <meta content={`${data.body.substring(0,32)}...`} name="description">
+    <title>{`${data.title} - frii.site`}</title>
+    <meta content={`${data.title} - frii.site`} name="title" />
+    <meta content={`${data.title} - frii.site`} name="og:title" />
+    <meta content={`${data.body.substring(0,32)}...`} name="og:description" />
+    <meta content={`${data.body.substring(0,32)}...`} name="description" />
 </svelte:head>
 
 <link
