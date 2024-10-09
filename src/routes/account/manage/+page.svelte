@@ -37,6 +37,12 @@
     let admin=false;
     let vuln=false;
     let monitoring=false;
+
+    if(browser) {
+      if(!localStorage.getItem("logged-in")) {
+        redirectToLogin(-1);
+      }
+    }
     onMount(()=>{
         async function __GetData() {
           await getData();
@@ -49,7 +55,11 @@
     })
 
     async function getData() {
-        await serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
+        await serverContactor.getAccountDetails().then(response=>{
+          if(response.status === 460) {
+            redirectToLogin(460)
+          }
+          response.json().then(data=>{
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
@@ -60,7 +70,7 @@
             vuln=data["permissions"]["reports"]??false;
             monitoring=data["permissions"]["userdetails"]??false;
         })
-
+      })
     }
 
     function handleDelete() {

@@ -3,11 +3,11 @@
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
-    import Blur from "$lib/components/Blur.svelte";
     import Loader from "$lib/components/Loader.svelte";
     import { createToken, ServerContactor } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
+
     let serverContactor: ServerContactor | undefined = undefined;
 
     let username: string;
@@ -15,9 +15,9 @@
     let repeatPassword: string;
     let email: string;
     let modal: Modal;
-    let redirectURL: string | null;
-    let blur: Blur;
+    let redirectURL: string; // Used to automatically redirect user to the right endpoint after login
     let loader:Loader;
+    let warningText: string; // Used for example "it seems like you don't have permissions to access this"
     function modalClose() {
         modal.close();
         loader?.hide();
@@ -26,19 +26,26 @@
 
     onMount(() => {
         serverContactor = new ServerContactor(
-            localStorage.getItem("auth-token"),
-            localStorage.getItem("server_url"),
+            localStorage.getItem("auth-token")
         );
-        redirectURL = $page.url.searchParams.get("r");
-        if (localStorage.getItem("logged-in") === "y") {
-            window.location.href = "/account/manage";
-            return;
+
+        redirectURL = $page.url.searchParams.get("r") ?? "/";
+        if(localStorage.getItem("logged-in") === "y" ) window.location.href = "/account/manage";
+
+        switch(Number($page.url.searchParams.get("c"))) {  // switch status code that redirected user here
+          case 460:
+            warningText = $t("common.account_signed_out")
+            break;
+
+          case 461:
+          case 462:
+            warningText = $t("common.account_permissions_lack");
+            break;
         }
     });
     let login: boolean = true;
 
-    function accountActionButtonClick() {
-
+    function accountActionButtonClick() { // Excuse me for this horrendous code TODO: refactor it. Don't feel like it though'
         if (serverContactor === undefined) {
             return;
         }
@@ -152,10 +159,14 @@
         {/if}
     </h1>
     <p>
-        {#if login}
-            {$t("common.login_description")}
+        {#if !warningText}
+            {#if login}
+                {$t("common.login_description")}
+            {:else}
+                {$t("common.signup_description")}
+            {/if}
         {:else}
-            {$t("common.signup_description")}
+            {warningText}
         {/if}
     </p>
 
@@ -207,17 +218,15 @@
             </h4>
         {/if}
 
-        <a on:click={() => (login = !login)}>
+        <a href="#" on:click={() => (login = !login)}>
             {#if login}
                 {$t("common.signup_instead")}
             {:else}
                 {$t("common.login_instead")}
-            {/if}</a
-        >
+            {/if}
+        </a>
     </form>
 </Holder>
-
-<Blur bind:this={blur} />
 
 <Modal
     bind:this={modal}

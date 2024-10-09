@@ -186,5 +186,8 @@
   "blogs_title":"Blog posts",
   "blogs_description":"Read the latest news about frii.site here!",
   "account_manage_sessions":"Logged in devices",
-  "account_manage_sessions_delete_loader": "Signing session out..."
+  "account_manage_sessions_delete_loader": "Signing session out...",
+  "account_uhoh_annoyance": "Uh oh!",
+  "account_signed_out": "Looks like you were signed out.",
+  "account_permissions_lack": "Looks like you don't have the right permissions to do this"
 }
