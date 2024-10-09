@@ -9,12 +9,12 @@ Have you come accross any bugs in frii.site? Repot them in the issues tab of thi
 
 ## How to contribute
 ### Creating issues
-When creating an issue, the guidelines aren't very strict. coherent sentences would be nice, and a good description of the bug would help out a lot. There are a few rules though
+When creating an issue, the guidelines aren't very strict. Coherent sentences would be nice, and a good description of the bug would help out a lot. There are a few rules though
 1. If it's a bug, report your device's OS information (including what browser version you have)
 2. Issues like  "Please help" or "Please fix" with no ability to actually help you will get closed.
 
 ### Pull Requests
-Open up a pull request for any issues, or features you want. Just make sure to follow contribution guidelines. Make sure to make the pull requset go to `dev` instead of `master`
+Open up a pull request for any issues, or features you want. Just make sure to follow contribution guidelines. Make sure to make the pull request go to `dev` instead of `master`
 
 ### Submitting code
 When submitting code, please respect the fact that the master branch is for **tested code**. You should **always** make pull requests go to the `dev` branch.
