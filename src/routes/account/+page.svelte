@@ -4,7 +4,7 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import Loader from "$lib/components/Loader.svelte";
-    import { createToken, ServerContactor } from "../../serverContactor";
+    import { createToken, ServerContactor, digestMessage } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
 
@@ -67,15 +67,14 @@
                         );
                         break;
                     case 412:
-                        createToken(username, password).then((token) => {
-                            modal.open(
-                                $t("common.login_failed_verify"),
-                                $t("common.login_failed_verify_description"),
-                                undefined,
-                                undefined,
-                                true,
-                            );
-                        });
+                        localStorage.setItem("verif-token",username)
+                        modal.open(
+                            $t("common.login_failed_verify"),
+                            $t("common.login_failed_verify_description"),
+                            undefined,
+                            undefined,
+                            true,
+                        );
                         break;
                     case 200:
                         //@ts-ignore
