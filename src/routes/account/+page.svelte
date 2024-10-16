@@ -66,7 +66,7 @@
                             $t("common.login_failed_description"),
                         );
                         break;
-                    case 417:
+                    case 412:
                         createToken(username, password).then((token) => {
                             modal.open(
                                 $t("common.login_failed_verify"),
