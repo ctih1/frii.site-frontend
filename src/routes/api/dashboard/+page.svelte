@@ -7,21 +7,51 @@
     import InputCompletor from "$lib/components/InputCompletor.svelte";
     import { t } from '$lib/translations';
     import { onMount } from 'svelte';
+    import Modal from "$lib/components/Modal.svelte";
+    import Loader from "$lib/components/Loader.svelte";
+    import { redirectToLogin } from '../../../helperFuncs';
     let domainPool:Pool;
+    let loader:Loader;
+    let modal:Modal;
     let permPool:Pool;
-    let exampleData = {"key":"agiNAgn","comment":"This is a doman test test! And this is my life story. I was born in helsinki and lived a peaceful life for the end of time", "permissions": {"edit":{"content":true,"type":true,"domain":true},"view":true,"delete":true},"domains":["testing","anothertesting"]}
+    let comment:string;
 
+    interface key {
+      key:string;
+      comment:string;
+      perms: string[]
+      domains: string[];
+    }
+
+    let keys: key[];
+    let loaded:boolean = false;
+    let exampleData = {"key":"agiNAgn","comment":"This is a doman test test! And this is my life story. I was born in helsinki and lived a peaceful life for the end of time", "permissions": {"edit":{"content":true,"type":true,"domain":true},"view":true,"delete":true},"domains":["testing","anothertesting"]}
+    let sc:ServerContactor;
     onMount(()=>{
-        let sc:ServerContactor = new ServerContactor(localStorage.getItem("auth-token"));
-        sc.getDomains().then(response=>response.json()).then(data=> {
-            formatDomains(data);
-        }
-        )
+        sc = new ServerContactor(localStorage.getItem("auth-token"));
+        loader.show(undefined,$t("common.api_dashboard_loading"))
+        sc.getApiKeys().then(response=>{
+            if(response.status===401) {redirectToLogin(401)};
+            response.json().then(data=>{
+              console.log(data);
+              keys = data as key[]
+              loader.hide();
+              loaded = true;
+            })
+        });
+        sc.getDomains().then(response=>{
+        if(response.status!==200) { modal.open($t("common.api_dashboard_domain_load_fail"),$t("common.api_dashboard_domain_load_fail_description")) }
+            response.json().then(data=>{
+              formatDomains(data);
+            });
+        })
     })
 
     let input:InputCompletor;
     let domainInput:InputCompletor;
     let domains:{displayText:string,valueText:string}[] = [];
+    let valueDomains:string[] = [];
+    let permissions:string[] = [];
 
     function formatDomains(data:Map<string,any>) {
         new Map(Object.entries(data)).forEach((key,value)=>{
@@ -38,11 +68,39 @@
         ic.removeFromDeleted(item);
     }
 
+    function submitKey() {
+      domainPool.get().forEach((element:{displayText:string,valueText:string})=>{
+        valueDomains.push(element.valueText);
+      });
+      permPool.get().forEach((element:{displayText:string,valueText:string})=>{
+        permissions.push(element.valueText);
+      });
+      console.log(valueDomains);
+      console.log(permissions);
+      loader.show(undefined,$t("common.api_dashboard_create_loading_desc"))
+      sc.createApi(valueDomains,permissions,comment).then(response=>{
+        loader.hide();
+        if(response.status===403) {
+            modal.open($t("common.api_dashboard_create_fail"),$t("common.api_dashboard_create_fail_domains"));
+        } else if(response.status===401) {
+            redirectToLogin(401)
+        } else if(response.status===200) {
+            modal.open($t("common.api_dashboard_create_success"),$t("common.api_dashboard_create_success_description"));
+            location.reload();
+        }
+      }
+      )
+    }
+
 </script>
 
+<Loader bind:this={loader}/>
+<Modal bind:this={modal}/>
 <Holder>
     <h1>{$t("common.api_title")}</h1>
-    <ApiKeyTable keys={[exampleData,exampleData]}></ApiKeyTable>
+    {#if loaded}
+        <ApiKeyTable keys={keys}></ApiKeyTable>
+    {/if}
 </Holder>
 
 <Holder>
@@ -50,7 +108,7 @@
     <form>
         <div class="form-item">
             <p>{$t("common.api_dashboard_comment_section")}</p>
-            <input type="text" style="min-height: 2em;" placeholder={$t("common.api_dashboard_comment_placeholder")}>
+            <input bind:value={comment} type="text" style="min-height: 2em;" placeholder={$t("common.api_dashboard_comment_placeholder")}>
         </div>
         <div class="form-item">
             <div class="flex">
@@ -74,7 +132,7 @@
                 <Pool bind:this={domainPool} items={[]} on:remove={(event)=>{undoRemove(domainInput,event.detail)}}></Pool>
             </div>
         </div>
-        <Button args="fill padding">{$t("common.api_dashboard_create_button")}</Button>
+        <Button on:click={()=>submitKey()} args="fill padding">{$t("common.api_dashboard_create_button")}</Button>
     </form>
 </Holder>
 
@@ -100,6 +158,6 @@
         margin-right: 0.25em;
     }
     @media(max-width: 1220px) {
-        
+
     }
 </style>

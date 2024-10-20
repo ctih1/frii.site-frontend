@@ -25,6 +25,7 @@
     "dashboard_abuse": "Report",
     "index_description": "Go get your subdomain now!",
     "index_register_account": "Register an account",
+    "account_manage_sessions": "Logged in devices",
     "index_goto_dashboard": "Go to the dashboard",
     "dashboard_title": "Dashboard",
     "dashboard_your_domains": "Your domains",

@@ -1,20 +1,20 @@
 import { redirectToLogin } from "./helperFuncs";
 import { browser } from "$app/environment";
 
-export let serverURL="https://api.frii.site"
+export let serverURL="https://devserver.frii.site"
 if(browser) {
   let subdomain = window.location.hostname.split(".")[0]
-  if(subdomain === "canary") {
+  if(subdomain === "red") {
     serverURL = "https://devserver.frii.site"
   };
   if(localStorage.getItem("url_override")) {
-    serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
+    serverURL = localStorage.getItem("url_override") ?? "https://devserver.frii.site";
   }
   console.debug("Switched server url to " + serverURL)
 }
 
 
-async function digestMessage(message:string) {
+export async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
     const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
@@ -78,11 +78,13 @@ export async function reportVulnerability(endpoint:string, expected:string, actu
     });
 }
 
-export async function resendEmail(token:string|null):Promise<Response> {
-    return await fetch(`${serverURL}/resend-email`, {
+export async function resendEmail(username:string):Promise<Response> {
+    const hash = await digestMessage(username);
+
+    return fetch(`${serverURL}/resend-email`, {
         method: "GET",
         headers: {
-            "X-Auth-Token":token as string
+            "X-Auth-Username": hash
         }
     });
 }
@@ -386,4 +388,3 @@ export class ServerContactor {
     });
   }
 }
-//sad

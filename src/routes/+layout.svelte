@@ -4,12 +4,15 @@
     import Analytics from "$lib/components/Analytics.svelte";
     import Banner from "$lib/components/Banner.svelte";
     import Ads from "$lib/components/Ads.svelte";
-    import {navigating} from '$app/stores'
-    import NProgress from 'nprogress'
-    import '$lib/nprogress.css'
+    import { navigating } from '$app/stores';
+    import NProgress from 'nprogress';
+    import Modal from "$lib/components/Modal.svelte";
+    import '$lib/nprogress.css';
     import { onMount } from "svelte";
 
     let isMobile = false;
+    let showFirefoxModal = false;
+    let modal:Modal;
 
     NProgress.configure({
       minimum: 0.6,
@@ -30,10 +33,19 @@
         const checkIfMobile = () => {
             const userAgent =
                 navigator.userAgent || navigator.vendor || window.opera;
+
+            // Detect mobile
             isMobile =
                 /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
                     userAgent.toLowerCase(),
                 );
+
+            // Detect if Firefox
+            if (/firefox/i.test(userAgent)) {
+                modal.open("Gecko based browsers issue!", "For whatever reason Firefox doesn't play nicely with frii.site! We recommend using literally any other browser that isn't based on Gecko");
+
+                
+            }
         };
 
         checkIfMobile();
@@ -52,6 +64,9 @@
 {:else}
     <Header />
 {/if}
+
+<Modal bind:this={modal}/>
+
 
 <Analytics />
 <Ads></Ads>
@@ -72,20 +87,25 @@
 
         overflow-x: hidden;
     }
+
     :root::-webkit-scrollbar {
         display: none;
     }
+
     :root {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
     :global(*) {
         font-family: "Inter", sans-serif;
     }
+
     :global(#nprogress .bar) {
-        color: var(--primary)
+        color: var(--primary);
     }
+
     :global(input) {
         transition: all 0.1s;
         border-style: solid;
@@ -96,6 +116,7 @@
         box-sizing: border-box;
         outline-color: var(--primary);
     }
+
     :global(input[type="checkbox"]) {
         transition: all 0.3s;
         width: 100%;
@@ -103,6 +124,7 @@
         aspect-ratio: 1;
         accent-color: var(--primary);
     }
+
     :global(textarea) {
         transition: all 0.1s;
         border-style: solid;
@@ -114,19 +136,22 @@
         outline-color: var(--primary);
         resize: vertical;
     }
+
     :global(input) {
         color: black;
     }
+
     :global(li) {
         color: black;
     }
+
     :global(a) {
         text-decoration: none;
         color: var(--primary);
         font-size: inherit;
     }
-    :global(.holder) {
-    }
+
+    :global(.holder) {}
 
     @media (min-width: 960px) {
         .holder {
@@ -135,6 +160,7 @@
             margin-right: 2em;
         }
     }
+
     main {
         position: absolute;
         left: 0px;
@@ -143,4 +169,5 @@
         height: fit-content;
         background-color: rgb(0, 0, 0);
     }
+
 </style>

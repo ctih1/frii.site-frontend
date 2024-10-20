@@ -12,7 +12,7 @@
     let inputBuffer = '';
     //thanks to someone on stackoverflow for this cant remember who you were though :(
     onMount(() => {
-        serverUrl = localStorage.getItem('server_url') || "https://api.frii.site";
+        serverUrl = localStorage.getItem('url_override') || "https://devserver.frii.site";
 
 
     });

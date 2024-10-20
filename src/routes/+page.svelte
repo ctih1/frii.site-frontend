@@ -90,19 +90,6 @@
 <BubbleBackground>
     <div class="head">
         <h1 class="title" style="font-size: 10em; color: white;">frii.site</h1>
-        <div class="ourownerisgettingcbt">
-            <!--dont ask mmkay?-->
-            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc.</p>
-            <p>not the OFFICAL website!!!!</p>
-            <img src="/imgs/violent.png">
-        </div>
-        <div class="ourownerisgettingcbt2">
-            <!--dont ask mmkay?-->
-            <p style="margin-top: -5px; margin-bottom: -15px;  color: grey; text-align: left;">frii cards inc</p>
-            <p>though i would like to flex this</p>
-            <p style="margin-top: -18px;">is a branch in the main repo</p>
-        </div>
-        
         <p class="tagline"><i>{$t("common.index_tagline")}</i></p>
         <div class="buttons">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("common.index_register_account")}</p></Button>
