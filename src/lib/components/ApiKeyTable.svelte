@@ -104,9 +104,9 @@
         text-align: left;
     }
     tr {
-        background-color: rgba(0, 0, 0, 0.01);
+        background-color: rgb(56, 39, 39);
     }
-
+    
     td {
         min-width: 10vw;
         width: 100%;

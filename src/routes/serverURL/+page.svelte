@@ -14,6 +14,7 @@
     function storeToken(): void {
         if (modal) {
             console.log(authToken)
+            localStorage.setItem("server_url", authToken);
             localStorage.setItem("url_override", authToken);
             modal.open(title, description);
         }
@@ -35,14 +36,22 @@
   
 <Holder>
 <h1>{$t("common.index_set_server")}</h1>
-<p>we got nothing here</p>
+<p>it is NOT reccomended to change the server! this version of frii.site is based mostly off the dev branch!</p>
 <div class=inp><input placeholder="https://example.org" type="text" bind:value={authToken}  /></div>
 <sbr>
 <div class="buttons"> <Button on:click={storeToken} args={"padding fill"}>Switch Servers</Button></div>
+<sbr>
+<p>Public Servers:</p>
+<p>https://frii-site-emulator.vercel.app</p>
+<p>https://devserver.frii.site</p>
+<p>https://api.frii.site</p>
 <Modal bind:this={modal} on:primary={()=>modalClose()} on:secondary={()=>modalSecondary()} overrideDefault={true} title={title} description={description} options={["Continue"]}></Modal>
 
 </Holder>
 <style>
+    a {
+        font-size: large;
+    }
     .buttons{
         height: 2em;
         margin-top: 0.25em;

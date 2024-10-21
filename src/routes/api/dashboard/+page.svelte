@@ -141,6 +141,9 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        background-color: rgb(71, 48, 48);
+        padding-top: 7px;
+        border-radius: 15px;
     }
     .flex {
         display: flex;
@@ -151,6 +154,9 @@
         height: max-content;
         display: flex;
         flex-direction: row;
+        background-color: rgb(71, 48, 48);
+        border-radius: 15px;
+        color: white;
     }
     .flex * {
         margin-top: 0px;
