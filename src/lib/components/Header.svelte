@@ -11,10 +11,10 @@
     let serverUrl = '';
     let inputBuffer = '';
     //thanks to someone on stackoverflow for this cant remember who you were though :(
-        let serverStatus = ''; 
+    let serverStatus = ''; 
 
   async function fetchServerStatus() {
-    const url = localStorage.getItem('server_url');
+    const url = localStorage.getItem('server_url') || "https://devserver.frii.site";
     if (url) {
       try {
         const response = await fetch(`${url}/status`);
