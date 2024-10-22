@@ -11,9 +11,30 @@
     let serverUrl = '';
     let inputBuffer = '';
     //thanks to someone on stackoverflow for this cant remember who you were though :(
+        let serverStatus = ''; 
+
+  async function fetchServerStatus() {
+    const url = localStorage.getItem('server_url');
+    if (url) {
+      try {
+        const response = await fetch(`${url}/status`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok, ask him how hes feeling');
+        }
+        
+        // bones bones bones hell we're all alone!
+        serverStatus = await response.text();
+      } catch (error) {
+        serverStatus = `Error: ${error.message}`;
+      }
+    } else {
+      serverStatus = 'Server URL not found';
+    }
+  }
+
     onMount(() => {
         serverUrl = localStorage.getItem('url_override') || "https://devserver.frii.site";
-
+        fetchServerStatus();
 
     });
     onDestroy(() => {
@@ -65,7 +86,10 @@
         <span class="material-symbols-outlined">computer</span>
         <p>{serverUrl}</p>
     </a>
-
+    <a class="item" href="#">
+        <span class="material-symbols-outlined">warning</span>
+        <p>{serverStatus}</p>
+    </a>
 
     
     

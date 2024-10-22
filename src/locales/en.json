@@ -91,7 +91,7 @@
     "api_title": "Your API keys",
     "api_dashboard_key_warning": "Warning! You are about to show your API key.",
     "api_dashboard_key_warning_description": "Revealing your API key might result in unauthorized changes to your domain. Do you want to continue?",
-    "api_dashboard_key_title": "Your API key",
+    "api_dashboard_key_title": "Your API key(s)",
     "api_dashboard_key_description": "Your API key is \"%key%\". Do NOT share this API key, since it might cause unauthorized changes to your domain.",
     "api_dashboard_key_deletion": "Are you sure you want to delete a key with the description \"%key_comment%\"?",
     "api_dashboard_key_deletion_description": "This is a change that cannot be undone. Every app that relies on this API key will instantly stop working. Are you sure you want to continue?",
