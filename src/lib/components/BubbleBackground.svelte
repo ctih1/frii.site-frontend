@@ -15,11 +15,16 @@
 
 <div class="balls">
     <div class="circles">
-        {#each balls as {x,y}}
-            <div class="bubble" 
-            style=
-                "width: {Math.max(Math.random(),0.3)*25}vw; opacity: {Math.random()*0.1}; top:{y}; left:{x};">
-            </div>
+        {#each balls as { x, y }}
+            <img 
+                class="bubble" 
+                src="https://pluspng.com/img-png/pumpkin-png-real-pumpkin-transparent-background-1557.png"
+                style="
+                    width: {Math.max(Math.random(), 0.3) * 25}vw; 
+                    opacity: {Math.random() * 0.1}; 
+                    top: {y}; 
+                    left: {x};"
+            />
         {/each}
     </div>
     <div class="main">
