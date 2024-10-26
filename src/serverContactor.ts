@@ -387,4 +387,11 @@ export class ServerContactor {
       headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
     });
   }
+
+  async logOut() {
+    return await fetch(`${this.serverURL}/session/logout`, {
+      method: "DELETE",
+      headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
+    });
+  }
 }

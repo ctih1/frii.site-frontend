@@ -1,5 +1,6 @@
 <script lang="ts">
-    import Cookies from 'js-cookie'
+    import Cookies from 'js-cookie';
+    import { dev } from '$app/environment';
     import { t } from "$lib/translations";
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
@@ -27,7 +28,7 @@
 
     onMount(() => {
         serverContactor = new ServerContactor(
-            localStorage.getItem("auth-token")
+            Cookies.get("auth-token")
         );
 
         redirectURL = $page.url.searchParams.get("r") ?? "/";
@@ -80,10 +81,8 @@
                     case 200:
                         //@ts-ignore
                         response.text().then(session=>{
-                          localStorage.setItem(
-                              "auth-token", session
-                          );
-                        })
+                          Cookies.set("auth-token", session,  {expires: 7, secure: !dev}) // Force HTTPS if on production
+                        });
                         localStorage.removeItem("temp-token");
                         localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
                         localStorage.setItem("logged-in", "y");

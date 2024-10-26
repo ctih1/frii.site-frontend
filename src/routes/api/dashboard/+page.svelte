@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Cookies from 'js-cookie';
 	import Pool from '$lib/components/Pool.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import ApiKeyTable from "$lib/components/ApiKeyTable.svelte";
@@ -28,7 +29,7 @@
     let exampleData = {"key":"agiNAgn","comment":"This is a doman test test! And this is my life story. I was born in helsinki and lived a peaceful life for the end of time", "permissions": {"edit":{"content":true,"type":true,"domain":true},"view":true,"delete":true},"domains":["testing","anothertesting"]}
     let sc:ServerContactor;
     onMount(()=>{
-        sc = new ServerContactor(localStorage.getItem("auth-token"));
+        sc = new ServerContactor(Cookies.get("auth-token"));
         loader.show(undefined,$t("common.api_dashboard_loading"))
         sc.getApiKeys().then(response=>{
             if(response.status===460) {redirectToLogin(460)};

@@ -5,6 +5,8 @@
     import Tooltip from "$lib/components/Tooltip.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
+    import Cookies from 'js-cookie';
+
     import { getTranslationKeys } from "../../../serverContactor";
     import { t } from "$lib/translations";
     import { getFlagEmoji } from "../../../helperFuncs";
@@ -13,7 +15,7 @@
     let keys: Array<{ key: string; ref: string }> = new Array();
     let values: Array<string> = new Array(keys.length);
     let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
-    let sc = new ServerContactor(localStorage.getItem("auth-token"));
+    let sc = new ServerContactor(Cookies.get("auth-token"));
     let modal: Modal;
     let modified: Array<{ key: string; val: string }> = new Array();
     console.log(values);

@@ -7,8 +7,10 @@
     import ShopItem from "$lib/components/ShopItem.svelte";
     import {t} from "$lib/translations"
     import Holder from "$lib/components/Holder.svelte";
+    import Cookies from 'js-cookie';
+
     let credits:number = 0;
-    let sc = new ServerContactor(localStorage.getItem("auth-token"));
+    let sc = new ServerContactor(Cookies.get("auth-token"));
     let modal:Modal;
     let loaded:boolean=false;
 

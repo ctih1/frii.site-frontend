@@ -1,4 +1,7 @@
 <script lang="ts">
+    import Cookies from 'js-cookie';
+    import { dev } from '$app/environment';
+
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
@@ -50,7 +53,7 @@
               sessions = json as Session[];
           })
         }
-        serverContactor=new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
+        serverContactor=new ServerContactor(Cookies.get("auth-token"),localStorage.getItem("server_url"));
         __GetData();
     })
 
@@ -109,6 +112,8 @@
         });
     }
     function logOut() {
+        serverContactor.logOut();
+        Cookies.remove("auth-token", {secure: !dev});
         localStorage.removeItem("logged-in");
         localStorage.removeItem("auth-token");
         redirectToLogin(200);
