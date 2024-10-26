@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Cookies from 'js-cookie'
     import { t } from "$lib/translations";
     import Button from "$lib/components/Button.svelte";
     import { page } from "$app/stores";
