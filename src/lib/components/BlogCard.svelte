@@ -4,6 +4,7 @@
     import {t} from "$lib/translations"
     import Placeholder from "./Placeholder.svelte";
     import SvelteMarkdown from "svelte-markdown";
+  
     export let title:string;
     export let description:string;
     export let date:number;

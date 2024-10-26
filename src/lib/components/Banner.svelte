@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { get } from "svelte/store"
     import { getStatus } from "../../serverContactor";
     import { browser } from "$app/environment";
     let height:number;

@@ -153,6 +153,7 @@ export class ServerContactor {
       // Handle errors here
       console.error("Login error:", error);
       throw error; // Rethrow the error to be handled by the caller
+
     }
   }
   async getDomains(): Promise<Response> {
@@ -352,8 +353,7 @@ export class ServerContactor {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
       body: JSON.stringify({ "contributions": contribution })
-    }
-    )
+    })
   }
   async getApiKeys() {
     return await fetch(`${this.serverURL}/get-api-keys`, {

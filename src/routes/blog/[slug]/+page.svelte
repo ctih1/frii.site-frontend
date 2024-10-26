@@ -16,7 +16,6 @@
       let guess2 = Math.round(data.body.length / 1000);
       if(guess2===guess1) {
         return `~ ${guess1} minute read`
-
       } else {
         return `~ ${guess2} to ${guess1} minute read`
       }
@@ -64,7 +63,7 @@
     .material-symbols-outlined {
         margin-right: 10px;
     }
-
+  
     .md :global(em) {
         background-color: var(--offwhite-color);
     }
