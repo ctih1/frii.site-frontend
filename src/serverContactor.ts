@@ -1,5 +1,5 @@
 import { redirectToLogin } from "./helperFuncs";
-export const serverURL="https://devserver.frii.site";
+export const serverURL="https://api.frii.site";
 
 async function digestMessage(message:string) {
     const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -76,7 +76,7 @@ export async function resendEmail(token:string|null):Promise<Response> {
 
 export async function getLanguagePercentages():Promise<Response> {
     return await fetch(`${serverURL}/translation/percentages`, {
-       method: "GET"
+       method: "GET" 
     });
 }
 
@@ -128,13 +128,13 @@ export class ServerContactor {
             const psw = await digestMessage(password);
             const usr = await digestMessage(username);
             const token = `${psw}|${usr}`;
-
+            
             localStorage.setItem("temp-token",token)
             const response = await fetch(`${this.serverURL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json","X-Auth-Token":token },
             });
-
+    
             return response.status;
         } catch (error) {
             // Handle errors here
@@ -183,7 +183,7 @@ export class ServerContactor {
             body: JSON.stringify(data)
         });
     }
-
+    
     async register(username:string,password:string,email:string):Promise<Response> {
         // 409: User already exists
         let data = {
@@ -239,7 +239,7 @@ export class ServerContactor {
         };
         return await fetch(`${this.serverURL}/vulnerability/status`, {
             method: "PATCH",
-            headers:{"Content-Type":"application/json","X-Auth-Token":this.token},
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
@@ -257,7 +257,7 @@ export class ServerContactor {
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
             method: "PATCH",
-            headers:{"Content-Type":"application/json","X-Auth-Token":this.token},
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
@@ -275,7 +275,7 @@ export class ServerContactor {
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
             method: "PATCH",
-            headers:{"Content-Type":"application/json","X-Auth-Token":this.token},
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
@@ -293,11 +293,11 @@ export class ServerContactor {
         });
         return await fetch(`${this.serverURL}/vulnerability/status`, {
             method: "PATCH",
-            headers:{"Content-Type":"application/json","X-Auth-Token":this.token},
+            headers:{"Content-Type":"application/json","X-Auth-Token":this.token}, 
             body: JSON.stringify(data)
         });
     }
-    async createApi(domains:string[],perms:string[],comment:string):Promise<Response> {
+    async createApi(domains:string[],perms:string[],comment:string[]):Promise<Response> {
         const data = {
             domains:domains,
             perms:perms,
@@ -341,18 +341,5 @@ export class ServerContactor {
             body: JSON.stringify({"contributions":contribution})
         }
         )
-    }
-    async getApiKeys() {
-        return await fetch(`${this.serverURL}/get-api-keys`,{
-          method: "GET",
-          headers:  {"Content-Type":"application/json","X-Auth-Token":this.token}
-        } )
-    }
-    async deleteApi(api:string) {
-      return await fetch(`${this.serverURL}/api-delete`, {
-        method:"DELETE",
-        headers:  {"Content-Type":"application/json","X-Auth-Token":this.token},
-        body: JSON.stringify({key:api})
-      })
     }
 }
