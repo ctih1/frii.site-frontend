@@ -1,7 +1,7 @@
 <script lang="ts">
     import { browser } from "$app/environment"
     let balls = randomLocations();
-    const ballAmount:number=15;
+    const ballAmount:number=20;
 
     function randomLocations() {
         return Array.from({length:ballAmount},()=>({
@@ -37,9 +37,10 @@
         transition: all 15s linear;
         aspect-ratio: 1;
         position: absolute;
-        background-color: var(--primary);
+        background-image: url("/pumpkin.png");
+        background-size: 100% 100%;
         border-radius: 100%;
-        opacity: 0.02;
+        opacity: 1;
         z-index: 0;
     }
     .circles {
