@@ -81,7 +81,8 @@
                     case 200:
                         //@ts-ignore
                         response.text().then(session=>{
-                          Cookies.set("auth-token", session,  {expires: 7, secure: false, domain: window.location.hostname}) // Force HTTPS if on production
+                          const date = new Date(Date.now()+ 604800*1000).toUTCString();
+                          document.cookie=`auth-token=${session}; expires=${date}; ${dev ? "" : "secure;"}`;
                         });
                         localStorage.removeItem("temp-token");
                         localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
@@ -93,7 +94,7 @@
                         if (redirectURL === null) {
                             redirectURL = "/";
                         }
-                        window.location.href = redirectURL;
+                        // window.location.href = redirectURL;
                         break;
                 }
             });
