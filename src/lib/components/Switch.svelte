@@ -7,7 +7,7 @@
 
     function change() {
         dispatch("change",!checked);
-    } 
+    }
 
 </script>
 
@@ -37,7 +37,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
+        background-color: var(--secondary-color);
     }
 
     .slider:before {
@@ -72,5 +72,5 @@
 
     .slider.round:before {
         border-radius: 50%;
-    } 
+    }
 </style>

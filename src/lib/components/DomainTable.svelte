@@ -160,7 +160,7 @@
         width: 100%;
         height: 100%;
         table-layout: fixed;
-        background-color: rgb(255, 255, 255);
+        background-color: var(--offwhite-coloe);
         border-collapse: collapse;
         padding: 1em;
     }

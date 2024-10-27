@@ -263,7 +263,7 @@
         padding: 0.5em;
         margin-top: 1em;
         margin-bottom: 1em;
-        background-color: var(--background-color);
+        background-color: var(--secondary-color);
     }
     .session-header {
         display: flex;
