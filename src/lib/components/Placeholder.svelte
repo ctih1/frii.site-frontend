@@ -1,5 +1,5 @@
 <script lang="ts">
-    
+
 </script>
 
 <div class="placeholder"></div>
@@ -25,7 +25,7 @@
         animation-name: placeholderScrobbler;
         animation-timing-function: linear;
         background: #f6f7f8;
-        background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+        background: linear-gradient(to right, #121212 8%, #212121 18%, #121212 33%);
         background-size: 500% 100%;
         overflow: hidden;
         border-radius: 0.5em;

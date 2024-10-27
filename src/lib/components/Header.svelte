@@ -54,7 +54,7 @@
         align-items: center;
         top: 0px;
         left: 0px;
-        background-color: rgb(255, 255, 255);
+        background-color: var(--offwhite-color);
         min-height: 50px;
         max-width: 100vw;
         z-index: 10;
@@ -105,7 +105,7 @@
     }
     select {
         border-style: none;
-        background-color: none;
+        background-color: var(--offwhite-color);
     }
     select * {
         color: var(--primary)

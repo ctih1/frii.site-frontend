@@ -62,7 +62,7 @@
         top: 50%;
     }
     .modal {
-        background-color: #fff;
+        background-color: rgb(40, 40, 40);
         height: fit-content;
         width: 100%;
         border-radius: 0.5em;

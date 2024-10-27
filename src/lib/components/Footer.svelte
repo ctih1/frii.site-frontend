@@ -36,14 +36,14 @@
         width: 100%;
         padding-bottom: 2em;
         text-align: center;
-        background-color: #fff;
+        background-color: var(--offwhite-color);
     }
     .footer * {
         display: flex;
         flex-direction: column;
     }
     a {
-        color: black;
+        color: white;
         text-decoration: underline;
         width: fit-content;
         margin-right: auto;

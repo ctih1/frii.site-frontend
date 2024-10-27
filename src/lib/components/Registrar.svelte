@@ -1,5 +1,7 @@
 <script lang="ts">
     import Cookies from 'js-cookie';
+    import {getAuthToken} from "$lib";
+
     import Button from "./Button.svelte";
     import { onMount } from "svelte";
     import Dropdown from "./Dropdown.svelte";
@@ -10,7 +12,7 @@
     let authToken:string|null;
     let serverContactor:ServerContactor
     onMount(()=>{
-        authToken=Cookies.get("auth-token");
+        authToken=getAuthToken();
         serverContactor = new ServerContactor(authToken,localStorage.getItem("server_url"));
     })
     let domainInput:string;

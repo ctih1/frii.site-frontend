@@ -132,7 +132,7 @@
         padding: 2em;
         width: 50vw;
         border-radius: 0.5em;
-        background-color: white;
+        background-color: rgb(40, 40, 40);
         margin-left: auto;
         margin-right: auto;
     }

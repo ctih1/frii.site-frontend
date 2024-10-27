@@ -37,9 +37,10 @@
         --primary: rgb(0, 123, 225);
         --border-color: rgba(0, 0, 0, 0.086);
         --border-color: rgba(0, 0, 0, 0.05);
-        --secondary-color: #bdbdbd;
-        --offwhite-color: #eeeeee;
+        --secondary-color: #424242;
+        --offwhite-color: #303030;
         --background-color: rgb(216, 216, 216);
+        background-color: var(--offwhite-color);
         overflow-x: hidden;
     }
     :root::-webkit-scrollbar {
@@ -65,6 +66,8 @@
         height: 100%;
         box-sizing: border-box;
         outline-color: var(--primary);
+        background-color: var(--offwhite-color);
+        color: white;
     }
     :global(input[type="checkbox"]) {
         transition: all 0.3s;
@@ -104,6 +107,10 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        background-color: rgb(216, 216, 216);
+        background-color: rgb(25, 25, 25);
+    }
+
+    * {
+        color: white;
     }
 </style>
