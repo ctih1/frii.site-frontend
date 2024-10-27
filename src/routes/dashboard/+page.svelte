@@ -9,6 +9,7 @@
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
     import Cookies from 'js-cookie';
+    import { getAuthToken } from "$lib";
 
     let domainTable:DomainTable;
     let modal:Modal;
@@ -119,7 +120,7 @@ onMount(()=>{
         if(localStorage.getItem("del-count")??null===true) {
             modalTime = 3;
         }
-        serverContactor = new ServerContactor(Cookies.get("auth-token"),localStorage.getItem("server_url"));
+        serverContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         serverContactor.getDomains().then(response=>{
             if(response.status===460){redirectToLogin(460)}
             if(response.status===404){domainTable.updateDomains([[""]]); return;}

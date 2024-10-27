@@ -8,9 +8,10 @@
     import {t} from "$lib/translations"
     import Holder from "$lib/components/Holder.svelte";
     import Cookies from 'js-cookie';
+    import { getAuthToken } from "$lib";
 
     let credits:number = 0;
-    let sc = new ServerContactor(Cookies.get("auth-token"));
+    let sc = new ServerContactor(getAuthToken());
     let modal:Modal;
     let loaded:boolean=false;
 

@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie';
+
+
 export function redirectToLogin(code: number = 0): void {
   localStorage.removeItem("logged-in");
   if (code === 461) {
@@ -30,4 +33,8 @@ export function getFlagEmoji(countryCode: String): string {
     .split("")
     .map((char) => 127397 + char.charCodeAt());
   return String.fromCodePoint(...codePoints);
+}
+
+export function getAuthToken() {
+  return Cookies.get("auth-token") ?? localStorage.getItem("auth-token");
 }

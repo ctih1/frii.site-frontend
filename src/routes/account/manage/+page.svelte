@@ -1,5 +1,7 @@
 <script lang="ts">
     import Cookies from 'js-cookie';
+    import {getAuthToken} from "$lib";
+
     import { dev } from '$app/environment';
 
 	import Dropdown from '$lib/components/Dropdown.svelte';
@@ -53,7 +55,7 @@
               sessions = json as Session[];
           })
         }
-        serverContactor=new ServerContactor(Cookies.get("auth-token"),localStorage.getItem("server_url"));
+        serverContactor=new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         __GetData();
     })
 

@@ -8,11 +8,12 @@
     import { redirect } from "@sveltejs/kit";
     import Scale from "$lib/components/Scale.svelte";
     import Cookies from 'js-cookie';
+    import { getAuthToken } from "$lib";
 
     let descriptionText:string;
     let reports:Array<any> = [];
     onMount(()=>{
-        let sc:ServerContactor = new ServerContactor(Cookies.get("auth-token"),localStorage.getItem("server_url"));
+        let sc:ServerContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         sc.getVulns().then(response=>{
             if(response.status!==200) { redirectToLogin(461); }
             response.json().then(data=>{

@@ -1,5 +1,7 @@
 <script lang="ts">
     import Cookies from 'js-cookie';
+    import {getAuthToken} from "$lib";
+
     import { dev } from '$app/environment';
     import { t } from "$lib/translations";
     import Button from "$lib/components/Button.svelte";
@@ -28,7 +30,7 @@
 
     onMount(() => {
         serverContactor = new ServerContactor(
-            Cookies.get("auth-token")
+            getAuthToken()
         );
 
         redirectURL = $page.url.searchParams.get("r") ?? "/";
@@ -82,7 +84,11 @@
                         //@ts-ignore
                         response.text().then(session=>{
                           const date = new Date(Date.now()+ 604800*1000).toUTCString();
-                          document.cookie=`auth-token=${session}; expires=${date}; ${dev ? "" : "secure;"}`;
+                          document.cookie=`auth-token=${session}; expires=${date};`;
+                          if(!getAuthToken()) {
+                            console.error("Browser did not accept cookies... using localstorage");
+                            localStorage.setItem("auth-token", session);
+                          }
                         });
                         localStorage.removeItem("temp-token");
                         localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage

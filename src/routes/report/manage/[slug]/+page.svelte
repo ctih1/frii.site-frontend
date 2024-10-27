@@ -7,6 +7,7 @@
     import Button from "$lib/components/Button.svelte";
     import Cookies from 'js-cookie';
     import { onMount } from 'svelte';
+    import { getAuthToken } from "$lib";
     export let data:Object;
     let reportData:Map<string,any> = new Map(Object.entries(data));
     let reportSteps:Map<string,any> = new Map(Object.entries(reportData.get("progress")));
@@ -41,7 +42,7 @@
     }
 
     onMount(()=>{
-        sc = new ServerContactor(Cookies.get("auth-token"),localStorage.getItem("server_url"));
+        sc = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         id = reportData.get("_id")
         sc.reportSeen(id);
     })
