@@ -100,7 +100,7 @@
                         if (redirectURL === null) {
                             redirectURL = "/";
                         }
-                        // window.location.href = redirectURL;
+                        window.location.href = redirectURL;
                         break;
                 }
             });
