@@ -81,7 +81,7 @@
                     case 200:
                         //@ts-ignore
                         response.text().then(session=>{
-                          Cookies.set("auth-token", session,  {expires: 7, secure: !dev, domain: window.location.hostname}) // Force HTTPS if on production
+                          Cookies.set("auth-token", session,  {expires: 7, secure: false, domain: window.location.hostname}) // Force HTTPS if on production
                         });
                         localStorage.removeItem("temp-token");
                         localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
