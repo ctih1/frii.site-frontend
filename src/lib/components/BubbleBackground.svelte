@@ -37,8 +37,7 @@
         transition: all 15s linear;
         aspect-ratio: 1;
         position: absolute;
-        background-image: url("/pumpkin.png");
-        background-size: 100% 100%;
+        width: 100%;
         background-color: var(--primary);
         border-radius: 100%;
         opacity: 0.02;

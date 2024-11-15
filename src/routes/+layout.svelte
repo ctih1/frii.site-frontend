@@ -34,7 +34,7 @@
 
 <style>
     :root {
-        --primary: rgb(255, 123, 0);
+        --primary: rgb(0, 123, 255);
         --border-color: rgba(0, 0, 0, 0.086);
         --border-color: rgba(0, 0, 0, 0.05);
         --secondary-color: #424242;

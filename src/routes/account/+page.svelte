@@ -157,72 +157,73 @@
 
 <Loader bind:this={loader}/>
 <Holder>
-    <h1>
-        {#if login}
-            {$t("common.login_text")}
-        {:else}
-            {$t("common.signup_text")}
-        {/if}
-    </h1>
-    <p>
-        {#if !warningText}
+    {#if login}
+        <h1>
             {#if login}
-                {$t("common.login_description")}
+                {$t("common.login_text")}
             {:else}
-                {$t("common.signup_description")}
+                {$t("common.signup_text")}
             {/if}
-        {:else}
-            {warningText}
-        {/if}
-    </p>
+        </h1>
+        <p>
+            {#if !warningText}
+                {#if login}
+                    {$t("common.login_description")}
+                {:else}
+                    {$t("common.signup_description")}
+                {/if}
+            {:else}
+                {warningText}
+            {/if}
+        </p>
 
-    <form>
-        {#if !login}
-            <div class="inp">
-                <input bind:value={email} placeholder="email" type="email" />
-            </div>
-        {/if}
-        <div class="inp">
-            <input
-                bind:value={username}
-                placeholder={$t("common.username_placeholder")}
-                type="username"
-            />
-        </div>
-        <div class="inp">
-            <input
-                bind:value={password}
-                placeholder={$t("common.password_placeholder")}
-                type="password"
-            />
-        </div>
-        {#if !login}
+        <form>
+            {#if !login}
+                <div class="inp">
+                    <input bind:value={email} placeholder="email" type="email" />
+                </div>
+            {/if}
             <div class="inp">
                 <input
-                    bind:value={repeatPassword}
-                    placeholder={$t("common.confirm_password_placeholder")}
+                    bind:value={username}
+                    placeholder={$t("common.username_placeholder")}
+                    type="username"
+                />
+            </div>
+            <div class="inp">
+                <input
+                    bind:value={password}
+                    placeholder={$t("common.password_placeholder")}
                     type="password"
                 />
             </div>
-        {/if}
-        <div class="button-holder">
-            <Button on:click={() => accountActionButtonClick()} args={"fill"}>
-                {#if login}
-                    {$t("common.login_button")}
-                {:else}
-                    {$t("common.signup_button")}
-                {/if}
-            </Button>
-        </div>
-        {#if !login}
-            <p>{@html $t("common.legal_text")}</p>
-        {:else}
-            <h4 style="margin-top: 5px; margin-bottom: 5px;">
-                <a href="/account/recover"
-                    >{$t("common.password_forget_intro")}</a
-                >
-            </h4>
-        {/if}
+            {#if !login}
+                <div class="inp">
+                    <input
+                        bind:value={repeatPassword}
+                        placeholder={$t("common.confirm_password_placeholder")}
+                        type="password"
+                    />
+                </div>
+            {/if}
+            <div class="button-holder">
+                <Button on:click={() => accountActionButtonClick()} args={"fill"}>
+                    {#if login}
+                        {$t("common.login_button")}
+                    {:else}
+                        {$t("common.signup_button")}
+                    {/if}
+                </Button>
+            </div>
+            {#if !login}
+                <p>{@html $t("common.legal_text")}</p>
+            {:else}
+                <h4 style="margin-top: 5px; margin-bottom: 5px;">
+                    <a href="/account/recover"
+                        >{$t("common.password_forget_intro")}</a
+                    >
+                </h4>
+            {/if}
 
         <a href="#" on:click={() => (login = !login)}>
             {#if login}
@@ -232,17 +233,20 @@
             {/if}
         </a>
     </form>
+    {:else}
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
+        </div>
+        <h1>Account creation closed</h1>
+        <p>Due to numerous people using frii.site for scamming people, for now, we have removed the ability to register accounts. We will be implementing an invitation system at some point in the future, but until then, no-one is allowed to register an account.</p>
+        <p>Users who already have a frii.site account can freely create, modify and delete domains.</p>
+        <p>Thank you for your support.</p>
+        
+        <a href="#" on:click={() => (login = !login)}>Login to an existing account</a>
+    {/if}
+
 </Holder>
 
-<Modal
-    bind:this={modal}
-    on:primary={() => modalClose()}
-    on:secondary={() => modalSecondary()}
-    overrideDefault={true}
-    description=""
-    title=""
-    options={["Continue"]}
-></Modal>
 
 <style>
     form {
