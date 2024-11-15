@@ -247,6 +247,16 @@
 
 </Holder>
 
+<Modal
+    bind:this={modal}
+    on:primary={() => modalClose()}
+    on:secondary={() => modalSecondary()}
+    overrideDefault={true}
+    description=""
+    title=""
+    options={["Continue"]}
+></Modal>
+
 
 <style>
     form {
