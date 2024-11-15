@@ -35,8 +35,8 @@
         }else {
             dropdown.style.display="none";
         }toggled=!toggled;
-    }   
-    function onDropdownChange(element:String):void { 
+    }
+    function onDropdownChange(element:String):void {
         dispatch("optionchange",element);
         selected=element;
         value = element.toString();
@@ -76,13 +76,14 @@
         display: flex;
         transition: background-color 100ms;
         border-style: none;
-        background-color: #fff;
+        background-color: var(--secondary-color);
         border-style: solid;
         border-width: 1px;
         border-color: var(--border-color);
         align-items: center;
         width: 100%;
         height: 100%;
+        color: white;
         border-radius: 0.5em;
     }
     .dropdown-button span {
@@ -91,7 +92,7 @@
     .dropdown-button:active {
     }
     .dropdown-button:hover {
-        background-color: var(--secondary-color);
+        background-color: var(--offwhite-color);
     }
 
     .dropdown-content {
@@ -106,7 +107,7 @@
         width: 100%;
         margin: 0px;
         padding: 0px;
-        background-color: #fff;
+        background-color: var(--secondary-color);
         border-bottom-left-radius: 0.5em;
         border-bottom-right-radius: 0.5em;
         box-shadow: 0px 0px 73px -20px rgba(0,0,0,0.75);

@@ -8,6 +8,8 @@
     import { ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
+    import Cookies from 'js-cookie';
+    import { getAuthToken } from "$lib";
 
     let domainTable:DomainTable;
     let modal:Modal;
@@ -50,8 +52,8 @@
                     domainlist.push([type,domain,"0.0.0.0"]);
                     domainTable.updateDomains(domainlist);
                     break;
-                case 401:
-                    redirectToLogin(401);
+                case 460:
+                    redirectToLogin(460);
                     break;
                 case 403:
                     modal.open(errorMessage,$t("common.login_failed_verify"))
@@ -82,7 +84,7 @@
             loader.hide();
             switch(response.status) {
                 case 401:
-                    redirectToLogin(401);
+                    redirectToLogin(460);
                     break;
                 case 409:
                     modal.open(errorMessage,$t("common.dashboard_domain_not_owned"));
@@ -118,12 +120,13 @@ onMount(()=>{
         if(localStorage.getItem("del-count")??null===true) {
             modalTime = 3;
         }
-        serverContactor = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
+        serverContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         serverContactor.getDomains().then(response=>{
-            if(response.status===401){redirectToLogin(401)}
-            if(response.status===404){domainTable.updateDomains([[""]])}
+            if(response.status===460){redirectToLogin(460)}
+            if(response.status===404){domainTable.updateDomains([[""]]); return;}
             response.json().then(data=> {
                 domains = new Map(Object.entries(data));
+
                 for(let pair of domains) {
                     let [key,value] = pair;
                     value=new Map(Object.entries(value));

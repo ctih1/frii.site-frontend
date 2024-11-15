@@ -1,10 +1,15 @@
 <script lang="ts">
+    import Cookies from 'js-cookie';
+    import {getAuthToken} from "$lib";
+
+    import { dev } from '$app/environment';
+
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Button from '$lib/components/Button.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Placeholder from '$lib/components/Placeholder.svelte';
-    import { onMount } from 'svelte';
+    import { UAParser } from 'ua-parser-js';
     import { redirectToLogin,createFile } from '../../../helperFuncs';
     import { ServerContactor } from '../../../serverContactor';
     import Section from '$lib/components/Section.svelte';
@@ -12,11 +17,21 @@
     import { t, locale, locales, addArguements } from '$lib/translations';
     import Switch from '$lib/components/Switch.svelte';
     import Tooltip from '$lib/components/Tooltip.svelte';
+    import Loader from "$lib/components/Loader.svelte";
+    import { browser } from '$app/environment';
+    import { onMount } from 'svelte';
 
+    interface Session {
+      hash: string,
+      user_agent:string,
+      ip: string,
+      expire: number
+    }
+    let loader:Loader;
     let serverContactor:ServerContactor;
     let modal:Modal;
     let noConfirm:boolean=true;
-
+    let sessions:Session[] = []
     let blurElement:Blur;
     let emailE:string;
     let usernameE:string;
@@ -27,16 +42,29 @@
     let admin=false;
     let vuln=false;
     let monitoring=false;
+
+    if(browser) {
+      if(!localStorage.getItem("logged-in")) {
+        redirectToLogin(-1);
+      }
+    }
     onMount(()=>{
-        serverContactor=new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
-        getData();
+        async function __GetData() {
+          await getData();
+          await serverContactor.getSessions().then(response=>response.json()).then(json=>{
+              sessions = json as Session[];
+          })
+        }
+        serverContactor=new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
+        __GetData();
     })
 
-
-
-    function getData() {
-        serverContactor.getAccountDetails().then(response=>response.json()).then(data=>{
-            console.log(data);
+    async function getData() {
+        await serverContactor.getAccountDetails().then(response=>{
+          if(response.status === 460) {
+            redirectToLogin(460)
+          }
+          response.json().then(data=>{
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
@@ -47,6 +75,7 @@
             vuln=data["permissions"]["reports"]??false;
             monitoring=data["permissions"]["userdetails"]??false;
         })
+      })
     }
 
     function handleDelete() {
@@ -85,18 +114,35 @@
         });
     }
     function logOut() {
+        serverContactor.logOut();
+        Cookies.remove("auth-token", {secure: !dev});
         localStorage.removeItem("logged-in");
         localStorage.removeItem("auth-token");
         redirectToLogin(200);
     }
+    function deleteSession(sessionHash:string) {
+      loader.show(undefined, $t("common.account_manage_sessions_delete_loader"))
+      serverContactor.deleteSession(sessionHash).then(response=>{
+        if(response.ok) {
+          loader.hide();
+          sessions = sessions.filter((object:Session)=>{
+            object.hash === sessionHash
+          });
+          sessions = [...sessions]; // to get svelte to update the component
+        }
+      })
+
+
+    }
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <Blur bind:this={blurElement}/>
+<Loader bind:this={loader}/>
 <Holder>
     <h1>{$t("common.account_management")}</h1>
     <Section title={$t("common.account_details")} id="details">
         <div class="details">
-            {#if loaded} 
+            {#if loaded}
                 <h3 style="display: flex; align-items:center; width: fit-content;">{emailE}{#if verified}<verified style="margin-left: 0.5em;"><span  class="material-symbols-outlined">check</span></verified>{/if}</h3>
                 <h3 id="username">{usernameE} <Tooltip>{$t("common.account_username_tooltip")}</Tooltip></h3>
                 <div class="permission">
@@ -122,8 +168,8 @@
                     <span class="material-symbols-outlined">groups</span><p>{$t("common.dashboard_permission_monitoring")}:  <strong>{monitoring}</strong></p>
                 </div>
                 {/if}
-             
-            {:else} 
+
+            {:else}
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
                 <h3 style="height: 1em; width:20vw;"><Placeholder/></h3>
             {/if}
@@ -131,21 +177,43 @@
     </Section>
     <h1>{$t("common.account_manage_account")}</h1>
     <Section title={$t("common.account_manage")} id="manage">
-        <div class="switch">
-            <p>{$t("common.account_domain_del_cooldown")}</p>
-            <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
-        </div>
-        <div class="switch">
-            <p>{$t("common.account_version_testing")}</p>
-            <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
-        </div>
-        <div class="buttons">
-            <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
-            <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
-            <div class="danger">
-                <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
+        {#if browser}
+            <div class="switch">
+                <p>{$t("common.account_domain_del_cooldown")}</p>
+                <Switch initial={(localStorage.getItem("del-count")??"false")=="true"} on:change={(event)=>{localStorage.setItem("del-count",event.detail)}}/>
             </div>
-        </div>
+            <div class="switch">
+                <p>{$t("common.account_version_testing")}</p>
+                <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
+            </div>
+            <div class="buttons">
+                <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
+                <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
+                <div class="danger">
+                    <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
+                </div>
+            </div>
+        {/if}
+    </Section>
+    <Section title={$t("common.account_manage_sessions")} id="sessions">
+        {#each sessions as session}
+            {@const parser = new UAParser(session.user_agent)}
+            <div class="session">
+                <h3 class="session-header">
+                        <span class="material-symbols-outlined">
+                            {#if (parser.getDevice().type === "mobile")}
+                                smartphone
+                            {:else}
+                                desktop_windows
+                            {/if}
+                        </span>
+                    {parser.getOS().name??"Unknown OS"} {parser.getOS().version??""} - {parser.getBrowser().name??"Unknown browser"} {parser.getBrowser().version??""}
+                </h3>
+                <p class="ip">{session.ip}</p>
+                <p style="display: flex; align-items: center;"><span class="material-symbols-outlined">update</span>Expires: {new Date(session.expire*1000).toUTCString()}</p>
+                <Button args="danger" on:click={()=>deleteSession(session.hash)}>Remove</Button>
+            </div>
+        {/each}
     </Section>
 </Holder>
 
@@ -187,5 +255,23 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    .session {
+        width: fit-content;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        background-color: var(--secondary-color);
+    }
+    .session-header {
+        display: flex;
+        align-items: center;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .ip {
+        margin-top: 0px;
     }
 </style>

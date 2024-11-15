@@ -5,7 +5,9 @@
     import Holder from '$lib/components/Holder.svelte';
     import Scale from '$lib/components/Scale.svelte';
     import Button from "$lib/components/Button.svelte";
+    import Cookies from 'js-cookie';
     import { onMount } from 'svelte';
+    import { getAuthToken } from "$lib";
     export let data:Object;
     let reportData:Map<string,any> = new Map(Object.entries(data));
     let reportSteps:Map<string,any> = new Map(Object.entries(reportData.get("progress")));
@@ -40,7 +42,7 @@
     }
 
     onMount(()=>{
-        sc = new ServerContactor(localStorage.getItem("auth-token"),localStorage.getItem("server_url"));
+        sc = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         id = reportData.get("_id")
         sc.reportSeen(id);
     })
@@ -70,7 +72,7 @@
     </div>
 
     <ul>
-        {#each getOrderedReports(reportProgress) as key, index} 
+        {#each getOrderedReports(reportProgress) as key, index}
             <li>
                 <div class="content">
                     <div class="ball"></div>
@@ -79,7 +81,7 @@
                 </div>
                 <div class="line"></div>
             </li>
-        {/each} 
+        {/each}
     </ul>
 </Holder>
 
@@ -105,7 +107,7 @@
         </Section>
     </div>
     <ul>
-        
+
     </ul>
 </Holder>
 
@@ -158,7 +160,7 @@
     .content {
         display: flex;
         text-align: center;
-        align-items: center;    
+        align-items: center;
     }
     .lot-text * {
         margin-top: 3px;

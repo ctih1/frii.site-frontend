@@ -1,6 +1,7 @@
 <script lang="ts">
+    import { browser } from "$app/environment"
     let balls = randomLocations();
-    const ballAmount:number=15;
+    const ballAmount:number=20;
 
     function randomLocations() {
         return Array.from({length:ballAmount},()=>({
@@ -9,7 +10,8 @@
         }));
     }
     balls = randomLocations();
-    if(localStorage.getItem("toaster-mode")!="true") {
+
+    if(browser && localStorage.getItem("toaster-mode")!="true") {
       setTimeout(()=> balls = randomLocations(), 100);
       setInterval(() => balls = randomLocations(), 15000);
     }
@@ -35,6 +37,7 @@
         transition: all 15s linear;
         aspect-ratio: 1;
         position: absolute;
+        width: 100%;
         background-color: var(--primary);
         border-radius: 100%;
         opacity: 0.02;

@@ -20,6 +20,10 @@
     let rowInputs: Array<Array<any>> = domains.map(() => []);
 
     export function updateDomains(ndomains: Array<Array<string>>): void {
+        if(domains.length === 0) {
+          loaded = true;
+          return;
+        }
         loaded = true;
         rowInputs = domains.map(() => []);
         domains = ndomains;
@@ -156,7 +160,7 @@
         width: 100%;
         height: 100%;
         table-layout: fixed;
-        background-color: rgb(255, 255, 255);
+        background-color: var(--offwhite-coloe);
         border-collapse: collapse;
         padding: 1em;
     }

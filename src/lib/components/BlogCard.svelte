@@ -3,13 +3,13 @@
     import { onMount } from "svelte"
     import {t} from "$lib/translations"
     import Placeholder from "./Placeholder.svelte";
-     import SvelteMarkdown from "svelte-markdown";
-     export let title:string;
-     export let description:string;
-     export let date:number;
-     export let url:string;
-     export let inline:boolean=false;
+    import SvelteMarkdown from "svelte-markdown";
 
+    export let title:string;
+    export let description:string;
+    export let date:number;
+    export let url:string;
+    export let inline:boolean=false;
 </script>
 
 <div class={`wrapper ${(!inline)?"border-shown":"border-hidden"}`}>
@@ -27,7 +27,7 @@
     }
     .wrapper {
         border: 2px solid var(--offwhite-color);
-        background-color: var(--background-color);
+        background-color: var(--offwhite-color);
         border-radius: 0.5em;
         padding: 1em;
         z-index: 15;

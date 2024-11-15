@@ -39,7 +39,7 @@
         display: flex;
         height: 100%;
         transition: scale 50ms;
-        background-color: rgb(0, 123, 255);
+        background-color: var(--primary);
         border-radius: 0.5em;
         border-style: none;
         color: white;
@@ -120,6 +120,6 @@
     .secondary {
         background-color: rgba(0,0,0,0);
         border:2px solid var(--primary);
-        color: black;
+        color: white;
     }
 </style>

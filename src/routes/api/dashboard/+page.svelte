@@ -1,4 +1,7 @@
 <script lang="ts">
+    import Cookies from 'js-cookie';
+    import {getAuthToken} from "$lib";
+
 	import Pool from '$lib/components/Pool.svelte';
     import Holder from "$lib/components/Holder.svelte";
     import ApiKeyTable from "$lib/components/ApiKeyTable.svelte";
@@ -28,10 +31,10 @@
     let exampleData = {"key":"agiNAgn","comment":"This is a doman test test! And this is my life story. I was born in helsinki and lived a peaceful life for the end of time", "permissions": {"edit":{"content":true,"type":true,"domain":true},"view":true,"delete":true},"domains":["testing","anothertesting"]}
     let sc:ServerContactor;
     onMount(()=>{
-        sc = new ServerContactor(localStorage.getItem("auth-token"));
+        sc = new ServerContactor(getAuthToken());
         loader.show(undefined,$t("common.api_dashboard_loading"))
         sc.getApiKeys().then(response=>{
-            if(response.status===401) {redirectToLogin(401)};
+            if(response.status===460) {redirectToLogin(460)};
             response.json().then(data=>{
               console.log(data);
               keys = data as key[]
@@ -82,8 +85,8 @@
         loader.hide();
         if(response.status===403) {
             modal.open($t("common.api_dashboard_create_fail"),$t("common.api_dashboard_create_fail_domains"));
-        } else if(response.status===401) {
-            redirectToLogin(401)
+        } else if(response.status===460) {
+            redirectToLogin(460)
         } else if(response.status===200) {
             modal.open($t("common.api_dashboard_create_success"),$t("common.api_dashboard_create_success_description"));
             location.reload();

@@ -3,6 +3,24 @@
     import Analytics from "$lib/components/Analytics.svelte";
     import Banner from "$lib/components/Banner.svelte";
     import Ads from "$lib/components/Ads.svelte";
+    import {navigating} from '$app/stores'
+    import NProgress from 'nprogress'
+    import '$lib/nprogress.css'
+
+    NProgress.configure({
+      minimum: 0.6,
+      trickle: true,
+      trickleSpeed: 200
+    });
+
+    $: {
+        if ($navigating) {
+          NProgress.start();
+        }
+        if (!$navigating) {
+          NProgress.done();
+        }
+    }
 </script>
 
 <Banner />
@@ -16,12 +34,13 @@
 
 <style>
     :root {
-        --primary: rgb(0, 123, 225);
+        --primary: rgb(0, 123, 255);
         --border-color: rgba(0, 0, 0, 0.086);
         --border-color: rgba(0, 0, 0, 0.05);
-        --secondary-color: #bdbdbd;
-        --offwhite-color: #eeeeee;
+        --secondary-color: #424242;
+        --offwhite-color: #303030;
         --background-color: rgb(216, 216, 216);
+        background-color: var(--offwhite-color);
         overflow-x: hidden;
     }
     :root::-webkit-scrollbar {
@@ -35,6 +54,9 @@
     :global(*) {
         font-family: "Inter", sans-serif;
     }
+    :global(#nprogress .bar) {
+        color: var(--primary)
+    }
     :global(input) {
         transition: all 0.1s;
         border-style: solid;
@@ -44,6 +66,8 @@
         height: 100%;
         box-sizing: border-box;
         outline-color: var(--primary);
+        background-color: var(--offwhite-color);
+        color: white;
     }
     :global(input[type="checkbox"]) {
         transition: all 0.3s;
@@ -83,6 +107,10 @@
         left: 0px;
         min-height: 100vh;
         min-width: 100vw;
-        background-color: rgb(216, 216, 216);
+        background-color: rgb(25, 25, 25);
+    }
+
+    * {
+        color: white;
     }
 </style>

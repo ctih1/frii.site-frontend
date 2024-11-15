@@ -91,7 +91,11 @@
             {/if}
             <div class="html">
                 {#if _isLogin}
-                    <a class="msx" on:click={()=>{resendEmail(localStorage.getItem("verif-token")).then(response=>{console.log("Resend code status:"+ response.status.toString())})}}>Resend verification code</a>
+                    <a class="msx" href="#" on:click={()=>{
+                      resendEmail(localStorage.getItem("verif-token")).then(response=>{
+                        response.ok ? alert("Sent verification code") : alert("Failed to send verification code");
+                      })
+                    }}>Resend verification code</a>
                 {/if}
             </div>
             <div class="buttons">
@@ -128,7 +132,7 @@
         padding: 2em;
         width: 50vw;
         border-radius: 0.5em;
-        background-color: white;
+        background-color: rgb(40, 40, 40);
         margin-left: auto;
         margin-right: auto;
     }
