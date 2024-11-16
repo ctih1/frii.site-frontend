@@ -126,9 +126,8 @@
         if(response.ok) {
           loader.hide();
           sessions = sessions.filter((object:Session)=>{
-            object.hash === sessionHash
+            return object.hash !== sessionHash;
           });
-          sessions = [...sessions]; // to get svelte to update the component
         }
       })
 
