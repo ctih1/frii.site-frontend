@@ -4,11 +4,16 @@
 	import Button from '$lib/components/Button.svelte';
     import { t } from '$lib/translations';
     import Holder from "$lib/components/Holder.svelte";
-    const params:URLSearchParams = new URLSearchParams(window.location.search);
-    
-    let code:string|null = params.get("c");
-    let generatingNew:boolean = code!==null;
-    
+    import { browser } from "$app/environment"
+
+    let generatingNew:boolean = false;
+    let code:string|null = null
+    if(browser) {
+        const params:URLSearchParams = new URLSearchParams(window.location.search);
+        code = params.get("c");
+        generatingNew = code!==null;
+    }
+
     function handleButton(event:any) {
         if(generatingNew) {
             if(password!==cPassword) {modal.open($t("common.signup_password_not_match"),$t("common.signup_password_not_match_description"));return;}
