@@ -198,13 +198,14 @@ export class ServerContactor {
     });
   }
 
-  async register(username: string, password: string, email: string): Promise<Response> {
+  async register(username: string, password: string, email: string, code:string): Promise<Response> {
     // 409: User already exists
     let data = {
       "username": username,
       "password": password,
       "email": email,
-      "language": navigator.language
+      "language": navigator.language,
+      "invite": code
     };
     return await fetch(`${this.serverURL}/sign-up`, {
       method: "POST",

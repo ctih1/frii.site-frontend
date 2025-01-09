@@ -12,6 +12,18 @@
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
 
+    import { browser } from "$app/environment"
+
+    let generatingNew:boolean = false;
+    let code:string|null = null
+    let valid:boolean = false;
+
+    if(browser) {
+        const params:URLSearchParams = new URLSearchParams(window.location.search);
+        code = params.get("invite");
+        valid = code!==null;
+    }
+
     let serverContactor: ServerContactor | undefined = undefined;
 
     let username: string;
@@ -105,7 +117,7 @@
                 }
             });
         }
-        if (!login) {
+        if (!login && valid) {
           loader.show(undefined,$t("common.account_signup_loading_desc"))
             if (password !== repeatPassword) {
                 modal.open(
@@ -114,8 +126,10 @@
                 );
                 return;
             }
+            console.log(code);
             serverContactor
-                .register(username, password, email)
+                //@ts-ignore
+                .register(username, password, email, code) 
                 .then((response) => {
                   loader.hide();
                     switch (response.status) {
@@ -144,6 +158,9 @@
                                 $t("common.signup_fail_email"),
                             );
                             break;
+                        case 403:
+                            modal.open("Invalid invite","Your invite code is invalid.");
+                            break;
                     }
                 });
         }
@@ -158,38 +175,24 @@
 <Loader bind:this={loader}/>
 <Holder>
     {#if login}
-        <h1>
-            {#if login}
-                {$t("common.login_text")}
-            {:else}
-                {$t("common.signup_text")}
-            {/if}
-        </h1>
+        <h1>{$t("common.login_text")}</h1>
         <p>
-            {#if !warningText}
-                {#if login}
-                    {$t("common.login_description")}
-                {:else}
-                    {$t("common.signup_description")}
-                {/if}
-            {:else}
+            {#if warningText}
                 {warningText}
+            {:else}
+                {$t("common.login_description")}
             {/if}
         </p>
 
         <form>
-            {#if !login}
-                <div class="inp">
-                    <input bind:value={email} placeholder="email" type="email" />
-                </div>
-            {/if}
             <div class="inp">
                 <input
                     bind:value={username}
                     placeholder={$t("common.username_placeholder")}
-                    type="username"
+                    type="text"
                 />
             </div>
+
             <div class="inp">
                 <input
                     bind:value={password}
@@ -197,55 +200,91 @@
                     type="password"
                 />
             </div>
-            {#if !login}
-                <div class="inp">
-                    <input
-                        bind:value={repeatPassword}
-                        placeholder={$t("common.confirm_password_placeholder")}
-                        type="password"
-                    />
-                </div>
-            {/if}
+
             <div class="button-holder">
-                <Button on:click={() => accountActionButtonClick()} args={"fill"}>
-                    {#if login}
-                        {$t("common.login_button")}
-                    {:else}
-                        {$t("common.signup_button")}
-                    {/if}
+                <Button on:click={accountActionButtonClick} args={"fill"}>
+                    {$t("common.login_button")}
                 </Button>
             </div>
-            {#if !login}
-                <p>{@html $t("common.legal_text")}</p>
-            {:else}
-                <h4 style="margin-top: 5px; margin-bottom: 5px;">
-                    <a href="/account/recover"
-                        >{$t("common.password_forget_intro")}</a
-                    >
-                </h4>
-            {/if}
 
-        <a href="#" on:click={() => (login = !login)}>
-            {#if login}
+            <h4 style="margin-top: 5px; margin-bottom: 5px;">
+                <a href="/account/recover">{$t("common.password_forget_intro")}</a>
+            </h4>
+
+            <a href="#" on:click={() => (login = false)}>
                 {$t("common.signup_instead")}
+            </a>
+        </form>
+    {:else if valid}
+        <h1>{$t("common.signup_text")}</h1>
+        <p>
+            {#if warningText}
+                {warningText}
             {:else}
-                {$t("common.login_instead")}
+                {$t("common.signup_description")}
             {/if}
-        </a>
-    </form>
-    {:else}
+        </p>
+
+        <form>
+            <div class="inp">
+                <input bind:value={email} placeholder="email" type="email" />
+            </div>
+
+            <div class="inp">
+                <input
+                    bind:value={username}
+                    placeholder={$t("common.username_placeholder")}
+                    type="text"
+                />
+            </div>
+
+            <div class="inp">
+                <input
+                    bind:value={password}
+                    placeholder={$t("common.password_placeholder")}
+                    type="password"
+                />
+            </div>
+
+            <div class="inp">
+                <input
+                    bind:value={repeatPassword}
+                    placeholder={$t("common.confirm_password_placeholder")}
+                    type="password"
+                />
+            </div>
+
+            <div class="button-holder">
+                <Button on:click={accountActionButtonClick} args={"fill"}>
+                    {$t("common.signup_button")}
+                </Button>
+            </div>
+
+            <p>{@html $t("common.legal_text")}</p>
+
+            <a href="#" on:click={() => (login = true)}>
+                {$t("common.login_instead")}
+            </a>
+        </form>
+    {/if}
+
+    {#if !login && !valid}
+        <!-- ACCOUNT CREATION CLOSED BLOCK -->
         <div style="display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
         </div>
         <h1>Account creation closed</h1>
-        <p>Due to numerous people using frii.site for scamming people, for now, we have removed the ability to register accounts. We will be implementing an invitation system at some point in the future, but until then, no-one is allowed to register an account.</p>
-        <p>Users who already have a frii.site account can freely create, modify and delete domains.</p>
+        <p>
+            Due to numerous people using frii.site for scamming, we’ve removed the ability to
+            register accounts. An invitation system is coming, but for now, no one can register.
+        </p>
+        <p>Existing users can still create, modify, and delete domains.</p>
         <p>Thank you for your support.</p>
-        
-        <a href="#" on:click={() => (login = !login)}>Login to an existing account</a>
-    {/if}
 
+        <a href="#" on:click={() => (login = true)}>Login to an existing account</a>
+    {/if}
 </Holder>
+
 
 <Modal
     bind:this={modal}
