@@ -189,5 +189,6 @@
   "account_manage_sessions_delete_loader": "Signing session out...",
   "account_uhoh_annoyance": "Uh oh!",
   "account_signed_out": "Looks like you were signed out.",
-  "account_permissions_lack": "Looks like you don't have the right permissions to do this"
+  "account_permissions_lack": "Looks like you don't have the right permissions to do this",
+  "account_invite": "Create invite"
 }

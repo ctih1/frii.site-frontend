@@ -395,4 +395,16 @@ export class ServerContactor {
       headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
     });
   }
+  async createInvite() {
+    return await fetch(`${this.serverURL}/invite`, {
+      method: "POST",
+      headers: { "X-Auth-Token": this.token }
+    })
+  }
+  async getInvites() {
+    return await fetch(`${this.serverURL}/invite/all`, {
+      method: "GET",
+      headers: { "X-Auth-Token": this.token }
+    })
+  }
 }

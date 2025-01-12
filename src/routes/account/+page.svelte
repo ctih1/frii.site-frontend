@@ -61,6 +61,8 @@
     });
     let login: boolean = true;
 
+    valid?login=false:login=true;
+
     function accountActionButtonClick() { // Excuse me for this horrendous code TODO: refactor it. Don't feel like it though'
         if (serverContactor === undefined) {
             return;

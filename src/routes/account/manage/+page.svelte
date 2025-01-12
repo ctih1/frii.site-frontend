@@ -1,8 +1,8 @@
 <script lang="ts">
     import Cookies from 'js-cookie';
     import {getAuthToken} from "$lib";
-
     import { dev } from '$app/environment';
+    import QR from '@svelte-put/qr/svg/QR.svelte';
 
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -27,6 +27,13 @@
       ip: string,
       expire: number
     }
+
+    interface invite {
+        code:string,
+        used:boolean,
+        used_by:string | null
+    }
+
     let loader:Loader;
     let serverContactor:ServerContactor;
     let modal:Modal;
@@ -42,6 +49,7 @@
     let admin=false;
     let vuln=false;
     let monitoring=false;
+    let invites:invite[] = [];
 
     if(browser) {
       if(!localStorage.getItem("logged-in")) {
@@ -74,8 +82,33 @@
             admin=data["permissions"]["admin"]??false;
             vuln=data["permissions"]["reports"]??false;
             monitoring=data["permissions"]["userdetails"]??false;
+            invites=data["invites"]??[]
         })
-      })
+        });
+
+        console.log("getting invites");
+
+        await serverContactor.getInvites().then(response=>response.json()).then(data=>{
+            console.log(typeof(data))
+            // @ts-ignore
+            // typescript is annoying ash like I know this code sucks but im too lazy to reformat it, also why did I think it was a good idea to make a seperate class just to store return statements for fetch operations=???
+            for(let i=0; i<Object.entries(data).length; i++) {
+                invites.push({ 
+                    "code": Object.keys(data)[i],
+                    "used": data[Object.keys(data)[i]]["used"],
+                    "used_by": data[Object.keys(data)[i]]["used_by"],
+                });
+            };
+            invites=[...invites]
+        });
+    }
+
+    function createInvite() {
+        loader.show("Creating invite...", "This shouldn't take long");
+        serverContactor.createInvite().then(response=>response.text()).then(invite => {
+            loader.hide();
+            modal.open("Invite created succesfully!", `Use the invite with the following link: <a href="https://www.frii.site/account?invite=${invite}/">www.frii.site/account?invite=${invite}</a>`);
+        }); 
     }
 
     function handleDelete() {
@@ -130,10 +163,9 @@
           });
         }
       })
-
-
     }
 </script>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <Blur bind:this={blurElement}/>
 <Loader bind:this={loader}/>
@@ -186,14 +218,42 @@
                 <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
             </div>
             <div class="buttons">
+                <div><Button on:click={()=>createInvite()} args={"padding"}>{$t("common.account_invite")}</Button></div>
                 <div><Button on:click={()=>gpdrData()} args={"padding"}>{$t("common.account_download_data")}</Button></div>
                 <div><Button on:click={()=>logOut()} args={"padding danger"}>{$t("common.account_log_out")}</Button></div>
+                
                 <div class="danger">
                     <Button args={"danger padding"} on:click={()=>handleDelete()}>{$t("common.account_delete_account")}</Button>
                 </div>
             </div>
         {/if}
     </Section>
+
+    <Section title="Invites" id="invites">
+        {#if browser}
+            {#each invites as invite}
+                {@const minres = Math.min(window.innerHeight,window.innerWidth)/((window.innerHeight>window.innerWidth)?1.5:3)}
+                <div class="session invite">
+                    <h3><a href="https://www.frii.site/account?invite={invite.code}">{invite.code}</a></h3>
+                    <p>Used: <b>{invite.used?"Yes":"No"}</b></p>
+                    {#if invite.used}
+                        <p style="word-break: break-all; width: {minres}px">Used by: <b>{invite.used_by}</b></p>
+                    {/if}
+                    <div class="h" style="display: flex; width: 100%; justify-content:center">
+                        <QR
+                            data="https://www.frii.site/account?invite={invite.code}"
+                            shape="circle"
+                            logo="https://www.frii.site/favicon.svg"
+                            width="{minres}"
+                            height="{minres}"
+                        />
+                    </div>
+                    
+                </div>
+            {/each}
+        {/if}
+    </Section>
+
     <Section title={$t("common.account_manage_sessions")} id="sessions">
         {#each sessions as session}
             {@const parser = new UAParser(session.user_agent)}
@@ -273,4 +333,13 @@
     .ip {
         margin-top: 0px;
     }
+    
+    @media(orientation:portrait) {
+        .invite  {
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+        }
+    }
+
 </style>
