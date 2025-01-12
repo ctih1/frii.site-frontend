@@ -271,16 +271,13 @@
     {/if}
 
     {#if !login && !valid}
-        <!-- ACCOUNT CREATION CLOSED BLOCK -->
         <div style="display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
         </div>
         <h1>Account creation closed</h1>
         <p>
-            Due to numerous people using frii.site for scamming, we’ve removed the ability to
-            register accounts. An invitation system is coming, but for now, no one can register.
+            Due to numerous people using frii.site for scamming people, so we switched over to an invite-based system. If you know someone who uses frii.site, you can ask them for an invite. 
         </p>
-        <p>Existing users can still create, modify, and delete domains.</p>
         <p>Thank you for your support.</p>
 
         <a href="#" on:click={() => (login = true)}>Login to an existing account</a>
