@@ -1,109 +1,239 @@
 import { redirectToLogin } from "./helperFuncs";
 import { browser } from "$app/environment";
+import type { paths } from "./api";
+import createClient from "openapi-fetch";
 
-export let serverURL="https://api.frii.site"
-if(browser) {
-  let subdomain = window.location.hostname.split(".")[0]
-  if(subdomain === "canary") {
-    serverURL = "https://devserver.frii.site"
-  };
-  if(localStorage.getItem("url_override")) {
+export let serverURL = "https://api.frii.site";
+if (browser) {
+  let subdomain = window.location.hostname.split(".")[0];
+  if (subdomain === "canary") {
+    serverURL = "https://devserver.frii.site";
+  }
+  if (localStorage.getItem("url_override")) {
     serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
   }
-  console.debug("Switched server url to " + serverURL)
+  console.debug("Switched server url to " + serverURL);
+}
+
+const client = createClient<paths>({ baseUrl: serverURL });
+
+export async function digestMessage(message: string): Promise<string> {
+  const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+  const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
+  return hashHex;
+}
+
+export async function createToken(username: string, password: string): Promise<string> {
+  const psw = await digestMessage(password);
+  const usr = await digestMessage(username);
+  const token = `${usr}|${psw}`;
+  return token;
+}
+
+class UserError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UserError";
+  }
+}
+class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+  }
+}
+class MFAError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "MFAError";
+  }
+}
+
+class CodeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CodeError";
+  }
+}
+
+class PermissionError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "PermissionError";
+  }
 }
 
 
-export async function digestMessage(message:string) {
-    const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
-    const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
-    const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
-    const hashHex = hashArray
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join(""); // convert bytes to hex string
-    return hashHex;
+class DNSError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DNSError";
+  }
 }
 
-export async function createToken(username:string,password:string):Promise<string> {
-    const psw = await digestMessage(password);
-    const usr = await digestMessage(username);
-    const token = `${usr}|${psw}`;
-    return token;
+class ConflictError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ConflictError";
+  }
 }
 
-export async function getStatus():Promise<Response> {
-    return await fetch(`${serverURL}/status`);
+class InviteError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InviteError";
+  }
 }
 
-export async function sendForgotCode(username:string): Promise<Response>  {
-    return await fetch(`${serverURL}/reset-password`, {
-        method: "PATCH",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({"username":username})
-    })
+class LimitError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "LimitError";
+  }
 }
 
-export async function confirmPasswordChange(id:string,password:string): Promise<Response> {
-    return await fetch(`${serverURL}/account-recovery/${id}`, {
-        method: "PATCH",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({"password":password})
-    })
+
+
+
+
+export async function logan(username: string, password: string): Promise<paths["/login"]["post"]["responses"]["200"]["content"]["application/json"]> {
+  const hashed_username: string = await digestMessage(username);
+  const hashed_password: string = await digestMessage(password);
+
+  const token: string = `${hashed_username}|${hashed_password}`;
+
+  const { data, error, response} = await client.POST("/login", {
+    params: {
+      header: { "x-auth-request": token },
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    switch (response.status) {
+      case 401:
+        throw new AuthError("Unauthorized. Please check your credentials.");
+      case 404:
+        throw new UserError("User not found.");
+      case 412:
+        throw new MFAError("Precondition failed.");
+      default:
+        throw new Error(`An unexpected error occurred. Status code: ${response.status}`);
+    }
+  }
+
+  return data;
 }
 
-export function getReportStatus(id:string) {
-    fetch(`${serverURL}/vulnerability/get?id=${id}`,{
-        method:"GET",
-    }).then(response=>response.json()).then(data=>{
-        return data
-    })
+export async function getStatus(): Promise<paths["/status"]["get"]["responses"]["200"]["content"]["application/json"]> {
+  const { data, error, response} = await client.GET("/status");
+
+  if (error) {
+    throw new Error(`Failed to get status. Status code: ${response.status}`);
+  }
+
+  return data;
 }
 
-export async function reportVulnerability(endpoint:string, expected:string, actual:string, importance:number, description:string, steps:string, impact:string, attacker:string, email:string):Promise<Response> {
-    let data = {
-        "endpoint":endpoint,
-        "contact-email":email,
-        "expected":expected,
-        "actual":actual,
-        "importance":importance,
-        "description":description,
-        "steps":steps,
-        "impact":impact,
-        "attacker":attacker
-    };
-    return await fetch(`${serverURL}/vulnerability/report`, {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(data)
-    });
+export async function sendForgotCode(username: string): Promise<paths["/recovery/send"]["post"]["responses"]["200"]["content"]["application/json"]> {
+  const { data, error, response} = await client.POST("/recovery/send", {
+    params: {
+       query: {"username": username}
+      }
+  });
+
+  if (error) {
+    switch(response.status) {
+      case 404: // as of 25.1.25, the server doesn't even return a 404
+        throw new UserError("User not found.");
+      default: 
+        throw new Error(`Failed to send forgot code. Status code: ${error.detail}`);
+    }
+  }
+
+  return data;
 }
 
-export async function resendEmail(username:string):Promise<Response> {
-    const hash = await digestMessage(username);
 
-    return fetch(`${serverURL}/resend-email`, {
-        method: "GET",
-        headers: {
-            "X-Auth-Username": hash
-        }
-    });
+export async function confirmPasswordChange(id: string, password: string): Promise<paths["/recovery/verify"]["post"]["responses"]["200"]["content"]["application/json"]> {
+  let hashed_password:string = await digestMessage(password);
+  
+  const { data, error, response} = await client.POST(`/recovery/verify`, {
+    body: { "code": id, "hashed_password":  hashed_password}
+  });
+
+  if (error) {
+    switch(response.status) {
+      case 403: throw new CodeError("Invalid code.");
+      case 404: throw new UserError("User not found");
+      default: throw new Error(`Failed to confirm password change. Status code: ${response.status}`);
+    }
+  }
+
+  return data;
 }
 
-export async function getLanguagePercentages():Promise<Response> {
-    return await fetch(`${serverURL}/translation/percentages`, {
-       method: "GET"
-    });
+
+export async function resendEmail(username: string): Promise<paths["/email/send"]["post"]["responses"]["200"]["content"]["application/json"]> {
+  const hashed_username = await digestMessage(username);
+
+  const { data, error, response} = await client.POST("/email/send", {
+    params: {
+      query: {"user_id": hashed_username}
+    },
+  });
+
+  if (error) {
+    switch(response.status) {
+      case 404: throw new UserError("User does not exist");
+      default: throw new Error(`Failed to resend email. Status code: ${response.status}`);
+    }
+    
+  }
+
+  return data;
 }
 
-export async function getTranslationKeys(code:string):Promise<Response> {
-    return await fetch(`${serverURL}/translation/${code}/missing`, {
-        method: "GET"
-    })
-}
+// class LanguagePercentagesError extends Error {
+//   constructor(message: string) {
+//     super(message);
+//     this.name = "LanguagePercentagesError";
+//   }
+// }
+
+// export async function getLanguagePercentages(): Promise<paths["/translation/percentages"]["get"]["responses"]["200"]["content"]["application/json"]> {
+//   const { data, error, response} = await client.GET("/translation/percentages");
+
+//   if (error) {
+//     throw new LanguagePercentagesError(`Failed to get language percentages. Status code: ${response.status}`);
+//   }
+
+//   return data;
+// }
+
+// class TranslationKeysError extends Error {
+//   constructor(message: string) {
+//     super(message);
+//     this.name = "TranslationKeysError";
+//   }
+// }
+
+// export async function getTranslationKeys(code: string): Promise<paths["/translation/{code}/missing"]["get"]["responses"]["200"]["content"]["application/json"]> {
+//   const { data, error, response} = await client.GET(`/translation/${code}/missing`);
+
+//   if (error) {
+//     throw new TranslationKeysError(`Failed to get translation keys. Status code: ${response.status}`);
+//   }
+
+//   return data;
+// }
 
 export class ServerContactor {
   token: string;
   serverURL: string;
+
   constructor(token: string | null, urlOverride: string | null = null) {
     this.serverURL = serverURL;
     if (urlOverride) {
@@ -112,299 +242,147 @@ export class ServerContactor {
     this.token = token as string;
     if (this.token === null && window.location.pathname !== "/account") {
       redirectToLogin(302);
-    };
-  }
-
-  async domainAvailable(domain: string): Promise<Response> {
-    return await fetch(`${this.serverURL}/domain-is-available?domain=${domain}`);
-  }
-  async modifyDomain(domain: string, value: string, type: string): Promise<Response> {
-    // 412: Incorect login
-    // 403: User does not own domain
-    // 401: Wrong credentials
-    // 404: The user does not exist
-    let data = {
-      "domain": domain,
-      "type": type,
-      "content": value,
-    };
-    return await fetch(`${this.serverURL}/modify-domain`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Auth-Token": this.token
-      },
-      body: JSON.stringify(data)
-    });
-  }
-
-  async login(username: string, password: string): Promise<Response> {
-    try {
-      const psw = await digestMessage(password);
-      const usr = await digestMessage(username);
-      const token = `${usr}|${psw}`;
-
-      localStorage.setItem("temp-token", token)
-      return await fetch(`${this.serverURL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Auth-Request": token },
-      });
-    } catch (error) {
-      // Handle errors here
-      console.error("Login error:", error);
-      throw error; // Rethrow the error to be handled by the caller
-
     }
   }
-  async getDomains(): Promise<Response> {
-    return await fetch(`${this.serverURL}/get-domains`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Auth-Token": this.token
+  
+  async domainAvailable(domain: string): Promise<boolean> {
+    const { data, error, response} = await client.GET(`/domain/available`, {
+      params: {query: {"name": domain}}
+    });
+
+    return error ? false : true;
+  }
+
+  async modifyDomain(domain: string, value: string, type: string): Promise<paths["/domain/modify"]["patch"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.PATCH("/domain/modify", {
+      body: { domain, type, value },
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },  
       },
     });
-  }
-  async registerDomain(domain: string, type: string): Promise<Response> {
-    // 412: Incorrect login-ish
-    // 404: User not found in db
-    // 405: Invalid type (not A CNAME TXT or NS)
-    // 400: User is not verified
-    // 401: Incorrect creds
-    // 409: Not a valid domain
-    // 405: Domain limit exceeded
-    let data = {
-      "domain": domain,
-      "content": "0.0.0.0",
-      "type": type
-    };
-    if (type === "CNAME") {
-      data["content"] = "example.com"
+
+    if (error) {
+      switch(response.status) {
+        case 403: throw new PermissionError("User does not own domain");
+        case 412: throw new DNSError("Invalid record name or value");
+        case 460: throw new AuthError("Invalid session");
+        default: throw new Error(`Failed to modify domain. Status code: ${response.status}`);
+      }
     }
-    return await fetch(`${this.serverURL}/register-domain`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
-  }
-  async deleteDomain(domain: string): Promise<Response> {
-    let data = {
-      "domain": domain
-    };
-    return await fetch(`${this.serverURL}/delete-domain`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
+    return data;
   }
 
-  async register(username: string, password: string, email: string, code:string): Promise<Response> {
-    // 409: User already exists
-    let data = {
-      "username": username,
-      "password": password,
-      "email": email,
-      "language": navigator.language,
-      "invite": code
-    };
-    return await fetch(`${this.serverURL}/sign-up`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+  async registerDomain(domain: string, type: string): Promise<paths["/domain/register"]["post"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.POST("/domain/register", {
+      body: { domain, type, value: type === "CNAME" ? "example.com" : "0.0.0.0" },
+      params: {
+         //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
     });
-  }
-  async deleteAccoint(): Promise<Response> {
-    return await fetch(`${this.serverURL}/delete-user`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-    });
-  }
-  async getAccountDetails(): Promise<Response> {
-    return await fetch(`${this.serverURL}/get-user-info`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-    })
-  }
-  async getGDPR(): Promise<Response> {
-    return await fetch(`${this.serverURL}/gdpr-get`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-    });
-  }
-  async getVulns(): Promise<Response> {
-    return await fetch(`${this.serverURL}/vulnerability/all`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-    });
-  }
 
-  async reportProgress(id: string, progress: string): Promise<Response> {
-    return await fetch(`${this.serverURL}/vulnerability/progress`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ "id": id, "progress": progress, "time": new Date().valueOf() / 1000 })
-    });
-  }
-  async reportSeen(id: string): Promise<Response> {
-    let data = {
-      "id": id,
-      "status": "seen",
-      "mode": true,
-      "d-importance": -1
-    };
-    return await fetch(`${this.serverURL}/vulnerability/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
-  }
-  async reportReview(importance: number, id: string): Promise<Response> {
-    let data = {
-      "id": id,
-      "status": "reviewed",
-      "mode": true,
-      "d-importance": importance
-    };
-    await fetch(`${this.serverURL}/vulnerability/progress`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ "id": id, "progress": "Review approved", "time": new Date().valueOf() / 1000 })
-    });
-    return await fetch(`${this.serverURL}/vulnerability/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
-  }
-  async reportFixing(id: string): Promise<Response> {
-    let data = {
-      "id": id,
-      "status": "currently_working",
-      "mode": true,
-      "d-importance": -1
-    };
-    await fetch(`${this.serverURL}/vulnerability/progress`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ "id": id, "progress": "Finished development", "time": new Date().valueOf() / 1000 })
-    });
-    return await fetch(`${this.serverURL}/vulnerability/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
-  }
-  async reportFinished(id: string): Promise<Response> {
-    let data = {
-      "id": id,
-      "status": "done",
-      "mode": true,
-      "d-importance": -1
-    };
-    await fetch(`${this.serverURL}/vulnerability/progress`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ "id": id, "progress": "Deployed", "time": new Date().valueOf() / 1000 })
-    });
-    return await fetch(`${this.serverURL}/vulnerability/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    });
-  }
-  async createApi(domains: string[], perms: string[], comment: string): Promise<Response> {
-    const data = {
-      domains: domains,
-      perms: perms,
-      comment: comment
+    if (error) {
+      switch(response.status) {
+        case 400: throw new DNSError("Invalid domain name");
+        case 403: throw new PermissionError("User does not own required domain");
+        case 405: throw new LimitError("User has reached their domain limit");
+        case 409: throw new ConflictError("Domain already exists");
+        case 412: throw new DNSError("Invalid DNS record type");
+        case 460: throw new AuthError("Invalid session");
+        default: throw new Error(`Failed to register domain. Status code: ${response.status}`);
+      }
     }
-    return await fetch(`${this.serverURL}/create-api`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify(data)
-    })
-  }
-  async joinBeta() {
-    return await fetch(`${this.serverURL}/join/beta`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token }
-    });
-  }
-  async leaveBeta() {
-    return await fetch(`${this.serverURL}/leave/beta`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token }
-    });
-  }
-  async convertCredits() {
-    return await fetch(`${this.serverURL}/credits/convert`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token }
-    })
-  };
 
-  async getCredits() {
-    return await fetch(`${this.serverURL}/credits/get`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token }
-    })
-  }
-  async submitLanguageContribution(language: string, contribution: { key: string, val: string }[]) {
-    return await fetch(`${this.serverURL}/translations/${language}/contribute`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ "contributions": contribution })
-    })
-  }
-  async getApiKeys() {
-    return await fetch(`${this.serverURL}/get-api-keys`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token }
-    })
-  }
-  async deleteApi(api: string) {
-    return await fetch(`${this.serverURL}/api-delete`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "X-Auth-Token": this.token },
-      body: JSON.stringify({ key: api })
-    })
-  }
-  async setupMFA() {
-    return await fetch(`${this.serverURL}/2fa/create`, {
-      method: "POST",
-      headers: { "X-Auth-Token": this.token }
-    })
-  }
-  async getSessions() {
-    return await fetch(`${this.serverURL}/session/get`, {
-      method: "GET",
-      headers: { "X-Auth-Token": this.token }
-    });
-  }
-  async deleteSession(id:string) {
-    return await fetch(`${this.serverURL}/session/delete`, {
-      method: "DELETE",
-      body: JSON.stringify({"id":id}),
-      headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
-    });
+    return data;
   }
 
-  async logOut() {
-    return await fetch(`${this.serverURL}/session/logout`, {
-      method: "DELETE",
-      headers: { "X-Auth-Token": this.token, "Content-Type":"application/json" }
+  async deleteDomain(domain: string): Promise<paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.DELETE("/domain/delete", {
+      body: { domain },
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
     });
+
+    if (error) {
+      switch(response.status) {
+        case 403: throw new PermissionError("User does not own domain");
+        case 460: throw new AuthError("Invalid session");
+        default: throw new Error(`Failed to delete domain. Status code: ${response.status}`);
+      }
+    }
+
+    return data;
   }
-  async createInvite() {
-    return await fetch(`${this.serverURL}/invite`, {
-      method: "POST",
-      headers: { "X-Auth-Token": this.token }
-    })
+
+  async register(username: string, password: string, email: string, code: string): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.POST("/sign-up", {
+      body: { username, password, email, language: navigator.language, invite: code },
+    });
+
+    if (error) {
+      switch(response.status) {
+        case 400: throw new InviteError("Invalid invite");
+        case 409: throw new ConflictError("Username taken");
+        case 422: throw new UserError("Invalid email");
+        default: throw new Error(`Failed to register. Status code: ${response.status}`);
+      }
+    }
+
+    return data;
   }
-  async getInvites() {
-    return await fetch(`${this.serverURL}/invite/all`, {
-      method: "GET",
-      headers: { "X-Auth-Token": this.token }
-    })
+
+  async deleteAccount(): Promise<paths["/deletion/send"]["delete"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.DELETE("/deletion/send", {
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
+    });
+
+    if (error) {
+      //@ts-ignore
+      if(response.status === 460) { throw new AuthError("Invalid session"); }
+      //@ts-ignore
+      throw new Error(`Failed to delete account. Status code: ${response.status}`);
+    }
+
+    return data;
+  }
+
+  async getAccountSettings(): Promise<paths["/settings"]["get"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.GET("/settings", {
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
+    });
+    
+
+    if (error) {
+      //@ts-ignore
+      if(response.status === 460) { throw new AuthError("Invalid session"); }
+      //@ts-ignore
+      throw new Error(`Failed to get account details. Status code: ${response.status}`);
+    }
+
+    return data;
+  }
+
+
+  async getGDPR(): Promise<paths["/gdpr"]["get"]["responses"]["200"]["content"]["application/json"]> { // TODO: Implement on backend
+    const { data, error, response} = await client.GET("/gdpr", {
+      params: {
+        header: { "X-Auth-Token": this.token },
+      },
+    });
+
+    if (error) {
+      throw new Error(`Failed to get GDPR data. Status code: ${error.detail}`);
+    }
+
+    return data;
   }
 }

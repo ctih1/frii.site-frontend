@@ -32,6 +32,8 @@
 		"i18next-http-backend": "^2.5.2",
 		"js-cookie": "^3.0.5",
 		"lodash": "^4.17.21",
+		"openapi-fetch": "^0.13.4",
+		"openapi-typescript-fetch": "^2.1.0",
 		"svelte-i18n": "^4.0.0",
 		"svelte-i18next": "^2.2.2",
 		"svelte-markdown": "^0.4.1",

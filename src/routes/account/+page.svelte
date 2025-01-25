@@ -8,7 +8,7 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import Loader from "$lib/components/Loader.svelte";
-    import { createToken, ServerContactor, digestMessage } from "../../serverContactor";
+    import { createToken, ServerContactor,logan, digestMessage } from "../../serverContactor";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
 
@@ -69,55 +69,7 @@
         }
         if (login) {
             loader.show(undefined,$t("common.account_login_loading_desc"))
-            serverContactor.login(username, password).then((response) => {
-                loader.hide();
-                switch (response.status) {
-                    case 422:
-                        modal.open(
-                            $t("common.login_failed"),
-                            $t("common.login_generic_error"),
-                        );
-                        break;
-                    case 401:
-                        modal.open(
-                            $t("common.login_failed"),
-                            $t("common.login_failed_description"),
-                        );
-                        break;
-                    case 412:
-                        localStorage.setItem("verif-token",username)
-                        modal.open(
-                            $t("common.login_failed_verify"),
-                            $t("common.login_failed_verify_description"),
-                            undefined,
-                            undefined,
-                            true,
-                        );
-                        break;
-                    case 200:
-                        //@ts-ignore
-                        response.text().then(session=>{
-                          const date = new Date(Date.now()+ 604800*1000).toUTCString();
-                          document.cookie=`auth-token=${session}; expires=${date};`;
-                          if(!getAuthToken()) {
-                            console.error("Browser did not accept cookies... using localstorage");
-                            localStorage.setItem("auth-token", session);
-                          }
-                        });
-                        localStorage.removeItem("temp-token");
-                        localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
-                        localStorage.setItem("logged-in", "y");
-                        modal.open(
-                            $t("common.login_succeed"),
-                            $t("common.login_succeed_description"),
-                        );
-                        if (redirectURL === null) {
-                            redirectURL = "/";
-                        }
-                        window.location.href = redirectURL;
-                        break;
-                }
-            });
+            console.log(logan(username, password));
         }
         if (!login && valid) {
           loader.show(undefined,$t("common.account_signup_loading_desc"))
