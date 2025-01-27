@@ -190,5 +190,10 @@
   "account_uhoh_annoyance": "Uh oh!",
   "account_signed_out": "Looks like you were signed out.",
   "account_permissions_lack": "Looks like you don't have the right permissions to do this",
-  "account_invite": "Create invite"
+  "account_invite": "Create invite",
+  "account_invite_success": "Invite created succesfully",
+  "account_invite_success_desc":"Use the invite with the following link: <a href=%link%/>%link%</a>",
+  "account_invite_fail": "Failed to create invite",
+  "account_invite_fail_usage_description": "Invitation limit reached",
+  "account_show_invite_qr": "Toggle QR Code"
 }

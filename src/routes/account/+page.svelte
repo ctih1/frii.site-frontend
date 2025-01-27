@@ -1,18 +1,21 @@
 <script lang="ts">
-    import Cookies from 'js-cookie';
-    import {getAuthToken} from "$lib";
-
-    import { dev } from '$app/environment';
-    import { t } from "$lib/translations";
-    import Button from "$lib/components/Button.svelte";
-    import { page } from "$app/stores";
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
+    import { dev } from '$app/environment';
+    import { browser } from "$app/environment"
+
+    import Cookies from 'js-cookie';
+
     import Loader from "$lib/components/Loader.svelte";
-    import { createToken, ServerContactor,logan, digestMessage } from "../../serverContactor";
+    import Button from "$lib/components/Button.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Holder from "$lib/components/Holder.svelte";
 
-    import { browser } from "$app/environment"
+    import { getAuthToken } from "$lib";
+    import { t } from "$lib/translations";
+    import { createToken, ServerContactor, login, AuthError, UserError, MFAError } from "../../serverContactor";
+
+
 
     let generatingNew:boolean = false;
     let code:string|null = null
@@ -24,7 +27,7 @@
         valid = code!==null;
     }
 
-    let serverContactor: ServerContactor | undefined = undefined;
+    let serverContactor: ServerContactor;
 
     let username: string;
     let password: string;
@@ -34,6 +37,7 @@
     let redirectURL: string; // Used to automatically redirect user to the right endpoint after login
     let loader:Loader;
     let warningText: string; // Used for example "it seems like you don't have permissions to access this"
+
     function modalClose() {
         modal.close();
         loader?.hide();
@@ -59,66 +63,112 @@
             break;
         }
     });
-    let login: boolean = true;
 
-    valid?login=false:login=true;
+    function handleLogin() {
+        loader.show(undefined, $t("common.account_login_loading_desc"));
+        login(username, password).catch(error=>{
+            loader.hide();
+            console.log(error instanceof AuthError);
 
-    function accountActionButtonClick() { // Excuse me for this horrendous code TODO: refactor it. Don't feel like it though'
+            if(error instanceof AuthError || error instanceof UserError) {
+                modal.open(
+                    $t("common.login_failed"),
+                    $t("common.login_failed_description"),
+                );
+            }
+
+            else {
+                modal.open(
+                    $t("common.login_failed"),
+                    $t("common.login_generic_error"),
+                );
+            }
+        
+            throw new Error("Login failed");
+        })
+        .then(session=>{
+            const session_id = session["auth-token"];
+            loader.hide();
+            console.log(session_id);
+            const date = new Date(Date.now()+ 604800*1000).toUTCString();
+            document.cookie=`auth-token=${session_id}; expires=${date};`;
+            if(!getAuthToken()) {
+            console.error("Browser did not accept cookies... using localstorage");
+            localStorage.setItem("auth-token", `${session_id}`);
+            }
+            localStorage.removeItem("temp-token");
+            localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
+            localStorage.setItem("logged-in", "y");
+            modal.open(
+                $t("common.login_succeed"),
+                $t("common.login_succeed_description"),
+            );
+            redirectURL = redirectURL ?? "/";
+            window.location.href = redirectURL;
+        })
+    }
+
+    function handleSignup() {
+        loader.show(undefined, $t("common.account_signup_loading_desc"));
+        if (password !== repeatPassword) {
+            modal.open(
+                $t("common.signup_password_not_match"),
+                $t("common.signup_password_not_match_description"),
+            );
+            return;
+        }
+        serverContactor
+            //@ts-ignore
+            .register(username, password, email, code)
+            .then((response) => {
+                loader.hide();
+                handleSignupResponse(response);
+            });
+    }
+
+    function handleSignupResponse(response) {
+        switch (response.status) {
+            case 200:
+                modal.open(
+                    $t("common.signup_success"),
+                    $t("common.signup_success_description"),
+                );
+                login = true;
+                break;
+            case 400:
+            case 422:
+                modal.open(
+                    $t("common.signup_fail"),
+                    $t("common.signup_fail_email"),
+                );
+                break;
+            case 409:
+                modal.open(
+                    $t("common.signup_fail"),
+                    $t("common.signup_fail_username"),
+                );
+                break;
+            case 403:
+                modal.open("Invalid invite", "Your invite code is invalid.");
+                break;
+        }
+    }
+
+    function accountActionButtonClick() {
         if (serverContactor === undefined) {
             return;
         }
         if (login) {
-            loader.show(undefined,$t("common.account_login_loading_desc"))
-            console.log(logan(username, password));
-        }
-        if (!login && valid) {
-          loader.show(undefined,$t("common.account_signup_loading_desc"))
-            if (password !== repeatPassword) {
-                modal.open(
-                    $t("common.signup_password_not_match"),
-                    $t("common.signup_password_not_match_description"),
-                );
-                return;
-            }
-            console.log(code);
-            serverContactor
-                //@ts-ignore
-                .register(username, password, email, code) 
-                .then((response) => {
-                  loader.hide();
-                    switch (response.status) {
-                        case 200:
-                            modal.open(
-                                $t("common.signup_success"),
-                                $t("common.signup_success_description"),
-                            );
-                            login = true;
-                            break;
-                        case 400:
-                            modal.open(
-                                $t("common.signup_fail"),
-                                $t("common.signup_fail_email"),
-                            );
-                            break;
-                        case 409:
-                            modal.open(
-                                $t("common.signup_fail"),
-                                $t("common.signup_fail_username"),
-                            );
-                            break;
-                        case 422:
-                            modal.open(
-                                $t("common.signup_fail"),
-                                $t("common.signup_fail_email"),
-                            );
-                            break;
-                        case 403:
-                            modal.open("Invalid invite","Your invite code is invalid.");
-                            break;
-                    }
-                });
+            handleLogin();
+        } else if (valid) {
+            handleSignup();
         }
     }
+
+    let login_mode: boolean = true;
+
+    valid?login_mode=false:login_mode=true;
+
 </script>
 
 <svelte:head>
@@ -128,7 +178,7 @@
 
 <Loader bind:this={loader}/>
 <Holder>
-    {#if login}
+    {#if login_mode}
         <h1>{$t("common.login_text")}</h1>
         <p>
             {#if warningText}
@@ -165,7 +215,7 @@
                 <a href="/account/recover">{$t("common.password_forget_intro")}</a>
             </h4>
 
-            <a href="#" on:click={() => (login = false)}>
+            <a href="#" on:click={() => (login_mode = false)}>
                 {$t("common.signup_instead")}
             </a>
         </form>
@@ -216,7 +266,7 @@
 
             <p>{@html $t("common.legal_text")}</p>
 
-            <a href="#" on:click={() => (login = true)}>
+            <a href="#" on:click={() => (login_mode = true)}>
                 {$t("common.login_instead")}
             </a>
         </form>
@@ -232,7 +282,7 @@
         </p>
         <p>Thank you for your support.</p>
 
-        <a href="#" on:click={() => (login = true)}>Login to an existing account</a>
+        <a href="#" on:click={() => (login_mode = true)}>Login to an existing account</a>
     {/if}
 </Holder>
 

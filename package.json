@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@sentry/sveltekit": "^8.34.0",
 		"@svelte-put/qr": "^1.2.1",
+		"@types/js-cookie": "^3.0.6",
 		"@types/ua-parser-js": "^0.7.39",
 		"@vercel/speed-insights": "^1.0.12",
 		"faker-js": "^1.0.0",

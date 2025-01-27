@@ -11,7 +11,7 @@
     import Placeholder from '$lib/components/Placeholder.svelte';
     import { UAParser } from 'ua-parser-js';
     import { redirectToLogin,createFile } from '../../../helperFuncs';
-    import { ServerContactor } from '../../../serverContactor';
+    import { ServerContactor, AuthError, ConflictError, UserError } from '../../../serverContactor';
     import Section from '$lib/components/Section.svelte';
     import Blur from '$lib/components/Blur.svelte';
     import { t, locale, locales, addArguements } from '$lib/translations';
@@ -20,6 +20,7 @@
     import Loader from "$lib/components/Loader.svelte";
     import { browser } from '$app/environment';
     import { onMount } from 'svelte';
+    import Ads from '$lib/components/Ads.svelte';
 
     interface Session {
       hash: string,
@@ -31,7 +32,8 @@
     interface invite {
         code:string,
         used:boolean,
-        used_by:string | null
+        used_by:string | null,
+        shown: boolean
     }
 
     let loader:Loader;
@@ -50,65 +52,97 @@
     let vuln=false;
     let monitoring=false;
     let invites:invite[] = [];
-
+    
+    let allowBetaTesting:boolean = false;
     if(browser) {
       if(!localStorage.getItem("logged-in")) {
         redirectToLogin(-1);
       }
+      allowBetaTesting = Boolean(localStorage.getItem("allow-testing"))??false;
     }
     onMount(()=>{
-        async function __GetData() {
-          await getData();
-          await serverContactor.getSessions().then(response=>response.json()).then(json=>{
-              sessions = json as Session[];
-          })
-        }
         serverContactor=new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
-        __GetData();
-    })
-
-    async function getData() {
-        await serverContactor.getAccountDetails().then(response=>{
-          if(response.status === 460) {
-            redirectToLogin(460)
-          }
-          response.json().then(data=>{
+        
+        serverContactor.getAccountSettings().catch((error)=>{
+            if(error instanceof AuthError) {
+                redirectToLogin(460);
+            }
+        }).then(data=>{
+            if(!data) {
+                throw Error("Data is not defined")
+            }
             emailE=addArguements($t("common.account_email"),{"%email%":data["email"]});
             usernameE=addArguements($t("common.account_username"),{"%username%":data["username"]});
             loaded=true;
             verified=data["verified"];
+            //@ts-ignore
             maxDomains=data["permissions"]["max-domains"]??4;
             wildcards=data["permissions"]["wildcards"]??false;
             admin=data["permissions"]["admin"]??false;
             vuln=data["permissions"]["reports"]??false;
             monitoring=data["permissions"]["userdetails"]??false;
-            invites=data["invites"]??[]
-        })
-        });
 
-        console.log("getting invites");
+            let inviteObject = data["invites"];
+            let sessionObject = data["sessions"];
 
-        await serverContactor.getInvites().then(response=>response.json()).then(data=>{
-            console.log(typeof(data))
-            // @ts-ignore
-            // typescript is annoying ash like I know this code sucks but im too lazy to reformat it, also why did I think it was a good idea to make a seperate class just to store return statements for fetch operations=???
-            for(let i=0; i<Object.entries(data).length; i++) {
+            for(let i=0; i<Object.entries(inviteObject).length; i++) {
+                let name: string = Object.keys(inviteObject)[i];
                 invites.push({ 
-                    "code": Object.keys(data)[i],
-                    "used": data[Object.keys(data)[i]]["used"],
-                    "used_by": data[Object.keys(data)[i]]["used_by"],
+                    "code": name,
+                    "used": inviteObject[name]["used"],
+                    "used_by": inviteObject[name]["used_by"],
+                    "shown": false
                 });
             };
-            invites=[...invites]
+            invites=[...invites];
+
+
+            for(let i=0; i<Object.entries(inviteObject).length; i++) {
+                sessions.push({
+                    "expire": sessionObject[Object.keys(sessionObject)[i]]["expire"],
+                    "hash": Object.keys(sessionObject)[i],
+                    "ip": sessionObject[Object.keys(sessionObject)[i]]["ip"],
+                    "user_agent": sessionObject[Object.keys(sessionObject)[i]]["user_agent"]
+                });
+            };
+            sessions=[...sessions];
+
+
         });
-    }
+    });
+
 
     function createInvite() {
         loader.show("Creating invite...", "This shouldn't take long");
-        serverContactor.createInvite().then(response=>response.text()).then(invite => {
+        serverContactor.createInvite().catch(err=>{
             loader.hide();
-            modal.open("Invite created succesfully!", `Use the invite with the following link: <a href="https://www.frii.site/account?invite=${invite}/">www.frii.site/account?invite=${invite}</a>`);
-        }); 
+            if(err instanceof AuthError) {
+                redirectToLogin(460);
+            } if(err instanceof ConflictError) {
+                modal.open($t("common.account_invite_fail"),$t("common.account_invite_fail_usage_description"));
+            }
+            else {
+                
+            }
+            throw new Error("Failed to create invite");
+        })
+        .then(response=>{
+            loader.hide();
+            modal.open(
+                $t("common.account_invite_success"),
+                addArguements(
+                    $t("common.account_invite_success_description"),
+                    {"%link%": `https://www.frii.site/sign-up?invite=${response["code"]}`}
+                )
+            );
+            invites.push({
+                "code": response["code"],
+                "used": false,
+                "used_by": null,
+                "shown": false
+            });
+            invites = [...invites];
+        });
     }
 
     function handleDelete() {
@@ -117,7 +151,7 @@
             noConfirm=false;
             return;
         }
-        serverContactor.deleteAccoint().then(response=>{
+        serverContactor.deleteAccount().then(response=>{
             switch(response.status) {
                 case 412:
                     redirectToLogin(412);
@@ -215,7 +249,7 @@
             </div>
             <div class="switch">
                 <p>{$t("common.account_version_testing")}</p>
-                <Switch initial={(localStorage.getItem("allow-testing")??"false")=="true"} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
+                <Switch initial={allowBetaTesting} on:change={(event)=>{localStorage.setItem("allow-testing",event.detail);handleBeta(event.detail);}}/>
             </div>
             <div class="buttons">
                 <div><Button on:click={()=>createInvite()} args={"padding"}>{$t("common.account_invite")}</Button></div>
@@ -233,21 +267,25 @@
         {#if browser}
             {#each invites as invite}
                 {@const minres = Math.min(window.innerHeight,window.innerWidth)/((window.innerHeight>window.innerWidth)?1.5:3)}
+                {@const showQRCode = false}
                 <div class="session invite">
                     <h3><a href="https://www.frii.site/account?invite={invite.code}">{invite.code}</a></h3>
                     <p>Used: <b>{invite.used?"Yes":"No"}</b></p>
                     {#if invite.used}
                         <p style="word-break: break-all; width: {minres}px">Used by: <b>{invite.used_by}</b></p>
                     {/if}
-                    <div class="h" style="display: flex; width: 100%; justify-content:center">
-                        <QR
-                            data="https://www.frii.site/account?invite={invite.code}"
-                            shape="circle"
-                            logo="https://www.frii.site/favicon.svg"
-                            width="{minres}"
-                            height="{minres}"
-                        />
-                    </div>
+                    <Button args="padding" on:click={()=>invite.shown=!invite.shown}>{$t("common.account_show_invite_qr")}</Button>
+                    {#if invite.shown}
+                        <div class="h" style="display: flex; width: 100%; justify-content:center">
+                            <QR
+                                data="https://www.frii.site/account?invite={invite.code}"
+                                shape="circle"
+                                logo="https://www.frii.site/favicon.svg"
+                                width="{minres}"
+                                height="{minres}"
+                            />
+                        </div>
+                    {/if}
                     
                 </div>
             {/each}

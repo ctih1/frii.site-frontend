@@ -32,33 +32,33 @@ export async function createToken(username: string, password: string): Promise<s
   return token;
 }
 
-class UserError extends Error {
+export class UserError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "UserError";
   }
 }
-class AuthError extends Error {
+export class AuthError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "AuthError";
   }
 }
-class MFAError extends Error {
+export class MFAError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "MFAError";
   }
 }
 
-class CodeError extends Error {
+export class CodeError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "CodeError";
   }
 }
 
-class PermissionError extends Error {
+export class PermissionError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "PermissionError";
@@ -66,28 +66,28 @@ class PermissionError extends Error {
 }
 
 
-class DNSError extends Error {
+export class DNSError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "DNSError";
   }
 }
 
-class ConflictError extends Error {
+export class ConflictError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "ConflictError";
   }
 }
 
-class InviteError extends Error {
+export class InviteError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "InviteError";
   }
 }
 
-class LimitError extends Error {
+export class LimitError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "LimitError";
@@ -98,7 +98,7 @@ class LimitError extends Error {
 
 
 
-export async function logan(username: string, password: string): Promise<paths["/login"]["post"]["responses"]["200"]["content"]["application/json"]> {
+export async function login(username: string, password: string): Promise<paths["/login"]["post"]["responses"]["200"]["content"]["application/json"]> {
   const hashed_username: string = await digestMessage(username);
   const hashed_password: string = await digestMessage(password);
 
@@ -383,6 +383,26 @@ export class ServerContactor {
       throw new Error(`Failed to get GDPR data. Status code: ${error.detail}`);
     }
 
+    return data;
+  }
+
+  async createInvite(): Promise<paths["/invite/create"]["post"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.POST("/invite/create", {
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
+    });
+
+    if (error) {
+      switch(response.status) {
+        case 460: throw new AuthError("Invalid session");
+        case 409: throw new ConflictError("Invite limit reached");
+        default: throw new Error(`Failed to create invite. Status code: ${response.status}`);
+      }
+    }
+
+    //@ts-ignore
     return data;
   }
 }
