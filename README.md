@@ -4,7 +4,7 @@ A free subdomain hosting website that has a dashboard and an API
 
 ![frii site](https://github.com/user-attachments/assets/81506c74-981e-4f73-a440-6ce7d4f95513)
 
-
+ 
 <details>
 <summary>Getting started</summary>
 ## Getting started
