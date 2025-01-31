@@ -27,18 +27,19 @@
 
     function modalConfirm() {
       loader.show(undefined,addArguements($t("common.dashboard_delete_loading_desc"),{"%domain%":domain2delete}))
-        serverContactor.deleteDomain(domain2delete).then(response=>{
-          loader.hide();
-            switch(response.status) {
-                case 200:
-                    modal.open(addArguements($t("common.dashboard_delete_success"),{"%domain%":domain2delete}),addArguements($t("common.dashboard_delete_success_description"),{"%domain%":domain2delete}));
-                    removeDomain(domain2delete)
-                    break;
-                default:
-                    modal.open($t("common.dashboard_delete_error"),$t("common.unhandled_error"));
-                    break;
-            }
-        })
+      serverContactor.deleteDomain(domain2delete).catch(error => {
+        loader.hide();
+
+        if(error instanceof AuthError) redirectToLogin(460);
+
+        modal.open($t("common.dashboard_delete_error"),$t("common.unhandled_error"));
+
+        throw new Error("Failed to delete domain");
+      }).then(() => {
+            loader.hide();
+            modal.open(addArguements($t("common.dashboard_delete_success"),{"%domain%":domain2delete}),addArguements($t("common.dashboard_delete_success_description"),{"%domain%":domain2delete}));
+            removeDomain(domain2delete)
+      })
     }
 
     function registerDomain(domain:string,type:string) {

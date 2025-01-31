@@ -158,7 +158,7 @@
         if (serverContactor === undefined) {
             return;
         }
-        if (login) {
+        if (login_mode) {
             handleLogin();
         } else if (valid) {
             handleSignup();
