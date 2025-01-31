@@ -404,5 +404,26 @@ export class ServerContactor {
 
     //@ts-ignore
     return data;
-  }
+  };
+
+
+  async getDomains(): Promise<paths["/domain/get"]["get"]["responses"]["200"]["content"]["application/json"]> {
+    const { data, error, response} = await client.GET("/domain/get", {
+      params: {
+        //@ts-ignore
+        header: { "X-Auth-Token": this.token },
+      },
+    });
+
+    if (error) {
+      //@ts-ignore
+      switch(response.status) {
+        case 460: throw new AuthError("Invalid session");
+        default: throw new Error(`Failed to create invite. Status code: ${response.status}`);
+      }
+    }
+
+    //@ts-ignore
+    return data;
+  };
 }

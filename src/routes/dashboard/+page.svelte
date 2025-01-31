@@ -5,7 +5,7 @@
     import Holder from '$lib/components/Holder.svelte';
     import Loader from "$lib/components/Loader.svelte";
     import { t,l,locale,addArguements } from '$lib/translations';
-    import { ServerContactor } from '../../serverContactor';
+    import { AuthError, ConflictError, DNSError, LimitError, PermissionError, ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
     import Cookies from 'js-cookie';
@@ -43,69 +43,42 @@
 
     function registerDomain(domain:string,type:string) {
         loader.show($t("common.loading"), addArguements($t("common.dashboard_register_load_desc"),{"%domain%":domain}));
-        serverContactor.registerDomain(domain,type).then(response=>{
-            const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
+        serverContactor.registerDomain(domain,type)
+        .catch(error=>{
             loader.hide();
-            switch(response.status) {
-                case 200:
-                    modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":domain}),$t("common.dashboard_register_success_description"));
-                    domainlist.push([type,domain,"0.0.0.0"]);
-                    domainTable.updateDomains(domainlist);
-                    break;
-                case 460:
-                    redirectToLogin(460);
-                    break;
-                case 403:
-                    modal.open(errorMessage,$t("common.login_failed_verify"))
-                case 429:
-                    modal.open(errorMessage,$t("common.dashboard_domain_limit"));
-                    break;
-                case 405:
-                    modal.open(errorMessage,$t("commmon.dashboard_domain_permissions"));
-                    break;
-                case 406:
-                case 400:
-                    modal.open(errorMessage,$t("common.dashboard_invalid"));
-                    break;
-                case 409:
-                    modal.open(errorMessage, $t("common.dashboard_domain_use"));
-                    break;
-                default:
-                    modal.open(errorMessage,$t("common.unhandled_error"));
-                    break;
-            }
+            const errorMessage = addArguements($t("common.dashboard_register_fail"),{"%domain%":domain})
+
+            if(error instanceof AuthError) redirectToLogin(460);
+            if(error instanceof DNSError) modal.open(errorMessage,$t("common.dashboard_invalid"));
+            if(error instanceof PermissionError)  modal.open(errorMessage,$t("commmon.dashboard_domain_permissions"));
+            if(error instanceof LimitError) modal.open(errorMessage,$t("common.dashboard_domain_limit"));
+            if(error instanceof ConflictError) modal.open(errorMessage, $t("common.dashboard_domain_use"));
+
+            throw new Error("Failed to register dommain!");
         })
+        .then(()=>{
+            loader.hide();
+            modal.open(addArguements($t("common.dashboard_register_success"),{"%domain%":name}),$t("common.dashboard_modify_success_description"));
+        })
+        
     }
 
     function modifyDomain(name:string,value:string,type:string) {
         loader.show($t("common.loading"),addArguements($t("common.dashboard_modify_load_desc"),{"%domain%":name}));
-        serverContactor.modifyDomain(name,value,type).then(response=>{
-            const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name})
+        serverContactor.modifyDomain(name,value,type)
+        .catch(error=>{
             loader.hide();
-            switch(response.status) {
-                case 401:
-                    redirectToLogin(460);
-                    break;
-                case 409:
-                    modal.open(errorMessage,$t("common.dashboard_domain_not_owned"));
-                    break;
-                case 405:
-                    modal.open(errorMessage,$t("common.dashboard_domain_permissions"));
-                    break;
-                case 406:
-                    modal.open(errorMessage, $t("common.dashboard_invalid_value"));
-                    break;
-                case 403:
-                    modal.open(errorMessage,$t("common.dashboard_domain_not_owned"));
-                    break;
-                case 500:
-                    modal.open(errorMessage,$t("common.unhandled_error"));
-                    break;
-                case 200:
-                    modal.open(addArguements($t("common.dashboard_modify_success"),{"%domain%":name}),$t("common.dashboard_modify_success_description"))
-                    break;
-            }
-        })
+            const errorMessage = addArguements($t("common.dashboard_modify_fail"),{"%domain%":name});
+
+            if(error instanceof AuthError) redirectToLogin(460);
+            if(error instanceof DNSError) modal.open(errorMessage, $t("common.dashboard_invalid_value"));
+            if(error instanceof PermissionError) modal.open(errorMessage, $t("common.dashboard_domain_permissions"));
+
+            throw Error("Failed to modify domain."); // stops execution to the .then block
+        }).then(()=>{
+            loader.hide();
+            modal.open(addArguements($t("common.dashboard_modify_success"),{"%domain%":name}),$t("common.dashboard_modify_success_description"));
+        });
     }
 
     function removeDomain(name:string) {
@@ -115,28 +88,26 @@
         domainTable.updateDomains(domainlist);
     }
 
-onMount(()=>{
-        // stupid typescript done got fooled by the simplest trick in the book
-        if(localStorage.getItem("del-count")??null===true) {
-            modalTime = 3;
-        }
-        serverContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
-        serverContactor.getDomains().then(response=>{
-            if(response.status===460){redirectToLogin(460)}
-            if(response.status===404){domainTable.updateDomains([[""]]); return;}
-            response.json().then(data=> {
-                domains = new Map(Object.entries(data));
+    onMount(()=>{
+        modalTime = localStorage.getItem("del-count") ? 3 : 15;
 
-                for(let pair of domains) {
-                    let [key,value] = pair;
-                    value=new Map(Object.entries(value));
-                    domainlist.push([value.get("type"),key,value.get("ip")]);
-                }
-                domainTable.updateDomains(domainlist);
+        serverContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
+        serverContactor.getDomains()
+        .catch(error=>{
+            if(error instanceof AuthError) {
+                redirectToLogin(460);
+            };
+        })
+        .then(data=>{
+            //@ts-ignore
+            let domains = Object.entries(data);
+            for(let [key,value] of domains) {
+                domainlist.push([value.type,key,value.ip]);
             }
-        )
+            domainTable.updateDomains(domainlist);
+        });
     }
-)});
+);
 
 </script>
 
