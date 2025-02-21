@@ -61,7 +61,7 @@
                     modal.open(errorMessage,$t("common.dashboard_domain_limit"));
                     break;
                 case 405:
-                    modal.open(errorMessage,$t("commmon.dashboard_domain_permissions"));
+                    modal.open(errorMessage,$t("common.dashboard_domain_permissions"));
                     break;
                 case 406:
                 case 400:
