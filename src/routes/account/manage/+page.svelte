@@ -96,15 +96,16 @@
             };
             invites=[...invites];
 
-
-            for(let i=0; i<Object.entries(inviteObject).length; i++) {
+            
+            sessionObject.forEach(element => {
                 sessions.push({
-                    "expire": sessionObject[Object.keys(sessionObject)[i]]["expire"],
-                    "hash": Object.keys(sessionObject)[i],
-                    "ip": sessionObject[Object.keys(sessionObject)[i]]["ip"],
-                    "user_agent": sessionObject[Object.keys(sessionObject)[i]]["user_agent"]
+                    "expire": element["expire"],
+                    "hash": element["hash"],
+                    "ip": element["ip"],
+                    "user_agent": element["user-agent"]
                 });
-            };
+            });
+
             sessions=[...sessions];
 
 
@@ -187,6 +188,7 @@
         localStorage.removeItem("auth-token");
         redirectToLogin(200);
     }
+    
     function deleteSession(sessionHash:string) {
       loader.show(undefined, $t("common.account_manage_sessions_delete_loader"))
       serverContactor.deleteSession(sessionHash).then(response=>{
