@@ -25,7 +25,6 @@
 	"dependencies": {
 		"@sentry/sveltekit": "^8.34.0",
 		"@svelte-put/qr": "^1.2.1",
-		"@types/js-cookie": "^3.0.6",
 		"@types/ua-parser-js": "^0.7.39",
 		"@vercel/speed-insights": "^1.0.12",
 		"clipboard-copy": "^4.0.1",
@@ -34,8 +33,7 @@
 		"i18next-http-backend": "^2.5.2",
 		"js-cookie": "^3.0.5",
 		"lodash": "^4.17.21",
-		"openapi-fetch": "^0.13.4",
-		"openapi-typescript-fetch": "^2.1.0",
+		"openapi-fetch": "^0.13.5",
 		"svelte-i18n": "^4.0.0",
 		"svelte-i18next": "^2.2.2",
 		"svelte-markdown": "^0.4.1",

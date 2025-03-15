@@ -133,7 +133,7 @@
                     $t("common.signup_success"),
                     $t("common.signup_success_description"),
                 );
-                login = true;
+                login_mode = true;
                 break;
             case 400:
             case 422:
