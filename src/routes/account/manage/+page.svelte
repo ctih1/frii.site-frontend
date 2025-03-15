@@ -1,5 +1,6 @@
 <script lang="ts">
     import Cookies from "js-cookie";
+    import copy from "clipboard-copy";
     import { getAuthToken } from "$lib";
     import { dev } from "$app/environment";
     import QR from "@svelte-put/qr/svg/QR.svelte";
@@ -116,9 +117,10 @@
                 invites = [...invites];
 
                 sessionObject.forEach((element) => {
+                    console.log(element);
                     sessions.push({
                         expire: element["expire"],
-                        hash: element["hash"],
+                        hash: element["_id"],
                         ip: element["ip"],
                         user_agent: element["user-agent"],
                     });
@@ -210,11 +212,15 @@
             });
     }
     function logOut() {
-        serverContactor.logOut();
-        Cookies.remove("auth-token", { secure: !dev });
-        localStorage.removeItem("logged-in");
-        localStorage.removeItem("auth-token");
-        redirectToLogin(200);
+        serverContactor.logOut()
+            .catch(err=>{
+                throw new Error("Failed to delete session. Please file an issue report over on our github (ctih1/frii.site-frontend)");
+            }).then(_=>{
+                Cookies.remove("auth-token", { secure: !dev });
+                localStorage.removeItem("logged-in");
+                localStorage.removeItem("auth-token");
+                redirectToLogin(200);
+            })
     }
 
     function deleteSession(sessionHash: string) {
@@ -230,7 +236,9 @@
                 throw Error("Failed to delete session");
             })
             .then(_ => {
-                sessions = [...sessions.filter(el => {return el.hash !== sessionHash})];
+                loader.hide();
+                sessions = sessions.filter(el => {return el.hash !== sessionHash});
+                sessions = [...sessions];
             })
 
     }
@@ -353,7 +361,7 @@
 
     <Section title="Invites" id="invites">
         {#if browser}
-            {#each invites as invite}
+            {#each invites as invite,index}
                 {@const minres =
                     Math.min(window.innerHeight, window.innerWidth) /
                     (window.innerHeight > window.innerWidth ? 1.5 : 3)}
@@ -362,9 +370,12 @@
                     <h3>
                         <a
                             href="https://www.frii.site/account?invite={invite.code}"
-                            >{invite.code}</a
+                            >Invite #{index+1}</a
                         >
                     </h3>
+
+                    <Button args="padding" on:click={_=>copy(`https://www.frii.site/account?invite=${invite.code}`)}>Copy to clipboard</Button>
+
                     <p>Used: <b>{invite.used ? "Yes" : "No"}</b></p>
                     {#if invite.used}
                         <p style="word-break: break-all; width: {minres}px">
@@ -417,6 +428,7 @@
                     <span class="material-symbols-outlined">update</span
                     >Expires: {new Date(session.expire * 1000).toUTCString()}
                 </p>
+                <p>{session.hash}</p>
                 <Button
                     args="danger"
                     on:click={() => deleteSession(session.hash)}>Remove</Button

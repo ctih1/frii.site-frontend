@@ -427,15 +427,17 @@ export class ServerContactor {
 		return data;
 	};
 
-	async logOut(id?: string): Promise<void> {
-		const { data, error, response } = await client.GET(`/logout`, {
+	async logOut(id?: string|undefined): Promise<void> {
+		console.log(id);
+		const { data, error, response } = await client.PATCH(`/logout`, {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token },
-				path: { 
-					specific: id !== undefined,
-					id: id 
-				}
+				header: {
+					"X-Auth-Token": this.token,
+					"specific": id !== undefined,
+					"id": id 
+				},
+	
 			}
 		});
 
