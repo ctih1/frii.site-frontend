@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ServerContactor } from "./../../../serverContactor";
+    import { AuthError, ServerContactor } from "./../../../serverContactor";
     import Placeholder from "$lib/components/Placeholder.svelte";
     import Button from "$lib/components/Button.svelte";
     import Tooltip from "$lib/components/Tooltip.svelte";
@@ -11,19 +11,25 @@
 
     import { getTranslationKeys } from "../../../serverContactor";
     import { t } from "$lib/translations";
-    import { getFlagEmoji } from "../../../helperFuncs";
+    import { getFlagEmoji, redirectToLogin } from "../../../helperFuncs";
+    import { onMount } from "svelte";
     export let data;
+
     let loaded = false;
     let keys: Array<{ key: string; ref: string }> = new Array();
     let values: Array<string> = new Array(keys.length);
     let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
-    let sc = new ServerContactor(getAuthToken());
+
+    let sc:ServerContactor;
     let modal: Modal;
     let modified: Array<{ key: string; val: string }> = new Array();
     console.log(values);
 
+    onMount(()=>{
+        sc = new ServerContactor(getAuthToken());
+    })
+
     getTranslationKeys(data.path)
-        .then((response) => response.json())
         .then((data) => {
             keys = data;
             loaded = true;
@@ -52,14 +58,14 @@
                 });
             }
         });
-        sc.submitLanguageContribution(data.path, modified).then((response) => {
-            if (response.status !== 200) {
-                modal.open(
-                    "Failed to save translation",
-                    "Your changes have been saved locally",
-                );
-            }
-        });
+        sc.contributeLanguageKeys(data.path, modified)
+            .catch(err=>{
+                if(err instanceof AuthError) redirectToLogin(460)
+                if(err instanceof Error) modal.open($t("common.unhandled_error"),"")
+            })
+            .then((response) => {
+                modal.open($t("common.translation_submit_succeed"),$t("common.translation_consideration"));
+            });
     }
 </script>
 

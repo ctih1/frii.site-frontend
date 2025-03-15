@@ -196,39 +196,26 @@ export async function resendEmail(username: string): Promise<paths["/email/send"
 	return data;
 }
 
-// class LanguagePercentagesError extends Error {
-//   constructor(message: string) {
-//     super(message);
-//     this.name = "LanguagePercentagesError";
-//   }
-// }
+export async function getLanguagePercentages(): Promise<paths["/languages/percentages"]["get"]["responses"]["200"]["content"]["application/json"]> {
+	const { data, error } = await client.GET("/languages/percentages");
+	if (error) {
+		throw new Error(`Failed to get language percentages`)
+	}
+	return data;
+}
 
-// export async function getLanguagePercentages(): Promise<paths["/translation/percentages"]["get"]["responses"]["200"]["content"]["application/json"]> {
-//   const { data, error, response} = await client.GET("/translation/percentages");
 
-//   if (error) {
-//     throw new LanguagePercentagesError(`Failed to get language percentages. Status code: ${response.status}`);
-//   }
+export async function getTranslationKeys(code: string): Promise<paths[`/languages/{language}/missing-keys`]["get"]["responses"]["200"]["content"]["application/json"]> {
+	//@ts-ignore
+	const { data, error, response} = await client.GET(`/languages/${code}/missing-keys`);
+	if (error) {
+		throw new Error(`Failed to get translation keys.`);
+	}
+	//@ts-ignore
+	return data;
+}
 
-//   return data;
-// }
 
-// class TranslationKeysError extends Error {
-//   constructor(message: string) {
-//     super(message);
-//     this.name = "TranslationKeysError";
-//   }
-// }
-
-// export async function getTranslationKeys(code: string): Promise<paths["/translation/{code}/missing"]["get"]["responses"]["200"]["content"]["application/json"]> {
-//   const { data, error, response} = await client.GET(`/translation/${code}/missing`);
-
-//   if (error) {
-//     throw new TranslationKeysError(`Failed to get translation keys. Status code: ${response.status}`);
-//   }
-
-//   return data;
-// }
 
 export class ServerContactor {
 	token: string;
@@ -427,7 +414,7 @@ export class ServerContactor {
 		return data;
 	};
 
-	async logOut(id?: string|undefined): Promise<void> {
+	async logOut(id?: string | undefined): Promise<void> {
 		console.log(id);
 		const { data, error, response } = await client.PATCH(`/logout`, {
 			params: {
@@ -435,9 +422,9 @@ export class ServerContactor {
 				header: {
 					"X-Auth-Token": this.token,
 					"specific": id !== undefined,
-					"id": id 
+					"id": id
 				},
-	
+
 			}
 		});
 
@@ -452,6 +439,27 @@ export class ServerContactor {
 		}
 
 		return;
+	}
+
+	async contributeLanguageKeys(code:string, keys:{key:string,val:string}[]) {
+		//@ts-ignore
+		const { data, error, response} = await client.POST(`/languages/${code}/contribute`, {
+			params: {
+				header: {
+					"X-Auth-Token": this.token
+				}
+			},
+
+			body: {
+				"keys":keys
+			}
+		});
+		if(error) {
+			switch(response.status) {
+				case 460: throw new AuthError("Invalid session")
+				case 500: throw new Error("Internal server error")
+			}
+		}
 	}
 
 
