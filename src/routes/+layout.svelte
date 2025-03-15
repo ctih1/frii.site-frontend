@@ -23,7 +23,7 @@
     }
 </script>
 
-<Banner />
+
 <Header />
 <Analytics />
 <Ads></Ads>

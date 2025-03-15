@@ -7,20 +7,11 @@
     let danger:boolean=false;
 
     let message:string;
-    getStatus().then(response=> {
-        if(response.status===204) {
-            danger=false;
-            loaded=true;
-        } else if(response.status!==404) {
-            response.text().then(data=>{
-                console.log(data);
-                danger=true;
-                message=data;
-                calcIsHidden();
-                loaded=true;
-            })
-        }})
-      loaded=true;
+    getStatus().catch(err=>{
+        danger=true;
+        message="We are experiencing server difficulties."
+    });
+    loaded=true;
 
     let hidden:boolean = false;
 
