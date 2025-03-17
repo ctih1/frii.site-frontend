@@ -1,5 +1,7 @@
 {
     "i18n-ally.localesPaths": [
         "src/locales"
-    ]
+    ],
+    "i18n-ally.sourceLanguage": "fi",
+    "i18n-ally.keystyle": "flat"
 }
