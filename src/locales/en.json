@@ -197,5 +197,20 @@
   "account_invite_fail_usage_description": "Invitation limit reached",
   "account_show_invite_qr": "Toggle QR Code",
   "translation_submit_succeed": "Succesfully submitted translations!",
-  "translation_consideration": "It may take some time for your translations to be approved."
+  "translation_consideration": "It may take some time for your translations to be approved.",
+  "email_verif_title": "Email verification",
+  "deletion_verif_title": "Account deletion verification",
+  "code_verif_loading":"Checking verification validity...",
+  "code_verif_loading_wrong": "Invalid code",
+  "code_verif_loading_wrong_desc": "This code has either expired, or is invalid.",
+  "code_verif_loading_success": "Done verifying!",
+  "account_verif_loading_success": "Account deleted",
+  "code_verif_loading_success_desc": "Redirecting to login...",
+  "account_verif_loading_success_desc": "Redirecting to login in 3 seconds...",
+  "account_del_desc": "Are you sure you want to delete your account? This action can not be undone. The following actions will happen:",
+  "account_del_steps_1": "Your account will be permanently deleted",
+  "account_del_steps_2": "Every domain on your account will be deleted and become available for other users to register",
+  "account_del_steps_3": "All of your personal information will be deleted from our servers",
+  "account_del_steps_4": "Your account's username will be free for other users to register",
+  "account_del_agree": "I understand what is going to happen, and I want to continue"
 }

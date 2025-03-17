@@ -18,7 +18,7 @@
     <div class="blogcard-body">
         <SvelteMarkdown source={`${description}...`}/>
     </div>
-    <a href={`/blog/${url}`}>{$t("common.blog_read")}</a>
+    <a href={`/blog/${url}`}>{$t("blog_read")}</a>
 </div>
 
 <style>

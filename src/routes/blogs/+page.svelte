@@ -33,8 +33,8 @@
 </script>
 
 <Holder>
-    <h1>{$t("common.blogs_title")}</h1>
-    <p>{$t("common.blogs_description")}</p>
+    <h1>{$t("blogs_title")}</h1>
+    <p>{$t("blogs_description")}</p>
     {#each blogs as blog}
         <BlogCard inline={true} title={blog.title} description={blog.body} date={blog.created} url={blog.url} />
     {/each}

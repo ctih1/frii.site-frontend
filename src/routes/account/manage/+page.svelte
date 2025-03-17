@@ -87,10 +87,10 @@
                 if (!data) {
                     throw Error("Data is not defined");
                 }
-                emailE = addArguements($t("common.account_email"), {
+                emailE = addArguements($t("account_email"), {
                     "%email%": data["email"],
                 });
-                usernameE = addArguements($t("common.account_username"), {
+                usernameE = addArguements($t("account_username"), {
                     "%username%": data["username"],
                 });
                 loaded = true;
@@ -106,7 +106,7 @@
                 let sessionObject = data["sessions"];
 
                 for (let i = 0; i < Object.entries(inviteObject).length; i++) {
-                    let name: string = Object.keys(inviteObject)[i];
+                    let name: string = Object.keys(inviteObject)[i] || "undefined";
                     invites.push({
                         code: name,
                         used: inviteObject[name]["used"],
@@ -117,7 +117,6 @@
                 invites = [...invites];
 
                 sessionObject.forEach((element) => {
-                    console.log(element);
                     sessions.push({
                         expire: element["expire"],
                         hash: element["_id"],
@@ -141,8 +140,8 @@
                 }
                 if (err instanceof ConflictError) {
                     modal.open(
-                        $t("common.account_invite_fail"),
-                        $t("common.account_invite_fail_usage_description"),
+                        $t("account_invite_fail"),
+                        $t("account_invite_fail_usage_description"),
                     );
                 } else {
                 }
@@ -151,9 +150,9 @@
             .then((response) => {
                 loader.hide();
                 modal.open(
-                    $t("common.account_invite_success"),
+                    $t("account_invite_success"),
                     addArguements(
-                        $t("common.account_invite_success_description"),
+                        $t("account_invite_success_description"),
                         {
                             "%link%": `https://www.frii.site/sign-up?invite=${response["code"]}`,
                         },
@@ -172,36 +171,29 @@
     function handleDelete() {
         if (noConfirm) {
             modal.open(
-                $t("common.account_deletion_confirm"),
-                $t("common.account_delete_confirm_description"),
-                15,
-                [$t("common.modal_cancel"), $t("common.modal_continue")],
+                $t("account_delete_confirm"),
+                $t("acount_delete_confirm_description"),
+                10,
+                [$t("cancel_modal"), $t("continue_modal")],
             );
             noConfirm = false;
             return;
         }
-        serverContactor.deleteAccount().then((response) => {
-            switch (response.status) {
-                case 412:
-                    redirectToLogin(412);
-                    break;
-                case 404:
-                    modal.open(
-                        $t("common.account_deletion_fail"),
-                        $t("common.account_deletion_fail_description"),
+        serverContactor.deleteAccount()
+            .catch(err => {
+                if(err instanceof AuthError) redirectToLogin(460);
+                modal.open(
+                        $t("account_deletion_fail"),
+                        $t("account_deletion_fail_description"),
                     );
-                    break;
-                case 401:
-                    redirectToLogin(401);
-                    break;
-                case 200:
-                    modal.open(
-                        $t("common.account_check_email"),
-                        $t("common.account_check_email_description"),
-                    );
-                    break;
-            }
-        });
+                throw new Error("Failed to delete account");
+            })
+            .then(_ => {
+                modal.open(
+                    $t("account_check_email"),
+                    $t("account_check_email_description"),
+                );
+            });
     }
     function gpdrData() {
         serverContactor
@@ -226,7 +218,7 @@
     function deleteSession(sessionHash: string) {
         loader.show(
             undefined,
-            $t("common.account_manage_sessions_delete_loader"),
+            $t("account_manage_sessions_delete_loader"),
         );
         serverContactor.logOut(sessionHash)
             .catch((err) => {
@@ -251,8 +243,8 @@
 <Blur bind:this={blurElement} />
 <Loader bind:this={loader} />
 <Holder>
-    <h1>{$t("common.account_management")}</h1>
-    <Section title={$t("common.account_details")} id="details">
+    <h1>{$t("account_management")}</h1>
+    <Section title={$t("account_details")} id="details">
         <div class="details">
             {#if loaded}
                 <h3
@@ -265,12 +257,12 @@
                 </h3>
                 <h3 id="username">
                     {usernameE}
-                    <Tooltip>{$t("common.account_username_tooltip")}</Tooltip>
+                    <Tooltip>{$t("account_username_tooltip")}</Tooltip>
                 </h3>
                 <div class="permission">
                     <span class="material-symbols-outlined">lock</span>
                     <p>
-                        {$t("common.dashboard_permission_domains")}:
+                        {$t("dashboard_permission_domains")}:
                         <strong>{maxDomains}</strong>
                     </p>
                 </div>
@@ -278,7 +270,7 @@
                     <div class="permission">
                         <span class="material-symbols-outlined">asterisk</span>
                         <p>
-                            {$t("common.dashboard_permission_wildcards")}:
+                            {$t("dashboard_permission_wildcards")}:
                             <strong>{wildcards}</strong>
                         </p>
                     </div>
@@ -289,7 +281,7 @@
                             >shield_person</span
                         >
                         <p>
-                            {$t("common.dashboard_permission_admin")}:
+                            {$t("dashboard_permission_admin")}:
                             <strong>{admin}</strong>
                         </p>
                     </div>
@@ -298,7 +290,7 @@
                     <div class="permission">
                         <span class="material-symbols-outlined">handyman</span>
                         <p>
-                            {$t("common.dashboard_permission_vulnerabilities")}:
+                            {$t("dashboard_permission_vulnerabilities")}:
                             <strong>{vuln}</strong>
                         </p>
                     </div>
@@ -307,7 +299,7 @@
                     <div class="permission">
                         <span class="material-symbols-outlined">groups</span>
                         <p>
-                            {$t("common.dashboard_permission_monitoring")}:
+                            {$t("dashboard_permission_monitoring")}:
                             <strong>{monitoring}</strong>
                         </p>
                     </div>
@@ -318,11 +310,11 @@
             {/if}
         </div>
     </Section>
-    <h1>{$t("common.account_manage_account")}</h1>
-    <Section title={$t("common.account_manage")} id="manage">
+    <h1>{$t("account_manage_account")}</h1>
+    <Section title={$t("account_manage")} id="manage">
         {#if browser}
             <div class="switch">
-                <p>{$t("common.account_domain_del_cooldown")}</p>
+                <p>{$t("account_domain_del_cooldown")}</p>
                 <Switch
                     initial={(localStorage.getItem("del-count") ?? "false") ==
                         "true"}
@@ -334,17 +326,17 @@
             <div class="buttons">
                 <div>
                     <Button on:click={() => createInvite()} args={"padding"}
-                        >{$t("common.account_invite")}</Button
+                        >{$t("account_invite")}</Button
                     >
                 </div>
                 <div>
                     <Button on:click={() => gpdrData()} args={"padding"}
-                        >{$t("common.account_download_data")}</Button
+                        >{$t("account_download_data")}</Button
                     >
                 </div>
                 <div>
                     <Button on:click={() => logOut()} args={"padding danger"}
-                        >{$t("common.account_log_out")}</Button
+                        >{$t("account_log_out")}</Button
                     >
                 </div>
 
@@ -352,7 +344,7 @@
                     <Button
                         args={"danger padding"}
                         on:click={() => handleDelete()}
-                        >{$t("common.account_delete_account")}</Button
+                        >{$t("account_delete_account")}</Button
                     >
                 </div>
             </div>
@@ -385,7 +377,7 @@
                     <Button
                         args="padding"
                         on:click={() => (invite.shown = !invite.shown)}
-                        >{$t("common.account_show_invite_qr")}</Button
+                        >{$t("account_show_invite_qr")}</Button
                     >
                     {#if invite.shown}
                         <div
@@ -406,7 +398,7 @@
         {/if}
     </Section>
 
-    <Section title={$t("common.account_manage_sessions")} id="sessions">
+    <Section title={$t("account_manage_sessions")} id="sessions">
         {#each sessions as session}
             {@const parser = new UAParser(session.user_agent)}
             <div class="session">
@@ -441,7 +433,7 @@
 <Modal
     bind:this={modal}
     on:secondary={() => handleDelete()}
-    options={[$t("common.continue_modal")]}
+    options={[$t("continue_modal")]}
     title={""}
     description={""}
 ></Modal>

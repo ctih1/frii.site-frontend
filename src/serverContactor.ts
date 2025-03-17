@@ -196,6 +196,38 @@ export async function resendEmail(username: string): Promise<paths["/email/send"
 	return data;
 }
 
+export async function verifyEmail(code:string): Promise<paths["/email/verify"]["post"]["responses"]["200"]["content"]["application/json"]> {
+	const { data, error, response } = await client.POST("/email/verify", {
+		params: {
+			query: { "code": code }
+		}
+	});
+	if (error) { 
+		switch(response.status) {
+			case 400: throw new CodeError("Code is invalid");
+			case 404: throw new UserError("User does not exist");
+			default: throw new Error(`Failed to verify. Status code: ${response.status}`);
+		}
+	}
+	return data;
+}
+
+export async function verifyDeletion(code:string): Promise<paths["/deletion/verify"]["delete"]["responses"]["200"]["content"]["application/json"]> {
+	const { data, error, response } = await client.DELETE("/deletion/verify", {
+		params: {
+			query: { "code": code }
+		}
+	});
+	if (error) { 
+		switch(response.status) {
+			case 400: throw new CodeError("Code is invalid");
+			case 404: throw new UserError("User does not exist");
+			default: throw new Error(`Failed to delete. Status code: ${response.status}`);
+		}
+	}
+	return data;
+}
+
 export async function getLanguagePercentages(): Promise<paths["/languages/percentages"]["get"]["responses"]["200"]["content"]["application/json"]> {
 	const { data, error } = await client.GET("/languages/percentages");
 	if (error) {

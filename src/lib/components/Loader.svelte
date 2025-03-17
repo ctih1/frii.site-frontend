@@ -6,7 +6,7 @@
     let _title: string = "";
     let _description: string = "";
 
-    export function show(title: string = $t("common.loading"), description: string = $t("common.loader_description")) {
+    export function show(title: string = $t("loading"), description: string = $t("loader_description")) {
         visible = true;
         _title = title;
         _description = description;

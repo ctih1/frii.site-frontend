@@ -8,7 +8,7 @@
     export let countdown:number|undefined=undefined;
     export let description:string="";
     export let title:string ="";
-    export let options:Array<string> = [$t("common.continue_modal")];
+    export let options:Array<string> = [$t("continue_modal")];
     export let overrideDefault:boolean=false;
     let button:Button;
     let _isLogin:boolean=false;
@@ -26,7 +26,7 @@
         if(buttons) {
             options = buttons;
         } else {
-            options = [$t("common.continue_modal")];
+            options = [$t("continue_modal")];
         }
         if(time!==undefined) {
             countdown=time;

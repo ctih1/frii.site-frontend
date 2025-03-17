@@ -19,22 +19,22 @@
 <header bind:this={header}>
     <a class="item" href="/">
         <span class="material-symbols-outlined">home</span>
-        <p>{$t("common.dashboard_home")}</p>
+        <p>{$t("dashboard_home")}</p>
     </a>
 
     <a class="item" href="/dashboard">
         <span class="material-symbols-outlined">apps</span>
-        <p>{$t("common.dashboard_navbar")}</p>
+        <p>{$t("dashboard_navbar")}</p>
     </a>
 
     <a class="item" href="/account/manage">
         <span class="material-symbols-outlined">person</span>
-        <p>{$t("common.dashboard_account")}</p>
+        <p>{$t("dashboard_account")}</p>
     </a>
 
     <a class="item" href="/report">
         <span class="material-symbols-outlined">flag</span>
-        <p>{$t("common.dashboard_abuse")}</p>
+        <p>{$t("dashboard_abuse")}</p>
     </a>
 
     <div class="item">

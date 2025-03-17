@@ -61,10 +61,10 @@
         sc.contributeLanguageKeys(data.path, modified)
             .catch(err=>{
                 if(err instanceof AuthError) redirectToLogin(460)
-                if(err instanceof Error) modal.open($t("common.unhandled_error"),"")
+                if(err instanceof Error) modal.open($t("unhandled_error"),"")
             })
             .then((response) => {
-                modal.open($t("common.translation_submit_succeed"),$t("common.translation_consideration"));
+                modal.open($t("translation_submit_succeed"),$t("translation_consideration"));
             });
     }
 </script>
@@ -74,7 +74,7 @@
         bind:this={modal}
         title="Error submitting translations"
         description="An error occured while submitting translations"
-        options={[$t("common.modal_ok")]}
+        options={[$t("modal_ok")]}
     />
     <h1>
         {$t(`lang.${data.path}`)}
@@ -82,7 +82,7 @@
             >{getFlagEmoji(data.path)}</span
         >
     </h1>
-    <p>{$t("common.translation_clarification")}</p>
+    <p>{$t("translation_clarification")}</p>
     <div class="keys">
         {#if loaded}
             {#each keys as key, index}
@@ -98,7 +98,7 @@
                         bind:value={values[index]}
                         type="text"
                         style="height: 2em;"
-                        placeholder={$t("common.translation_input")}
+                        placeholder={$t("translation_input")}
                     />
                 </div>
             {/each}
@@ -112,7 +112,7 @@
         {/if}
     </div>
     <Button on:click={() => handleClick()} args="fill padding argin-1em-top"
-        >{$t("common.security_report_submit")}</Button
+        >{$t("security_report_submit")}</Button
     >
 </Holder>
 

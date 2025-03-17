@@ -42,12 +42,12 @@
     <thead>
         <tr>
             <th style="width: 15%; min-width: 90px;"
-                >{$t("common.dashboardt_record")}</th
+                >{$t("dashboardt_record")}</th
             >
-            <th>{$t("common.dashboardt_content")}</th>
-            <th style="width: 25%;">{$t("common.dashboardt_value")}</th>
+            <th>{$t("dashboardt_content")}</th>
+            <th style="width: 25%;">{$t("dashboardt_value")}</th>
             <th style="width:20%; min-width:160px;"
-                >{$t("common.dashboardt_manage")}</th
+                >{$t("dashboardt_manage")}</th
             >
         </tr>
     </thead>

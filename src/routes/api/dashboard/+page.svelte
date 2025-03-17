@@ -32,7 +32,7 @@
     let sc:ServerContactor;
     onMount(()=>{
         sc = new ServerContactor(getAuthToken());
-        loader.show(undefined,$t("common.api_dashboard_loading"))
+        loader.show(undefined,$t("api_dashboard_loading"))
         sc.getApiKeys().then(response=>{
             if(response.status===460) {redirectToLogin(460)};
             response.json().then(data=>{
@@ -43,7 +43,7 @@
             })
         });
         sc.getDomains().then(response=>{
-        if(response.status!==200) { modal.open($t("common.api_dashboard_domain_load_fail"),$t("common.api_dashboard_domain_load_fail_description")) }
+        if(response.status!==200) { modal.open($t("api_dashboard_domain_load_fail"),$t("api_dashboard_domain_load_fail_description")) }
             response.json().then(data=>{
               formatDomains(data);
             });
@@ -80,15 +80,15 @@
       });
       console.log(valueDomains);
       console.log(permissions);
-      loader.show(undefined,$t("common.api_dashboard_create_loading_desc"))
+      loader.show(undefined,$t("api_dashboard_create_loading_desc"))
       sc.createApi(valueDomains,permissions,comment).then(response=>{
         loader.hide();
         if(response.status===403) {
-            modal.open($t("common.api_dashboard_create_fail"),$t("common.api_dashboard_create_fail_domains"));
+            modal.open($t("api_dashboard_create_fail"),$t("api_dashboard_create_fail_domains"));
         } else if(response.status===460) {
             redirectToLogin(460)
         } else if(response.status===200) {
-            modal.open($t("common.api_dashboard_create_success"),$t("common.api_dashboard_create_success_description"));
+            modal.open($t("api_dashboard_create_success"),$t("api_dashboard_create_success_description"));
             location.reload();
         }
       }
@@ -100,42 +100,42 @@
 <Loader bind:this={loader}/>
 <Modal bind:this={modal}/>
 <Holder>
-    <h1>{$t("common.api_title")}</h1>
+    <h1>{$t("api_title")}</h1>
     {#if loaded}
         <ApiKeyTable keys={keys}></ApiKeyTable>
     {/if}
 </Holder>
 
 <Holder>
-    <h1>{$t("common.api_dashboard_create_title")}</h1>
+    <h1>{$t("api_dashboard_create_title")}</h1>
     <form>
         <div class="form-item">
-            <p>{$t("common.api_dashboard_comment_section")}</p>
-            <input bind:value={comment} type="text" style="min-height: 2em;" placeholder={$t("common.api_dashboard_comment_placeholder")}>
+            <p>{$t("api_dashboard_comment_section")}</p>
+            <input bind:value={comment} type="text" style="min-height: 2em;" placeholder={$t("api_dashboard_comment_placeholder")}>
         </div>
         <div class="form-item">
             <div class="flex">
-                <p>{$t("common.api_dashboard_permission_section")}</p>
+                <p>{$t("api_dashboard_permission_section")}</p>
                 <div class="permissions">
                     <InputCompletor bind:this={input}  on:enter={(event)=>(addItem(permPool,event.detail))} suggestions={[
-                        {displayText:$t("common.api_dashboard_delete_perm"),valueText:"delete"},
-                        {displayText:$t("common.api_dashboard_modify_type_perm"),valueText:"type"},
-                        {displayText:$t("common.api_dashboard_modify_domain_perm"),valueText:"domain"},
-                        {displayText:$t("common.api_dashboard_modify_content_perm"),valueText:"content"},
-                        {displayText:$t("common.api_dashboard_view_perm"),valueText:"view"}
-                    ]} inputPlaceholder={$t("common.api_dashboard_permission_input_placehoder")} removeUsed={true}/>
+                        {displayText:$t("api_dashboard_delete_perm"),valueText:"delete"},
+                        {displayText:$t("api_dashboard_modify_type_perm"),valueText:"type"},
+                        {displayText:$t("api_dashboard_modify_domain_perm"),valueText:"domain"},
+                        {displayText:$t("api_dashboard_modify_content_perm"),valueText:"content"},
+                        {displayText:$t("api_dashboard_view_perm"),valueText:"view"}
+                    ]} inputPlaceholder={$t("api_dashboard_permission_input_placehoder")} removeUsed={true}/>
                     <Pool bind:this={permPool} items={[]} on:remove={(event)=>{undoRemove(input,event.detail)}}></Pool>
                 </div>
             </div>
         </div>
         <div class="form-item">
             <div class="flex">
-                <p>{$t("common.api_dashboard_domains_section")}</p>
+                <p>{$t("api_dashboard_domains_section")}</p>
                 <InputCompletor bind:this={domainInput}  on:enter={(event)=>(addItem(domainPool,event.detail))} suggestions={domains} inputPlaceholder="Domains" removeUsed={true}/>
                 <Pool bind:this={domainPool} items={[]} on:remove={(event)=>{undoRemove(domainInput,event.detail)}}></Pool>
             </div>
         </div>
-        <Button on:click={()=>submitKey()} args="fill padding">{$t("common.api_dashboard_create_button")}</Button>
+        <Button on:click={()=>submitKey()} args="fill padding">{$t("api_dashboard_create_button")}</Button>
     </form>
 </Holder>
 

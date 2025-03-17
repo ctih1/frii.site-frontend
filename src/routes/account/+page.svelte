@@ -54,33 +54,33 @@
 
         switch(Number($page.url.searchParams.get("c"))) {  // switch status code that redirected user here
           case 460:
-            warningText = $t("common.account_signed_out")
+            warningText = $t("account_signed_out")
             break;
 
           case 461:
           case 462:
-            warningText = $t("common.account_permissions_lack");
+            warningText = $t("account_permissions_lack");
             break;
         }
     });
 
     function handleLogin() {
-        loader.show(undefined, $t("common.account_login_loading_desc"));
+        loader.show(undefined, $t("account_login_loading_desc"));
         login(username, password).catch(error=>{
             loader.hide();
             console.log(error instanceof AuthError);
 
             if(error instanceof AuthError || error instanceof UserError) {
                 modal.open(
-                    $t("common.login_failed"),
-                    $t("common.login_failed_description"),
+                    $t("login_failed"),
+                    $t("login_failed_description"),
                 );
             }
 
             else {
                 modal.open(
-                    $t("common.login_failed"),
-                    $t("common.login_generic_error"),
+                    $t("login_failed"),
+                    $t("login_generic_error"),
                 );
             }
         
@@ -100,8 +100,8 @@
             localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
             localStorage.setItem("logged-in", "y");
             modal.open(
-                $t("common.login_succeed"),
-                $t("common.login_succeed_description"),
+                $t("login_succeed"),
+                $t("login_succeed_description"),
             );
             redirectURL = redirectURL ?? "/";
             window.location.href = redirectURL;
@@ -109,11 +109,11 @@
     }
 
     function handleSignup() {
-        loader.show(undefined, $t("common.account_signup_loading_desc"));
+        loader.show(undefined, $t("account_signup_loading_desc"));
         if (password !== repeatPassword) {
             modal.open(
-                $t("common.signup_password_not_match"),
-                $t("common.signup_password_not_match_description"),
+                $t("signup_password_not_match"),
+                $t("signup_password_not_match_description"),
             );
             return;
         }
@@ -130,22 +130,22 @@
         switch (response.status) {
             case 200:
                 modal.open(
-                    $t("common.signup_success"),
-                    $t("common.signup_success_description"),
+                    $t("signup_success"),
+                    $t("signup_success_description"),
                 );
                 login_mode = true;
                 break;
             case 400:
             case 422:
                 modal.open(
-                    $t("common.signup_fail"),
-                    $t("common.signup_fail_email"),
+                    $t("signup_fail"),
+                    $t("signup_fail_email"),
                 );
                 break;
             case 409:
                 modal.open(
-                    $t("common.signup_fail"),
-                    $t("common.signup_fail_username"),
+                    $t("signup_fail"),
+                    $t("signup_fail_username"),
                 );
                 break;
             case 403:
@@ -172,19 +172,19 @@
 </script>
 
 <svelte:head>
-    <title>{$t("common.account_title_on_tab")}</title>
+    <title>{$t("account_title_on_tab")}</title>
 </svelte:head>
 
 
 <Loader bind:this={loader}/>
 <Holder>
     {#if login_mode}
-        <h1>{$t("common.login_text")}</h1>
+        <h1>{$t("login_text")}</h1>
         <p>
             {#if warningText}
                 {warningText}
             {:else}
-                {$t("common.login_description")}
+                {$t("login_description")}
             {/if}
         </p>
 
@@ -192,7 +192,7 @@
             <div class="inp">
                 <input
                     bind:value={username}
-                    placeholder={$t("common.username_placeholder")}
+                    placeholder={$t("username_placeholder")}
                     type="text"
                 />
             </div>
@@ -200,32 +200,32 @@
             <div class="inp">
                 <input
                     bind:value={password}
-                    placeholder={$t("common.password_placeholder")}
+                    placeholder={$t("password_placeholder")}
                     type="password"
                 />
             </div>
 
             <div class="button-holder">
                 <Button on:click={accountActionButtonClick} args={"fill"}>
-                    {$t("common.login_button")}
+                    {$t("login_button")}
                 </Button>
             </div>
 
             <h4 style="margin-top: 5px; margin-bottom: 5px;">
-                <a href="/account/recover">{$t("common.password_forget_intro")}</a>
+                <a href="/account/recover">{$t("password_forget_intro")}</a>
             </h4>
 
             <a href="#" on:click={() => (login_mode = false)}>
-                {$t("common.signup_instead")}
+                {$t("signup_instead")}
             </a>
         </form>
     {:else if valid}
-        <h1>{$t("common.signup_text")}</h1>
+        <h1>{$t("signup_text")}</h1>
         <p>
             {#if warningText}
                 {warningText}
             {:else}
-                {$t("common.signup_description")}
+                {$t("signup_description")}
             {/if}
         </p>
 
@@ -237,7 +237,7 @@
             <div class="inp">
                 <input
                     bind:value={username}
-                    placeholder={$t("common.username_placeholder")}
+                    placeholder={$t("username_placeholder")}
                     type="text"
                 />
             </div>
@@ -245,7 +245,7 @@
             <div class="inp">
                 <input
                     bind:value={password}
-                    placeholder={$t("common.password_placeholder")}
+                    placeholder={$t("password_placeholder")}
                     type="password"
                 />
             </div>
@@ -253,21 +253,21 @@
             <div class="inp">
                 <input
                     bind:value={repeatPassword}
-                    placeholder={$t("common.confirm_password_placeholder")}
+                    placeholder={$t("confirm_password_placeholder")}
                     type="password"
                 />
             </div>
 
             <div class="button-holder">
                 <Button on:click={accountActionButtonClick} args={"fill"}>
-                    {$t("common.signup_button")}
+                    {$t("signup_button")}
                 </Button>
             </div>
 
-            <p>{@html $t("common.legal_text")}</p>
+            <p>{@html $t("legal_text")}</p>
 
             <a href="#" on:click={() => (login_mode = true)}>
-                {$t("common.login_instead")}
+                {$t("login_instead")}
             </a>
         </form>
     {/if}
