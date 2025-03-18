@@ -1,10 +1,12 @@
 <script lang="ts">
-	import Modal from '$lib/components/Modal.svelte';
-	import { sendForgotCode,confirmPasswordChange } from './../../../serverContactor';
-	import Button from '$lib/components/Button.svelte';
-    import { t } from '$lib/translations';
-    import Holder from "$lib/components/Holder.svelte";
     import { browser } from "$app/environment"
+
+    import Holder from "$lib/components/Holder.svelte";
+	import Modal from '$lib/components/Modal.svelte';
+	import Button from '$lib/components/Button.svelte';
+
+    import { sendForgotCode,confirmPasswordChange } from './../../../serverContactor';
+    import { t } from '$lib/translations';
 
     let generatingNew:boolean = false;
     let code:string|null = null
