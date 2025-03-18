@@ -13,7 +13,7 @@
 
     import { getAuthToken } from "$lib";
     import { t } from "$lib/translations";
-    import { createToken, ServerContactor, login, AuthError, UserError, MFAError } from "../../serverContactor";
+    import { createToken, ServerContactor, login, AuthError, UserError, MFAError, InviteError, ConflictError } from "../../serverContactor";
 
 
 
@@ -120,38 +120,20 @@
         serverContactor
             //@ts-ignore
             .register(username, password, email, code)
-            .then((response) => {
+            
+            .catch(err => {
                 loader.hide();
-                handleSignupResponse(response);
-            });
-    }
-
-    function handleSignupResponse(response) {
-        switch (response.status) {
-            case 200:
+                if(err instanceof InviteError) modal.open($t("account_register_invite_fail"), $t("account_register_invite_fail_desc"));
+                if(err instanceof ConflictError) modal.open($t("signup_fail"),$t("signup_fail_username"));
+                if(err instanceof UserError) modal.open($t("signup_fail"),$t("signup_fail_email"));
+                throw new Error("Registration failed");
+            })
+            .then(_ => {
                 modal.open(
                     $t("signup_success"),
                     $t("signup_success_description"),
                 );
-                login_mode = true;
-                break;
-            case 400:
-            case 422:
-                modal.open(
-                    $t("signup_fail"),
-                    $t("signup_fail_email"),
-                );
-                break;
-            case 409:
-                modal.open(
-                    $t("signup_fail"),
-                    $t("signup_fail_username"),
-                );
-                break;
-            case 403:
-                modal.open("Invalid invite", "Your invite code is invalid.");
-                break;
-        }
+            });
     }
 
     function accountActionButtonClick() {
@@ -167,7 +149,7 @@
 
     let login_mode: boolean = true;
 
-    valid?login_mode=false:login_mode=true;
+    valid ? login_mode = false : login_mode = true;
 
 </script>
 
