@@ -1,35 +1,32 @@
 <script lang="ts">
-    import Cookies from "js-cookie";
-    import copy from "clipboard-copy";
-    import { getAuthToken } from "$lib";
     import { dev } from "$app/environment";
-    import QR from "@svelte-put/qr/svg/QR.svelte";
+    import { browser } from "$app/environment";
+    import { onMount } from "svelte";
 
-    import Dropdown from "$lib/components/Dropdown.svelte";
+    import Section from "$lib/components/Section.svelte";
+    import Blur from "$lib/components/Blur.svelte";
+    import Switch from "$lib/components/Switch.svelte";
+    import Tooltip from "$lib/components/Tooltip.svelte";
+    import Loader from "$lib/components/Loader.svelte";
     import Button from "$lib/components/Button.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import Placeholder from "$lib/components/Placeholder.svelte";
-    import { UAParser } from "ua-parser-js";
-    import { redirectToLogin, createFile } from "../../../helperFuncs";
+
+    import QR from "@svelte-put/qr/svg/QR.svelte";
+
     import {
         ServerContactor,
         AuthError,
         ConflictError,
         UserError,
-        PermissionError,
     } from "../../../serverContactor";
-    import Section from "$lib/components/Section.svelte";
-    import Blur from "$lib/components/Blur.svelte";
     import { t, locale, locales, addArguements } from "$lib/translations";
-    import Switch from "$lib/components/Switch.svelte";
-    import Tooltip from "$lib/components/Tooltip.svelte";
-    import Loader from "$lib/components/Loader.svelte";
-    import { browser } from "$app/environment";
-    import { onMount } from "svelte";
-    import Ads from "$lib/components/Ads.svelte";
-    import { redirect } from "@sveltejs/kit";
-    import { page } from "$app/state";
+    import { getAuthToken, redirectToLogin,createFile } from "$lib";
+
+    import { UAParser } from "ua-parser-js";
+    import Cookies from "js-cookie";
+    import copy from "clipboard-copy";
 
     interface Session {
         hash: string;
@@ -104,21 +101,28 @@
 
                 let inviteObject = data["invites"];
                 let sessionObject = data["sessions"];
-
+                
                 for (let i = 0; i < Object.entries(inviteObject).length; i++) {
-                    let name: string = Object.keys(inviteObject)[i] || "undefined";
+                    let name: string | undefined = Object.keys(inviteObject)[i];
+                    if(name === undefined) {
+                        continue;
+                    }
                     invites.push({
                         code: name,
+                        //@ts-ignore
                         used: inviteObject[name]["used"],
+                        //@ts-ignore
                         used_by: inviteObject[name]["used_by"],
                         shown: false,
                     });
                 }
+
                 invites = [...invites];
 
                 sessionObject.forEach((element) => {
                     sessions.push({
                         expire: element["expire"],
+                        //@ts-ignore
                         hash: element["_id"],
                         ip: element["ip"],
                         user_agent: element["user-agent"],
