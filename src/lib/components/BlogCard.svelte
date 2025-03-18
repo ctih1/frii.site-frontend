@@ -1,9 +1,8 @@
 <script lang="ts">
     import { serverURL } from "../../serverContactor"
-    import { onMount } from "svelte"
     import {t} from "$lib/translations"
     import Placeholder from "./Placeholder.svelte";
-    import SvelteMarkdown from "svelte-markdown";
+    import Markdown from '@magidoc/plugin-svelte-marked'
 
     export let title:string;
     export let description:string;
@@ -16,7 +15,7 @@
     <h1>{title}</h1>
     <p>{new Date(date*1000).toLocaleDateString()}</p>
     <div class="blogcard-body">
-        <SvelteMarkdown source={`${description}...`}/>
+        <Markdown source={`${description}...`}/>
     </div>
     <a href={`/blog/${url}`}>{$t("blog_read")}</a>
 </div>

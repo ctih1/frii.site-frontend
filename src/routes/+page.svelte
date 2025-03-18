@@ -1,15 +1,15 @@
 <script lang="ts">
     //@ts-ignore
-    import { t } from '$lib/translations';
-    import Holder from '$lib/components/Holder.svelte';
+    import { onMount } from 'svelte'
+    import Footer from "$lib/components/Footer.svelte";
+    import BlogCard from "$lib/components/BlogCard.svelte"
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Review from "$lib/components/Review.svelte"
     import Button from "$lib/components/Button.svelte";
-    import { onMount,onDestroy } from 'svelte'
-    import Footer from "$lib/components/Footer.svelte";
-    import BlogCard from "$lib/components/BlogCard.svelte"
+    import { t } from '$lib/translations';
     import { serverURL } from '../serverContactor';
-    let blogsShouldBeShown:boolean=true
+
+    let blogsShouldBeShown:boolean = $state(true);
 
     interface Ireview {
       author: string,
@@ -54,9 +54,11 @@
       load();
     })
 </script>
+
 <svelte:head>
     <title>frii.site - Register subdomains for free!</title>
 </svelte:head>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <BubbleBackground>
     <div class="head">

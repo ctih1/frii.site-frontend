@@ -1,10 +1,9 @@
 <script lang="ts">
     import { browser } from "$app/environment"
-    let balls = randomLocations();
-    const ballAmount:number=20;
+    let balls = $state(randomLocations());
 
     function randomLocations() {
-        return Array.from({length:ballAmount},()=>({
+        return Array.from({length: 20},()=>({
             x: Math.round(Math.random()*100)+"%",
             y: Math.round(Math.random()*100)+"%",
         }));
