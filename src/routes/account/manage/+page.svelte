@@ -152,7 +152,7 @@
                 modal.open(
                     $t("account_invite_success"),
                     addArguements(
-                        $t("account_invite_success_description"),
+                        $t("account_invite_success_desc"),
                         {
                             "%link%": `https://www.frii.site/sign-up?invite=${response["code"]}`,
                         },
