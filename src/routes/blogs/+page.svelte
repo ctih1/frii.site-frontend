@@ -4,7 +4,7 @@
   import { serverURL } from "../../serverContactor";
   import { t } from "$lib/translations";
   import BlogCard from "$lib/components/BlogCard.svelte";
-  import SvelteMarkdown from "svelte-markdown";
+
   import Holder from "$lib/components/Holder.svelte";
   interface Iblog {
     url:string,

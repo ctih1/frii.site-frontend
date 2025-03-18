@@ -1,22 +1,21 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { AuthError, ServerContactor } from "./../../../serverContactor";
+    import { getAuthToken } from "$lib";
     import Placeholder from "$lib/components/Placeholder.svelte";
     import Button from "$lib/components/Button.svelte";
     import Tooltip from "$lib/components/Tooltip.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import Modal from "$lib/components/Modal.svelte";
-    import Cookies from 'js-cookie';
-
-    import { getAuthToken } from "$lib";
-
     import { getTranslationKeys } from "../../../serverContactor";
     import { t } from "$lib/translations";
     import { getFlagEmoji, redirectToLogin } from "../../../helperFuncs";
-    import { onMount } from "svelte";
-    export let data;
+    import Cookies from 'js-cookie';
+    
+    let { data } = $props();
 
-    let loaded = false;
-    let keys: Array<{ key: string; ref: string }> = new Array();
+    let loaded = $state(false);
+    let keys: Array<{ key: string; ref: string }> = $state(new Array());
     let values: Array<string> = new Array(keys.length);
     let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
 
@@ -35,7 +34,10 @@
             loaded = true;
         });
 
-    $: keys, fillInKeys();
+    $effect(()=>{
+        keys;
+        fillInKeys();
+    })
 
     function fillInKeys(): void {
         indexes = new Array(values.length);

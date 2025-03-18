@@ -1,5 +1,6 @@
 <script lang="ts">
-    import SvelteMarkdown from "svelte-markdown";
+    import Markdown from '@magidoc/plugin-svelte-marked'
+
     import Holder from "$lib/components/Holder.svelte";
     interface article {
         date: number;
@@ -46,7 +47,7 @@
     </div>
     <hr style="opacity: 0.1"/>
     <div class="md">
-        <SvelteMarkdown {source} />
+        <Markdown {source} />
     </div>
 </Holder>
 

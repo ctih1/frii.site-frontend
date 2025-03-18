@@ -6,8 +6,9 @@
     import {getFlagEmoji} from "../../helperFuncs";
     import { getLanguagePercentages } from '../../serverContactor';
 
-    let translationPercentages:Map<string,number> = new Map();
-    let loaded:boolean = false;
+    let translationPercentages:Map<string,number> = $state(new Map());
+    let loaded:boolean = $state(false);
+    
     getLanguagePercentages().then(data=>{
         translationPercentages = new Map(Object.entries(data));
         loaded=true;
