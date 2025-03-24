@@ -87,14 +87,14 @@
             throw new Error("Login failed");
         })
         .then(session=>{
-            const session_id = session["auth-token"];
+            const sessionId:string = session["auth-token"];
             loader.hide();
-            console.log(session_id);
+            console.log(sessionId);
             const date = new Date(Date.now()+ 604800*1000).toUTCString();
-            document.cookie=`auth-token=${session_id}; expires=${date};`;
+            document.cookie=`auth-token=${sessionId}; expires=${date}; samesite=strict; ${!dev ? 'secure' : '' }`;
             if(!getAuthToken()) {
-            console.error("Browser did not accept cookies... using localstorage");
-            localStorage.setItem("auth-token", `${session_id}`);
+                console.error("Browser did not accept cookies... using localstorage");
+                localStorage.setItem("auth-token", `${sessionId}`);
             }
             localStorage.removeItem("temp-token");
             localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
@@ -103,8 +103,10 @@
                 $t("login_succeed"),
                 $t("login_succeed_description"),
             );
-            redirectURL = redirectURL ?? "/";
-            window.location.href = redirectURL;
+            setTimeout(() => {
+                redirectURL = redirectURL ?? "/";
+                window.location.href = redirectURL;
+            }, 3000);
         })
     }
 
