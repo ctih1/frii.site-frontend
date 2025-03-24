@@ -41,7 +41,7 @@
         stars: 4
       }
     ]
-    let blogs: Iblog[] = [];
+    let blogs: Iblog[] = $state([]);
     onMount(()=>{
       async function load() {
         await fetch(`${serverURL}/blog/get/all?n=3&content=80`).then(response=>{
