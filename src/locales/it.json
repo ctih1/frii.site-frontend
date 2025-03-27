@@ -48,7 +48,7 @@
     "dashboard_domain_not_owned":"Per favore, sii sicuro che hai il controllo di questo dominio.",
     "dashboard_modify_success_description":"Per vedere dei cambiamenti, ricarica la pagina. Nota che i cambiamenti DNS possono prendere fino a 48 ore per propagarsi.",
     "dashboard_modify_success":"%domain% modificato con successo!",
-    "login_failed":"Accesso fallito",
+    "login_failed":"Accesso non riuscito",
     "login_failed_description":"Nome utente e password non corrispondono.",
     "login_failed_verify":"Per favore verifica il tuo account.",
     "login_failed_verify_description":"Un email è stata mandata alla tua casella postale. Per favore controlla la cartella 'Spam/Posta Indesiderata'.",
