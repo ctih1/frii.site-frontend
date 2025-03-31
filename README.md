@@ -69,6 +69,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | Arabic | [rock3tsprocket](https://github.com/rock3tsprocket) |
 | Romanian | [KotlVeridian](https://github.com/KotlVeridian) |
 | Bulgarian | [Nikolan123](https://github.com/nikolan123) |
+| French | [Contributor](https://github.com/your_github_username) |
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 

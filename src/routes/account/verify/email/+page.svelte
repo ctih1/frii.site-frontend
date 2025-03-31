@@ -5,8 +5,8 @@
     import { CodeError, UserError, verifyEmail } from "../../../../serverContactor";
     import Holder from "$lib/components/Holder.svelte";
 
-    let doneVerifying:boolean = false;
-    let valid:boolean = false;
+    let doneVerifying:boolean = $state(false);
+    let valid:boolean = $state(false);
 
     onMount(()=>{
         const urlParams = new URLSearchParams(window.location.search);
@@ -25,7 +25,9 @@
             })
     });
 
-    $: if (valid) redirectToLogin(200);
+    $effect(() => {
+        if(valid) redirectToLogin(200)
+    })
 </script>
 
 <Holder>

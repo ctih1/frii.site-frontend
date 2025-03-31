@@ -1,14 +1,13 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import { t } from "$lib/translations";
     import { redirectToLogin } from "$lib";
     import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
     import Holder from "$lib/components/Holder.svelte";
     import Button from "$lib/components/Button.svelte";
 
-    let doneVerifying:boolean = false;
-    let valid:boolean = false;
-    let clicked:boolean = false;
+    let doneVerifying:boolean = $state(false);
+    let valid:boolean = $state(false);
+    let clicked:boolean = $state(false);
 
     function confirmDeletion() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -27,8 +26,10 @@
             })
     }
 
-    $: if (valid) redirectToLogin(200,3);
-    $: if (clicked) confirmDeletion();
+    $effect(() => {
+        if (valid) redirectToLogin(200,3);
+        if (clicked) confirmDeletion();
+    })
 </script>
 
 <Holder>
