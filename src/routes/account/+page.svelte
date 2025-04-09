@@ -102,7 +102,7 @@
                 $t("login_succeed"),
                 $t("login_succeed_description"),
             );
-            setTimeout(() => {
+            setTimeout(() => { // 3s timeout is for firefox, since an immediate redirect can cause a bug where localStorage doesnt save
                 redirectURL = redirectURL ?? "/";
                 window.location.href = redirectURL;
             }, 3000);
