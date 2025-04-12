@@ -255,7 +255,7 @@
         </form>
     {/if}
 
-    {#if !login && !valid}
+    {#if !login_mode && !valid}
         <div style="display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
         </div>
