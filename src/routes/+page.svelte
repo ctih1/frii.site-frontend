@@ -46,9 +46,9 @@
       async function load() {
         await fetch(`${serverURL}/blog/get/all?n=3&content=80`).then(response=>{
           if(response.status!==200) { blogsShouldBeShown=false; console.log("Failed to load blogs"); return; }
-          response.json().then(data=>{
-            blogs = data as Iblog[];
-          })
+            response.json().then(data=>{
+              blogs = data as Iblog[];
+            })
         })
       }
       load();
