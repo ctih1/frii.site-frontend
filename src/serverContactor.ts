@@ -7,7 +7,7 @@ export let serverURL = "https://api.frii.site";
 if (browser) {
 	let subdomain = window.location.hostname.split(".")[0];
 	if (subdomain === "canary") {
-		serverURL = "https://devserver.frii.site";
+		serverURL = "https://beta.frii.site";
 	}
 	if (localStorage.getItem("url_override")) {
 		serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
