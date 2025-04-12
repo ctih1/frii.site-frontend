@@ -1,5 +1,6 @@
 <script lang="ts">
     import { t } from "$lib/translations";
+    import { serverURL } from "../../serverContactor";
 </script>
 
 <div class="footer">
@@ -24,6 +25,7 @@
         <a href="https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide">{$t("footer_dev_translations")}</a>
         <a href="https://github.com/ctih1/frii.site-frontend/blob/master/.github/CONTRIBUTING.md">{$t("footer_dev_coding")}</a>
         <a href="https://github.com/ctih1/frii.site-frontend/discussions/67">{$t("footer_dev_partner")}</a>
+        <p style="margin: 0px;">Using server {serverURL}</p>
     </div>
 </div>
 
