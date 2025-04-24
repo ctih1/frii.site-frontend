@@ -14,16 +14,17 @@ const config = {
     it: { lang },
     ro: { lang },
     pt: { lang },
+    ru: { lang },
   },
   loaders: [
     {
       locale: "de",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/de.json")).default,
     },
     {
       locale: "en",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/en.json")).default,
     },
     {
@@ -33,38 +34,43 @@ const config = {
     },
     {
       locale: "fi",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/fi.json")).default,
     },
     {
       locale: "it",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/it.json")).default,
     },
     {
       locale: "pl",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/pl.json")).default,
     },
     {
       locale: "ar",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/ar.json")).default,
     },
     {
       locale: "ro",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/ro.json")).default,
     },
     {
       locale: "bg",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/bg.json")).default,
     },
     {
       locale: "pt",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/pt.json")).default,
+    },
+    {
+      locale: "ru",
+      key: "common",
+      loader: async () => (await import("../locales/ru.json")).default,
     },
   ],
 };

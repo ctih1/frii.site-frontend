@@ -40,11 +40,11 @@
 {#if loaded}
     <Modal title="" description="" options={["OK"]} bind:this={modal}></Modal>
     <Holder>
-        <h1>{$t("common.store_title")}</h1>
+        <h1>{$t("store_title")}</h1>
         <p>WARNING: This page is still in beta. The styling, way credits work, or item prices have not been determined yet.</p>
         <p style="display: flex; align-items: center;">{credits} <span style="color: var(--primary)" class="material-symbols-outlined">poker_chip</span></p>
         <div class="shop">
-          <ShopItem on:buy={()=>convertCredits()} description={$t("common.store_extra_domains_description")} price={200}>{$t("common.store_extra_domains")}</ShopItem>
+          <ShopItem on:buy={()=>convertCredits()} description={$t("store_extra_domains_description")} price={200}>{$t("store_extra_domains")}</ShopItem>
         </div>
     </Holder>
 

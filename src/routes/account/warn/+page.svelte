@@ -4,18 +4,19 @@
   import { page } from "$app/stores";
   import { t } from "$lib/translations";
 
-  const reason:string = $page.url.searchParams.get("reason")??"";
-  let warningText:string = ""
+  const reason:string = $page.url.searchParams.get("reason") ?? "";
+  let warningText:string = "";
+
   switch(reason) {
     case "permission":
     case "feature":
-      warningText = $t("common.account_permissions_lack");
+      warningText = $t("account_permissions_lack");
       break;
   }
 
 </script>
 
 <Holder>
-    <h1>{$t("common.account_uhoh_annoyance")}</h1>
+    <h1>{$t("account_uhoh_annoyance")}</h1>
     <p>{warningText}</p>
 </Holder>

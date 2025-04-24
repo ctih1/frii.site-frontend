@@ -24,6 +24,7 @@
     export function changeText(text:string) {
         button.innerHTML=text;
     }
+
     export let args:string|null = null;
 </script>
 
