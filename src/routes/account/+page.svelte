@@ -90,7 +90,7 @@
             const sessionId:string = session["auth-token"];
             loader.hide();
             const date = new Date(Date.now()+ 604800*1000).toUTCString();
-            document.cookie=`auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? 'secure' : '' }`;
+            document.cookie=`auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? 'Secure' : '' }`;
             if(!getAuthToken()) {
                 console.error("Browser did not accept cookies... using localstorage");
                 localStorage.setItem("auth-token", `${sessionId}`);

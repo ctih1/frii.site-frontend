@@ -202,10 +202,10 @@
     function gpdrData() {
         serverContactor
             .getGDPR()
-            .then((response) => response.json())
-            .then((data) => {
+            .then(data => {
                 createFile("data.json", JSON.stringify(data));
-            });
+            })
+        
     }
     function logOut() {
         serverContactor.logOut()

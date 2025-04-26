@@ -318,10 +318,10 @@ export class ServerContactor {
 
 	async deleteDomain(domain: string): Promise<paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]> {
 		const { data, error, response } = await client.DELETE("/domain/delete", {
-			body: { domain },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": this.token },
+				query: { "domain": domain }
 			},
 		});
 
