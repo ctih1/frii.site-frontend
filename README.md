@@ -71,6 +71,7 @@ More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend
 | Bulgarian | [Nikolan123](https://github.com/nikolan123) |
 | Russian | [Coobyk](https://github.com/Coobyk) |
 | Portuguese | [ShyMike](https://github.com/ImShyMike) |
+| Spanish | [Rage65](https://github.com/Rage65) |
 
 Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
 
