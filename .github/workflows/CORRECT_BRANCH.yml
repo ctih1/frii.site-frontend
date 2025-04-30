@@ -1,18 +1,18 @@
-name: Check Pull Request Target Branch
+name: Check Pull Request Branches
 
 on:
   pull_request:
     types: [opened, reopened, synchronize]
 
 jobs:
-  validate-merge-target:
+  validate-merge:
     runs-on: ubuntu-latest
 
     steps:
       - name: Ensure pull request's head is correct (aka dev)
         run: |
           if [ "${{ github.event.pull_request.head.ref }}" = "master" ]; then
-            echo "Error: Pull requests cannot target the 'master' branch."
+            echo "Error: Pull requests cannot come from the 'master' branch."
             exit 1
           fi
 

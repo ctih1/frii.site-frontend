@@ -8,7 +8,6 @@
     import { AuthError, ConflictError, DNSError, LimitError, PermissionError, ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
     import { redirectToLogin } from '../../helperFuncs';
-    import Cookies from 'js-cookie';
     import { getAuthToken } from "$lib";
 
     let domainTable:DomainTable;
@@ -18,7 +17,7 @@
     let serverContactor:ServerContactor
     let domain2delete:string;
     let loader:Loader;
-    let responseSave:Response;
+
     function modalClose() {
         modal.close();
     }
@@ -51,7 +50,7 @@
 
             if(error instanceof AuthError) redirectToLogin(460);
             if(error instanceof DNSError) modal.open(errorMessage,$t("dashboard_invalid"));
-            if(error instanceof PermissionError)  modal.open(errorMessage,$t("commmon.dashboard_domain_permissions"));
+            if(error instanceof PermissionError)  modal.open(errorMessage,$t("dashboard_domain_permissions"));
             if(error instanceof LimitError) modal.open(errorMessage,$t("dashboard_domain_limit"));
             if(error instanceof ConflictError) modal.open(errorMessage, $t("dashboard_domain_use"));
 
@@ -78,7 +77,8 @@
             throw Error("Failed to modify domain."); // stops execution to the .then block
         }).then(()=>{
             loader.hide();
-            modal.open(addArguements($t("dashboard_modify_success"),{"%domain%":name}),$t("dashboard_modify_success_description"));
+            console.log(name);
+            modal.open(addArguements($t("dashboard_modify_success"),{"%domain%":name+".frii.site"}),$t("dashboard_modify_success_description"));
         });
     }
 

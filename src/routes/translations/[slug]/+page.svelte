@@ -19,6 +19,20 @@
     let values: Array<string> = new Array(keys.length);
     let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
 
+
+    try {
+        let valueBackup = localStorage.getItem("translation-backup");
+        let keyBackup = localStorage.getItem("translation-keys");
+
+        if(valueBackup !== null) {
+            values = JSON.parse(valueBackup) as string[];
+        } if (keyBackup  !== null) {
+            keys = JSON.parse(keyBackup) as Array<{key: string, ref: string}>;
+        }
+    } catch (err) {
+        console.log("Failed to load backup keys");
+    }
+
     let sc:ServerContactor;
     let modal: Modal;
     let modified: Array<{ key: string; val: string }> = new Array();
@@ -31,6 +45,7 @@
     getTranslationKeys(data.path)
         .then((data) => {
             keys = data;
+            keys.sort((a,b) => ( a.key > b.key ? 1 : -1 ));
             loaded = true;
         });
 
@@ -47,6 +62,8 @@
     }
 
     function handleClick() {
+        localStorage.setItem("translation-backup", JSON.stringify(values));
+        localStorage.setItem("translation-keys", JSON.stringify(keys));
         values.forEach((element, index) => {
             if (
                 !modified.includes({
