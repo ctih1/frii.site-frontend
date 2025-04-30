@@ -115,6 +115,8 @@ export async function login(username: string, password: string): Promise<paths["
 		switch (response.status) {
 			case 401:
 				throw new AuthError("Unauthorized. Please check your credentials.");
+			case 403:
+				throw new PermissionError("Verification required");
 			case 404:
 				throw new UserError("User not found.");
 			case 412:

@@ -15,6 +15,7 @@
     function calculateReadTime():string {
       let guess1 = Math.round(data.body.length / 500);
       let guess2 = Math.round(data.body.length / 1000);
+      
       if(guess2===guess1) {
         return `~ ${guess1} minute read`
       } else {
