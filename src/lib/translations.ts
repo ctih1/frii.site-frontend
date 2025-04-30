@@ -9,6 +9,7 @@ const config = {
     // add your language here, and +lang.js it makes the language selector show the language in its native language (en->English)
     de: { lang },
     en: { lang },
+    es: { lang },
     fi: { lang },
     it: { lang },
     ro: { lang },
@@ -25,6 +26,11 @@ const config = {
       locale: "en",
       key: "",
       loader: async () => (await import("../locales/en.json")).default,
+    },
+    {
+      locale: "es",
+      key: "common",
+      loader: async () => (await import("../locales/es.json")).default,
     },
     {
       locale: "fi",
