@@ -115,6 +115,8 @@ export async function login(username: string, password: string): Promise<paths["
 		switch (response.status) {
 			case 401:
 				throw new AuthError("Unauthorized. Please check your credentials.");
+			case 403:
+				throw new PermissionError("Verification required");
 			case 404:
 				throw new UserError("User not found.");
 			case 412:
@@ -318,10 +320,10 @@ export class ServerContactor {
 
 	async deleteDomain(domain: string): Promise<paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]> {
 		const { data, error, response } = await client.DELETE("/domain/delete", {
-			body: { domain },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": this.token },
+				query: { "domain": domain }
 			},
 		});
 

@@ -15,9 +15,25 @@
     let { data } = $props();
 
     let loaded = $state(false);
+    let isGrid = $state(true);
+
     let keys: Array<{ key: string; ref: string }> = $state(new Array());
     let values: Array<string> = new Array(keys.length);
     let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
+
+
+    try {
+        let valueBackup = localStorage.getItem("translation-backup");
+        let keyBackup = localStorage.getItem("translation-keys");
+
+        if(valueBackup !== null) {
+            values = JSON.parse(valueBackup) as string[];
+        } if (keyBackup  !== null) {
+            keys = JSON.parse(keyBackup) as Array<{key: string, ref: string}>;
+        }
+    } catch (err) {
+        console.log("Failed to load backup keys");
+    }
 
     let sc:ServerContactor;
     let modal: Modal;
@@ -31,6 +47,7 @@
     getTranslationKeys(data.path)
         .then((data) => {
             keys = data;
+            keys.sort((a,b) => ( a.key > b.key ? 1 : -1 ));
             loaded = true;
         });
 
@@ -47,6 +64,8 @@
     }
 
     function handleClick() {
+        localStorage.setItem("translation-backup", JSON.stringify(values));
+        localStorage.setItem("translation-keys", JSON.stringify(keys));
         values.forEach((element, index) => {
             if (
                 !modified.includes({
@@ -85,7 +104,8 @@
         >
     </h1>
     <p>{$t("translation_clarification")}</p>
-    <div class="keys">
+    <Button on:click={() => isGrid=!isGrid}>Layout toggle</Button>
+    <div class="keys {isGrid ? 'grid' : 'flex'}">
         {#if loaded}
             {#each keys as key, index}
                 <div class="key">
@@ -99,7 +119,6 @@
                     <input
                         bind:value={values[index]}
                         type="text"
-                        style="height: 2em;"
                         placeholder={$t("translation_input")}
                     />
                 </div>
@@ -119,19 +138,28 @@
 </Holder>
 
 <style>
-    .keys {
+    .grid {
         display: grid;
         gap: 1em;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 1fr auto;
         grid-auto-rows: auto;
     }
+
+    .flex {
+        display: flex;
+        flex-direction: column;
+    }
+
     .key {
         background-color: var(--offwhite-color);
         border-radius: 0.5em;
         padding: 1em;
         margin: 1em 0em 0em 0em;
         opacity: 0.7;
+    }
+    .key input {
+        height: 3em;
     }
     .key:hover {
         opacity: 1;

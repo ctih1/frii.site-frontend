@@ -13,7 +13,7 @@
 
     import { getAuthToken } from "$lib";
     import { t } from "$lib/translations";
-    import { createToken, ServerContactor, login, AuthError, UserError, MFAError, InviteError, ConflictError } from "../../serverContactor";
+    import { createToken, ServerContactor, login, AuthError, UserError, MFAError, InviteError, ConflictError, PermissionError, digestMessage } from "../../serverContactor";
 
 
 
@@ -77,6 +77,10 @@
                 );
             }
 
+            if(error instanceof PermissionError) {
+                modal.open($t("login_failed"), $t("login_failed_verify"), undefined, undefined, true, username);
+            }
+
             else {
                 modal.open(
                     $t("login_failed"),
@@ -90,7 +94,7 @@
             const sessionId:string = session["auth-token"];
             loader.hide();
             const date = new Date(Date.now()+ 604800*1000).toUTCString();
-            document.cookie=`auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? 'secure' : '' }`;
+            document.cookie=`auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? 'Secure' : '' }`;
             if(!getAuthToken()) {
                 console.error("Browser did not accept cookies... using localstorage");
                 localStorage.setItem("auth-token", `${sessionId}`);
@@ -112,6 +116,7 @@
     function handleSignup() {
         loader.show(undefined, $t("account_signup_loading_desc"));
         if (password !== repeatPassword) {
+            loader.hide();
             modal.open(
                 $t("signup_password_not_match"),
                 $t("signup_password_not_match_description"),
@@ -130,6 +135,7 @@
                 throw new Error("Registration failed");
             })
             .then(_ => {
+                loader.hide();
                 modal.open(
                     $t("signup_success"),
                     $t("signup_success_description"),

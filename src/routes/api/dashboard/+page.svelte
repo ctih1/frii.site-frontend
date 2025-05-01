@@ -13,6 +13,7 @@
     import Modal from "$lib/components/Modal.svelte";
     import Loader from "$lib/components/Loader.svelte";
     import { redirectToLogin } from '../../../helperFuncs';
+
     let domainPool:Pool;
     let loader:Loader;
     let modal:Modal;
@@ -28,7 +29,7 @@
 
     let keys: key[];
     let loaded:boolean = false;
-    let exampleData = {"key":"agiNAgn","comment":"This is a doman test test! And this is my life story. I was born in helsinki and lived a peaceful life for the end of time", "permissions": {"edit":{"content":true,"type":true,"domain":true},"view":true,"delete":true},"domains":["testing","anothertesting"]}
+
     let sc:ServerContactor;
     onMount(()=>{
         sc = new ServerContactor(getAuthToken());
@@ -119,10 +120,8 @@
                 <div class="permissions">
                     <InputCompletor bind:this={input}  on:enter={(event)=>(addItem(permPool,event.detail))} suggestions={[
                         {displayText:$t("api_dashboard_delete_perm"),valueText:"delete"},
-                        {displayText:$t("api_dashboard_modify_type_perm"),valueText:"type"},
-                        {displayText:$t("api_dashboard_modify_domain_perm"),valueText:"domain"},
                         {displayText:$t("api_dashboard_modify_content_perm"),valueText:"content"},
-                        {displayText:$t("api_dashboard_view_perm"),valueText:"view"}
+                        {displayText:$t("api_dashboard_view_perm"),valueText:"list"}
                     ]} inputPlaceholder={$t("api_dashboard_permission_input_placehoder")} removeUsed={true}/>
                     <Pool bind:this={permPool} items={[]} on:remove={(event)=>{undoRemove(input,event.detail)}}></Pool>
                 </div>

@@ -202,10 +202,10 @@
     function gpdrData() {
         serverContactor
             .getGDPR()
-            .then((response) => response.json())
-            .then((data) => {
+            .then(data => {
                 createFile("data.json", JSON.stringify(data));
-            });
+            })
+        
     }
     function logOut() {
         serverContactor.logOut()
@@ -424,7 +424,6 @@
                     <span class="material-symbols-outlined">update</span
                     >Expires: {new Date(session.expire * 1000).toUTCString()}
                 </p>
-                <p>{session.hash}</p>
                 <Button
                     args="danger"
                     on:click={() => deleteSession(session.hash)}>Remove</Button
