@@ -6,7 +6,7 @@
     import Holder from "$lib/components/Holder.svelte";
     import ApiKeyTable from "$lib/components/ApiKeyTable.svelte";
     import Button from "$lib/components/Button.svelte";
-    import { ServerContactor } from '../../../serverContactor';
+    import { AuthError, ServerContactor } from '../../../serverContactor';
     import InputCompletor from "$lib/components/InputCompletor.svelte";
     import { t } from '$lib/translations';
     import { onMount } from 'svelte';
@@ -34,22 +34,32 @@
     onMount(()=>{
         sc = new ServerContactor(getAuthToken());
         loader.show(undefined,$t("api_dashboard_loading"))
-        sc.getApiKeys().then(response=>{
-            if(response.status===460) {redirectToLogin(460)};
-            response.json().then(data=>{
-              console.log(data);
-              keys = data as key[]
-              loader.hide();
-              loaded = true;
-            })
-        });
-        sc.getDomains().then(response=>{
-        if(response.status!==200) { modal.open($t("api_dashboard_domain_load_fail"),$t("api_dashboard_domain_load_fail_description")) }
-            response.json().then(data=>{
-              formatDomains(data);
+        sc.getApiKeys()
+            .catch(err => {
+                if(err instanceof AuthError) { redirectToLogin(460) }
+                modal.open($t("api_load_failed"),$t("generic_fail_description"));
+                throw new Error("Failed to load ");
+            }) 
+            .then(data => {
+                keys = data as key[]
+                loader.hide();
+                loaded = true;
             });
-        })
-    })
+
+        sc.getDomains()
+            .catch(error=>{
+                if(error instanceof AuthError) {
+                    redirectToLogin(460);
+                };
+                modal.open($t("dashboard_domain_load_fail"),$t("generic_fail_description"))
+                throw new Error("Failed to load domains")
+            })
+            .then(data=>{
+                //@ts-ignore
+                formatDomains(data);
+            })
+    });
+    
 
     let input:InputCompletor;
     let domainInput:InputCompletor;
@@ -79,9 +89,8 @@
       permPool.get().forEach((element:{displayText:string,valueText:string})=>{
         permissions.push(element.valueText);
       });
-      console.log(valueDomains);
-      console.log(permissions);
       loader.show(undefined,$t("api_dashboard_create_loading_desc"))
+      
       sc.createApi(valueDomains,permissions,comment).then(response=>{
         loader.hide();
         if(response.status===403) {
@@ -95,6 +104,8 @@
       }
       )
     }
+
+    $: console.log(domains);
 
 </script>
 
@@ -119,9 +130,10 @@
                 <p>{$t("api_dashboard_permission_section")}</p>
                 <div class="permissions">
                     <InputCompletor bind:this={input}  on:enter={(event)=>(addItem(permPool,event.detail))} suggestions={[
+                        {displayText: $t("api_permission_register"), valueText:"register"},
                         {displayText:$t("api_dashboard_delete_perm"),valueText:"delete"},
-                        {displayText:$t("api_dashboard_modify_content_perm"),valueText:"content"},
-                        {displayText:$t("api_dashboard_view_perm"),valueText:"list"}
+                        {displayText:$t("api_permission_modify"),valueText:"modify"},
+                        {displayText:$t("api_permission_list"),valueText:"list"}
                     ]} inputPlaceholder={$t("api_dashboard_permission_input_placehoder")} removeUsed={true}/>
                     <Pool bind:this={permPool} items={[]} on:remove={(event)=>{undoRemove(input,event.detail)}}></Pool>
                 </div>
@@ -130,7 +142,7 @@
         <div class="form-item">
             <div class="flex">
                 <p>{$t("api_dashboard_domains_section")}</p>
-                <InputCompletor bind:this={domainInput}  on:enter={(event)=>(addItem(domainPool,event.detail))} suggestions={domains} inputPlaceholder="Domains" removeUsed={true}/>
+                <InputCompletor bind:this={domainInput} on:enter={(event)=>(addItem(domainPool,event.detail))} suggestions={domains} inputPlaceholder="Domains" removeUsed={true}/>
                 <Pool bind:this={domainPool} items={[]} on:remove={(event)=>{undoRemove(domainInput,event.detail)}}></Pool>
             </div>
         </div>

@@ -214,5 +214,11 @@
   "account_del_steps_4": "Your account's username will be free for other users to register",
   "account_del_agree": "I understand what is going to happen, and I want to continue",
   "account_register_invite_fail": "Invalid invite",
-  "account_register_invite_fail_desc": "Your invite code is invalid."
+  "account_register_invite_fail_desc": "Your invite code is invalid.",
+  "api_permission_list": "See domain information",
+  "api_permission_modify": "Modify domain",
+  "api_permission_register": "Register new domains",
+  "api_load_failed": "Failed to load API keys",
+  "generic_fail_description": "Please contact support if this error persists.",
+  "dashboard_domain_load_fail": "Failed to load domains"
 }

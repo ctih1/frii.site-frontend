@@ -496,5 +496,25 @@ export class ServerContactor {
 		}
 	}
 
+	async getApiKeys() {
+		const { data, error, response} = await client.GET("/api/get-keys", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			}
+		});
+
+		if(error) {
+			switch(response.status) {
+				case 460: throw new AuthError("Invalid session")
+				default: throw new Error("Failed to get api keys")
+			}
+		}
+
+		return data
+	}
+
 
 }
