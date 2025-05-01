@@ -29,7 +29,7 @@ const config = {
     },
     {
       locale: "es",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/es.json")).default,
     },
     {
@@ -69,7 +69,7 @@ const config = {
     },
     {
       locale: "ru",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/ru.json")).default,
     },
   ],
