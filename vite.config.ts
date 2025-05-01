@@ -8,5 +8,9 @@ export default defineConfig({
             org: "friisite",
             project: "frontend"
         }
-    }), sveltekit()]
+    }), sveltekit()],
+    define: {
+        __BUILD_COMMIT__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || 'local-dev'),
+        __BUILD_TIME__: JSON.stringify(new Date().toISOString())
+      }
 });
