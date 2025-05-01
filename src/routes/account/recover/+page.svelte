@@ -12,6 +12,7 @@
     let generatingNew:boolean = false;
     let code:string|null = null
     
+
     if(browser) {
         const params:URLSearchParams = new URLSearchParams(window.location.search);
         code = params.get("c");
