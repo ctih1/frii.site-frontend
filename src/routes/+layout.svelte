@@ -1,11 +1,13 @@
 <script lang="ts">
+    import {navigating} from '$app/stores'
+    
+    import Ads from "$lib/components/Ads.svelte";
+    import NProgress from 'nprogress'
     import Header from "$lib/components/Header.svelte";
     import Analytics from "$lib/components/Analytics.svelte";
-    import Banner from "$lib/components/Banner.svelte";
-    import Ads from "$lib/components/Ads.svelte";
-    import {navigating} from '$app/stores'
-    import NProgress from 'nprogress'
     import '$lib/nprogress.css'
+
+    let { children } = $props();
 
     NProgress.configure({
       minimum: 0.6,
@@ -13,23 +15,23 @@
       trickleSpeed: 200
     });
 
-    $: {
+    $effect(() => {
         if ($navigating) {
           NProgress.start();
         }
         if (!$navigating) {
           NProgress.done();
         }
-    }
+    });    
 </script>
 
-<Banner />
+
 <Header />
 <Analytics />
 <Ads></Ads>
 <svelte:head></svelte:head>
 <main>
-    <slot />
+    {@render children()}
 </main>
 
 <style>

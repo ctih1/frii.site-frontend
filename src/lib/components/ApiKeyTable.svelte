@@ -26,7 +26,7 @@
 
     function showKey():void {
         if(!deleting) {
-          modal.open($t("common.api_dashboard_key_title"),addArguements($t("common.api_dashboard_key_description"),{"%key%":keyTarget}));
+          modal.open($t("api_dashboard_key_title"),addArguements($t("api_dashboard_key_description"),{"%key%":keyTarget}));
           keyTarget="";
         } else {
 
@@ -62,7 +62,7 @@
                 <td>
                     <div class="perms">
                         {#each apiKey.perms as permission}
-                            <span>{$t(`common.api_dashboard_${getPermName(permission)}_perm`)}</span>
+                            <span>{$t(`api_dashboard_${getPermName(permission)}_perm`)}</span>
                         {/each}
                     </div>
                 </td>
@@ -75,10 +75,10 @@
                     </div>
                 </td>
                 <td style="width: fit-content; align-items: center; display:flex;">
-                    <Button args="margin" on:click={()=>{deleting=false;keyTarget=apiKey.key;modal.open($t("common.api_dashboard_key_warning"),$t("common.api_dashboard_key_warning_description"),3,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
+                    <Button args="margin" on:click={()=>{deleting=false;keyTarget=apiKey.key;modal.open($t("api_dashboard_key_warning"),$t("api_dashboard_key_warning_description"),3,[$t("cancel_modal"),$t("continue_modal")])}}>
                         <span class="material-symbols-outlined">key</span>
                     </Button>
-                    <Button args="danger margin" on:click={()=>{deleting=true;keyTarget=apiKey.key;modal.open(addArguements($t("common.api_dashboard_key_deletion"),{"%key_comment%":apiKey.comment}),$t("common.api_dashboard_key_deletion_description"),7,[$t("common.cancel_modal"),$t("common.continue_modal")])}}>
+                    <Button args="danger margin" on:click={()=>{deleting=true;keyTarget=apiKey.key;modal.open(addArguements($t("api_dashboard_key_deletion"),{"%key_comment%":apiKey.comment}),$t("api_dashboard_key_deletion_description"),7,[$t("cancel_modal"),$t("continue_modal")])}}>
                         <span class="material-symbols-outlined">delete_forever</span>
                     </Button>
                 </td>

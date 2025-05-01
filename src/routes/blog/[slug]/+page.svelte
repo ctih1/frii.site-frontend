@@ -1,5 +1,6 @@
 <script lang="ts">
-    import SvelteMarkdown from "svelte-markdown";
+    import Markdown from '@magidoc/plugin-svelte-marked'
+
     import Holder from "$lib/components/Holder.svelte";
     interface article {
         date: number;
@@ -14,6 +15,7 @@
     function calculateReadTime():string {
       let guess1 = Math.round(data.body.length / 500);
       let guess2 = Math.round(data.body.length / 1000);
+      
       if(guess2===guess1) {
         return `~ ${guess1} minute read`
       } else {
@@ -46,7 +48,7 @@
     </div>
     <hr style="opacity: 0.1"/>
     <div class="md">
-        <SvelteMarkdown {source} />
+        <Markdown {source} />
     </div>
 </Holder>
 

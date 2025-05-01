@@ -8,25 +8,29 @@
     export let countdown:number|undefined=undefined;
     export let description:string="";
     export let title:string ="";
-    export let options:Array<string> = [$t("common.continue_modal")];
+    export let options:Array<string> = [$t("continue_modal")];
     export let overrideDefault:boolean=false;
     let button:Button;
     let _isLogin:boolean=false;
+    let username: string = "";
     let _html:string|undefined=undefined;
     let timeLeft:number;
     let onscreen:boolean=false;
     let timer:any;
+    let disabled: boolean = false;
 
-    export function open(text:string,desc:string,time:number|undefined=undefined, buttons:Array<string>|undefined=undefined, isLogin:boolean=false) {
+    export function open(text:string,desc:string,time:number|undefined=undefined, buttons:Array<string>|undefined=undefined, isLogin:boolean=false, usernameHash: string|undefined=undefined) {
         _isLogin=isLogin;
         title=text;
         description = desc;
         onscreen=true;
+        username = usernameHash || "None";
+
         startTimer();
         if(buttons) {
             options = buttons;
         } else {
-            options = [$t("common.continue_modal")];
+            options = [$t("continue_modal")];
         }
         if(time!==undefined) {
             countdown=time;
@@ -91,10 +95,18 @@
             {/if}
             <div class="html">
                 {#if _isLogin}
-                    <a class="msx" href="#" on:click={()=>{
-                      resendEmail(localStorage.getItem("verif-token")).then(response=>{
-                        response.ok ? alert("Sent verification code") : alert("Failed to send verification code");
-                      })
+                    <a class="msx {disabled ? 'disabled' : ''}" href="#clicked" on:click={()=>{
+                        disabled=true;
+                        resendEmail(username)
+                        .catch(err => {
+                            alert("Failed to send verification code");
+                            throw new Error("failed to send verification code");
+                            disabled=false;
+                        })
+                        .then(_ => {
+                            alert("Sent verification code");
+                            disabled=false;
+                        });
                     }}>Resend verification code</a>
                 {/if}
             </div>
@@ -107,6 +119,7 @@
         </div>
     </div>
 {/if}
+<p class="disabled hidden"></p>
 
 <style>
     .background {
@@ -148,5 +161,12 @@
         cursor:pointer;
     }
 
+    .disabled:hover {
+        cursor: wait;
+        color: gray;
+    }
+    .hidden {
+        display: none;
+    }
 
 </style>

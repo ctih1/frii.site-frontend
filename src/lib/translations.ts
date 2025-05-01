@@ -9,56 +9,68 @@ const config = {
     // add your language here, and +lang.js it makes the language selector show the language in its native language (en->English)
     de: { lang },
     en: { lang },
+    es: { lang },
     fi: { lang },
     it: { lang },
     ro: { lang },
     pt: { lang },
+    ru: { lang },
   },
   loaders: [
     {
       locale: "de",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/de.json")).default,
     },
     {
       locale: "en",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/en.json")).default,
     },
     {
-      locale: "fi",
+      locale: "es",
       key: "common",
+      loader: async () => (await import("../locales/es.json")).default,
+    },
+    {
+      locale: "fi",
+      key: "",
       loader: async () => (await import("../locales/fi.json")).default,
     },
     {
       locale: "it",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/it.json")).default,
     },
     {
       locale: "pl",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/pl.json")).default,
     },
     {
       locale: "ar",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/ar.json")).default,
     },
     {
       locale: "ro",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/ro.json")).default,
     },
     {
       locale: "bg",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/bg.json")).default,
     },
     {
       locale: "pt",
-      key: "common",
+      key: "",
       loader: async () => (await import("../locales/pt.json")).default,
+    },
+    {
+      locale: "ru",
+      key: "common",
+      loader: async () => (await import("../locales/ru.json")).default,
     },
   ],
 };

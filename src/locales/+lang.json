@@ -1,11 +1,13 @@
 {
   "de": "Deutsch",
   "en": "English",
+  "es": "Español",
   "fi": "Suomi",
   "it": "Italiano",
   "pl": "Polski",
   "ar": "العربية",
   "ro": "Română",
   "bg": "български",
-  "pt": "Português"
+  "pt": "Português",
+  "ru": "Русский"
 }
