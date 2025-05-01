@@ -29,6 +29,7 @@
         }
         if (!$navigating) {
           NProgress.done();
+          localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
         }
 
         console.log(userRespectsPrivacyInsane);
@@ -45,8 +46,6 @@
             .catch(() => {
                 userRespectsPrivacyInsane = true;
             })
-        } else {
-            localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
         }
     })
 
