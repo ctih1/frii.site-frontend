@@ -55,6 +55,7 @@
             if(error instanceof ConflictError) modal.open(errorMessage, $t("dashboard_domain_use"));
 
             throw new Error("Failed to register dommain!");
+
         })
         .then(()=>{
             loader.hide();
