@@ -9,7 +9,10 @@
     import { t } from '$lib/translations';
     import { serverURL } from '../serverContactor';
 
-    let blogsShouldBeShown:boolean = $state(true);
+    let { data } = $props()
+    
+    let blogsShouldBeShown:boolean = $state(data.shouldBeShown);
+    let blogs: Iblog[] = $state(data.blogs);
 
     interface Ireview {
       author: string,
@@ -18,11 +21,13 @@
     }
 
     interface Iblog {
-      url:string,
-      created:number,
-      body:string,
-      title:string
+        url:string,
+        created:number,
+        body:string,
+        title:string
     }
+
+
 
     let reviews: Ireview[] = [
       {
@@ -41,18 +46,7 @@
         stars: 4
       }
     ]
-    let blogs: Iblog[] = $state([]);
-    onMount(()=>{
-      async function load() {
-        await fetch(`${serverURL}/blog/get/all?n=3&content=80`).then(response=>{
-          if(response.status!==200) { blogsShouldBeShown=false; console.log("Failed to load blogs"); return; }
-            response.json().then(data=>{
-              blogs = data as Iblog[];
-            })
-        })
-      }
-      load();
-    })
+
 </script>
 
 <svelte:head>
@@ -100,14 +94,16 @@
             {/each}
         </div>
     </div>
-    <div class="blogs">
-        <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">Latest updates</h3>
-        <div class="latest-releases">
-            {#each blogs as blog}
-                <BlogCard title={blog.title} description={blog.body} date={blog.created} url={blog.url}/>
-            {/each}
+    {#if blogsShouldBeShown}
+        <div class="blogs">
+            <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">Latest updates</h3>
+            <div class="latest-releases">
+                {#each blogs as blog}
+                    <BlogCard title={blog.title} description={blog.body} date={blog.created} url={blog.url}/>
+                {/each}
+            </div>
         </div>
-    </div>
+    {/if}
     <div class="bottom-hooker">
         <h1>{$t("index_bottom_hook")}</h1>
         <p>{$t("index_bottom_hook_desc")}</p>
