@@ -4,7 +4,7 @@ import type { Load } from '@sveltejs/kit';
 
 interface Iblog {
     url:string,
-    created:number,
+    date:number,
     body:string,
     title:string
   }
@@ -12,7 +12,7 @@ interface Iblog {
 
 /** @type {import('@sveltejs/kit').Load} */
 export const load: Load = async ({ fetch }) => {
-    const serverURL = "https://beta.frii.site";
+    const serverURL = "https://api.frii.site";
     const blogRoute = `${serverURL}/blog/get/all?n=3&content=80`;
     let res;
 

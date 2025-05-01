@@ -8,7 +8,7 @@
   import Holder from "$lib/components/Holder.svelte";
   interface Iblog {
     url:string,
-    created:number,
+    date:number,
     body:string,
     title:string
   }
@@ -35,8 +35,8 @@
 <Holder>
     <h1>{$t("blogs_title")}</h1>
     <p>{$t("blogs_description")}</p>
-    {#each blogs as blog}
-        <BlogCard inline={true} title={blog.title} description={blog.body} date={blog.created} url={blog.url} />
+    {#each blogs.sort((a,b)=>(b.date - a.date)) as blog}
+        <BlogCard inline={true} title={blog.title} description={blog.body} date={blog.date} url={blog.url} />
     {/each}
 </Holder>
 

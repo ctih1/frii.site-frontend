@@ -22,7 +22,7 @@
 
     interface Iblog {
         url:string,
-        created:number,
+        date: number,
         body:string,
         title:string
     }
@@ -46,6 +46,10 @@
         stars: 4
       }
     ]
+
+    $effect(() => {
+        console.log(data);
+    })
 
 </script>
 
@@ -99,7 +103,7 @@
             <h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">Latest updates</h3>
             <div class="latest-releases">
                 {#each blogs as blog}
-                    <BlogCard title={blog.title} description={blog.body} date={blog.created} url={blog.url}/>
+                    <BlogCard title={blog.title} description={blog.body} date={blog.date} url={blog.url}/>
                 {/each}
             </div>
         </div>
