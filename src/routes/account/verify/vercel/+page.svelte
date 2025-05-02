@@ -1,6 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { AuthError, getAuthToken, redirectToLogin, ServerContactor, serverURL, UserError } from "$lib";
+    import { AuthError, CodeError, getAuthToken, redirectToLogin, ServerContactor, serverURL, UserError } from "$lib";
     import Button from "$lib/components/Button.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import { t, addArguements } from "$lib/translations";
@@ -24,11 +24,12 @@
         serverContactor.getVercelQueue()
             .catch(err => {
                 if(err instanceof AuthError) redirectToLogin(460)
-                if(err instanceof UserError && userHasConencted) {
+                if(err instanceof CodeError) {
                     userHasConencted = false;
                     userWasVerified = true;
                     clearInterval(intervalId);
-                } else if(err instanceof UserError && !userHasConencted) connectToQueue();
+                } 
+                if(err instanceof UserError) connectToQueue();
                 throw new Error("Failed to get queue data1§")
             }) 
             .then(position => {
