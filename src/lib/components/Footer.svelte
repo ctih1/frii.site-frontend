@@ -14,8 +14,19 @@
         <a href="mailto: urgent@frii.site">{$t("footer_contact_urgent")}</a>
         <a href="mailto: support@frii.site">{$t("footer_contact_social")}</a>
         <a href="https://discord.gg/FjujyhvbMY">{$t("footer_contact_discord")}</a>
+        <h3>{$t("footer_contact")}</h3>
+        <a href="mailto: support@frii.site">{$t("footer_contact_support")}</a>
+        <a href="mailto: urgent@frii.site">{$t("footer_contact_urgent")}</a>
+        <a href="mailto: support@frii.site">{$t("footer_contact_social")}</a>
+        <a href="https://discord.gg/FjujyhvbMY">{$t("footer_contact_discord")}</a>
     </div>
     <div class="starting">
+        <h3>{$t("footer_started")}</h3>
+        <a href="https://github.com/ctih1/frii.site-frontend/wiki/FAQ">{$t("footer_started_faq")}</a>
+        <a href="https://github.com/ctih1/frii.site-frontend/wiki/Getting-Started#getting-started">{$t("footer_started_register")}</a>
+        <a href="https://github.com/ctih1/frii.site-frontend/wiki/Getting-Started#managing-your-domains">{$t("footer_started_modify")}</a>
+        <a href="https://github.com/ctih1/frii.site-frontend/wiki/Getting-Started#account-management">{$t("footer_started_account")}</a>
+        <a href="https://github.com/ctih1/frii.site-frontend/wiki/API">{$t("footer_started_api")}</a>
         <h3>{$t("footer_started")}</h3>
         <a href="https://github.com/ctih1/frii.site-frontend/wiki/FAQ">{$t("footer_started_faq")}</a>
         <a href="https://github.com/ctih1/frii.site-frontend/wiki/Getting-Started#getting-started">{$t("footer_started_register")}</a>

@@ -24,6 +24,7 @@
     });
 
     $effect(() => {
+    $effect(() => {
         if ($navigating) {
           NProgress.start();
         }
@@ -71,6 +72,7 @@
 <Ads></Ads>
 <svelte:head></svelte:head>
 <main>
+    {@render children()}
     {@render children()}
 </main>
 

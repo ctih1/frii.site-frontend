@@ -33,6 +33,11 @@ const config = {
       loader: async () => (await import("../locales/es.json")).default,
     },
     {
+      locale: "es",
+      key: "common",
+      loader: async () => (await import("../locales/es.json")).default,
+    },
+    {
       locale: "fi",
       key: "",
       loader: async () => (await import("../locales/fi.json")).default,
@@ -69,7 +74,7 @@ const config = {
     },
     {
       locale: "ru",
-      key: "",
+      key: "common",
       loader: async () => (await import("../locales/ru.json")).default,
     },
   ],
