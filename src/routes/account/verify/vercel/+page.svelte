@@ -13,7 +13,7 @@
     let userWasVerified: boolean = $state(false);
 
     let serverContactor: ServerContactor;
-    let timeoutId: number = 0;
+    let intervalId: number = 0;
 
     if(browser) {
         serverContactor = new ServerContactor(getAuthToken());
@@ -27,7 +27,7 @@
                 if(err instanceof UserError && userHasConencted) {
                     userHasConencted = false;
                     userWasVerified = true;
-                    clearTimeout(timeoutId);
+                    clearInterval(intervalId);
                 } else if(err instanceof UserError && !userHasConencted) connectToQueue();
                 throw new Error("Failed to get queue data1§")
             }) 
@@ -47,7 +47,7 @@
         userHasConencted = true;
 
         //@ts-ignore
-        timeoutId = setTimeout(()=>fetchQueueData(), 3000);
+        intervalId = setInterval(()=>fetchQueueData(), 3000);
     }
 </script>
 
