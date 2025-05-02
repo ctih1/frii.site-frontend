@@ -220,5 +220,10 @@
   "api_permission_register": "Register new domains",
   "api_load_failed": "Failed to load API keys",
   "generic_fail_description": "Please contact support if this error persists.",
-  "dashboard_domain_load_fail": "Failed to load domains"
+  "dashboard_domain_load_fail": "Failed to load domains",
+  "vercel_verification_generic": "Completing verification...",
+  "vercel_verification_queue": "Your position in queue: %position%",
+  "vercel_verification_queue_join": "Joining queue...",
+  "vercel_verification_queue_over": "Succesfully verified! Please click 'refresh' over on Vercel.",
+  "vercel_verification_queue_join_action_button": "Join queue"
 }
