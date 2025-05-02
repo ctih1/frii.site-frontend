@@ -24,7 +24,6 @@
     });
 
     $effect(() => {
-    $effect(() => {
         if ($navigating) {
           NProgress.start();
         }

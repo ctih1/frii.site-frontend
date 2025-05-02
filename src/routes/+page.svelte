@@ -3,20 +3,11 @@
     import { onMount } from 'svelte'
     import Footer from "$lib/components/Footer.svelte";
     import BlogCard from "$lib/components/BlogCard.svelte"
-    import { onMount } from 'svelte'
-    import Footer from "$lib/components/Footer.svelte";
-    import BlogCard from "$lib/components/BlogCard.svelte"
     import BubbleBackground from "$lib/components/BubbleBackground.svelte";
     import Review from "$lib/components/Review.svelte"
     import Button from "$lib/components/Button.svelte";
     import { t } from '$lib/translations';
-    import { t } from '$lib/translations';
     import { serverURL } from '../serverContactor';
-
-    let { data } = $props()
-    
-    let blogsShouldBeShown:boolean = $state(data.shouldBeShown);
-    let blogs: Iblog[] = $state(data.blogs);
 
     let { data } = $props()
     
@@ -35,9 +26,6 @@
         body:string,
         title:string
     }
-
-
-
 
 
     let reviews: Ireview[] = [
