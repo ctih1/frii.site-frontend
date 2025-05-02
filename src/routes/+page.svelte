@@ -114,7 +114,6 @@
         <p>{$t("index_bottom_hook_desc")}</p>
         <div class="button-hook">
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("index_register_account")}</p></Button>
-            <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("index_register_account")}</p></Button>
         </div>
     </div>
     <Footer/>
