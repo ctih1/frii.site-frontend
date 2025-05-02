@@ -516,5 +516,46 @@ export class ServerContactor {
 		return data
 	}
 
+	async joinVercelQueue(value: string) {
+		const { data, error, response} = await client.POST("/domain/vercel/join", {
+			params: {
+				query: {"value": value},
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			}
+		})
+
+		if(error) {
+			switch(response.status) {
+				case 460: throw new AuthError("Invalid session")
+				default: throw new Error("Failed to join queue")
+			}
+		}
+
+		return data
+	}
+
+	async getVercelQueue() {
+		const { data, error, response} = await client.GET("/domain/vercel/get", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			}
+		})
+
+		if(error) {
+			switch(response.status) {
+				case 460: throw new AuthError("Invalid session")
+				case 404: throw new UserError("User not joined into queue")
+			}
+		}
+
+		return data
+	}
+
 
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { getAuthToken, serverURL } from "$lib";
+    import { AuthError, getAuthToken, redirectToLogin, ServerContactor, serverURL, UserError } from "$lib";
     import Button from "$lib/components/Button.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import { t, addArguements } from "$lib/translations";
+    import { number } from "svelte-i18n";
 
     let value = $state("");
     let json = $state("");
@@ -11,26 +12,42 @@
     let userHasConencted: boolean = $state(false);
     let userWasVerified: boolean = $state(false);
 
-    function connectToWs() {
+    let serverContactor: ServerContactor;
+    let timeoutId: number = 0;
+
+    if(browser) {
+        serverContactor = new ServerContactor(getAuthToken());
+    }
+
+
+    function fetchQueueData() {
+        serverContactor.getVercelQueue()
+            .catch(err => {
+                if(err instanceof AuthError) redirectToLogin(460)
+                if(err instanceof UserError && userHasConencted) {
+                    userHasConencted = false;
+                    userWasVerified = true;
+                    clearTimeout(timeoutId);
+                } else if(err instanceof UserError && !userHasConencted) connectToQueue();
+                throw new Error("Failed to get queue data1§")
+            }) 
+            .then(position => {
+                currentPosition = Number(position)
+            });
+    }
+
+    function connectToQueue() {
+        console.log("connecting to queue");
+        serverContactor.joinVercelQueue(value)
+        .catch(err => {
+            alert("Failed to join queue")
+            throw new Error("Failed to join queue")
+        })
+
         userHasConencted = true;
-        const sock = new WebSocket(`ws://api.frii.site/domain/ws/vercel`);
-        sock.onopen = () => {
-            sock.send(JSON.stringify({
-                "session": getAuthToken()??"",
-                "value": value
-            }));
-        }
 
-        sock.onmessage = (event) => {
-            json = JSON.parse(event.data);
-            // @ts-ignore
-            currentPosition = json["position"] 
-        }
-
-        sock.onclose = (event) => {
-            userWasVerified = true;
-            userHasConencted = false;
-        }
+        //@ts-ignore
+        timeoutId = setTimeout(()=>fetchQueueData(), 3000);
     }
 </script>
 
@@ -48,7 +65,7 @@
         <p>{$t("vercel_verification_queue_over")}</p>
     {:else}
         <input bind:value={value} placeholder="vc-domain-verify=***.frii.site,********************">
-        <Button args="padding margin-1em-top" on:click={() => connectToWs()}>{$t("vercel_verification_queue_join_action_button")}</Button>
+        <Button args="padding margin-1em-top" on:click={() => connectToQueue()}>{$t("vercel_verification_queue_join_action_button")}</Button>
     {/if}
 </Holder>
 
