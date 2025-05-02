@@ -1,6 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { getAuthToken } from "$lib";
+    import { getAuthToken, serverURL } from "$lib";
     import Button from "$lib/components/Button.svelte";
     import Holder from "$lib/components/Holder.svelte";
     import { t, addArguements } from "$lib/translations";
@@ -13,7 +13,7 @@
 
     function connectToWs() {
         userHasConencted = true;
-        const sock = new WebSocket("ws://localhost:8000/domain/ws/vercel");
+        const sock = new WebSocket(`ws://api.frii.site/domain/ws/vercel`);
         sock.onopen = () => {
             sock.send(JSON.stringify({
                 "session": getAuthToken()??"",
