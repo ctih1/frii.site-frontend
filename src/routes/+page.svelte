@@ -63,10 +63,7 @@
     <div class="head">
         <h1 class="title" style="font-size: 10em">frii.site</h1>
         <p class="tagline">{$t("index_tagline")}</p>
-        <p class="tagline">{$t("index_tagline")}</p>
         <div class="buttons">
-            <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("index_register_account")}</p></Button>
-            <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("index_goto_dashboard")}</p></Button>
             <Button on:click={()=>window.location.href="/account"} args="padding fill margin"><p class="button-text">{$t("index_register_account")}</p></Button>
             <Button on:click={()=>window.location.href="/dashboard"} args="padding fill margin secondary"><p class="button-text">{$t("index_goto_dashboard")}</p></Button>
         </div>
@@ -74,38 +71,27 @@
     <div class="introduction-wrapper">
         <div class="center">
             <h1 style="font-size: 5em; margin-bottom: 0px;"><strong>{$t("index_aboutus")}</strong></h1>
-            <h1 style="font-size: 5em; margin-bottom: 0px;"><strong>{$t("index_aboutus")}</strong></h1>
             <hr style="width: 50%;opacity: 0.1; height: 4px;"/>
-            <p class="description" style="margin-top: 10px;">{@html $t("index_aboutus_description")}
             <p class="description" style="margin-top: 10px;">{@html $t("index_aboutus_description")}
         </div>
         <div class="left">
-            <h2><span class="material-symbols-outlined">lock_open_right</span>{$t("index_tp_freedom")}</h2>
-            <p>{$t("index_tp_freedom_desc")}</p>
             <h2><span class="material-symbols-outlined">lock_open_right</span>{$t("index_tp_freedom")}</h2>
             <p>{$t("index_tp_freedom_desc")}</p>
         </div>
         <div class="right">
             <h2><span class="material-symbols-outlined">lock</span>{$t("index_tp_security")}</h2>
             <p>{$t("index_tp_security_desc")}</p>
-            <h2><span class="material-symbols-outlined">lock</span>{$t("index_tp_security")}</h2>
-            <p>{$t("index_tp_security_desc")}</p>
         </div>
         <div class="bottom-left">
-            <h2><span class="material-symbols-outlined">support</span>{$t("index_tp_support")}</h2>
-            <p>{$t("index_tp_support_desc")}</p>
             <h2><span class="material-symbols-outlined">support</span>{$t("index_tp_support")}</h2>
             <p>{$t("index_tp_support_desc")}</p>
         </div>
         <div class="bottom-right">
             <h2><span class="material-symbols-outlined">encrypted</span>{$t("index_tp_privacy")}</h2>
             <p>{$t("index_tp_privacy_desc")}</p>
-            <h2><span class="material-symbols-outlined">encrypted</span>{$t("index_tp_privacy")}</h2>
-            <p>{$t("index_tp_privacy_desc")}</p>
         </div>
     </div>
     <div class="reviews">
-        <h1 style="font-size: 3em;">{$t("index_reviews")}</h1>
         <h1 style="font-size: 3em;">{$t("index_reviews")}</h1>
         <div class="review-cards">
             {#each reviews as review, index}
@@ -124,8 +110,6 @@
         </div>
     {/if}
     <div class="bottom-hooker">
-        <h1>{$t("index_bottom_hook")}</h1>
-        <p>{$t("index_bottom_hook_desc")}</p>
         <h1>{$t("index_bottom_hook")}</h1>
         <p>{$t("index_bottom_hook_desc")}</p>
         <div class="button-hook">
