@@ -15,8 +15,6 @@
     import { t } from "$lib/translations";
     import { createToken, ServerContactor, login, AuthError, UserError, MFAError, InviteError, ConflictError, PermissionError, digestMessage } from "../../serverContactor";
 
-
-
     let generatingNew:boolean = false;
     let code:string|null = null
     let valid:boolean = false;
@@ -68,7 +66,6 @@
         loader.show(undefined, $t("account_login_loading_desc"));
         login(username, password).catch(error=>{
             loader.hide();
-            console.log(error instanceof AuthError);
 
             if(error instanceof AuthError || error instanceof UserError) {
                 modal.open(
@@ -77,7 +74,7 @@
                 );
             }
 
-            if(error instanceof PermissionError) {
+            else if(error instanceof PermissionError) {
                 modal.open($t("login_failed"), $t("login_failed_verify"), undefined, undefined, true, username);
             }
 
@@ -87,8 +84,8 @@
                     $t("login_generic_error"),
                 );
             }
-        
-            throw new Error("Login failed");
+
+            throw new Error("Login failed")
         })
         .then(session=>{
             const sessionId:string = session["auth-token"];
