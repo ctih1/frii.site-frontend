@@ -21,8 +21,6 @@
     let modal: Modal;
     let rowInputs: Array<Array<any>> = domains.map(() => []);
 
-    $: console.log(domainAmount);
-
     export function updateDomains(ndomains: Array<Array<string>>): void {
         if(domains.length === 0) {
           loaded = true;
@@ -62,16 +60,16 @@
             {#each Array(Number($domainAmount)) as _, i}
                 <tr>
                     <td><Placeholder /></td>
-                    <td>
-                        <div class="placeholder-container">
-                            <div style="width: 75%" class="placeholder-container">
+                    <td
+                        ><div class="container">
+                            <div style="width: 75%" class="container">
                                 <Placeholder />
                             </div>
                             <div style="width: 25%; min-width:55px;">
                                 <Placeholder />
                             </div>
-                        </div>
-                    </td>
+                        </div></td
+                    >
                     <td><Placeholder /></td>
                     <td style="display: flex; flex-direction: row;">
                         <Placeholder />
@@ -162,7 +160,6 @@
     thead {
         background-color: rgba(0, 0, 0, 0.05);
     }
-    
     table {
         width: 100%;
         height: 100%;
@@ -171,11 +168,9 @@
         border-collapse: collapse;
         padding: 1em;
     }
-
     th {
         text-align: left;
     }
-
     tr {
         background-color: rgba(0, 0, 0, 0.01);
     }
@@ -190,7 +185,12 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .placeholder-container {
+    .row {
+        margin: 0px;
+        display: flex;
+        flex-direction: row;
+    }
+    .container {
         display: flex;
         flex-direction: row;
         height: 100%;
@@ -200,7 +200,6 @@
         transform: scale(1.05);
         z-index: 11;
     }
-
     @media (orientation: portrait) {
         input:focus {
             transform: scale(1.3);
