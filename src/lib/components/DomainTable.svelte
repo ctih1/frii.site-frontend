@@ -4,8 +4,10 @@
     import Dropdown from "./Dropdown.svelte";
     import Modal from "./Modal.svelte";
     import Placeholder from "./Placeholder.svelte";
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { t } from "$lib/translations";
+    import { domainAmount } from '$lib/store';
+
     export let domains: Array<Array<string>>;
 
     let dispatcher = createEventDispatcher();
@@ -19,12 +21,16 @@
     let modal: Modal;
     let rowInputs: Array<Array<any>> = domains.map(() => []);
 
+    $: console.log(domainAmount);
+
     export function updateDomains(ndomains: Array<Array<string>>): void {
         if(domains.length === 0) {
           loaded = true;
           return;
         }
         loaded = true;
+        domainAmount.set(domains.length);
+
         rowInputs = domains.map(() => []);
         domains = ndomains;
     }
@@ -53,19 +59,19 @@
     </thead>
     <tbody>
         {#if !loaded}
-            {#each Array(Number(3)) as _, i}
+            {#each Array(Number($domainAmount)) as _, i}
                 <tr>
                     <td><Placeholder /></td>
-                    <td
-                        ><div class="container">
-                            <div style="width: 75%" class="container">
+                    <td>
+                        <div class="placeholder-container">
+                            <div style="width: 75%" class="placeholder-container">
                                 <Placeholder />
                             </div>
                             <div style="width: 25%; min-width:55px;">
                                 <Placeholder />
                             </div>
-                        </div></td
-                    >
+                        </div>
+                    </td>
                     <td><Placeholder /></td>
                     <td style="display: flex; flex-direction: row;">
                         <Placeholder />
@@ -156,6 +162,7 @@
     thead {
         background-color: rgba(0, 0, 0, 0.05);
     }
+    
     table {
         width: 100%;
         height: 100%;
@@ -164,9 +171,11 @@
         border-collapse: collapse;
         padding: 1em;
     }
+
     th {
         text-align: left;
     }
+
     tr {
         background-color: rgba(0, 0, 0, 0.01);
     }
@@ -181,12 +190,7 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .row {
-        margin: 0px;
-        display: flex;
-        flex-direction: row;
-    }
-    .container {
+    .placeholder-container {
         display: flex;
         flex-direction: row;
         height: 100%;
@@ -196,6 +200,7 @@
         transform: scale(1.05);
         z-index: 11;
     }
+
     @media (orientation: portrait) {
         input:focus {
             transform: scale(1.3);

@@ -9,8 +9,6 @@
     }
 </script>
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
-
 <div style={`transform: rotate(${calculateRotation()}deg)`} class="wrapper">
     <h1>{author}</h1>
     <p class="description"><i>{descrption}</i></p>
