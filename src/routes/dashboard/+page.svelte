@@ -53,7 +53,8 @@
             if(error instanceof PermissionError)  modal.open(errorMessage,$t("dashboard_domain_permissions"));
             if(error instanceof LimitError) modal.open(errorMessage,$t("dashboard_domain_limit"));
             if(error instanceof ConflictError) modal.open(errorMessage, $t("dashboard_domain_use"));
-
+            
+            modal.open(errorMessage, $t("unhandled_error"));
             throw new Error("Failed to register dommain!");
 
         })
@@ -74,7 +75,8 @@
             if(error instanceof AuthError) redirectToLogin(460);
             if(error instanceof DNSError) modal.open(errorMessage, $t("dashboard_invalid_value"));
             if(error instanceof PermissionError) modal.open(errorMessage, $t("dashboard_domain_permissions"));
-
+            
+            modal.open(errorMessage, $t("unhandled_error"));
             throw Error("Failed to modify domain."); // stops execution to the .then block
         }).then(()=>{
             loader.hide();
