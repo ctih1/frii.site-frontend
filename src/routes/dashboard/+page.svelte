@@ -58,11 +58,12 @@
             
             modal.open(errorMessage, $t("unhandled_error"));
             throw new Error("Failed to register dommain!");
-
         })
-        .then(()=>{
+        .then(value => {
             loader.hide();
-            modal.open(addArguements($t("dashboard_register_success"),{"%domain%":name}),$t("dashboard_modify_success_description"));
+            modal.open(addArguements($t("dashboard_register_success"),{"%domain%":domain}),$t("dashboard_modify_success_description"));
+            domainlist.push([type,domain,value]);
+            domainTable.updateDomains(domainlist);
         })
         
     }

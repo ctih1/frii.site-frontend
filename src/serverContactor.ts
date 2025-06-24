@@ -294,9 +294,10 @@ export class ServerContactor {
 		return data;
 	}
 
-	async registerDomain(domain: string, type: string): Promise<paths["/domain/register"]["post"]["responses"]["200"]["content"]["application/json"]> {
+	async registerDomain(domain: string, type: string): Promise<string> {
+		const value = (type === "CNAME" || type === "NS") ? "example.com" : "0.0.0.0";
 		const { data, error, response } = await client.POST("/domain/register", {
-			body: { domain, type, value: (type === "CNAME" || type === "NS") ? "example.com" : "0.0.0.0" },
+			body: { domain, type, value },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": this.token },
@@ -315,7 +316,7 @@ export class ServerContactor {
 			}
 		}
 
-		return data;
+		return value;
 	}
 
 	async deleteDomain(domain: string): Promise<paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]> {
