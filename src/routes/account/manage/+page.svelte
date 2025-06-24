@@ -158,7 +158,7 @@
                     addArguements(
                         $t("account_invite_success_desc"),
                         {
-                            "%link%": `https://www.frii.site/sign-up?invite=${response["code"]}`,
+                            "%link%": `https://www.frii.site/account?invite=${response["code"]}`,
                         },
                     ),
                 );
@@ -364,10 +364,8 @@
                 {@const showQRCode = false}
                 <div class="session invite">
                     <h3>
-                        <a
-                            href="https://www.frii.site/account?invite={invite.code}"
-                            >Invite #{index+1}</a
-                        >
+                        <a href="https://www.frii.site/account?invite={invite.code}">Invite #{index+1}
+                        </a>
                     </h3>
 
                     <Button args="padding" on:click={_=>copy(`https://www.frii.site/account?invite=${invite.code}`)}>Copy to clipboard</Button>

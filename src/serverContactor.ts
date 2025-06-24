@@ -296,7 +296,7 @@ export class ServerContactor {
 
 	async registerDomain(domain: string, type: string): Promise<paths["/domain/register"]["post"]["responses"]["200"]["content"]["application/json"]> {
 		const { data, error, response } = await client.POST("/domain/register", {
-			body: { domain, type, value: type === "CNAME" ? "example.com" : "0.0.0.0" },
+			body: { domain, type, value: (type === "CNAME" || type === "NS") ? "example.com" : "0.0.0.0" },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": this.token },

@@ -82,7 +82,7 @@ const config = {
 
 export function addArguements(translation: string, replaced: Object): string {
   for (const [key, value] of Object.entries(replaced)) {
-    translation = translation.replace(key, value);
+    translation = translation.replaceAll(key, value);
   }
   return translation;
 }
