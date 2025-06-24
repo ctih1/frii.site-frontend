@@ -1,12 +1,12 @@
-import adapter from '@sveltejs/adapter-auto';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from "@sveltejs/adapter-auto"
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte"
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	compilerOptions: {
-		enableSourcemap: true,
+		enableSourcemap: true
 	},
 	preprocess: vitePreprocess(),
 
@@ -15,9 +15,9 @@ const config = {
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter({
-		  maxDuration: 10
+			maxDuration: 10
 		})
 	}
-};
+}
 
-export default config;
+export default config
