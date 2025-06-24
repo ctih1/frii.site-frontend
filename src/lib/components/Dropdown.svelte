@@ -67,6 +67,7 @@
     }
     .dropdown {
         width: 100%;
+        min-width: 6ch;
         height: 100%;
         position: relative;
         display: inline-block;

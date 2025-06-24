@@ -26,6 +26,7 @@
     let modalTime:number = 15;
 
     function modalConfirm() {
+      modal.close();
       loader.show(undefined,addArguements($t("dashboard_delete_loading_desc"),{"%domain%":domain2delete}))
       serverContactor.deleteDomain(domain2delete).catch(error => {
         loader.hide();
@@ -94,7 +95,7 @@
     }
 
     onMount(()=>{
-        modalTime = localStorage.getItem("del-count") ? 3 : 15;
+        modalTime = localStorage.getItem("del-count") ? 3 : 10;
 
         serverContactor = new ServerContactor(getAuthToken(),localStorage.getItem("server_url"));
         serverContactor.getDomains()

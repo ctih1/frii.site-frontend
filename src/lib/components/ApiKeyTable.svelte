@@ -1,6 +1,5 @@
 <script lang="ts">
     import Button from "./Button.svelte";
-    import Dropdown from "./Dropdown.svelte";
     import Modal from "./Modal.svelte";
     import { t,addArguements } from '$lib/translations';
     import { createEventDispatcher } from "svelte";
