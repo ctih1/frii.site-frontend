@@ -53,7 +53,7 @@ To get yourself a free subdomain, register an account at https://frii.site/accou
 
 
 ## Missing something?
-More info can be found on [our wiki](https://github.com/ctih1/frii.site-frontend/wiki)
+More info can be found on [our wiki](https://guides.frii.site)
 
 </details>
 

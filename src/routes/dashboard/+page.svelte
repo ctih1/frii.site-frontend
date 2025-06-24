@@ -4,6 +4,7 @@
     import Modal from "$lib/components/Modal.svelte";
     import Holder from '$lib/components/Holder.svelte';
     import Loader from "$lib/components/Loader.svelte";
+
     import { t,l,locale,addArguements } from '$lib/translations';
     import { AuthError, ConflictError, DNSError, LimitError, PermissionError, ServerContactor } from '../../serverContactor';
     import { onMount } from 'svelte';
@@ -53,7 +54,8 @@
             if(error instanceof PermissionError)  modal.open(errorMessage,$t("dashboard_domain_permissions"));
             if(error instanceof LimitError) modal.open(errorMessage,$t("dashboard_domain_limit"));
             if(error instanceof ConflictError) modal.open(errorMessage, $t("dashboard_domain_use"));
-
+            
+            modal.open(errorMessage, $t("unhandled_error"));
             throw new Error("Failed to register dommain!");
 
         })
@@ -74,7 +76,8 @@
             if(error instanceof AuthError) redirectToLogin(460);
             if(error instanceof DNSError) modal.open(errorMessage, $t("dashboard_invalid_value"));
             if(error instanceof PermissionError) modal.open(errorMessage, $t("dashboard_domain_permissions"));
-
+            
+            modal.open(errorMessage, $t("unhandled_error"));
             throw Error("Failed to modify domain."); // stops execution to the .then block
         }).then(()=>{
             loader.hide();
@@ -128,10 +131,16 @@
 <Holder>
     <h1>{$t("dashboard_your_domains")}</h1>
     <p>{$t("dashboard_domain_explanation")}</p>
-    <DomainTable on:delete={(event)=>{domain2delete=event.detail.domain;modal.open(addArguements($t("dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("dashboard_domain_deletion_description"),modalTime,[$t("cancel_modal"),$t("continue_modal")])}} on:save={(event)=>modifyDomain(event.detail.name,
-        event.detail.value,
-        event.detail.type
-    )} bind:this={domainTable} domains={domainlist}/>
+    <DomainTable on:delete={(event)=>{
+        domain2delete=event.detail.domain;
+        modal.open(
+            addArguements($t("dashboard_domain_deletion_alert"),{"%domain%":domain2delete}),$t("dashboard_domain_deletion_description"),modalTime,[$t("cancel_modal"),
+            $t("continue_modal")])}
+        }
+        on:save={(event)=> modifyDomain(event.detail.name,
+            event.detail.value,
+            event.detail.type 
+        )} bind:this={domainTable} domains={domainlist}/>
 </Holder>
 <Holder>
     <h2>{$t("dashboard_register_new_domain")}</h2>
@@ -140,6 +149,3 @@
 </Holder>
 
 <Modal overrideDefault={true} on:primary={()=>modalClose()} on:secondary={()=>modalConfirm()} bind:this={modal} options={[$t("modal_ok")]} description={""} title={""}></Modal>
-<style>
-
-</style>

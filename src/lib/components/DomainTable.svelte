@@ -4,8 +4,10 @@
     import Dropdown from "./Dropdown.svelte";
     import Modal from "./Modal.svelte";
     import Placeholder from "./Placeholder.svelte";
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { t } from "$lib/translations";
+    import { domainAmount } from '$lib/store';
+
     export let domains: Array<Array<string>>;
 
     let dispatcher = createEventDispatcher();
@@ -25,6 +27,8 @@
           return;
         }
         loaded = true;
+        domainAmount.set(domains.length);
+
         rowInputs = domains.map(() => []);
         domains = ndomains;
     }
@@ -53,7 +57,7 @@
     </thead>
     <tbody>
         {#if !loaded}
-            {#each Array(Number(3)) as _, i}
+            {#each Array(Number($domainAmount)) as _, i}
                 <tr>
                     <td><Placeholder /></td>
                     <td
