@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { locale, locales, t } from "$lib/translations";
+	import { getFlagEmoji } from "../../helperFuncs";
 	import { prefLocale } from "./../../routes/stores";
 	import Modal from "./Modal.svelte";
-	import { t, locale, locales } from "$lib/translations";
-	import { getFlagEmoji } from "../../helperFuncs";
 	let header: HTMLElement;
 	let modal: Modal;
 	export function getHeight(): number {
@@ -34,6 +34,11 @@
 	<a class="item" href="/report">
 		<span class="material-symbols-outlined">flag</span>
 		<p>{$t("dashboard_abuse")}</p>
+	</a>
+
+	<a class="item" href="https://guides.frii.site">
+		<span class="material-symbols-outlined">menu_book</span>
+		<p>{$t("guides_link_navbar")}</p>
 	</a>
 
 	<div class="item">
