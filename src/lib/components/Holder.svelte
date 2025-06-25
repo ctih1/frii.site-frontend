@@ -1,3 +1,9 @@
+<script lang="ts">
+	export let args: string = ""
+</script>
+
+<div class="card {args}"><slot /></div>
+
 <style>
 	.card {
 		z-index: -2;
@@ -23,9 +29,3 @@
 		}
 	}
 </style>
-
-<script lang="ts">
-	export let args: string = ""
-</script>
-
-<div class="card {args}"><slot /></div>

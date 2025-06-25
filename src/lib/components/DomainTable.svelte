@@ -1,56 +1,3 @@
-<style>
-	thead {
-		background-color: rgba(0, 0, 0, 0.05);
-	}
-	table {
-		width: 100%;
-		height: 100%;
-		table-layout: fixed;
-		background-color: var(--offwhite-coloe);
-		border-collapse: collapse;
-		padding: 1em;
-	}
-	th {
-		text-align: left;
-	}
-	tr {
-		background-color: rgba(0, 0, 0, 0.01);
-	}
-
-	td {
-		min-width: 10vw;
-		width: 100%;
-		height: 2em;
-		justify-content: center;
-	}
-	tr:not(:last-child) {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	}
-
-	.row {
-		margin: 0px;
-		display: flex;
-		flex-direction: row;
-	}
-	.container {
-		display: flex;
-		flex-direction: row;
-		height: 100%;
-	}
-
-	input:focus {
-		transform: scale(1.05);
-		z-index: 11;
-	}
-	@media (orientation: portrait) {
-		input:focus {
-			transform: scale(1.3);
-			font-size: 0.6em;
-			z-index: 11;
-		}
-	}
-</style>
-
 <script lang="ts">
 	import { fade } from "svelte/transition"
 	import Button from "./Button.svelte"
@@ -185,3 +132,56 @@
 	countdown={15}
 	title="Are you sure you want to delete"
 	description={""}></Modal>
+
+<style>
+	thead {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+	table {
+		width: 100%;
+		height: 100%;
+		table-layout: fixed;
+		background-color: var(--offwhite-coloe);
+		border-collapse: collapse;
+		padding: 1em;
+	}
+	th {
+		text-align: left;
+	}
+	tr {
+		background-color: rgba(0, 0, 0, 0.01);
+	}
+
+	td {
+		min-width: 10vw;
+		width: 100%;
+		height: 2em;
+		justify-content: center;
+	}
+	tr:not(:last-child) {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.row {
+		margin: 0px;
+		display: flex;
+		flex-direction: row;
+	}
+	.container {
+		display: flex;
+		flex-direction: row;
+		height: 100%;
+	}
+
+	input:focus {
+		transform: scale(1.05);
+		z-index: 11;
+	}
+	@media (orientation: portrait) {
+		input:focus {
+			transform: scale(1.3);
+			font-size: 0.6em;
+			z-index: 11;
+		}
+	}
+</style>

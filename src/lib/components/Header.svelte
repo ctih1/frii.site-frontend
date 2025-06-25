@@ -1,3 +1,52 @@
+<script lang="ts">
+	import { prefLocale } from "./../../routes/stores"
+	import Modal from "./Modal.svelte"
+	import { t, locale, locales } from "$lib/translations"
+	import { getFlagEmoji } from "../../helperFuncs"
+	let header: HTMLElement
+	let modal: Modal
+	export function getHeight(): number {
+		return Number(header.style.height.substring(0, header.style.height.length - 2))
+	}
+
+	const handleChange = ({ currentTarget }) => {
+		const { value } = currentTarget
+		prefLocale.set(value)
+	}
+</script>
+
+<header bind:this={header}>
+	<a class="item" href="/">
+		<span class="material-symbols-outlined">home</span>
+		<p>{$t("dashboard_home")}</p>
+	</a>
+
+	<a class="item" href="/dashboard">
+		<span class="material-symbols-outlined">apps</span>
+		<p>{$t("dashboard_navbar")}</p>
+	</a>
+
+	<a class="item" href="/account/manage">
+		<span class="material-symbols-outlined">person</span>
+		<p>{$t("dashboard_account")}</p>
+	</a>
+
+	<a class="item" href="/report">
+		<span class="material-symbols-outlined">flag</span>
+		<p>{$t("dashboard_abuse")}</p>
+	</a>
+
+	<div class="item">
+		<span class="material-symbols-outlined">language</span>
+		<select style="color: var(--primary);" bind:value={$locale} on:change={handleChange}>
+			{#each $locales.sort((a, b) => $t(`lang.${a}`) > $t(`lang.${b}`)) as value}
+				<option value={value} selected={$locale === value}
+					>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+			{/each}
+		</select>
+	</div>
+</header>
+
 <style>
 	header {
 		position: asbolute;
@@ -65,52 +114,3 @@
 		color: var(--primary);
 	}
 </style>
-
-<script lang="ts">
-	import { prefLocale } from "./../../routes/stores"
-	import Modal from "./Modal.svelte"
-	import { t, locale, locales } from "$lib/translations"
-	import { getFlagEmoji } from "../../helperFuncs"
-	let header: HTMLElement
-	let modal: Modal
-	export function getHeight(): number {
-		return Number(header.style.height.substring(0, header.style.height.length - 2))
-	}
-
-	const handleChange = ({ currentTarget }) => {
-		const { value } = currentTarget
-		prefLocale.set(value)
-	}
-</script>
-
-<header bind:this={header}>
-	<a class="item" href="/">
-		<span class="material-symbols-outlined">home</span>
-		<p>{$t("dashboard_home")}</p>
-	</a>
-
-	<a class="item" href="/dashboard">
-		<span class="material-symbols-outlined">apps</span>
-		<p>{$t("dashboard_navbar")}</p>
-	</a>
-
-	<a class="item" href="/account/manage">
-		<span class="material-symbols-outlined">person</span>
-		<p>{$t("dashboard_account")}</p>
-	</a>
-
-	<a class="item" href="/report">
-		<span class="material-symbols-outlined">flag</span>
-		<p>{$t("dashboard_abuse")}</p>
-	</a>
-
-	<div class="item">
-		<span class="material-symbols-outlined">language</span>
-		<select style="color: var(--primary);" bind:value={$locale} on:change={handleChange}>
-			{#each $locales.sort((a, b) => $t(`lang.${a}`) > $t(`lang.${b}`)) as value}
-				<option value={value} selected={$locale === value}
-					>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
-			{/each}
-		</select>
-	</div>
-</header>

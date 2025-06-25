@@ -1,6 +1,3 @@
-<style>
-</style>
-
 <script lang="ts">
 	import { browser } from "$app/environment"
 
@@ -91,3 +88,6 @@
 	<Button on:click={handleButton} args="fill padding margin-1em-top"
 		>{$t("security_report_submit")}</Button>
 </Holder>
+
+<style>
+</style>

@@ -1,18 +1,3 @@
-<style>
-	.scale {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-	}
-	.block {
-		height: 100%;
-		min-height: 5px;
-		border-radius: 1em;
-		margin-left: 0.25%;
-		margin-right: 0.25%;
-	}
-</style>
-
 <script lang="ts">
 	export let value: number | undefined
 	export let max: number
@@ -40,3 +25,18 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	.scale {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+	.block {
+		height: 100%;
+		min-height: 5px;
+		border-radius: 1em;
+		margin-left: 0.25%;
+		margin-right: 0.25%;
+	}
+</style>

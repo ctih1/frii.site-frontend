@@ -1,9 +1,3 @@
-<style>
-	input {
-		height: 4em;
-	}
-</style>
-
 <script lang="ts">
 	import { browser } from "$app/environment"
 	import {
@@ -87,3 +81,9 @@
 			>{$t("vercel_verification_queue_join_action_button")}</Button>
 	{/if}
 </Holder>
+
+<style>
+	input {
+		height: 4em;
+	}
+</style>

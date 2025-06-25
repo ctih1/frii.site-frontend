@@ -1,3 +1,14 @@
+<script>
+	// @ts-nocheck
+
+	import { page } from "$app/stores"
+</script>
+
+<div class="container">
+	<h1>{$page.status}</h1>
+	<p>{$page.error.message}</p>
+</div>
+
 <style>
 	.container {
 		display: flex;
@@ -15,14 +26,3 @@
 		margin-bottom: 5px;
 	}
 </style>
-
-<script>
-	// @ts-nocheck
-
-	import { page } from "$app/stores"
-</script>
-
-<div class="container">
-	<h1>{$page.status}</h1>
-	<p>{$page.error.message}</p>
-</div>

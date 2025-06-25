@@ -1,52 +1,3 @@
-<style>
-	.background {
-		backdrop-filter: blur(4px);
-		position: fixed;
-		display: flex;
-		align-items: center;
-		top: 0px;
-		left: 0px;
-		width: 100vw;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.75);
-		z-index: 15;
-		overflow: hidden;
-	}
-	.html {
-		margin-top: 0px;
-	}
-	.html * {
-		margin-top: 0.2em;
-	}
-	.prompt {
-		padding: 2em;
-		width: 50vw;
-		border-radius: 0.5em;
-		background-color: rgb(40, 40, 40);
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.buttons {
-		margin-top: auto;
-		margin-bottom: 0px;
-		display: flex;
-		flex-direction: row;
-		height: 5vh;
-	}
-
-	.msx:hover {
-		cursor: pointer;
-	}
-
-	.disabled:hover {
-		cursor: wait;
-		color: gray;
-	}
-	.hidden {
-		display: none;
-	}
-</style>
-
 <script lang="ts">
 	import { resendEmail } from "./../../serverContactor"
 	import { onMount } from "svelte"
@@ -185,3 +136,52 @@
 	</div>
 {/if}
 <p class="disabled hidden"></p>
+
+<style>
+	.background {
+		backdrop-filter: blur(4px);
+		position: fixed;
+		display: flex;
+		align-items: center;
+		top: 0px;
+		left: 0px;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.75);
+		z-index: 15;
+		overflow: hidden;
+	}
+	.html {
+		margin-top: 0px;
+	}
+	.html * {
+		margin-top: 0.2em;
+	}
+	.prompt {
+		padding: 2em;
+		width: 50vw;
+		border-radius: 0.5em;
+		background-color: rgb(40, 40, 40);
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.buttons {
+		margin-top: auto;
+		margin-bottom: 0px;
+		display: flex;
+		flex-direction: row;
+		height: 5vh;
+	}
+
+	.msx:hover {
+		cursor: pointer;
+	}
+
+	.disabled:hover {
+		cursor: wait;
+		color: gray;
+	}
+	.hidden {
+		display: none;
+	}
+</style>

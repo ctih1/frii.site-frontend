@@ -1,3 +1,8 @@
+<script lang="ts">
+</script>
+
+<div class="placeholder"></div>
+
 <style>
 	@keyframes placeholderScrobbler {
 		0% {
@@ -24,8 +29,3 @@
 		border-radius: 0.5em;
 	}
 </style>
-
-<script lang="ts">
-</script>
-
-<div class="placeholder"></div>

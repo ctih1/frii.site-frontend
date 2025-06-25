@@ -1,18 +1,3 @@
-<style>
-	form {
-		display: flex;
-		flex-direction: row;
-		height: 2em;
-	}
-	form * {
-		margin-left: 0.25em;
-		margin-right: 0.25em;
-	}
-	.button-container {
-		width: 5em;
-	}
-</style>
-
 <script lang="ts">
 	import Cookies from "js-cookie"
 	import { getAuthToken } from "$lib"
@@ -55,3 +40,18 @@
 			args={"fill"}><span class="material-symbols-outlined">search</span></Button>
 	</div>
 </form>
+
+<style>
+	form {
+		display: flex;
+		flex-direction: row;
+		height: 2em;
+	}
+	form * {
+		margin-left: 0.25em;
+		margin-right: 0.25em;
+	}
+	.button-container {
+		width: 5em;
+	}
+</style>

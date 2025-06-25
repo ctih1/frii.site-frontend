@@ -1,3 +1,37 @@
+<script lang="ts">
+	import { createEventDispatcher } from "svelte"
+	const dispatch = createEventDispatcher()
+	let button: HTMLButtonElement
+	let disabled: boolean = false
+	export let startDisabled: boolean = false
+	function click() {
+		if (!disabled) {
+			dispatch("click")
+		}
+	}
+	export function disable() {
+		button.disabled = true
+		disabled = true
+	}
+	export function enable() {
+		button.disabled = false
+		disabled = false
+	}
+	export function toggleDisable() {
+		disabled = !disabled
+		button.disabled = disabled
+	}
+	export function changeText(text: string) {
+		button.innerHTML = text
+	}
+
+	export let args: string | null = null
+</script>
+
+<button disabled={startDisabled} bind:this={button} on:click={() => click()} class={args}>
+	<slot></slot>
+</button>
+
 <style>
 	button:disabled {
 		opacity: 0.5;
@@ -90,37 +124,3 @@
 		color: white;
 	}
 </style>
-
-<script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	const dispatch = createEventDispatcher()
-	let button: HTMLButtonElement
-	let disabled: boolean = false
-	export let startDisabled: boolean = false
-	function click() {
-		if (!disabled) {
-			dispatch("click")
-		}
-	}
-	export function disable() {
-		button.disabled = true
-		disabled = true
-	}
-	export function enable() {
-		button.disabled = false
-		disabled = false
-	}
-	export function toggleDisable() {
-		disabled = !disabled
-		button.disabled = disabled
-	}
-	export function changeText(text: string) {
-		button.innerHTML = text
-	}
-
-	export let args: string | null = null
-</script>
-
-<button disabled={startDisabled} bind:this={button} on:click={() => click()} class={args}>
-	<slot></slot>
-</button>

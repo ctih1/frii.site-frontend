@@ -1,3 +1,145 @@
+<script lang="ts">
+	//@ts-ignore
+	import { onMount } from "svelte"
+	import Footer from "$lib/components/Footer.svelte"
+	import BlogCard from "$lib/components/BlogCard.svelte"
+	import BubbleBackground from "$lib/components/BubbleBackground.svelte"
+	import Review from "$lib/components/Review.svelte"
+	import Button from "$lib/components/Button.svelte"
+	import { t } from "$lib/translations"
+	import { serverURL } from "../serverContactor"
+
+	let { data } = $props()
+
+	let blogsShouldBeShown: boolean = $state(data.shouldBeShown)
+	let blogs: Iblog[] = $state(data.blogs)
+
+	interface Ireview {
+		author: string
+		description: string
+		stars: number
+	}
+
+	interface Iblog {
+		url: string
+		date: number
+		body: string
+		title: string
+	}
+
+	let reviews: Ireview[] = [
+		{
+			author: "Rage65",
+			description:
+				"I have been using (frii.site) to get a domain for my website for a while now and it's been great!",
+			stars: 5
+		},
+		{
+			author: "Luka Rantalainen",
+			description: "frii.site has served me well for my domain registraation needs.",
+			stars: 4
+		},
+		{
+			author: "Planethac",
+			description: "Good service for a good price!",
+			stars: 4
+		}
+	]
+
+	$effect(() => {
+		console.log(data)
+	})
+</script>
+
+<svelte:head>
+	<title>frii.site - Register subdomains for free!</title>
+</svelte:head>
+
+<BubbleBackground>
+	<div class="head">
+		<h1 class="title" style="font-size: 10em">frii.site</h1>
+		<p class="tagline">{$t("index_tagline")}</p>
+		<div class="buttons">
+			<Button on:click={() => (window.location.href = "/account")} args="padding fill margin"
+				><p class="button-text">{$t("index_register_account")}</p></Button>
+			<Button
+				on:click={() => (window.location.href = "/dashboard")}
+				args="padding fill margin secondary"
+				><p class="button-text">{$t("index_goto_dashboard")}</p></Button>
+		</div>
+	</div>
+	<div class="introduction-wrapper">
+		<div class="center">
+			<h1 style="font-size: 5em; margin-bottom: 0px;">
+				<strong>{$t("index_aboutus")}</strong>
+			</h1>
+			<hr style="width: 50%;opacity: 0.1; height: 4px;" />
+			<p class="description" style="margin-top: 10px;">
+				{@html $t("index_aboutus_description")}
+			</p>
+		</div>
+		<div class="left">
+			<h2>
+				<span class="material-symbols-outlined">lock_open_right</span>{$t(
+					"index_tp_freedom"
+				)}
+			</h2>
+			<p>{$t("index_tp_freedom_desc")}</p>
+		</div>
+		<div class="right">
+			<h2><span class="material-symbols-outlined">lock</span>{$t("index_tp_security")}</h2>
+			<p>{$t("index_tp_security_desc")}</p>
+		</div>
+		<div class="bottom-left">
+			<h2><span class="material-symbols-outlined">support</span>{$t("index_tp_support")}</h2>
+			<p>{$t("index_tp_support_desc")}</p>
+		</div>
+		<div class="bottom-right">
+			<h2>
+				<span class="material-symbols-outlined">encrypted</span>{$t("index_tp_privacy")}
+			</h2>
+			<p>{$t("index_tp_privacy_desc")}</p>
+		</div>
+	</div>
+	<div class="reviews">
+		<h1 style="font-size: 3em;">{$t("index_reviews")}</h1>
+		<div class="review-cards">
+			{#each reviews as review, index}
+				<Review
+					descrption={review.description}
+					author={review.author}
+					stars={review.stars}
+					index={index} />
+			{/each}
+		</div>
+	</div>
+	{#if blogsShouldBeShown}
+		<div class="blogs">
+			<h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">
+				Latest updates
+			</h3>
+			<div class="latest-releases">
+				{#each blogs as blog}
+					<BlogCard
+						title={blog.title}
+						description={blog.body}
+						date={blog.date}
+						url={blog.url} />
+				{/each}
+			</div>
+		</div>
+	{/if}
+	<div class="bottom-hooker">
+		<h1>{$t("index_bottom_hook")}</h1>
+		<p>{$t("index_bottom_hook_desc")}</p>
+		<div class="button-hook">
+			<Button on:click={() => (window.location.href = "/account")} args="padding fill margin"
+				><p class="button-text">{$t("index_register_account")}</p></Button>
+		</div>
+	</div>
+	<Footer />
+</BubbleBackground>
+
 <style>
 	.head {
 		display: flex;
@@ -177,145 +319,3 @@
 		}
 	}
 </style>
-
-<script lang="ts">
-	//@ts-ignore
-	import { onMount } from "svelte"
-	import Footer from "$lib/components/Footer.svelte"
-	import BlogCard from "$lib/components/BlogCard.svelte"
-	import BubbleBackground from "$lib/components/BubbleBackground.svelte"
-	import Review from "$lib/components/Review.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import { t } from "$lib/translations"
-	import { serverURL } from "../serverContactor"
-
-	let { data } = $props()
-
-	let blogsShouldBeShown: boolean = $state(data.shouldBeShown)
-	let blogs: Iblog[] = $state(data.blogs)
-
-	interface Ireview {
-		author: string
-		description: string
-		stars: number
-	}
-
-	interface Iblog {
-		url: string
-		date: number
-		body: string
-		title: string
-	}
-
-	let reviews: Ireview[] = [
-		{
-			author: "Rage65",
-			description:
-				"I have been using (frii.site) to get a domain for my website for a while now and it's been great!",
-			stars: 5
-		},
-		{
-			author: "Luka Rantalainen",
-			description: "frii.site has served me well for my domain registraation needs.",
-			stars: 4
-		},
-		{
-			author: "Planethac",
-			description: "Good service for a good price!",
-			stars: 4
-		}
-	]
-
-	$effect(() => {
-		console.log(data)
-	})
-</script>
-
-<svelte:head>
-	<title>frii.site - Register subdomains for free!</title>
-</svelte:head>
-
-<BubbleBackground>
-	<div class="head">
-		<h1 class="title" style="font-size: 10em">frii.site</h1>
-		<p class="tagline">{$t("index_tagline")}</p>
-		<div class="buttons">
-			<Button on:click={() => (window.location.href = "/account")} args="padding fill margin"
-				><p class="button-text">{$t("index_register_account")}</p></Button>
-			<Button
-				on:click={() => (window.location.href = "/dashboard")}
-				args="padding fill margin secondary"
-				><p class="button-text">{$t("index_goto_dashboard")}</p></Button>
-		</div>
-	</div>
-	<div class="introduction-wrapper">
-		<div class="center">
-			<h1 style="font-size: 5em; margin-bottom: 0px;">
-				<strong>{$t("index_aboutus")}</strong>
-			</h1>
-			<hr style="width: 50%;opacity: 0.1; height: 4px;" />
-			<p class="description" style="margin-top: 10px;">
-				{@html $t("index_aboutus_description")}
-			</p>
-		</div>
-		<div class="left">
-			<h2>
-				<span class="material-symbols-outlined">lock_open_right</span>{$t(
-					"index_tp_freedom"
-				)}
-			</h2>
-			<p>{$t("index_tp_freedom_desc")}</p>
-		</div>
-		<div class="right">
-			<h2><span class="material-symbols-outlined">lock</span>{$t("index_tp_security")}</h2>
-			<p>{$t("index_tp_security_desc")}</p>
-		</div>
-		<div class="bottom-left">
-			<h2><span class="material-symbols-outlined">support</span>{$t("index_tp_support")}</h2>
-			<p>{$t("index_tp_support_desc")}</p>
-		</div>
-		<div class="bottom-right">
-			<h2>
-				<span class="material-symbols-outlined">encrypted</span>{$t("index_tp_privacy")}
-			</h2>
-			<p>{$t("index_tp_privacy_desc")}</p>
-		</div>
-	</div>
-	<div class="reviews">
-		<h1 style="font-size: 3em;">{$t("index_reviews")}</h1>
-		<div class="review-cards">
-			{#each reviews as review, index}
-				<Review
-					descrption={review.description}
-					author={review.author}
-					stars={review.stars}
-					index={index} />
-			{/each}
-		</div>
-	</div>
-	{#if blogsShouldBeShown}
-		<div class="blogs">
-			<h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">
-				Latest updates
-			</h3>
-			<div class="latest-releases">
-				{#each blogs as blog}
-					<BlogCard
-						title={blog.title}
-						description={blog.body}
-						date={blog.date}
-						url={blog.url} />
-				{/each}
-			</div>
-		</div>
-	{/if}
-	<div class="bottom-hooker">
-		<h1>{$t("index_bottom_hook")}</h1>
-		<p>{$t("index_bottom_hook_desc")}</p>
-		<div class="button-hook">
-			<Button on:click={() => (window.location.href = "/account")} args="padding fill margin"
-				><p class="button-text">{$t("index_register_account")}</p></Button>
-		</div>
-	</div>
-	<Footer />
-</BubbleBackground>

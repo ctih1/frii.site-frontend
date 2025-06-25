@@ -1,3 +1,11 @@
+<script lang="ts">
+</script>
+
+<div role="tooltip" class="tooltip">
+	<span class="material-symbols-outlined">info</span>
+	<span class="tooltiptext"><slot /></span>
+</div>
+
 <style>
 	.tooltip {
 		position: relative;
@@ -27,11 +35,3 @@
 		opacity: 1;
 	}
 </style>
-
-<script lang="ts">
-</script>
-
-<div role="tooltip" class="tooltip">
-	<span class="material-symbols-outlined">info</span>
-	<span class="tooltiptext"><slot /></span>
-</div>

@@ -1,16 +1,3 @@
-<style>
-	.locale * {
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
-	}
-	.locale {
-		border-radius: 0.5em;
-		background-color: var(--offwhite-color);
-		padding: 1em;
-		margin: 1em 0em 0em 0em;
-	}
-</style>
-
 <script lang="ts">
 	import Placeholder from "$lib/components/Placeholder.svelte"
 	import Holder from "$lib/components/Holder.svelte"
@@ -53,3 +40,16 @@
 		{/each}
 	{/if}
 </Holder>
+
+<style>
+	.locale * {
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+	}
+	.locale {
+		border-radius: 0.5em;
+		background-color: var(--offwhite-color);
+		padding: 1em;
+		margin: 1em 0em 0em 0em;
+	}
+</style>

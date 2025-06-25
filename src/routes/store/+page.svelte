@@ -1,17 +1,3 @@
-<style>
-	.shop {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		grid-template-rows: repeat(auto, auto);
-	}
-
-	@media (orientation: portrait) {
-		.shop {
-			grid-template-columns: repeat(1, 1fr);
-		}
-	}
-</style>
-
 <script lang="ts">
 	import Modal from "$lib/components/Modal.svelte"
 	import Button from "$lib/components/Button.svelte"
@@ -76,3 +62,17 @@
 		<Placeholder />
 	</Holder>
 {/if}
+
+<style>
+	.shop {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(auto, auto);
+	}
+
+	@media (orientation: portrait) {
+		.shop {
+			grid-template-columns: repeat(1, 1fr);
+		}
+	}
+</style>

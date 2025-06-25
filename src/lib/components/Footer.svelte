@@ -1,34 +1,3 @@
-<style>
-	.footer {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: repeat(auto, 1fr);
-		max-width: 100vw;
-		width: 100%;
-		padding-bottom: 2em;
-		text-align: center;
-		background-color: var(--offwhite-color);
-	}
-	.footer * {
-		display: flex;
-		flex-direction: column;
-	}
-	a {
-		color: white;
-		text-decoration: underline;
-		width: fit-content;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	@media (orientation: portrait) {
-		.footer {
-			display: flex;
-			flex-direction: column;
-		}
-	}
-</style>
-
 <script lang="ts">
 	import { t } from "$lib/translations"
 	import { serverURL } from "../../serverContactor"
@@ -73,3 +42,34 @@
 		<p style="margin: 0px;">Built {time}</p>
 	</div>
 </div>
+
+<style>
+	.footer {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(auto, 1fr);
+		max-width: 100vw;
+		width: 100%;
+		padding-bottom: 2em;
+		text-align: center;
+		background-color: var(--offwhite-color);
+	}
+	.footer * {
+		display: flex;
+		flex-direction: column;
+	}
+	a {
+		color: white;
+		text-decoration: underline;
+		width: fit-content;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	@media (orientation: portrait) {
+		.footer {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+</style>

@@ -1,3 +1,20 @@
+<script lang="ts">
+	import { createEventDispatcher } from "svelte"
+	let checked: boolean
+	export let initial: boolean
+	checked = initial
+	const dispatch = createEventDispatcher()
+
+	function change() {
+		dispatch("change", !checked)
+	}
+</script>
+
+<label class="switch">
+	<input on:change={change} bind:checked={checked} type="checkbox" />
+	<span class="slider round"></span>
+</label>
+
 <style>
 	.switch {
 		position: relative;
@@ -56,20 +73,3 @@
 		border-radius: 50%;
 	}
 </style>
-
-<script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	let checked: boolean
-	export let initial: boolean
-	checked = initial
-	const dispatch = createEventDispatcher()
-
-	function change() {
-		dispatch("change", !checked)
-	}
-</script>
-
-<label class="switch">
-	<input on:change={change} bind:checked={checked} type="checkbox" />
-	<span class="slider round"></span>
-</label>

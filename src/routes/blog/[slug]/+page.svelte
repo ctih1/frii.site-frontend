@@ -1,27 +1,3 @@
-<style>
-	@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
-	p {
-		display: flex;
-		align-items: center;
-	}
-	.data * {
-		margin-bottom: 0px;
-		margin-top: 0px;
-	}
-	.material-symbols-outlined {
-		margin-right: 10px;
-	}
-
-	.md :global(em) {
-		background-color: var(--offwhite-color);
-	}
-	.md :global(code) {
-		background-color: var(--offwhite-color);
-		font-family: "Fira Code", monospace;
-		font-weight: 500;
-	}
-</style>
-
 <script lang="ts">
 	import Markdown from "@magidoc/plugin-svelte-marked"
 
@@ -73,3 +49,27 @@
 		<Markdown source={source} />
 	</div>
 </Holder>
+
+<style>
+	@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+	p {
+		display: flex;
+		align-items: center;
+	}
+	.data * {
+		margin-bottom: 0px;
+		margin-top: 0px;
+	}
+	.material-symbols-outlined {
+		margin-right: 10px;
+	}
+
+	.md :global(em) {
+		background-color: var(--offwhite-color);
+	}
+	.md :global(code) {
+		background-color: var(--offwhite-color);
+		font-family: "Fira Code", monospace;
+		font-weight: 500;
+	}
+</style>

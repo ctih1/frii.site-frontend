@@ -1,28 +1,3 @@
-<style>
-	.form-item {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.flex {
-		display: flex;
-		flex-direction: row;
-		align-items: start;
-	}
-	.permissions {
-		height: max-content;
-		display: flex;
-		flex-direction: row;
-	}
-	.flex * {
-		margin-top: 0px;
-		margin-left: 0.25em;
-		margin-right: 0.25em;
-	}
-	@media (max-width: 1220px) {
-	}
-</style>
-
 <script lang="ts">
 	import { getAuthToken } from "$lib"
 
@@ -206,3 +181,28 @@
 			>{$t("api_dashboard_create_button")}</Button>
 	</form>
 </Holder>
+
+<style>
+	.form-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.flex {
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+	}
+	.permissions {
+		height: max-content;
+		display: flex;
+		flex-direction: row;
+	}
+	.flex * {
+		margin-top: 0px;
+		margin-left: 0.25em;
+		margin-right: 0.25em;
+	}
+	@media (max-width: 1220px) {
+	}
+</style>

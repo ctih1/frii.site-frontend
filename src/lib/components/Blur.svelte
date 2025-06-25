@@ -1,28 +1,3 @@
-<style>
-	.blur {
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		height: 100vh;
-		width: 0vw;
-		z-index: 9;
-	}
-	@keyframes pulse {
-		0% {
-			backdrop-filter: blur(8px);
-			-webkit-backdrop-filter: blur(8px);
-		}
-		50% {
-			backdrop-filter: blur(16px);
-			-webkit-backdrop-filter: blur(16px);
-		}
-		100% {
-			backdrop-filter: blur(8px);
-			-webkit-backdrop-filter: blur(8px);
-		}
-	}
-</style>
-
 <script lang="ts">
 	let blur: HTMLDivElement
 	export let reverse: boolean = false
@@ -65,3 +40,28 @@
 </script>
 
 <div bind:this={blur} class="blur"></div>
+
+<style>
+	.blur {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100vh;
+		width: 0vw;
+		z-index: 9;
+	}
+	@keyframes pulse {
+		0% {
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+		}
+		50% {
+			backdrop-filter: blur(16px);
+			-webkit-backdrop-filter: blur(16px);
+		}
+		100% {
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+		}
+	}
+</style>

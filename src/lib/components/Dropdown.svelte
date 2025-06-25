@@ -1,3 +1,71 @@
+<script lang="ts">
+	import { onMount } from "svelte"
+	import { createEventDispatcher } from "svelte"
+	const dispatch = createEventDispatcher()
+	export let options: Array<String>
+	export let defaultValue: string
+	export let disabled: boolean
+	let toggled: boolean = false
+	let dropdown: HTMLDivElement
+	let button: HTMLButtonElement
+	let value: string = defaultValue
+	let selected: String
+	export let args: string | null = null
+	onMount(() => {
+		if (disabled) {
+			button.onclick = null
+		}
+	})
+
+	export function toggleDisable() {
+		if (!disabled) {
+			button.onclick = toggleDropdown
+			dropdown.style.display = "none"
+			toggled = false
+		} else {
+			button.onclick = null
+		}
+		disabled = !disabled
+	}
+
+	function toggleDropdown(): void {
+		dispatch("click")
+		if (!toggled) {
+			dropdown.style.display = "block"
+		} else {
+			dropdown.style.display = "none"
+		}
+		toggled = !toggled
+	}
+	function onDropdownChange(element: String): void {
+		dispatch("optionchange", element)
+		selected = element
+		value = element.toString()
+		toggleDropdown()
+	}
+	export function getValue(): string {
+		return selected.toString()
+	}
+</script>
+
+<div class="dropdown">
+	<button
+		class="dropdown-button {args}"
+		type="button"
+		bind:this={button}
+		on:click={() => toggleDropdown()}
+		>{value}<span class="material-symbols-outlined">arrow_drop_up</span></button>
+	<div on:blur={() => toggleDropdown()} class="dropdown-content" bind:this={dropdown}>
+		<ul>
+			{#each options as option}
+				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<li on:click={() => onDropdownChange(option)}>{@html option}</li>
+			{/each}
+		</ul>
+	</div>
+</div>
+
 <style>
 	@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 	li:not(:hover) {
@@ -67,71 +135,3 @@
 		color: white;
 	}
 </style>
-
-<script lang="ts">
-	import { onMount } from "svelte"
-	import { createEventDispatcher } from "svelte"
-	const dispatch = createEventDispatcher()
-	export let options: Array<String>
-	export let defaultValue: string
-	export let disabled: boolean
-	let toggled: boolean = false
-	let dropdown: HTMLDivElement
-	let button: HTMLButtonElement
-	let value: string = defaultValue
-	let selected: String
-	export let args: string | null = null
-	onMount(() => {
-		if (disabled) {
-			button.onclick = null
-		}
-	})
-
-	export function toggleDisable() {
-		if (!disabled) {
-			button.onclick = toggleDropdown
-			dropdown.style.display = "none"
-			toggled = false
-		} else {
-			button.onclick = null
-		}
-		disabled = !disabled
-	}
-
-	function toggleDropdown(): void {
-		dispatch("click")
-		if (!toggled) {
-			dropdown.style.display = "block"
-		} else {
-			dropdown.style.display = "none"
-		}
-		toggled = !toggled
-	}
-	function onDropdownChange(element: String): void {
-		dispatch("optionchange", element)
-		selected = element
-		value = element.toString()
-		toggleDropdown()
-	}
-	export function getValue(): string {
-		return selected.toString()
-	}
-</script>
-
-<div class="dropdown">
-	<button
-		class="dropdown-button {args}"
-		type="button"
-		bind:this={button}
-		on:click={() => toggleDropdown()}
-		>{value}<span class="material-symbols-outlined">arrow_drop_up</span></button>
-	<div on:blur={() => toggleDropdown()} class="dropdown-content" bind:this={dropdown}>
-		<ul>
-			{#each options as option}
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li on:click={() => onDropdownChange(option)}>{@html option}</li>
-			{/each}
-		</ul>
-	</div>
-</div>

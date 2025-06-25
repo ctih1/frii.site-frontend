@@ -1,3 +1,81 @@
+<script lang="ts">
+	import { navigating } from "$app/stores"
+	import Holder from "$lib/components/Holder.svelte"
+	import Ads from "$lib/components/Ads.svelte"
+	import NProgress from "nprogress"
+	import Header from "$lib/components/Header.svelte"
+	import Button from "$lib/components/Button.svelte"
+	import Analytics from "$lib/components/Analytics.svelte"
+	import "$lib/nprogress.css"
+	import { UserError } from "$lib"
+	import { browser } from "$app/environment"
+	import Error from "./+error.svelte"
+	import { onMount } from "svelte"
+
+	let { children } = $props()
+
+	let userRespectsPrivacyInsane = $state(false)
+	let userDoesntCareAndWantsAdblock = $state(false)
+
+	NProgress.configure({
+		minimum: 0.6,
+		trickle: true,
+		trickleSpeed: 200
+	})
+
+	$effect(() => {
+		if ($navigating) {
+			NProgress.start()
+		}
+		if (!$navigating) {
+			NProgress.done()
+			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString())
+		}
+
+		console.log(userRespectsPrivacyInsane)
+	})
+
+	onMount(() => {
+		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null
+
+		if (!userDoesntCareAndWantsAdblock) {
+			fetch("https://mc.yandex.ru/metrika/tag.js")
+				.then(() => {
+					userRespectsPrivacyInsane = false
+				})
+				.catch(() => {
+					userRespectsPrivacyInsane = true
+				})
+		}
+	})
+
+	function userDoesntWantToSupportUs() {
+		// :(
+		localStorage.setItem("adblock-warn-surpress", "yes")
+		userDoesntCareAndWantsAdblock = true
+	}
+</script>
+
+{#if userRespectsPrivacyInsane && !userDoesntCareAndWantsAdblock}
+	<Holder>
+		<h1>Hello dear Adblock enthusiast</h1>
+		<p>
+			Looks like you're using an adblocker. That's okay. Press 'Ignore' if you don't want to
+			support us.
+		</p>
+		<div class="holder" style="height: 2em;">
+			<Button args="padding" on:click={() => userDoesntWantToSupportUs()}>Ignore</Button>
+		</div>
+	</Holder>
+{/if}
+<Header />
+<Analytics />
+<Ads></Ads>
+<svelte:head></svelte:head>
+<main>
+	{@render children()}
+</main>
+
 <style>
 	:root {
 		--primary: rgb(0, 123, 255);
@@ -83,81 +161,3 @@
 		background-color: var(--offwhite-color);
 	}
 </style>
-
-<script lang="ts">
-	import { navigating } from "$app/stores"
-	import Holder from "$lib/components/Holder.svelte"
-	import Ads from "$lib/components/Ads.svelte"
-	import NProgress from "nprogress"
-	import Header from "$lib/components/Header.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Analytics from "$lib/components/Analytics.svelte"
-	import "$lib/nprogress.css"
-	import { UserError } from "$lib"
-	import { browser } from "$app/environment"
-	import Error from "./+error.svelte"
-	import { onMount } from "svelte"
-
-	let { children } = $props()
-
-	let userRespectsPrivacyInsane = $state(false)
-	let userDoesntCareAndWantsAdblock = $state(false)
-
-	NProgress.configure({
-		minimum: 0.6,
-		trickle: true,
-		trickleSpeed: 200
-	})
-
-	$effect(() => {
-		if ($navigating) {
-			NProgress.start()
-		}
-		if (!$navigating) {
-			NProgress.done()
-			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString())
-		}
-
-		console.log(userRespectsPrivacyInsane)
-	})
-
-	onMount(() => {
-		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null
-
-		if (!userDoesntCareAndWantsAdblock) {
-			fetch("https://mc.yandex.ru/metrika/tag.js")
-				.then(() => {
-					userRespectsPrivacyInsane = false
-				})
-				.catch(() => {
-					userRespectsPrivacyInsane = true
-				})
-		}
-	})
-
-	function userDoesntWantToSupportUs() {
-		// :(
-		localStorage.setItem("adblock-warn-surpress", "yes")
-		userDoesntCareAndWantsAdblock = true
-	}
-</script>
-
-{#if userRespectsPrivacyInsane && !userDoesntCareAndWantsAdblock}
-	<Holder>
-		<h1>Hello dear Adblock enthusiast</h1>
-		<p>
-			Looks like you're using an adblocker. That's okay. Press 'Ignore' if you don't want to
-			support us.
-		</p>
-		<div class="holder" style="height: 2em;">
-			<Button args="padding" on:click={() => userDoesntWantToSupportUs()}>Ignore</Button>
-		</div>
-	</Holder>
-{/if}
-<Header />
-<Analytics />
-<Ads></Ads>
-<svelte:head></svelte:head>
-<main>
-	{@render children()}
-</main>

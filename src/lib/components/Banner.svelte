@@ -1,25 +1,3 @@
-<style>
-	.bar {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		background-color: var(--primary);
-		min-width: 100vw;
-		width: 100%;
-		top: 0px;
-		left: 0px;
-	}
-	.bar * {
-		color: white;
-	}
-	a {
-		cursor: pointer;
-		margin-left: auto;
-		margin-right: 2em;
-		font-size: 1em;
-	}
-</style>
-
 <script lang="ts">
 	import { get } from "svelte/store"
 	import { getStatus } from "../../serverContactor"
@@ -62,3 +40,25 @@
 	</div>
 	<div style="height: {height}px" class="pusher"></div>
 {/if}
+
+<style>
+	.bar {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		background-color: var(--primary);
+		min-width: 100vw;
+		width: 100%;
+		top: 0px;
+		left: 0px;
+	}
+	.bar * {
+		color: white;
+	}
+	a {
+		cursor: pointer;
+		margin-left: auto;
+		margin-right: 2em;
+		font-size: 1em;
+	}
+</style>

@@ -1,28 +1,3 @@
-<style>
-	form {
-		display: flex;
-		flex-direction: column;
-		height: fit-content;
-	}
-	form input {
-		margin-top: 0.25em;
-		margin-bottom: 0.25em;
-	}
-	input {
-		height: 3em;
-		font-size: 16px;
-	}
-	.button-holder {
-		height: 2em;
-	}
-	a {
-		font-size: 0.75em;
-	}
-	a:hover {
-		cursor: pointer;
-	}
-</style>
-
 <script lang="ts">
 	import { browser, dev } from "$app/environment"
 	import { page } from "$app/stores"
@@ -254,3 +229,28 @@
 	description=""
 	title=""
 	options={["Continue"]}></Modal>
+
+<style>
+	form {
+		display: flex;
+		flex-direction: column;
+		height: fit-content;
+	}
+	form input {
+		margin-top: 0.25em;
+		margin-bottom: 0.25em;
+	}
+	input {
+		height: 3em;
+		font-size: 16px;
+	}
+	.button-holder {
+		height: 2em;
+	}
+	a {
+		font-size: 0.75em;
+	}
+	a:hover {
+		cursor: pointer;
+	}
+</style>

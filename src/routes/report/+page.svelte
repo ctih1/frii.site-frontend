@@ -1,13 +1,3 @@
-<style>
-	.options {
-		display: flex;
-		flex-direction: column;
-	}
-	.options * {
-		margin-top: 1em;
-	}
-</style>
-
 <script lang="ts">
 	import Holder from "$lib/components/Holder.svelte"
 </script>
@@ -20,3 +10,13 @@
 		<a href="https://forms.gle/Ct7fLpkMHSk2zqJdA">Abuse</a>
 	</div>
 </Holder>
+
+<style>
+	.options {
+		display: flex;
+		flex-direction: column;
+	}
+	.options * {
+		margin-top: 1em;
+	}
+</style>

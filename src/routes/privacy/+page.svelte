@@ -61,8 +61,8 @@
 	<p>
 		<strong
 			>In what situations and with which types of parties do we share personal information?</strong>
-		We may share information in specific situations and with specific categories of third
-		parties. Learn more about
+		We may share information in specific situations and with specific categories of third parties.
+		Learn more about
 		<a href="#whoshare">when and with whom we share your personal information</a> .
 	</p>
 	<p>

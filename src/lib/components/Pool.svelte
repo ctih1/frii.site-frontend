@@ -1,3 +1,40 @@
+<script lang="ts">
+	import Button from "./Button.svelte"
+	import { createEventDispatcher } from "svelte"
+	let dispatcher = createEventDispatcher()
+	export let items: { displayText: string; valueText: string }[]
+
+	export function addItem(item: { displayText: string; valueText: string }): void {
+		items.push(item)
+		items = [...items]
+	}
+	export function removeItem(target: { displayText: string; valueText: string }): void {
+		items = items.filter(function (item) {
+			return item != target
+		})
+		dispatcher("remove", target)
+	}
+	export function get(): { displayText: string; valueText: string }[] {
+		return items
+	}
+</script>
+
+{#if items.length != 0}
+	<div class="box">
+		<div class="items">
+			{#each items as item}
+				<div class="item">
+					<p>{item.displayText}</p>
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<span on:click={() => removeItem(item)} class="material-symbols-outlined"
+						>cancel</span>
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}
+
 <style>
 	.box {
 		transition: all 0.3s;
@@ -45,40 +82,3 @@
 		cursor: pointer;
 	}
 </style>
-
-<script lang="ts">
-	import Button from "./Button.svelte"
-	import { createEventDispatcher } from "svelte"
-	let dispatcher = createEventDispatcher()
-	export let items: { displayText: string; valueText: string }[]
-
-	export function addItem(item: { displayText: string; valueText: string }): void {
-		items.push(item)
-		items = [...items]
-	}
-	export function removeItem(target: { displayText: string; valueText: string }): void {
-		items = items.filter(function (item) {
-			return item != target
-		})
-		dispatcher("remove", target)
-	}
-	export function get(): { displayText: string; valueText: string }[] {
-		return items
-	}
-</script>
-
-{#if items.length != 0}
-	<div class="box">
-		<div class="items">
-			{#each items as item}
-				<div class="item">
-					<p>{item.displayText}</p>
-					<!-- svelte-ignore a11y-no-static-element-interactions -->
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<span on:click={() => removeItem(item)} class="material-symbols-outlined"
-						>cancel</span>
-				</div>
-			{/each}
-		</div>
-	</div>
-{/if}

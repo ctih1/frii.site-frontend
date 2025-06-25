@@ -1,38 +1,3 @@
-<style>
-	.grid {
-		display: grid;
-		gap: 1em;
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: 1fr auto;
-		grid-auto-rows: auto;
-	}
-
-	.flex {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.key {
-		background-color: var(--offwhite-color);
-		border-radius: 0.5em;
-		padding: 1em;
-		margin: 1em 0em 0em 0em;
-		opacity: 0.7;
-	}
-	.key input {
-		height: 3em;
-	}
-	.key:hover {
-		opacity: 1;
-	}
-	.reference::before {
-		content: '"';
-	}
-	.reference::after {
-		content: '"';
-	}
-</style>
-
 <script lang="ts">
 	import { onMount } from "svelte"
 	import { AuthError, ServerContactor } from "./../../../serverContactor"
@@ -163,3 +128,38 @@
 	<Button on:click={() => handleClick()} args="fill padding argin-1em-top"
 		>{$t("security_report_submit")}</Button>
 </Holder>
+
+<style>
+	.grid {
+		display: grid;
+		gap: 1em;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: 1fr auto;
+		grid-auto-rows: auto;
+	}
+
+	.flex {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.key {
+		background-color: var(--offwhite-color);
+		border-radius: 0.5em;
+		padding: 1em;
+		margin: 1em 0em 0em 0em;
+		opacity: 0.7;
+	}
+	.key input {
+		height: 3em;
+	}
+	.key:hover {
+		opacity: 1;
+	}
+	.reference::before {
+		content: '"';
+	}
+	.reference::after {
+		content: '"';
+	}
+</style>

@@ -1,3 +1,5 @@
+<div class="spinner"></div>
+
 <style>
 	.spinner {
 		border: 0.5em solid var(--secondary-color);
@@ -22,5 +24,3 @@
 		}
 	}
 </style>
-
-<div class="spinner"></div>

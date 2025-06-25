@@ -1,31 +1,3 @@
-<style>
-	.bubble {
-		transition: all 15s linear;
-		aspect-ratio: 1;
-		position: absolute;
-		width: 100%;
-		background-color: var(--primary);
-		border-radius: 100%;
-		opacity: 0.02;
-		z-index: 0;
-	}
-	.circles {
-		pointer-events: none;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		height: 100%;
-		width: 100%;
-		overflow: hidden;
-	}
-
-	.balls {
-		min-height: 100vh;
-		width: 100vw;
-		height: 100%;
-	}
-</style>
-
 <script lang="ts">
 	import { browser } from "$app/environment"
 	let balls = $state(randomLocations())
@@ -58,3 +30,31 @@
 		<slot></slot>
 	</div>
 </div>
+
+<style>
+	.bubble {
+		transition: all 15s linear;
+		aspect-ratio: 1;
+		position: absolute;
+		width: 100%;
+		background-color: var(--primary);
+		border-radius: 100%;
+		opacity: 0.02;
+		z-index: 0;
+	}
+	.circles {
+		pointer-events: none;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.balls {
+		min-height: 100vh;
+		width: 100vw;
+		height: 100%;
+	}
+</style>

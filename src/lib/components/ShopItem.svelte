@@ -1,11 +1,3 @@
-<style>
-	.shop-item {
-		background-color: var(--offwhite-color);
-		padding: 20px;
-		border-radius: 0.5em;
-	}
-</style>
-
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 	import { t, addArguements } from "$lib/translations"
@@ -28,3 +20,11 @@
 	</p>
 	<Button on:click={() => onItemPurchase()} args="padding fill height-unset">Purchase</Button>
 </div>
+
+<style>
+	.shop-item {
+		background-color: var(--offwhite-color);
+		padding: 20px;
+		border-radius: 0.5em;
+	}
+</style>

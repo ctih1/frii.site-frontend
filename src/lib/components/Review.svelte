@@ -1,3 +1,25 @@
+<script lang="ts">
+	export let descrption: string
+	export let author: string
+	export let stars: number
+	export let index: number // how many nth is the card? meant for rotation
+
+	function calculateRotation(): number {
+		return (index + 1) * 3 * (index % 2 ? -1 : 1) // aw man
+	}
+</script>
+
+<div style={`transform: rotate(${calculateRotation()}deg)`} class="wrapper">
+	<h1>{author}</h1>
+	<p class="description"><i>{descrption}</i></p>
+	<div class="stars">
+		{#each Array(5) as _, index}
+			<span class={`material-symbols-outlined ${index < stars ? "starred" : "not-active"} `}
+				>star</span>
+		{/each}
+	</div>
+</div>
+
 <style>
 	.description::before {
 		content: "“";
@@ -46,25 +68,3 @@
 		}
 	}
 </style>
-
-<script lang="ts">
-	export let descrption: string
-	export let author: string
-	export let stars: number
-	export let index: number // how many nth is the card? meant for rotation
-
-	function calculateRotation(): number {
-		return (index + 1) * 3 * (index % 2 ? -1 : 1) // aw man
-	}
-</script>
-
-<div style={`transform: rotate(${calculateRotation()}deg)`} class="wrapper">
-	<h1>{author}</h1>
-	<p class="description"><i>{descrption}</i></p>
-	<div class="stars">
-		{#each Array(5) as _, index}
-			<span class={`material-symbols-outlined ${index < stars ? "starred" : "not-active"} `}
-				>star</span>
-		{/each}
-	</div>
-</div>

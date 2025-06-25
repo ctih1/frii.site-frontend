@@ -1,44 +1,3 @@
-<style>
-	.points {
-		display: flex;
-		width: 100%;
-		justify-content: space-evenly;
-	}
-	.point {
-		flex-basis: 100%;
-		align-items: center;
-		text-align: center;
-	}
-	.ball {
-		max-width: 10vh;
-		aspect-ratio: 1;
-		border-radius: 100%;
-		background-color: var(--background-color);
-		margin-left: auto;
-		margin-right: auto;
-		opacity: 1;
-	}
-	.ball-clone {
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		background-color: inherit;
-	}
-	.checked {
-		background-color: var(--primary);
-	}
-	.line {
-		transition: width 0.3s;
-		position: absolute;
-		height: 3px;
-		background-color: black;
-		opacity: 0.5;
-	}
-	.progress-line {
-		opacity: 0.1;
-	}
-</style>
-
 <script lang="ts">
 	export let points: Array<string>
 	let margin: number = 10
@@ -89,3 +48,44 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	.points {
+		display: flex;
+		width: 100%;
+		justify-content: space-evenly;
+	}
+	.point {
+		flex-basis: 100%;
+		align-items: center;
+		text-align: center;
+	}
+	.ball {
+		max-width: 10vh;
+		aspect-ratio: 1;
+		border-radius: 100%;
+		background-color: var(--background-color);
+		margin-left: auto;
+		margin-right: auto;
+		opacity: 1;
+	}
+	.ball-clone {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		background-color: inherit;
+	}
+	.checked {
+		background-color: var(--primary);
+	}
+	.line {
+		transition: width 0.3s;
+		position: absolute;
+		height: 3px;
+		background-color: black;
+		opacity: 0.5;
+	}
+	.progress-line {
+		opacity: 0.1;
+	}
+</style>

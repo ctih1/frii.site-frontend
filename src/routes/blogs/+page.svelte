@@ -1,6 +1,3 @@
-<style>
-</style>
-
 <script lang="ts">
 	import { onMount } from "svelte"
 	import { error } from "@sveltejs/kit"
@@ -47,3 +44,6 @@
 			url={blog.url} />
 	{/each}
 </Holder>
+
+<style>
+</style>

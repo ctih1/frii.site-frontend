@@ -1,23 +1,3 @@
-<style>
-	:global(.blogcard-body *) {
-		font-size: 1em;
-	}
-	.wrapper {
-		border: 2px solid var(--offwhite-color);
-		background-color: var(--offwhite-color);
-		border-radius: 0.5em;
-		padding: 1em;
-		z-index: 15;
-		border-left: 10px solid var(--primary);
-	}
-	.border-hidden {
-		border: 0px !important;
-		box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-		margin: 20px;
-		background-color: var(--offwhite-color);
-	}
-</style>
-
 <script lang="ts">
 	import { serverURL } from "../../serverContactor"
 	import { t } from "$lib/translations"
@@ -39,3 +19,23 @@
 	</div>
 	<a href={`/blog/${url}`}>{$t("blog_read")}</a>
 </div>
+
+<style>
+	:global(.blogcard-body *) {
+		font-size: 1em;
+	}
+	.wrapper {
+		border: 2px solid var(--offwhite-color);
+		background-color: var(--offwhite-color);
+		border-radius: 0.5em;
+		padding: 1em;
+		z-index: 15;
+		border-left: 10px solid var(--primary);
+	}
+	.border-hidden {
+		border: 0px !important;
+		box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+		margin: 20px;
+		background-color: var(--offwhite-color);
+	}
+</style>

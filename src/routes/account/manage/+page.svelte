@@ -1,68 +1,3 @@
-<style>
-	.buttons div {
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
-	}
-	.switch {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-	}
-	.switch * {
-		width: fit-content;
-	}
-	.switch p {
-		margin-right: 1em;
-	}
-	verified {
-		align-items: center;
-		justify-content: center;
-		display: flex;
-		background-color: var(--primary);
-		border-radius: 50%;
-		height: 1.5em;
-		width: 1.5em;
-	}
-	verified span {
-		color: white;
-	}
-	#username {
-		overflow-wrap: break-word;
-		word-break: break-all;
-	}
-	.permission {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-
-	.session {
-		width: fit-content;
-		border-radius: 0.5em;
-		padding: 0.5em;
-		margin-top: 1em;
-		margin-bottom: 1em;
-		background-color: var(--secondary-color);
-	}
-	.session-header {
-		display: flex;
-		align-items: center;
-		margin-top: 0px;
-		margin-bottom: 0px;
-	}
-	.ip {
-		margin-top: 0px;
-	}
-
-	@media (orientation: portrait) {
-		.invite {
-			margin-left: auto;
-			margin-right: auto;
-			width: 90%;
-		}
-	}
-</style>
-
 <script lang="ts">
 	import { dev } from "$app/environment"
 	import { browser } from "$app/environment"
@@ -462,3 +397,68 @@
 	options={[$t("continue_modal")]}
 	title={""}
 	description={""}></Modal>
+
+<style>
+	.buttons div {
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+	}
+	.switch {
+		align-items: center;
+		display: flex;
+		flex-direction: row;
+	}
+	.switch * {
+		width: fit-content;
+	}
+	.switch p {
+		margin-right: 1em;
+	}
+	verified {
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		background-color: var(--primary);
+		border-radius: 50%;
+		height: 1.5em;
+		width: 1.5em;
+	}
+	verified span {
+		color: white;
+	}
+	#username {
+		overflow-wrap: break-word;
+		word-break: break-all;
+	}
+	.permission {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.session {
+		width: fit-content;
+		border-radius: 0.5em;
+		padding: 0.5em;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		background-color: var(--secondary-color);
+	}
+	.session-header {
+		display: flex;
+		align-items: center;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	.ip {
+		margin-top: 0px;
+	}
+
+	@media (orientation: portrait) {
+		.invite {
+			margin-left: auto;
+			margin-right: auto;
+			width: 90%;
+		}
+	}
+</style>

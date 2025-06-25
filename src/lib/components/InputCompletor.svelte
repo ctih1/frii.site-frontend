@@ -1,52 +1,3 @@
-<style>
-	.choices {
-		visibility: hidden;
-	}
-	.choice-list {
-		transition: all 0.3s;
-		list-style: none;
-		padding: 0px;
-		margin: 0px;
-		padding-top: 2px;
-		background-color: var(--offwhite-color);
-		border-radius: 0.5em;
-		border-top-left-radius: 0em;
-		border-top-right-radius: 0em;
-		filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5));
-	}
-	.choice-list:first {
-		background-color: var(--primary);
-	}
-	li {
-		border-radius: 0.25em;
-		padding-left: 2px;
-		padding-right: 2px;
-		box-shadow: 0px 10px 42px -18px rgba(0, 0, 0, 0.75);
-		margin: 0.25em;
-	}
-
-	li:hover {
-		cursor: pointer;
-	}
-	input:focus + ul {
-		background-color: black;
-	}
-
-	.selected {
-		background-color: var(--primary);
-		color: white;
-	}
-
-	li {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	input {
-		height: 2em;
-	}
-</style>
-
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 	interface choices {
@@ -181,3 +132,52 @@
 		<!-- Fixes selte issue where selected class isnt rendered because its unused-->
 	</div>
 {/if}
+
+<style>
+	.choices {
+		visibility: hidden;
+	}
+	.choice-list {
+		transition: all 0.3s;
+		list-style: none;
+		padding: 0px;
+		margin: 0px;
+		padding-top: 2px;
+		background-color: var(--offwhite-color);
+		border-radius: 0.5em;
+		border-top-left-radius: 0em;
+		border-top-right-radius: 0em;
+		filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5));
+	}
+	.choice-list:first {
+		background-color: var(--primary);
+	}
+	li {
+		border-radius: 0.25em;
+		padding-left: 2px;
+		padding-right: 2px;
+		box-shadow: 0px 10px 42px -18px rgba(0, 0, 0, 0.75);
+		margin: 0.25em;
+	}
+
+	li:hover {
+		cursor: pointer;
+	}
+	input:focus + ul {
+		background-color: black;
+	}
+
+	.selected {
+		background-color: var(--primary);
+		color: white;
+	}
+
+	li {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	input {
+		height: 2em;
+	}
+</style>
