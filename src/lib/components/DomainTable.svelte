@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { domainAmount } from "$lib/store";
-	import { t } from "$lib/translations";
 	import { createEventDispatcher } from "svelte";
+	import { m } from "../../paraglide/messages";
 	import Button from "./Button.svelte";
 	import Dropdown from "./Dropdown.svelte";
 	import Modal from "./Modal.svelte";
@@ -47,10 +47,10 @@
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 15%; min-width: 90px;">{$t("dashboardt_record")}</th>
-				<th>{$t("dashboardt_content")}</th>
-				<th style="width: 25%;">{$t("dashboardt_value")}</th>
-				<th style="width:20%; min-width:160px;">{$t("dashboardt_manage")}</th>
+				<th style="width: 15%; min-width: 90px;">{m.dashboardt_record()}</th>
+				<th>{m.dashboardt_content()}</th>
+				<th style="width: 25%;">{m.dashboardt_value()}</th>
+				<th style="width:20%; min-width:160px;">{m.dashboardt_manage()}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -123,8 +123,8 @@
 	<table>
 		<thead>
 			<tr>
-				<th>{$t("dashboardt_content")}</th>
-				<th style="width: 25%">{$t("dashboardt_manage")}</th>
+				<th>{m.dashboardt_content()}</th>
+				<th style="width: 25%">{m.dashboardt_manage()}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -177,7 +177,7 @@
 								opened.set(index, !opened.get(index));
 								openedModified++;
 							}}
-							args={"fill side-margin capitalize"}>{$t("dashboardt_manage")}</Button>
+							args={"fill side-margin capitalize"}>{m.dashboardt_manage()}</Button>
 					</td>
 				</tr>
 				{#key openedModified}

@@ -1,14 +1,13 @@
 <script lang="ts">
+	import { createEventDispatcher, onMount } from "svelte";
+	import { m } from "../../paraglide/messages";
 	import { resendEmail } from "./../../serverContactor";
-	import { onMount } from "svelte";
 	import Button from "./Button.svelte";
-	import { t } from "$lib/translations";
-	import { createEventDispatcher } from "svelte";
 	const dispatch = createEventDispatcher();
 	export let countdown: number | undefined = undefined;
 	export let description: string = "";
 	export let title: string = "";
-	export let options: Array<string> = [$t("continue_modal")];
+	export let options: Array<string> = [m.continue_modal()];
 	export let overrideDefault: boolean = false;
 	let button: Button;
 	let _isLogin: boolean = false;
@@ -37,7 +36,7 @@
 		if (buttons) {
 			options = buttons;
 		} else {
-			options = [$t("continue_modal")];
+			options = [m.continue_modal()];
 		}
 		if (time !== undefined) {
 			countdown = time;

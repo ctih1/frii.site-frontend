@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { m } from "../../paraglide/messages";
 	import Spinner from "./Spinner.svelte";
-	import { t } from "$lib/translations";
 	let progress: HTMLElement;
 	let visible = false;
 	let _title: string = "";
 	let _description: string = "";
 
 	export function show(
-		title: string = $t("loading"),
-		description: string = $t("loader_description")
+		title: string = m.loading(),
+		description: string = m.loader_description()
 	) {
 		visible = true;
 		_title = title;

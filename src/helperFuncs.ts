@@ -1,15 +1,16 @@
 import Cookies from "js-cookie";
+import { localizeHref } from "./paraglide/runtime";
 
 export function redirectToLogin(code: number = 0, timeoutSeconds: number = 0): void {
 	setTimeout(() => {
 		localStorage.removeItem("logged-in");
 		if (code === 461) {
-			window.location.href = `/account/warn?reason=permission`;
+			window.location.href = localizeHref(`/account/warn?reason=permission`);
 		}
 		if (code === 462) {
-			window.location.href = `/account/warn?reason=feature`;
+			window.location.href = localizeHref(`/account/warn?reason=feature`);
 		}
-		window.location.href = `/account?r=${window.location.pathname}&c=${code}`;
+		window.location.href = localizeHref(`/account?r=${window.location.pathname}&c=${code}`);
 	}, timeoutSeconds * 1000);
 }
 export function createFile(filename: string, content: string): boolean {

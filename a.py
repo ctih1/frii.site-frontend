@@ -11,7 +11,6 @@ def replace_in_file(filepath):
     # 🔥 Remove import { t, ... } from "$lib/translations";
     content = re.sub(
         r'import\s+\{\s*t\s*(,\s*\w+\s*)?\}\s+from\s+[\'"]\$lib/translations[\'"];?',
-        "import * as m from '$lib/paraglide/messages.js';",
         content
     )
 
@@ -32,3 +31,5 @@ def run_on_folder(folder_path):
 # replace_in_file('path/to/your/file.js')
 # OR 🔂 whole directory
 run_on_folder(r'C:\Users\nevalaonni\frii.site-frontend\src')
+
+

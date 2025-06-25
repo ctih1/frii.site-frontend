@@ -1,8 +1,8 @@
 <script lang="ts">
+	import * as m from "$lib/paraglide/messages.js";
+	import { createEventDispatcher } from "svelte";
 	import Button from "./Button.svelte";
 	import Modal from "./Modal.svelte";
-	import { t, addArguements } from "$lib/translations";
-	import { createEventDispatcher } from "svelte";
 	let deleting: boolean = false;
 	let visible: Map<string, boolean> = new Map();
 	interface key {
@@ -26,8 +26,8 @@
 	function showKey(): void {
 		if (!deleting) {
 			modal.open(
-				$t("api_dashboard_key_title"),
-				addArguements($t("api_dashboard_key_description"), { "%key%": keyTarget })
+				m.api_dashboard_key_title(),
+				m.api_dashboard_key_description({ key: keyTarget })
 			);
 			keyTarget = "";
 		} else {
@@ -63,7 +63,8 @@
 				<td>
 					<div class="perms">
 						{#each apiKey.perms as permission}
-							<span>{$t(`api_dashboard_${getPermName(permission)}_perm`)}</span>
+							<!-- svelte-ignore -->
+							<span>{m[`api_dashboard_${getPermName(permission)}_perm`]()}</span>
 						{/each}
 					</div>
 				</td>
@@ -82,10 +83,10 @@
 							deleting = false;
 							keyTarget = apiKey.key;
 							modal.open(
-								$t("api_dashboard_key_warning"),
-								$t("api_dashboard_key_warning_description"),
+								m.api_dashboard_key_warning(),
+								m.api_dashboard_key_warning_description(),
 								3,
-								[$t("cancel_modal"), $t("continue_modal")]
+								[m.cancel_modal(), m.continue_modal()]
 							);
 						}}>
 						<span class="material-symbols-outlined">key</span>
@@ -96,12 +97,10 @@
 							deleting = true;
 							keyTarget = apiKey.key;
 							modal.open(
-								addArguements($t("api_dashboard_key_deletion"), {
-									"%key_comment%": apiKey.comment
-								}),
-								$t("api_dashboard_key_deletion_description"),
+								m.api_dashboard_key_deletion({ key_comment: apiKey.comment }),
+								m.api_dashboard_key_deletion_description(),
 								7,
-								[$t("cancel_modal"), $t("continue_modal")]
+								[m.cancel_modal(), m.continue_modal()]
 							);
 						}}>
 						<span class="material-symbols-outlined">delete_forever</span>

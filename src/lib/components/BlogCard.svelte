@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { serverURL } from "../../serverContactor";
-	import { t } from "$lib/translations";
-	import Placeholder from "./Placeholder.svelte";
 	import Markdown from "@magidoc/plugin-svelte-marked";
+	import { m } from "../../paraglide/messages";
 
 	export let title: string;
 	export let description: string;
@@ -17,7 +15,7 @@
 	<div class="blogcard-body">
 		<Markdown source={`${description}...`} />
 	</div>
-	<a href={`/blog/${url}`}>{$t("blog_read")}</a>
+	<a href={`/blog/${url}`}>{m.blog_read()}</a>
 </div>
 
 <style>

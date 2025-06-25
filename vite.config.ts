@@ -5,7 +5,11 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
 	plugins: [
-		paraglideVitePlugin({ project: "./project.inlang", outdir: "./src/paraglide" }),
+		paraglideVitePlugin({
+			project: "./project.inlang",
+			outdir: "./src/paraglide",
+			strategy: ["cookie", "localStorage", "url", "baseLocale"]
+		}),
 		sentrySvelteKit({
 			sourceMapsUploadOptions: {
 				org: "friisite",

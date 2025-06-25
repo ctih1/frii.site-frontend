@@ -1,52 +1,60 @@
 <script lang="ts">
-	import { locale, locales, t } from "$lib/translations";
 	import { getFlagEmoji } from "../../helperFuncs";
-	import { prefLocale } from "./../../routes/stores";
+	import { m } from "../../paraglide/messages";
+	import type { Locale } from "../../paraglide/runtime";
+	import { getLocale, locales, localizeHref, setLocale } from "../../paraglide/runtime";
+
 	import Modal from "./Modal.svelte";
 	let header: HTMLElement;
 	let modal: Modal;
+
+	let selectElement: HTMLSelectElement;
+
+	function l() {
+		setLocale("fi", { reload: false });
+		console.log(m.account_check_email());
+	}
+
 	export function getHeight(): number {
 		return Number(header.style.height.substring(0, header.style.height.length - 2));
 	}
-
-	const handleChange = ({ currentTarget }) => {
-		const { value } = currentTarget;
-		prefLocale.set(value);
-	};
 </script>
 
 <header bind:this={header}>
-	<a class="item" href="/">
+	<a class="item" href={localizeHref("/")}>
 		<span class="material-symbols-outlined">home</span>
-		<p>{$t("dashboard_home")}</p>
+		<p>{m.dashboard_home()}</p>
 	</a>
 
-	<a class="item" href="/dashboard">
+	<a class="item" href={localizeHref("/dashboard")}>
 		<span class="material-symbols-outlined">apps</span>
-		<p>{$t("dashboard_navbar")}</p>
+		<p>{m.dashboard_navbar()}</p>
 	</a>
 
-	<a class="item" href="/account/manage">
+	<a class="item" href={localizeHref("/account/manage")}>
 		<span class="material-symbols-outlined">person</span>
-		<p>{$t("dashboard_account")}</p>
+		<p>{m.dashboard_account()}</p>
 	</a>
 
-	<a class="item" href="/report">
+	<a class="item" href={localizeHref("/report")}>
 		<span class="material-symbols-outlined">flag</span>
-		<p>{$t("dashboard_abuse")}</p>
+		<p>{m.dashboard_abuse()}</p>
 	</a>
 
 	<a class="item" href="https://guides.frii.site">
 		<span class="material-symbols-outlined">menu_book</span>
-		<p>{$t("guides_link_navbar")}</p>
+		<p>{m.guides_link_navbar()}</p>
 	</a>
 
 	<div class="item">
 		<span class="material-symbols-outlined">language</span>
-		<select style="color: var(--primary);" bind:value={$locale} on:change={handleChange}>
-			{#each $locales.sort((a, b) => $t(`lang.${a}`) > $t(`lang.${b}`)) as value}
-				<option value={value} selected={$locale === value}
-					>{$t(`lang.${value}`)} {getFlagEmoji(value)}</option>
+		<select
+			style="color: var(--primary);"
+			bind:this={selectElement}
+			onchange={_ => setLocale(selectElement.value as Locale)}>
+			{#each locales as locale}
+				<option selected={locale === getLocale()} value={locale}
+					>{getFlagEmoji(locale)} {locale}</option>
 			{/each}
 		</select>
 	</div>
