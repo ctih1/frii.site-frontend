@@ -24,20 +24,19 @@
 </style>
 
 <script lang="ts">
-	import Cookies from "js-cookie"
 	import { getAuthToken } from "$lib"
 
-	import Pool from "$lib/components/Pool.svelte"
-	import Holder from "$lib/components/Holder.svelte"
 	import ApiKeyTable from "$lib/components/ApiKeyTable.svelte"
 	import Button from "$lib/components/Button.svelte"
-	import { AuthError, ServerContactor } from "../../../serverContactor"
+	import Holder from "$lib/components/Holder.svelte"
 	import InputCompletor from "$lib/components/InputCompletor.svelte"
+	import Loader from "$lib/components/Loader.svelte"
+	import Modal from "$lib/components/Modal.svelte"
+	import Pool from "$lib/components/Pool.svelte"
 	import { t } from "$lib/translations"
 	import { onMount } from "svelte"
-	import Modal from "$lib/components/Modal.svelte"
-	import Loader from "$lib/components/Loader.svelte"
 	import { redirectToLogin } from "../../../helperFuncs"
+	import { AuthError, ServerContactor } from "../../../serverContactor"
 
 	let domainPool: Pool
 	let loader: Loader
