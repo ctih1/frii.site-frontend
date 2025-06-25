@@ -192,6 +192,13 @@
 		font-size: 3em;
 		margin-bottom: 0px;
 	}
+	.introduction-wrapper div * {
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		-ms-hyphens: auto;
+		hyphens: auto;
+		word-break: break-all;
+	}
 	.introduction-wrapper div h2 span {
 		color: var(--primary);
 		font-size: 1em;
