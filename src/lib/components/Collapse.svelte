@@ -1,8 +1,8 @@
 <script lang="ts">
-	export let title: string
-	let toggled: boolean = false
+	export let title: string;
+	let toggled: boolean = false;
 	function toggle() {
-		toggled = !toggled
+		toggled = !toggled;
 	}
 </script>
 
@@ -11,7 +11,7 @@
 		<p>{title}</p>
 		<button
 			on:click={() => {
-				toggle()
+				toggle();
 			}}
 			class="collapse-button"
 			><span class="material-symbols-outlined"

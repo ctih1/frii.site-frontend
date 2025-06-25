@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { browser, dev } from "$app/environment"
-	import { page } from "$app/stores"
-	import { onMount } from "svelte"
+	import { browser, dev } from "$app/environment";
+	import { page } from "$app/stores";
+	import { onMount } from "svelte";
 
-	import Button from "$lib/components/Button.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import Loader from "$lib/components/Loader.svelte"
-	import Modal from "$lib/components/Modal.svelte"
+	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import Loader from "$lib/components/Loader.svelte";
+	import Modal from "$lib/components/Modal.svelte";
 
-	import { getAuthToken } from "$lib"
-	import { t } from "$lib/translations"
+	import { getAuthToken } from "$lib";
+	import { t } from "$lib/translations";
 	import {
 		AuthError,
 		ConflictError,
@@ -18,62 +18,62 @@
 		ServerContactor,
 		UserError,
 		login
-	} from "../../serverContactor"
+	} from "../../serverContactor";
 
-	let code: string | null = null
-	let valid: boolean = false
+	let code: string | null = null;
+	let valid: boolean = false;
 
 	if (browser) {
-		const params: URLSearchParams = new URLSearchParams(window.location.search)
-		code = params.get("invite")
-		valid = code !== null
+		const params: URLSearchParams = new URLSearchParams(window.location.search);
+		code = params.get("invite");
+		valid = code !== null;
 	}
 
-	let serverContactor: ServerContactor
+	let serverContactor: ServerContactor;
 
-	let username: string
-	let password: string
-	let repeatPassword: string
-	let email: string
-	let modal: Modal
-	let redirectURL: string // Used to automatically redirect user to the right endpoint after login
-	let loader: Loader
-	let warningText: string // Used for example "it seems like you don't have permissions to access this"
+	let username: string;
+	let password: string;
+	let repeatPassword: string;
+	let email: string;
+	let modal: Modal;
+	let redirectURL: string; // Used to automatically redirect user to the right endpoint after login
+	let loader: Loader;
+	let warningText: string; // Used for example "it seems like you don't have permissions to access this"
 
 	function modalClose() {
-		modal.close()
-		loader?.hide()
+		modal.close();
+		loader?.hide();
 	}
 	function modalSecondary() {}
 
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken())
+		serverContactor = new ServerContactor(getAuthToken());
 
-		redirectURL = $page.url.searchParams.get("r") ?? "/"
-		if (localStorage.getItem("logged-in") === "y") window.location.href = "/account/manage"
+		redirectURL = $page.url.searchParams.get("r") ?? "/";
+		if (localStorage.getItem("logged-in") === "y") window.location.href = "/account/manage";
 
 		switch (
 			Number($page.url.searchParams.get("c")) // switch status code that redirected user here
 		) {
 			case 460:
-				warningText = $t("account_signed_out")
-				break
+				warningText = $t("account_signed_out");
+				break;
 
 			case 461:
 			case 462:
-				warningText = $t("account_permissions_lack")
-				break
+				warningText = $t("account_permissions_lack");
+				break;
 		}
-	})
+	});
 
 	function handleLogin() {
-		loader.show(undefined, $t("account_login_loading_desc"))
+		loader.show(undefined, $t("account_login_loading_desc"));
 		login(username, password)
 			.catch(error => {
-				loader.hide()
+				loader.hide();
 
 				if (error instanceof AuthError || error instanceof UserError) {
-					modal.open($t("login_failed"), $t("login_failed_description"))
+					modal.open($t("login_failed"), $t("login_failed_description"));
 				} else if (error instanceof PermissionError) {
 					modal.open(
 						$t("login_failed"),
@@ -82,78 +82,82 @@
 						undefined,
 						true,
 						username
-					)
+					);
 				} else {
-					modal.open($t("login_failed"), $t("login_generic_error"))
+					modal.open($t("login_failed"), $t("login_generic_error"));
 				}
 
-				throw new Error("Login failed")
+				throw new Error("Login failed");
 			})
 			.then(session => {
 				// @ts-ignore
-				const sessionId: string = session["auth-token"]
-				loader.hide()
-				const date = new Date(Date.now() + 604800 * 1000).toUTCString()
-				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`
+				const sessionId: string = session["auth-token"];
+				loader.hide();
+				const date = new Date(Date.now() + 604800 * 1000).toUTCString();
+				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`;
 				if (!getAuthToken()) {
-					console.error("Browser did not accept cookies... using localstorage")
-					localStorage.setItem("auth-token", `${sessionId}`)
+					console.error("Browser did not accept cookies... using localstorage");
+					localStorage.setItem("auth-token", `${sessionId}`);
 				}
-				localStorage.removeItem("temp-token")
-				localStorage.removeItem("verif-token") // Prevents users from potentially relogging without creds if verif-token is in localstrage
-				localStorage.setItem("logged-in", "y")
-				modal.open($t("login_succeed"), $t("login_succeed_description"))
+				localStorage.removeItem("temp-token");
+				localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
+				localStorage.setItem("logged-in", "y");
+				modal.open($t("login_succeed"), $t("login_succeed_description"));
 				setTimeout(() => {
 					// 3s timeout is for firefox, since an immediate redirect can cause a bug where localStorage doesnt save
-					redirectURL = redirectURL ?? "/"
-					window.location.href = redirectURL
-				}, 3000)
-			})
+					redirectURL = redirectURL ?? "/";
+					window.location.href = redirectURL;
+				}, 3000);
+			});
 	}
 
 	function handleSignup() {
-		loader.show(undefined, $t("account_signup_loading_desc"))
+		loader.show(undefined, $t("account_signup_loading_desc"));
 		if (password !== repeatPassword) {
-			loader.hide()
-			modal.open($t("signup_password_not_match"), $t("signup_password_not_match_description"))
-			return
+			loader.hide();
+			modal.open(
+				$t("signup_password_not_match"),
+				$t("signup_password_not_match_description")
+			);
+			return;
 		}
 		serverContactor
 			//@ts-ignore
 			.register(username, password, email, code)
 
 			.catch(err => {
-				loader.hide()
+				loader.hide();
 				if (err instanceof InviteError)
 					modal.open(
 						$t("account_register_invite_fail"),
 						$t("account_register_invite_fail_desc")
-					)
+					);
 				if (err instanceof ConflictError)
-					modal.open($t("signup_fail"), $t("signup_fail_username"))
-				if (err instanceof UserError) modal.open($t("signup_fail"), $t("signup_fail_email"))
-				throw new Error("Registration failed")
+					modal.open($t("signup_fail"), $t("signup_fail_username"));
+				if (err instanceof UserError)
+					modal.open($t("signup_fail"), $t("signup_fail_email"));
+				throw new Error("Registration failed");
 			})
 			.then(_ => {
-				loader.hide()
-				modal.open($t("signup_success"), $t("signup_success_description"))
-			})
+				loader.hide();
+				modal.open($t("signup_success"), $t("signup_success_description"));
+			});
 	}
 
 	function accountActionButtonClick() {
 		if (serverContactor === undefined) {
-			return
+			return;
 		}
 		if (login_mode) {
-			handleLogin()
+			handleLogin();
 		} else if (valid) {
-			handleSignup()
+			handleSignup();
 		}
 	}
 
-	let login_mode: boolean = true
+	let login_mode: boolean = true;
 
-	valid ? (login_mode = false) : (login_mode = true)
+	valid ? (login_mode = false) : (login_mode = true);
 </script>
 
 <svelte:head>

@@ -1,39 +1,38 @@
 <script lang="ts">
-	import { fade } from "svelte/transition"
-	import Button from "./Button.svelte"
-	import Dropdown from "./Dropdown.svelte"
-	import Modal from "./Modal.svelte"
-	import Placeholder from "./Placeholder.svelte"
-	import { createEventDispatcher, onMount } from "svelte"
-	import { t } from "$lib/translations"
-	import { domainAmount } from "$lib/store"
+	import { domainAmount } from "$lib/store";
+	import { t } from "$lib/translations";
+	import { createEventDispatcher } from "svelte";
+	import Button from "./Button.svelte";
+	import Dropdown from "./Dropdown.svelte";
+	import Modal from "./Modal.svelte";
+	import Placeholder from "./Placeholder.svelte";
 
-	export let domains: Array<Array<string>>
+	export let domains: Array<Array<string>>;
 
-	let dispatcher = createEventDispatcher()
-	let dropdown: Dropdown
-	let editing: boolean
-	let content: HTMLInputElement
-	let value: HTMLInputElement
-	let selectedDomain: string
-	let editButton: Button
-	let loaded: boolean = false
-	let modal: Modal
-	let rowInputs: Array<Array<any>> = domains.map(() => [])
+	let dispatcher = createEventDispatcher();
+	let dropdown: Dropdown;
+	let editing: boolean;
+	let content: HTMLInputElement;
+	let value: HTMLInputElement;
+	let selectedDomain: string;
+	let editButton: Button;
+	let loaded: boolean = false;
+	let modal: Modal;
+	let rowInputs: Array<Array<any>> = domains.map(() => []);
 
 	export function updateDomains(ndomains: Array<Array<string>>): void {
 		if (domains.length === 0) {
-			loaded = true
-			return
+			loaded = true;
+			return;
 		}
-		loaded = true
-		domainAmount.set(domains.length)
+		loaded = true;
+		domainAmount.set(domains.length);
 
-		rowInputs = domains.map(() => [])
-		domains = ndomains
+		rowInputs = domains.map(() => []);
+		domains = ndomains;
 	}
 	async function saveDomain(name: string, value: string, record: string) {
-		dispatcher("save", { name: name, value: value, type: record })
+		dispatcher("save", { name: name, value: value, type: record });
 	}
 </script>
 

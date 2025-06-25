@@ -1,39 +1,39 @@
 <script lang="ts">
-	import { browser } from "$app/environment"
-	import { getAuthToken, ServerContactor, serverURL } from "$lib"
-	import Button from "$lib/components/Button.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import copy from "clipboard-copy"
+	import { browser } from "$app/environment";
+	import { getAuthToken, ServerContactor, serverURL } from "$lib";
+	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import copy from "clipboard-copy";
 
-	const commit = __BUILD_COMMIT__
-	const time = __BUILD_TIME__
+	const commit = __BUILD_COMMIT__;
+	const time = __BUILD_TIME__;
 
-	let deviceWidth: number
-	let deviceHeight: number
-	let useragent: string
-	let usingServer: string
-	let userId: string = ""
+	let deviceWidth: number;
+	let deviceHeight: number;
+	let useragent: string;
+	let usingServer: string;
+	let userId: string = "";
 
-	let code: HTMLElement
+	let code: HTMLElement;
 
 	if (browser) {
-		deviceHeight = window.innerHeight
-		deviceWidth = window.innerWidth
-		useragent = navigator.userAgent
+		deviceHeight = window.innerHeight;
+		deviceWidth = window.innerWidth;
+		useragent = navigator.userAgent;
 
 		const serverContactor = new ServerContactor(
 			getAuthToken(),
 			localStorage.getItem("server_url")
-		)
+		);
 
 		serverContactor
 			.getAccountSettings()
 			.catch(error => {
-				throw new Error("User not logged in")
+				throw new Error("User not logged in");
 			})
 			.then(data => {
-				userId = data.username
-			})
+				userId = data.username;
+			});
 	}
 </script>
 

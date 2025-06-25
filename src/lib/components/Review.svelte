@@ -1,11 +1,11 @@
 <script lang="ts">
-	export let descrption: string
-	export let author: string
-	export let stars: number
-	export let index: number // how many nth is the card? meant for rotation
+	export let descrption: string;
+	export let author: string;
+	export let stars: number;
+	export let index: number; // how many nth is the card? meant for rotation
 
 	function calculateRotation(): number {
-		return (index + 1) * 3 * (index % 2 ? -1 : 1) // aw man
+		return (index + 1) * 3 * (index % 2 ? -1 : 1); // aw man
 	}
 </script>
 

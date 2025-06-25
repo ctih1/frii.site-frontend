@@ -1,18 +1,18 @@
 <script lang="ts">
-	import Placeholder from "$lib/components/Placeholder.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import Tooltip from "$lib/components/Tooltip.svelte"
-	import { t, locales } from "$lib/translations"
-	import { getFlagEmoji } from "../../helperFuncs"
-	import { getLanguagePercentages } from "../../serverContactor"
+	import Placeholder from "$lib/components/Placeholder.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import Tooltip from "$lib/components/Tooltip.svelte";
+	import { t, locales } from "$lib/translations";
+	import { getFlagEmoji } from "../../helperFuncs";
+	import { getLanguagePercentages } from "../../serverContactor";
 
-	let translationPercentages: Map<string, number> = $state(new Map())
-	let loaded: boolean = $state(false)
+	let translationPercentages: Map<string, number> = $state(new Map());
+	let loaded: boolean = $state(false);
 
 	getLanguagePercentages().then(data => {
-		translationPercentages = new Map(Object.entries(data))
-		loaded = true
-	})
+		translationPercentages = new Map(Object.entries(data));
+		loaded = true;
+	});
 </script>
 
 <Holder>

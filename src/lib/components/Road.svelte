@@ -1,14 +1,14 @@
 <script lang="ts">
-	export let points: Array<string>
-	let margin: number = 10
-	let buttonHeight: number
-	let compartmentWidth: number
-	export let completed
-	let pointsDiv: HTMLDivElement
-	let offset: number = 0
-	export let color: string
+	export let points: Array<string>;
+	let margin: number = 10;
+	let buttonHeight: number;
+	let compartmentWidth: number;
+	export let completed;
+	let pointsDiv: HTMLDivElement;
+	let offset: number = 0;
+	export let color: string;
 	$: if (pointsDiv) {
-		offset = pointsDiv.getBoundingClientRect().x
+		offset = pointsDiv.getBoundingClientRect().x;
 	}
 </script>
 

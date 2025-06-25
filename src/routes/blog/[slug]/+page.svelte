@@ -1,25 +1,25 @@
 <script lang="ts">
-	import Markdown from "@magidoc/plugin-svelte-marked"
+	import Markdown from "@magidoc/plugin-svelte-marked";
 
-	import Holder from "$lib/components/Holder.svelte"
+	import Holder from "$lib/components/Holder.svelte";
 	interface article {
-		date: number
-		title: string
-		body: string
+		date: number;
+		title: string;
+		body: string;
 	}
-	export let data: article
-	let source = data.body
-	const time = new Date(0)
-	time.setSeconds(data.date)
+	export let data: article;
+	let source = data.body;
+	const time = new Date(0);
+	time.setSeconds(data.date);
 
 	function calculateReadTime(): string {
-		let guess1 = Math.round(data.body.length / 500)
-		let guess2 = Math.round(data.body.length / 1000)
+		let guess1 = Math.round(data.body.length / 500);
+		let guess2 = Math.round(data.body.length / 1000);
 
 		if (guess2 === guess1) {
-			return `~ ${guess1} minute read`
+			return `~ ${guess1} minute read`;
 		} else {
-			return `~ ${guess2} to ${guess1} minute read`
+			return `~ ${guess2} to ${guess1} minute read`;
 		}
 	}
 </script>

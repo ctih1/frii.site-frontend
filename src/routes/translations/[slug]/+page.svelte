@@ -1,70 +1,70 @@
 <script lang="ts">
-	import { onMount } from "svelte"
-	import { AuthError, ServerContactor } from "./../../../serverContactor"
-	import { getAuthToken } from "$lib"
-	import Placeholder from "$lib/components/Placeholder.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Tooltip from "$lib/components/Tooltip.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import Modal from "$lib/components/Modal.svelte"
-	import { getTranslationKeys } from "../../../serverContactor"
-	import { t } from "$lib/translations"
-	import { getFlagEmoji, redirectToLogin } from "../../../helperFuncs"
-	import Cookies from "js-cookie"
+	import { onMount } from "svelte";
+	import { AuthError, ServerContactor } from "./../../../serverContactor";
+	import { getAuthToken } from "$lib";
+	import Placeholder from "$lib/components/Placeholder.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Tooltip from "$lib/components/Tooltip.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import { getTranslationKeys } from "../../../serverContactor";
+	import { t } from "$lib/translations";
+	import { getFlagEmoji, redirectToLogin } from "../../../helperFuncs";
+	import Cookies from "js-cookie";
 
-	let { data } = $props()
+	let { data } = $props();
 
-	let loaded = $state(false)
-	let isGrid = $state(true)
+	let loaded = $state(false);
+	let isGrid = $state(true);
 
-	let keys: Array<{ key: string; ref: string }> = $state(new Array())
-	let values: Array<string> = new Array(keys.length)
-	let indexes: Array<string> = new Array(values.length) // internal names of translation keys (dashboard_delete_succes)
+	let keys: Array<{ key: string; ref: string }> = $state(new Array());
+	let values: Array<string> = new Array(keys.length);
+	let indexes: Array<string> = new Array(values.length); // internal names of translation keys (dashboard_delete_succes)
 
 	try {
-		let valueBackup = localStorage.getItem("translation-backup")
-		let keyBackup = localStorage.getItem("translation-keys")
+		let valueBackup = localStorage.getItem("translation-backup");
+		let keyBackup = localStorage.getItem("translation-keys");
 
 		if (valueBackup !== null) {
-			values = JSON.parse(valueBackup) as string[]
+			values = JSON.parse(valueBackup) as string[];
 		}
 		if (keyBackup !== null) {
-			keys = JSON.parse(keyBackup) as Array<{ key: string; ref: string }>
+			keys = JSON.parse(keyBackup) as Array<{ key: string; ref: string }>;
 		}
 	} catch (err) {
-		console.log("Failed to load backup keys")
+		console.log("Failed to load backup keys");
 	}
 
-	let sc: ServerContactor
-	let modal: Modal
-	let modified: Array<{ key: string; val: string }> = new Array()
-	console.log(values)
+	let sc: ServerContactor;
+	let modal: Modal;
+	let modified: Array<{ key: string; val: string }> = new Array();
+	console.log(values);
 
 	onMount(() => {
-		sc = new ServerContactor(getAuthToken())
-	})
+		sc = new ServerContactor(getAuthToken());
+	});
 
 	getTranslationKeys(data.path).then(data => {
-		keys = data
-		keys.sort((a, b) => (a.key > b.key ? 1 : -1))
-		loaded = true
-	})
+		keys = data;
+		keys.sort((a, b) => (a.key > b.key ? 1 : -1));
+		loaded = true;
+	});
 
 	$effect(() => {
-		keys
-		fillInKeys()
-	})
+		keys;
+		fillInKeys();
+	});
 
 	function fillInKeys(): void {
-		indexes = new Array(values.length)
+		indexes = new Array(values.length);
 		keys.forEach((element: { key: string; ref: string }) => {
-			indexes.push(element.key)
-		})
+			indexes.push(element.key);
+		});
 	}
 
 	function handleClick() {
-		localStorage.setItem("translation-backup", JSON.stringify(values))
-		localStorage.setItem("translation-keys", JSON.stringify(keys))
+		localStorage.setItem("translation-backup", JSON.stringify(values));
+		localStorage.setItem("translation-keys", JSON.stringify(keys));
 		values.forEach((element, index) => {
 			if (
 				!modified.includes({
@@ -75,17 +75,17 @@
 				modified.push({
 					key: indexes.at(index) as string,
 					val: element
-				})
+				});
 			}
-		})
+		});
 		sc.contributeLanguageKeys(data.path, modified)
 			.catch(err => {
-				if (err instanceof AuthError) redirectToLogin(460)
-				if (err instanceof Error) modal.open($t("unhandled_error"), "")
+				if (err instanceof AuthError) redirectToLogin(460);
+				if (err instanceof Error) modal.open($t("unhandled_error"), "");
 			})
 			.then(response => {
-				modal.open($t("translation_submit_succeed"), $t("translation_consideration"))
-			})
+				modal.open($t("translation_submit_succeed"), $t("translation_consideration"));
+			});
 	}
 </script>
 

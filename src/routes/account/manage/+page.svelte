@@ -1,102 +1,102 @@
 <script lang="ts">
-	import { dev } from "$app/environment"
-	import { browser } from "$app/environment"
-	import { onMount } from "svelte"
+	import { dev } from "$app/environment";
+	import { browser } from "$app/environment";
+	import { onMount } from "svelte";
 
-	import Section from "$lib/components/Section.svelte"
-	import Blur from "$lib/components/Blur.svelte"
-	import Switch from "$lib/components/Switch.svelte"
-	import Tooltip from "$lib/components/Tooltip.svelte"
-	import Loader from "$lib/components/Loader.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import Modal from "$lib/components/Modal.svelte"
-	import Placeholder from "$lib/components/Placeholder.svelte"
+	import Section from "$lib/components/Section.svelte";
+	import Blur from "$lib/components/Blur.svelte";
+	import Switch from "$lib/components/Switch.svelte";
+	import Tooltip from "$lib/components/Tooltip.svelte";
+	import Loader from "$lib/components/Loader.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import Placeholder from "$lib/components/Placeholder.svelte";
 
-	import QR from "@svelte-put/qr/svg/QR.svelte"
+	import QR from "@svelte-put/qr/svg/QR.svelte";
 
-	import { ServerContactor, AuthError, ConflictError, UserError } from "../../../serverContactor"
-	import { t, locale, locales, addArguements } from "$lib/translations"
-	import { getAuthToken, redirectToLogin, createFile } from "$lib"
+	import { ServerContactor, AuthError, ConflictError, UserError } from "../../../serverContactor";
+	import { t, locale, locales, addArguements } from "$lib/translations";
+	import { getAuthToken, redirectToLogin, createFile } from "$lib";
 
-	import { UAParser } from "ua-parser-js"
-	import Cookies from "js-cookie"
-	import copy from "clipboard-copy"
+	import { UAParser } from "ua-parser-js";
+	import Cookies from "js-cookie";
+	import copy from "clipboard-copy";
 
 	interface Session {
-		hash: string
-		user_agent: string
-		ip: string
-		expire: number
+		hash: string;
+		user_agent: string;
+		ip: string;
+		expire: number;
 	}
 
 	interface invite {
-		code: string
-		used: boolean
-		used_by: string | null
-		shown: boolean
+		code: string;
+		used: boolean;
+		used_by: string | null;
+		shown: boolean;
 	}
 
-	let loader: Loader
-	let serverContactor: ServerContactor
-	let modal: Modal
-	let noConfirm: boolean = true
-	let sessions: Session[] = []
-	let blurElement: Blur
-	let emailE: string
-	let usernameE: string
-	let loaded: boolean = false
-	let verified: boolean = false
-	let maxDomains = 0
-	let wildcards = false
-	let admin = false
-	let vuln = false
-	let monitoring = false
-	let invites: invite[] = []
+	let loader: Loader;
+	let serverContactor: ServerContactor;
+	let modal: Modal;
+	let noConfirm: boolean = true;
+	let sessions: Session[] = [];
+	let blurElement: Blur;
+	let emailE: string;
+	let usernameE: string;
+	let loaded: boolean = false;
+	let verified: boolean = false;
+	let maxDomains = 0;
+	let wildcards = false;
+	let admin = false;
+	let vuln = false;
+	let monitoring = false;
+	let invites: invite[] = [];
 
-	let allowBetaTesting: boolean = false
+	let allowBetaTesting: boolean = false;
 	if (browser) {
 		if (!localStorage.getItem("logged-in")) {
-			redirectToLogin(-1)
+			redirectToLogin(-1);
 		}
-		allowBetaTesting = Boolean(localStorage.getItem("allow-testing")) ?? false
+		allowBetaTesting = Boolean(localStorage.getItem("allow-testing")) ?? false;
 	}
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken(), localStorage.getItem("server_url"))
+		serverContactor = new ServerContactor(getAuthToken(), localStorage.getItem("server_url"));
 
 		serverContactor
 			.getAccountSettings()
 			.catch(error => {
 				if (error instanceof AuthError) {
-					redirectToLogin(460)
+					redirectToLogin(460);
 				}
 			})
 			.then(data => {
 				if (!data) {
-					throw Error("Data is not defined")
+					throw Error("Data is not defined");
 				}
 				emailE = addArguements($t("account_email"), {
 					"%email%": data["email"]
-				})
+				});
 				usernameE = addArguements($t("account_username"), {
 					"%username%": data["username"]
-				})
-				loaded = true
-				verified = data["verified"]
+				});
+				loaded = true;
+				verified = data["verified"];
 				//@ts-ignore
-				maxDomains = data["permissions"]["max-domains"] ?? 4
-				wildcards = data["permissions"]["wildcards"] ?? false
-				admin = data["permissions"]["admin"] ?? false
-				vuln = data["permissions"]["reports"] ?? false
-				monitoring = data["permissions"]["userdetails"] ?? false
+				maxDomains = data["permissions"]["max-domains"] ?? 4;
+				wildcards = data["permissions"]["wildcards"] ?? false;
+				admin = data["permissions"]["admin"] ?? false;
+				vuln = data["permissions"]["reports"] ?? false;
+				monitoring = data["permissions"]["userdetails"] ?? false;
 
-				let inviteObject = data["invites"]
-				let sessionObject = data["sessions"]
+				let inviteObject = data["invites"];
+				let sessionObject = data["sessions"];
 
 				for (let i = 0; i < Object.entries(inviteObject).length; i++) {
-					let name: string | undefined = Object.keys(inviteObject)[i]
+					let name: string | undefined = Object.keys(inviteObject)[i];
 					if (name === undefined) {
-						continue
+						continue;
 					}
 					invites.push({
 						code: name,
@@ -105,10 +105,10 @@
 						//@ts-ignore
 						used_by: inviteObject[name]["used_by"],
 						shown: false
-					})
+					});
 				}
 
-				invites = [...invites]
+				invites = [...invites];
 
 				sessionObject.forEach(element => {
 					sessions.push({
@@ -117,47 +117,47 @@
 						hash: element["_id"],
 						ip: element["ip"],
 						user_agent: element["user-agent"]
-					})
-				})
+					});
+				});
 
-				sessions = [...sessions]
-			})
-	})
+				sessions = [...sessions];
+			});
+	});
 
 	function createInvite() {
-		loader.show("Creating invite...", "This shouldn't take long")
+		loader.show("Creating invite...", "This shouldn't take long");
 		serverContactor
 			.createInvite()
 			.catch(err => {
-				loader.hide()
+				loader.hide();
 				if (err instanceof AuthError) {
-					redirectToLogin(460)
+					redirectToLogin(460);
 				}
 				if (err instanceof ConflictError) {
 					modal.open(
 						$t("account_invite_fail"),
 						$t("account_invite_fail_usage_description")
-					)
+					);
 				} else {
 				}
-				throw new Error("Failed to create invite")
+				throw new Error("Failed to create invite");
 			})
 			.then(response => {
-				loader.hide()
+				loader.hide();
 				modal.open(
 					$t("account_invite_success"),
 					addArguements($t("account_invite_success_desc"), {
 						"%link%": `https://www.frii.site/account?invite=${response["code"]}`
 					})
-				)
+				);
 				invites.push({
 					code: response["code"],
 					used: false,
 					used_by: null,
 					shown: false
-				})
-				invites = [...invites]
-			})
+				});
+				invites = [...invites];
+			});
 	}
 
 	function handleDelete() {
@@ -165,25 +165,25 @@
 			modal.open($t("account_delete_confirm"), $t("acount_delete_confirm_description"), 10, [
 				$t("cancel_modal"),
 				$t("continue_modal")
-			])
-			noConfirm = false
-			return
+			]);
+			noConfirm = false;
+			return;
 		}
 		serverContactor
 			.deleteAccount()
 			.catch(err => {
-				if (err instanceof AuthError) redirectToLogin(460)
-				modal.open($t("account_deletion_fail"), $t("account_deletion_fail_description"))
-				throw new Error("Failed to delete account")
+				if (err instanceof AuthError) redirectToLogin(460);
+				modal.open($t("account_deletion_fail"), $t("account_deletion_fail_description"));
+				throw new Error("Failed to delete account");
 			})
 			.then(_ => {
-				modal.open($t("account_check_email"), $t("account_check_email_description"))
-			})
+				modal.open($t("account_check_email"), $t("account_check_email_description"));
+			});
 	}
 	function gpdrData() {
 		serverContactor.getGDPR().then(data => {
-			createFile("data.json", JSON.stringify(data))
-		})
+			createFile("data.json", JSON.stringify(data));
+		});
 	}
 	function logOut() {
 		serverContactor
@@ -191,32 +191,32 @@
 			.catch(err => {
 				throw new Error(
 					"Failed to delete session. Please file an issue report over on our github (ctih1/frii.site-frontend)"
-				)
+				);
 			})
 			.then(_ => {
-				Cookies.remove("auth-token", { secure: !dev })
-				localStorage.removeItem("logged-in")
-				localStorage.removeItem("auth-token")
-				redirectToLogin(200)
-			})
+				Cookies.remove("auth-token", { secure: !dev });
+				localStorage.removeItem("logged-in");
+				localStorage.removeItem("auth-token");
+				redirectToLogin(200);
+			});
 	}
 
 	function deleteSession(sessionHash: string) {
-		loader.show(undefined, $t("account_manage_sessions_delete_loader"))
+		loader.show(undefined, $t("account_manage_sessions_delete_loader"));
 		serverContactor
 			.logOut(sessionHash)
 			.catch(err => {
-				if (err instanceof UserError) console.error("Session with that ID does not exist")
-				if (err instanceof AuthError) redirectToLogin(460)
-				throw Error("Failed to delete session")
+				if (err instanceof UserError) console.error("Session with that ID does not exist");
+				if (err instanceof AuthError) redirectToLogin(460);
+				throw Error("Failed to delete session");
 			})
 			.then(_ => {
-				loader.hide()
+				loader.hide();
 				sessions = sessions.filter(el => {
-					return el.hash !== sessionHash
-				})
-				sessions = [...sessions]
-			})
+					return el.hash !== sessionHash;
+				});
+				sessions = [...sessions];
+			});
 	}
 </script>
 
@@ -296,7 +296,7 @@
 				<Switch
 					initial={(localStorage.getItem("del-count") ?? "false") == "true"}
 					on:change={event => {
-						localStorage.setItem("del-count", event.detail)
+						localStorage.setItem("del-count", event.detail);
 					}} />
 			</div>
 			<div class="buttons">

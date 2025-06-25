@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { prefLocale } from "./../../routes/stores"
-	import Modal from "./Modal.svelte"
-	import { t, locale, locales } from "$lib/translations"
-	import { getFlagEmoji } from "../../helperFuncs"
-	let header: HTMLElement
-	let modal: Modal
+	import { prefLocale } from "./../../routes/stores";
+	import Modal from "./Modal.svelte";
+	import { t, locale, locales } from "$lib/translations";
+	import { getFlagEmoji } from "../../helperFuncs";
+	let header: HTMLElement;
+	let modal: Modal;
 	export function getHeight(): number {
-		return Number(header.style.height.substring(0, header.style.height.length - 2))
+		return Number(header.style.height.substring(0, header.style.height.length - 2));
 	}
 
 	const handleChange = ({ currentTarget }) => {
-		const { value } = currentTarget
-		prefLocale.set(value)
-	}
+		const { value } = currentTarget;
+		prefLocale.set(value);
+	};
 </script>
 
 <header bind:this={header}>

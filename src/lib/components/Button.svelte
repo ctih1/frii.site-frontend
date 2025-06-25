@@ -1,31 +1,31 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	const dispatch = createEventDispatcher()
-	let button: HTMLButtonElement
-	let disabled: boolean = false
-	export let startDisabled: boolean = false
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
+	let button: HTMLButtonElement;
+	let disabled: boolean = false;
+	export let startDisabled: boolean = false;
 	function click() {
 		if (!disabled) {
-			dispatch("click")
+			dispatch("click");
 		}
 	}
 	export function disable() {
-		button.disabled = true
-		disabled = true
+		button.disabled = true;
+		disabled = true;
 	}
 	export function enable() {
-		button.disabled = false
-		disabled = false
+		button.disabled = false;
+		disabled = false;
 	}
 	export function toggleDisable() {
-		disabled = !disabled
-		button.disabled = disabled
+		disabled = !disabled;
+		button.disabled = disabled;
 	}
 	export function changeText(text: string) {
-		button.innerHTML = text
+		button.innerHTML = text;
 	}
 
-	export let args: string | null = null
+	export let args: string | null = null;
 </script>
 
 <button disabled={startDisabled} bind:this={button} on:click={() => click()} class={args}>

@@ -1,21 +1,21 @@
 <script lang="ts">
-	import Button from "./Button.svelte"
-	import { createEventDispatcher } from "svelte"
-	let dispatcher = createEventDispatcher()
-	export let items: { displayText: string; valueText: string }[]
+	import Button from "./Button.svelte";
+	import { createEventDispatcher } from "svelte";
+	let dispatcher = createEventDispatcher();
+	export let items: { displayText: string; valueText: string }[];
 
 	export function addItem(item: { displayText: string; valueText: string }): void {
-		items.push(item)
-		items = [...items]
+		items.push(item);
+		items = [...items];
 	}
 	export function removeItem(target: { displayText: string; valueText: string }): void {
 		items = items.filter(function (item) {
-			return item != target
-		})
-		dispatcher("remove", target)
+			return item != target;
+		});
+		dispatcher("remove", target);
 	}
 	export function get(): { displayText: string; valueText: string }[] {
-		return items
+		return items;
 	}
 </script>
 

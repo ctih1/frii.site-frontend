@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Holder from "$lib/components/Holder.svelte"
+	import Holder from "$lib/components/Holder.svelte";
 </script>
 
 <Holder>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let value: number | undefined
-	export let max: number
+	export let value: number | undefined;
+	export let max: number;
 	let colors: Map<string, string> = new Map(
 		Object.entries({
 			1: "var(--primary)",
@@ -9,9 +9,9 @@
 			4: "rgb(237,139,52)",
 			5: "rgb(237,52,52)"
 		})
-	)
+	);
 	if (value === undefined) {
-		value = -1
+		value = -1;
 	}
 </script>
 

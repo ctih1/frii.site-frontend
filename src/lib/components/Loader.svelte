@@ -1,23 +1,23 @@
 <script lang="ts">
-	import Spinner from "./Spinner.svelte"
-	import { t } from "$lib/translations"
-	let progress: HTMLElement
-	let visible = false
-	let _title: string = ""
-	let _description: string = ""
+	import Spinner from "./Spinner.svelte";
+	import { t } from "$lib/translations";
+	let progress: HTMLElement;
+	let visible = false;
+	let _title: string = "";
+	let _description: string = "";
 
 	export function show(
 		title: string = $t("loading"),
 		description: string = $t("loader_description")
 	) {
-		visible = true
-		_title = title
-		_description = description
-		progress?.offsetHeight // resets animation (aka puts the width to 0%) might be undefined if its the first time loading, since its defined in an #if statement
+		visible = true;
+		_title = title;
+		_description = description;
+		progress?.offsetHeight; // resets animation (aka puts the width to 0%) might be undefined if its the first time loading, since its defined in an #if statement
 	}
 
 	export function hide() {
-		visible = false
+		visible = false;
 	}
 </script>
 

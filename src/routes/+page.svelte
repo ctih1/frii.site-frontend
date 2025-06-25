@@ -1,30 +1,30 @@
 <script lang="ts">
 	//@ts-ignore
-	import { onMount } from "svelte"
-	import Footer from "$lib/components/Footer.svelte"
-	import BlogCard from "$lib/components/BlogCard.svelte"
-	import BubbleBackground from "$lib/components/BubbleBackground.svelte"
-	import Review from "$lib/components/Review.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import { t } from "$lib/translations"
-	import { serverURL } from "../serverContactor"
+	import { onMount } from "svelte";
+	import Footer from "$lib/components/Footer.svelte";
+	import BlogCard from "$lib/components/BlogCard.svelte";
+	import BubbleBackground from "$lib/components/BubbleBackground.svelte";
+	import Review from "$lib/components/Review.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import { t } from "$lib/translations";
+	import { serverURL } from "../serverContactor";
 
-	let { data } = $props()
+	let { data } = $props();
 
-	let blogsShouldBeShown: boolean = $state(data.shouldBeShown)
-	let blogs: Iblog[] = $state(data.blogs)
+	let blogsShouldBeShown: boolean = $state(data.shouldBeShown);
+	let blogs: Iblog[] = $state(data.blogs);
 
 	interface Ireview {
-		author: string
-		description: string
-		stars: number
+		author: string;
+		description: string;
+		stars: number;
 	}
 
 	interface Iblog {
-		url: string
-		date: number
-		body: string
-		title: string
+		url: string;
+		date: number;
+		body: string;
+		title: string;
 	}
 
 	let reviews: Ireview[] = [
@@ -44,11 +44,11 @@
 			description: "Good service for a good price!",
 			stars: 4
 		}
-	]
+	];
 
 	$effect(() => {
-		console.log(data)
-	})
+		console.log(data);
+	});
 </script>
 
 <svelte:head>

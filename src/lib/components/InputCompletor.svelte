@@ -1,80 +1,80 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
+	import { createEventDispatcher } from "svelte";
 	interface choices {
-		displayText: string
-		valueText: string
+		displayText: string;
+		valueText: string;
 	}
 
-	let dispatcher = createEventDispatcher()
-	export let suggestions: choices[]
-	export let requiresLetter: boolean = false
-	export let inputPlaceholder: string
-	export let removeUsed: boolean
-	let results: choices[] = []
-	let input: HTMLInputElement
-	let closed: boolean = false
+	let dispatcher = createEventDispatcher();
+	export let suggestions: choices[];
+	export let requiresLetter: boolean = false;
+	export let inputPlaceholder: string;
+	export let removeUsed: boolean;
+	let results: choices[] = [];
+	let input: HTMLInputElement;
+	let closed: boolean = false;
 	if (!requiresLetter) {
-		results = suggestions
+		results = suggestions;
 	}
-	let search: string = ""
-	let choices: HTMLDivElement
-	let resultIndex: number = 0
-	let tabResult: string
-	let resultElements: HTMLElement[] = []
-	let deletedOptions: choices[] = []
+	let search: string = "";
+	let choices: HTMLDivElement;
+	let resultIndex: number = 0;
+	let tabResult: string;
+	let resultElements: HTMLElement[] = [];
+	let deletedOptions: choices[] = [];
 
 	export function removeFromDeleted(choice: choices) {
 		deletedOptions = deletedOptions.filter(function (item) {
-			return item != choice
-		})
-		updateResults()
+			return item != choice;
+		});
+		updateResults();
 	}
 
 	function updateResults(): void {
-		results = []
+		results = [];
 		suggestions.forEach(suggestion => {
 			if (
 				suggestion.displayText.toLowerCase().includes(search.toLowerCase()) &&
 				!deletedOptions.includes(suggestion)
 			) {
-				results.push(suggestion)
+				results.push(suggestion);
 			}
-		})
+		});
 	}
 
 	function resultClicked(event: any) {}
 
 	function sendInput(choice: choices | undefined): void {
 		if (choice === undefined) {
-			return
+			return;
 		}
-		deletedOptions.push(choice)
+		deletedOptions.push(choice);
 		results = results.filter(function (suggestion) {
-			return suggestion.displayText !== choice.displayText
-		})
-		dispatcher("enter", choice)
-		search = ""
+			return suggestion.displayText !== choice.displayText;
+		});
+		dispatcher("enter", choice);
+		search = "";
 	}
 
 	function handleKey(event: any) {
 		if (event.key === "Tab") {
-			event.preventDefault()
+			event.preventDefault();
 			resultElements.filter(Boolean).forEach(element => {
-				element.classList.remove("selected")
-			})
-			resultElements.at(resultIndex)?.classList.add("selected")
+				element.classList.remove("selected");
+			});
+			resultElements.at(resultIndex)?.classList.add("selected");
 			if (resultIndex >= resultElements.filter(Boolean).length - 1) {
-				resultIndex = 0
+				resultIndex = 0;
 			} else {
-				resultIndex++
+				resultIndex++;
 			}
 		}
 		if (event.key === "Enter") {
 			if (resultIndex !== 0) {
-				resultIndex -= 1
+				resultIndex -= 1;
 			}
-			sendInput(results.at(resultIndex))
-			updateResults()
+			sendInput(results.at(resultIndex));
+			updateResults();
 		}
 	}
 </script>
@@ -93,8 +93,8 @@
 			style="margin-bottom: 0px;"
 			bind:this={input}
 			on:focus={() => {
-				choices.style.visibility = "visible"
-				updateResults()
+				choices.style.visibility = "visible";
+				updateResults();
 			}}
 			bind:value={search}
 			on:input={() => updateResults()}
@@ -110,14 +110,14 @@
 						<li
 							bind:this={resultElements[index]}
 							on:mouseover={() => {
-								resultIndex = index
-								resultElements[index].classList.add("selected")
+								resultIndex = index;
+								resultElements[index].classList.add("selected");
 							}}
 							on:mouseleave={() => {
-								resultElements[index].classList.remove("selected")
+								resultElements[index].classList.remove("selected");
 							}}
 							on:click={() => {
-								sendInput(result)
+								sendInput(result);
 							}}>
 							<span>{result.displayText}</span>
 							<span

@@ -6,2151 +6,2151 @@
 export interface paths {
 	"/api/domain": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Register */
-		post: operations["register_api_domain_post"]
+		post: operations["register_api_domain_post"];
 		/** Delete */
-		delete: operations["delete_api_domain_delete"]
-		options?: never
-		head?: never
+		delete: operations["delete_api_domain_delete"];
+		options?: never;
+		head?: never;
 		/** Modify */
-		patch: operations["modify_api_domain_patch"]
-		trace?: never
-	}
+		patch: operations["modify_api_domain_patch"];
+		trace?: never;
+	};
 	"/api/domain/available": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Is Available */
-		get: operations["is_available_api_domain_available_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["is_available_api_domain_available_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/domains/get": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Domains */
-		get: operations["get_domains_api_domains_get_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_domains_api_domains_get_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/register": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Register */
-		post: operations["register_domain_register_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["register_domain_register_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/modify": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
 		/** Modify */
-		patch: operations["modify_domain_modify_patch"]
-		trace?: never
-	}
+		patch: operations["modify_domain_modify_patch"];
+		trace?: never;
+	};
 	"/domain/available": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Is Available */
-		get: operations["is_available_domain_available_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["is_available_domain_available_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/delete": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
-		post?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
 		/** Delete */
-		delete: operations["delete_domain_delete_delete"]
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		delete: operations["delete_domain_delete_delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/get": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Domains */
-		get: operations["get_domains_domain_get_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_domains_domain_get_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/vercel/join": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Vercel Queue Join */
-		post: operations["vercel_queue_join_domain_vercel_join_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["vercel_queue_join_domain_vercel_join_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/domain/vercel/get": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Vercel Queue Get */
-		get: operations["vercel_queue_get_domain_vercel_get_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["vercel_queue_get_domain_vercel_get_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/invite/create": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Create */
-		post: operations["create_invite_create_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["create_invite_create_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/blog/get": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get */
-		get: operations["get_blog_get_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_blog_get_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/blog/get/all": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get All */
-		get: operations["get_all_blog_get_all_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_all_blog_get_all_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/blog/create": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Create */
-		post: operations["create_blog_create_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["create_blog_create_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/login": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Login */
-		post: operations["login_login_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["login_login_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/sign-up": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Sign Up */
-		post: operations["sign_up_sign_up_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["sign_up_sign_up_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/settings": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Settings */
-		get: operations["get_settings_settings_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_settings_settings_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/email/send": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Resend Verification */
-		post: operations["resend_verification_email_send_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["resend_verification_email_send_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/email/verify": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Verify Account */
-		post: operations["verify_account_email_verify_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["verify_account_email_verify_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/deletion/send": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
-		post?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
 		/** Send Account Deletion */
-		delete: operations["send_account_deletion_deletion_send_delete"]
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		delete: operations["send_account_deletion_deletion_send_delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/deletion/verify": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
-		post?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
 		/** Verify Deletion */
-		delete: operations["verify_deletion_deletion_verify_delete"]
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		delete: operations["verify_deletion_deletion_verify_delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/recovery/send": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Send Recovery Link */
-		post: operations["send_recovery_link_recovery_send_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["send_recovery_link_recovery_send_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/recovery/verify": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Reset Password */
-		post: operations["reset_password_recovery_verify_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["reset_password_recovery_verify_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/logout": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
 		/** Logout */
-		patch: operations["logout_logout_patch"]
-		trace?: never
-	}
+		patch: operations["logout_logout_patch"];
+		trace?: never;
+	};
 	"/gdpr": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Gdpr */
-		get: operations["get_gdpr_gdpr_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_gdpr_gdpr_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/create-key": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Create Api Token */
-		post: operations["create_api_token_api_create_key_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["create_api_token_api_create_key_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/get-keys": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Api Keys */
-		get: operations["get_api_keys_api_get_keys_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_api_keys_api_get_keys_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/languages/percentages": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Percentages */
-		get: operations["percentages_languages_percentages_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["percentages_languages_percentages_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/languages/{language}/contribute": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		get?: never
-		put?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/** Contribute */
-		post: operations["contribute_languages__language__contribute_post"]
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		post: operations["contribute_languages__language__contribute_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/languages/{language}/missing-keys": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Missing Keys */
-		get: operations["get_missing_keys_languages__language__missing_keys_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_missing_keys_languages__language__missing_keys_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/languages/{language}/json": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Get Json */
-		get: operations["get_json_languages__language__json_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["get_json_languages__language__json_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/status": {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		/** Status */
-		get: operations["status_status_get"]
-		put?: never
-		post?: never
-		delete?: never
-		options?: never
-		head?: never
-		patch?: never
-		trace?: never
-	}
+		get: operations["status_status_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
 	schemas: {
 		/** ApiGetKeys */
 		ApiGetKeys: {
 			/** Key */
-			key: string
+			key: string;
 			/** Domains */
-			domains: string[]
+			domains: string[];
 			/** Perms */
-			perms: string[]
+			perms: string[];
 			/** Comment */
-			comment: string
-		}
+			comment: string;
+		};
 		/** BlogType */
 		BlogType: {
 			/** Url */
-			url: string
+			url: string;
 			/** Date */
-			date: number
+			date: number;
 			/** Title */
-			title: string
+			title: string;
 			/** Body */
-			body: string
-		}
+			body: string;
+		};
 		/** ContributionBody */
 		ContributionBody: {
 			/** Keys */
 			keys: {
-				[key: string]: string
-			}[]
-		}
+				[key: string]: string;
+			}[];
+		};
 		/** CountryType */
 		CountryType: {
 			/** Ip */
-			ip: string
+			ip: string;
 			/** Hostname */
-			hostname: string
+			hostname: string;
 			/** City */
-			city: string
+			city: string;
 			/** Region */
-			region: string
+			region: string;
 			/** Country */
-			country: string
+			country: string;
 			/** Loc */
-			loc: string
+			loc: string;
 			/** Org */
-			org: string
+			org: string;
 			/** Postal */
-			postal: string
+			postal: string;
 			/** Timezone */
-			timezone: string
+			timezone: string;
 			/** Country Name */
-			country_name: string
+			country_name: string;
 			/** Iseu */
-			isEU: boolean
+			isEU: boolean;
 			/** Country Flag Url */
-			country_flag_url: string
+			country_flag_url: string;
 			/** Country Flag */
-			country_flag: Record<string, never>
+			country_flag: Record<string, never>;
 			/** Country Currency */
-			country_currency: Record<string, never>
+			country_currency: Record<string, never>;
 			/** Continent */
-			continent: Record<string, never>
+			continent: Record<string, never>;
 			/** Latitude */
-			latitude: string
+			latitude: string;
 			/** Longitude */
-			longitude: string
-		}
+			longitude: string;
+		};
 		/** DomainFormat */
 		DomainFormat: {
 			/** Ip */
-			ip: string
+			ip: string;
 			/** Registered */
-			registered: number
+			registered: number;
 			/** Type */
-			type: string
+			type: string;
 			/** Id */
-			id: string
-		}
+			id: string;
+		};
 		/** DomainType */
 		DomainType: {
 			/** Domain */
-			domain: string
+			domain: string;
 			/** Value */
-			value: string
+			value: string;
 			/** Type */
-			type: string
-		}
+			type: string;
+		};
 		/** HTTPValidationError */
 		HTTPValidationError: {
 			/** Detail */
-			detail?: components["schemas"]["ValidationError"][]
-		}
+			detail?: components["schemas"]["ValidationError"][];
+		};
 		/** InviteCreate */
 		InviteCreate: {
 			/** Code */
-			code: string
-		}
+			code: string;
+		};
 		/** InviteType */
 		InviteType: {
 			/** Used */
-			used: boolean
+			used: boolean;
 			/** Used By */
-			used_by?: string
+			used_by?: string;
 			/** Used At */
-			used_at?: number
-		}
+			used_at?: number;
+		};
 		/** PasswordReset */
 		PasswordReset: {
 			/** Code */
-			code: string
+			code: string;
 			/** Hashed Password */
-			hashed_password: string
-		}
+			hashed_password: string;
+		};
 		/** SessionType */
 		SessionType: {
 			/** User-Agent */
-			"user-agent": string
+			"user-agent": string;
 			/** Ip */
-			ip: string
+			ip: string;
 			/** Expire */
-			expire: number
+			expire: number;
 			/** Hash */
-			hash: string
-		}
+			hash: string;
+		};
 		/** SignUp */
 		SignUp: {
 			/** Username */
-			username: string
+			username: string;
 			/** Password */
-			password: string
+			password: string;
 			/** Email */
-			email: string
+			email: string;
 			/** Language */
-			language: string
+			language: string;
 			/** Invite */
-			invite: string
-		}
+			invite: string;
+		};
 		/** UserPageType */
 		UserPageType: {
 			/** Username */
-			username: string
+			username: string;
 			/** Email */
-			email: string
+			email: string;
 			/** Lang */
-			lang: string
-			country: components["schemas"]["CountryType"]
+			lang: string;
+			country: components["schemas"]["CountryType"];
 			/** Created */
-			created: number
+			created: number;
 			/** Verified */
-			verified: boolean
+			verified: boolean;
 			/** Permissions */
 			permissions: {
-				[key: string]: boolean
-			}
+				[key: string]: boolean;
+			};
 			/** Beta-Enroll */
-			"beta-enroll": boolean
+			"beta-enroll": boolean;
 			/** Sessions */
-			sessions: components["schemas"]["SessionType"][]
+			sessions: components["schemas"]["SessionType"][];
 			/** Invites */
 			invites: {
-				[key: string]: components["schemas"]["InviteType"]
-			}
-		}
+				[key: string]: components["schemas"]["InviteType"];
+			};
+		};
 		/** ValidationError */
 		ValidationError: {
 			/** Location */
-			loc: (string | number)[]
+			loc: (string | number)[];
 			/** Message */
-			msg: string
+			msg: string;
 			/** Error Type */
-			type: string
-		}
-	}
-	responses: never
-	parameters: never
-	requestBodies: never
-	headers: never
-	pathItems: never
+			type: string;
+		};
+	};
+	responses: never;
+	parameters: never;
+	requestBodies: never;
+	headers: never;
+	pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
 	register_api_domain_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["DomainType"]
-			}
-		}
+				"application/json": components["schemas"]["DomainType"];
+			};
+		};
 		responses: {
 			/** @description Domain created */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid domain name */
 			400: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain missing for subdomain (e.g: a.b.frii.site needs b.frii.site registered) */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain limit exceeded */
 			405: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain already in use */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid DNS record type */
 			412: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid API key */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid API key permissions ('register' needed) */
 			462: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	delete_api_domain_delete: {
 		parameters: {
 			query: {
-				domain: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				domain: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain deleted succesfully */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Domain does not exist, or user does not own it. */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description API key cannot do operations on requested domain */
 			461: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid API key permissions ('delete' needed) */
 			462: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	modify_api_domain_patch: {
 		parameters: {
 			query: {
-				domain: string
-				value: string
-				type: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				domain: string;
+				value: string;
+				type: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain modified */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description User does not own domain */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid record name or value */
 			412: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid API key */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description API key cannot do operations on requested domain */
 			461: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid API key permissions ('content' needed) */
 			462: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	is_available_api_domain_available_get: {
 		parameters: {
 			query: {
-				name: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				name: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain is available */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Domain is not available */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	get_domains_api_domains_get_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain is available */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
 					"application/json": {
-						[key: string]: components["schemas"]["DomainFormat"]
-					}
-				}
-			}
+						[key: string]: components["schemas"]["DomainFormat"];
+					};
+				};
+			};
 			/** @description Domain is not available */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	register_domain_register_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["DomainType"]
-			}
-		}
+				"application/json": components["schemas"]["DomainType"];
+			};
+		};
 		responses: {
 			/** @description Domain created */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid domain name */
 			400: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain missing for subdomain (e.g: a.b.frii.site needs b.frii.site registered) */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain limit exceeded */
 			405: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Domain already in use */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid DNS record type */
 			412: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	modify_domain_modify_patch: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["DomainType"]
-			}
-		}
+				"application/json": components["schemas"]["DomainType"];
+			};
+		};
 		responses: {
 			/** @description Domain modified */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description User does not own domain */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid record name or value */
 			412: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	is_available_domain_available_get: {
 		parameters: {
 			query: {
-				name: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				name: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain is available */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Domain is not available */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	delete_domain_delete_delete: {
 		parameters: {
 			query: {
-				domain: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				domain: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Domain deleted succesfully */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Domain does not exist, or user does not own it. */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_domains_domain_get_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Returns a JSON dict of domains */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
 					"application/json": {
-						[key: string]: components["schemas"]["DomainFormat"]
-					}
-				}
-			}
+						[key: string]: components["schemas"]["DomainFormat"];
+					};
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	vercel_queue_join_domain_vercel_join_post: {
 		parameters: {
 			query: {
-				value: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				value: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Joined queue */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": Record<string, never>
-				}
-			}
+					"application/json": Record<string, never>;
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	vercel_queue_get_domain_vercel_get_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Position in queue */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": number
-				}
-			}
+					"application/json": number;
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	create_invite_create_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Invite code created */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["InviteCreate"]
-				}
-			}
+					"application/json": components["schemas"]["InviteCreate"];
+				};
+			};
 			/** @description User does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invite limit (3) reached */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_blog_get_get: {
 		parameters: {
 			query: {
-				id: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				id: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Blog found */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["BlogType"]
-				}
-			}
+					"application/json": components["schemas"]["BlogType"];
+				};
+			};
 			/** @description Blog not found */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	get_all_blog_get_all_get: {
 		parameters: {
 			query?: {
-				n?: number
-				content?: number
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				n?: number;
+				content?: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Succesfully retrived blogs */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["BlogType"][]
-				}
-			}
+					"application/json": components["schemas"]["BlogType"][];
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	create_blog_create_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["BlogType"]
-			}
-		}
+				"application/json": components["schemas"]["BlogType"];
+			};
+		};
 		responses: {
 			/** @description Blog created */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	login_login_post: {
 		parameters: {
-			query?: never
+			query?: never;
 			header: {
-				"x-auth-request": string
-			}
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				"x-auth-request": string;
+			};
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Login succesfull */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid password */
 			401: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description User not found */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description 2FA code required to be passed in X-MFA-Code */
 			412: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	sign_up_sign_up_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["SignUp"]
-			}
-		}
+				"application/json": components["schemas"]["SignUp"];
+			};
+		};
 		responses: {
 			/** @description Sign up succesfull */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid invite */
 			400: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Username is already in use */
 			409: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Email is already in use */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_settings_settings_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Settings retrieved */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["UserPageType"]
-				}
-			}
+					"application/json": components["schemas"]["UserPageType"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	resend_verification_email_send_post: {
 		parameters: {
 			query: {
-				user_id: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				user_id: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Email sent succesfully */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Account does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	verify_account_email_verify_post: {
 		parameters: {
 			query: {
-				code: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				code: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Verified succesfully */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Code is invalid */
 			400: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Account does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	send_account_deletion_deletion_send_delete: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Deletion email sent */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	verify_deletion_deletion_verify_delete: {
 		parameters: {
 			query: {
-				code: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				code: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Account deleted */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Deletion code invalid */
 			400: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Account not found */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	send_recovery_link_recovery_send_post: {
 		parameters: {
 			query: {
-				username: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+				username: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Email sent */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	reset_password_recovery_verify_post: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["PasswordReset"]
-			}
-		}
+				"application/json": components["schemas"]["PasswordReset"];
+			};
+		};
 		responses: {
 			/** @description Email sent */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Invalid code */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description User not found */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	logout_logout_patch: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Session does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description User does not have access to use that session */
 			461: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_gdpr_gdpr_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": Record<string, never>
-				}
-			}
+					"application/json": Record<string, never>;
+				};
+			};
 			/** @description Session does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description User does not have access to use that session */
 			461: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	create_api_token_api_create_key_post: {
 		parameters: {
 			query: {
-				comment: string
-			}
-			header?: never
-			path?: never
-			cookie?: never
-		}
+				comment: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": string[]
-			}
-		}
+				"application/json": string[];
+			};
+		};
 		responses: {
 			/** @description Successful Response */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": string
-				}
-			}
+					"application/json": string;
+				};
+			};
 			/** @description User does not own requested domains */
 			403: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_api_keys_api_get_keys_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["ApiGetKeys"][]
-				}
-			}
+					"application/json": components["schemas"]["ApiGetKeys"][];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	percentages_languages_percentages_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Returns the percentages of each language. (ex: {'en':1.0,'fr':0.8554}) */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
 					"application/json": {
-						[key: string]: number
-					}
-				}
-			}
-		}
-	}
+						[key: string]: number;
+					};
+				};
+			};
+		};
+	};
 	contribute_languages__language__contribute_post: {
 		parameters: {
-			query?: never
-			header?: never
+			query?: never;
+			header?: never;
 			path: {
-				language: string
-			}
-			cookie?: never
-		}
+				language: string;
+			};
+			cookie?: never;
+		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["ContributionBody"]
-			}
-		}
+				"application/json": components["schemas"]["ContributionBody"];
+			};
+		};
 		responses: {
 			/** @description Contribution accepted */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
+					"application/json": unknown;
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_missing_keys_languages__language__missing_keys_get: {
 		parameters: {
-			query?: never
-			header?: never
+			query?: never;
+			header?: never;
 			path: {
-				language: string
-			}
-			cookie?: never
-		}
-		requestBody?: never
+				language: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Missing keys retrieved */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
 					"application/json": {
-						[key: string]: string
-					}[]
-				}
-			}
+						[key: string]: string;
+					}[];
+				};
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
 			/** @description Invalid session */
 			460: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
-		}
-	}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	get_json_languages__language__json_get: {
 		parameters: {
-			query?: never
-			header?: never
+			query?: never;
+			header?: never;
 			path: {
-				language: string
-			}
-			cookie?: never
-		}
-		requestBody?: never
+				language: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Missing keys retrieved */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
 					"application/json": {
-						[key: string]: string
-					}
-				}
-			}
+						[key: string]: string;
+					};
+				};
+			};
 			/** @description Language does not exist */
 			404: {
 				headers: {
-					[name: string]: unknown
-				}
-				content?: never
-			}
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Validation Error */
 			422: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": components["schemas"]["HTTPValidationError"]
-				}
-			}
-		}
-	}
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
 	status_status_get: {
 		parameters: {
-			query?: never
-			header?: never
-			path?: never
-			cookie?: never
-		}
-		requestBody?: never
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
 				headers: {
-					[name: string]: unknown
-				}
+					[name: string]: unknown;
+				};
 				content: {
-					"application/json": unknown
-				}
-			}
-		}
-	}
+					"application/json": unknown;
+				};
+			};
+		};
+	};
 }

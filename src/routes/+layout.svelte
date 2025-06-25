@@ -1,58 +1,58 @@
 <script lang="ts">
-	import { navigating } from "$app/stores"
-	import Holder from "$lib/components/Holder.svelte"
-	import Ads from "$lib/components/Ads.svelte"
-	import NProgress from "nprogress"
-	import Header from "$lib/components/Header.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Analytics from "$lib/components/Analytics.svelte"
-	import "$lib/nprogress.css"
-	import { UserError } from "$lib"
-	import { browser } from "$app/environment"
-	import Error from "./+error.svelte"
-	import { onMount } from "svelte"
+	import { navigating } from "$app/stores";
+	import Holder from "$lib/components/Holder.svelte";
+	import Ads from "$lib/components/Ads.svelte";
+	import NProgress from "nprogress";
+	import Header from "$lib/components/Header.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Analytics from "$lib/components/Analytics.svelte";
+	import "$lib/nprogress.css";
+	import { UserError } from "$lib";
+	import { browser } from "$app/environment";
+	import Error from "./+error.svelte";
+	import { onMount } from "svelte";
 
-	let { children } = $props()
+	let { children } = $props();
 
-	let userRespectsPrivacyInsane = $state(false)
-	let userDoesntCareAndWantsAdblock = $state(false)
+	let userRespectsPrivacyInsane = $state(false);
+	let userDoesntCareAndWantsAdblock = $state(false);
 
 	NProgress.configure({
 		minimum: 0.6,
 		trickle: true,
 		trickleSpeed: 200
-	})
+	});
 
 	$effect(() => {
 		if ($navigating) {
-			NProgress.start()
+			NProgress.start();
 		}
 		if (!$navigating) {
-			NProgress.done()
-			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString())
+			NProgress.done();
+			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
 		}
 
-		console.log(userRespectsPrivacyInsane)
-	})
+		console.log(userRespectsPrivacyInsane);
+	});
 
 	onMount(() => {
-		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null
+		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null;
 
 		if (!userDoesntCareAndWantsAdblock) {
 			fetch("https://mc.yandex.ru/metrika/tag.js")
 				.then(() => {
-					userRespectsPrivacyInsane = false
+					userRespectsPrivacyInsane = false;
 				})
 				.catch(() => {
-					userRespectsPrivacyInsane = true
-				})
+					userRespectsPrivacyInsane = true;
+				});
 		}
-	})
+	});
 
 	function userDoesntWantToSupportUs() {
 		// :(
-		localStorage.setItem("adblock-warn-surpress", "yes")
-		userDoesntCareAndWantsAdblock = true
+		localStorage.setItem("adblock-warn-surpress", "yes");
+		userDoesntCareAndWantsAdblock = true;
 	}
 </script>
 

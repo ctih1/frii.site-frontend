@@ -1,48 +1,48 @@
 <script lang="ts">
-	import Button from "./Button.svelte"
-	import Modal from "./Modal.svelte"
-	import { t, addArguements } from "$lib/translations"
-	import { createEventDispatcher } from "svelte"
-	let deleting: boolean = false
-	let visible: Map<string, boolean> = new Map()
+	import Button from "./Button.svelte";
+	import Modal from "./Modal.svelte";
+	import { t, addArguements } from "$lib/translations";
+	import { createEventDispatcher } from "svelte";
+	let deleting: boolean = false;
+	let visible: Map<string, boolean> = new Map();
 	interface key {
-		key: string
-		comment: string
-		perms: string[]
-		domains: string[]
+		key: string;
+		comment: string;
+		perms: string[];
+		domains: string[];
 	}
 	function getEmoji(input: boolean): string {
 		if (input) {
-			return "<span class='material-symbols-outlined'>check</span>"
+			return "<span class='material-symbols-outlined'>check</span>";
 		}
-		return "<span class='material-symbols-outlined'>close</span>"
+		return "<span class='material-symbols-outlined'>close</span>";
 	}
-	export let keys: key[]
-	console.log(keys)
-	let dispatcher = createEventDispatcher()
-	let modal: Modal
-	let keyTarget: string
+	export let keys: key[];
+	console.log(keys);
+	let dispatcher = createEventDispatcher();
+	let modal: Modal;
+	let keyTarget: string;
 
 	function showKey(): void {
 		if (!deleting) {
 			modal.open(
 				$t("api_dashboard_key_title"),
 				addArguements($t("api_dashboard_key_description"), { "%key%": keyTarget })
-			)
-			keyTarget = ""
+			);
+			keyTarget = "";
 		} else {
 		}
 	}
 
 	function getPermName(permission: string): string {
-		const modifyPrefix: string[] = ["domain", "type", "content"]
+		const modifyPrefix: string[] = ["domain", "type", "content"];
 		if (modifyPrefix.includes(permission)) {
-			return "modify_" + permission
+			return "modify_" + permission;
 		}
 		if (permission === "details") {
-			return "view"
+			return "view";
 		}
-		return permission
+		return permission;
 	}
 </script>
 
@@ -79,22 +79,22 @@
 					<Button
 						args="margin"
 						on:click={() => {
-							deleting = false
-							keyTarget = apiKey.key
+							deleting = false;
+							keyTarget = apiKey.key;
 							modal.open(
 								$t("api_dashboard_key_warning"),
 								$t("api_dashboard_key_warning_description"),
 								3,
 								[$t("cancel_modal"), $t("continue_modal")]
-							)
+							);
 						}}>
 						<span class="material-symbols-outlined">key</span>
 					</Button>
 					<Button
 						args="danger margin"
 						on:click={() => {
-							deleting = true
-							keyTarget = apiKey.key
+							deleting = true;
+							keyTarget = apiKey.key;
 							modal.open(
 								addArguements($t("api_dashboard_key_deletion"), {
 									"%key_comment%": apiKey.comment
@@ -102,7 +102,7 @@
 								$t("api_dashboard_key_deletion_description"),
 								7,
 								[$t("cancel_modal"), $t("continue_modal")]
-							)
+							);
 						}}>
 						<span class="material-symbols-outlined">delete_forever</span>
 					</Button>
@@ -116,7 +116,7 @@
 	options={["Cancel", "Continue"]}
 	countdown={3}
 	on:secondary={() => {
-		showKey()
+		showKey();
 	}}
 	title="Are you sure you want to delete"
 	description={""}></Modal>

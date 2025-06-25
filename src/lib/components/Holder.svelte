@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let args: string = ""
+	export let args: string = "";
 </script>
 
 <div class="card {args}"><slot /></div>

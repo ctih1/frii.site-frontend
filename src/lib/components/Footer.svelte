@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { t } from "$lib/translations"
-	import { serverURL } from "../../serverContactor"
+	import { t } from "$lib/translations";
+	import { serverURL } from "../../serverContactor";
 
-	const commit = __BUILD_COMMIT__
-	const time = __BUILD_TIME__
+	const commit = __BUILD_COMMIT__;
+	const time = __BUILD_TIME__;
 </script>
 
 <div class="footer">

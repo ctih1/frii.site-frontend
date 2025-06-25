@@ -1,28 +1,28 @@
 <script lang="ts">
-	import { get } from "svelte/store"
-	import { getStatus } from "../../serverContactor"
-	import { browser } from "$app/environment"
-	let height: number
-	let loaded: boolean = false
-	let danger: boolean = false
+	import { get } from "svelte/store";
+	import { getStatus } from "../../serverContactor";
+	import { browser } from "$app/environment";
+	let height: number;
+	let loaded: boolean = false;
+	let danger: boolean = false;
 
-	let message: string
+	let message: string;
 	getStatus().catch(err => {
-		danger = true
-		message = "We are experiencing server difficulties."
-	})
-	loaded = true
+		danger = true;
+		message = "We are experiencing server difficulties.";
+	});
+	loaded = true;
 
-	let hidden: boolean = false
+	let hidden: boolean = false;
 
 	function calcIsHidden(): boolean {
 		if (!browser) {
-			return false
+			return false;
 		}
 		hidden =
 			((localStorage.getItem("notification-hidden") ?? false) as boolean) &&
-			localStorage.getItem("notification-hidden-message") === message
-		return hidden
+			localStorage.getItem("notification-hidden-message") === message;
+		return hidden;
 	}
 </script>
 
@@ -33,9 +33,9 @@
 
 		<a
 			on:click={() => {
-				localStorage.setItem("notification-hidden", "true")
-				localStorage.setItem("notification-hidden-message", message)
-				hidden = true
+				localStorage.setItem("notification-hidden", "true");
+				localStorage.setItem("notification-hidden-message", message);
+				hidden = true;
 			}}>X</a>
 	</div>
 	<div style="height: {height}px" class="pusher"></div>

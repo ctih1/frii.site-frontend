@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { resendEmail } from "./../../serverContactor"
-	import { onMount } from "svelte"
-	import Button from "./Button.svelte"
-	import { t } from "$lib/translations"
-	import { createEventDispatcher } from "svelte"
-	const dispatch = createEventDispatcher()
-	export let countdown: number | undefined = undefined
-	export let description: string = ""
-	export let title: string = ""
-	export let options: Array<string> = [$t("continue_modal")]
-	export let overrideDefault: boolean = false
-	let button: Button
-	let _isLogin: boolean = false
-	let username: string = ""
-	let _html: string | undefined = undefined
-	let timeLeft: number
-	let onscreen: boolean = false
-	let timer: any
-	let disabled: boolean = false
+	import { resendEmail } from "./../../serverContactor";
+	import { onMount } from "svelte";
+	import Button from "./Button.svelte";
+	import { t } from "$lib/translations";
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
+	export let countdown: number | undefined = undefined;
+	export let description: string = "";
+	export let title: string = "";
+	export let options: Array<string> = [$t("continue_modal")];
+	export let overrideDefault: boolean = false;
+	let button: Button;
+	let _isLogin: boolean = false;
+	let username: string = "";
+	let _html: string | undefined = undefined;
+	let timeLeft: number;
+	let onscreen: boolean = false;
+	let timer: any;
+	let disabled: boolean = false;
 
 	export function open(
 		text: string,
@@ -27,63 +27,63 @@
 		isLogin: boolean = false,
 		usernameHash: string | undefined = undefined
 	) {
-		_isLogin = isLogin
-		title = text
-		description = desc
-		onscreen = true
-		username = usernameHash || "None"
+		_isLogin = isLogin;
+		title = text;
+		description = desc;
+		onscreen = true;
+		username = usernameHash || "None";
 
-		startTimer()
+		startTimer();
 		if (buttons) {
-			options = buttons
+			options = buttons;
 		} else {
-			options = [$t("continue_modal")]
+			options = [$t("continue_modal")];
 		}
 		if (time !== undefined) {
-			countdown = time
-			startTimer()
+			countdown = time;
+			startTimer();
 		} else {
-			countdown = undefined
+			countdown = undefined;
 		}
 	}
 	function primaryButton() {
 		if (overrideDefault) {
-			dispatch("primary")
+			dispatch("primary");
 		} else {
-			close()
+			close();
 		}
 	}
 	export function close() {
 		if (countdown !== undefined) {
-			timeLeft = countdown
+			timeLeft = countdown;
 		}
-		onscreen = false
+		onscreen = false;
 	}
 	export function secondaryButton() {
-		dispatch("secondary")
+		dispatch("secondary");
 	}
 
 	onMount(() => {
-		button?.disable()
-		startTimer()
-	})
+		button?.disable();
+		startTimer();
+	});
 
 	function startTimer() {
 		if (timer !== undefined) {
-			clearInterval(timer)
+			clearInterval(timer);
 		}
 		if (countdown !== undefined) {
-			button?.disable()
-			timeLeft = countdown
-			timer = setInterval(timerFunction, 1000)
+			button?.disable();
+			timeLeft = countdown;
+			timer = setInterval(timerFunction, 1000);
 			function timerFunction() {
 				if (onscreen) {
-					button?.disable()
-					timeLeft -= 1
+					button?.disable();
+					timeLeft -= 1;
 				}
 				if (timeLeft <= 0) {
-					clearInterval(timer)
-					button?.enable()
+					clearInterval(timer);
+					button?.enable();
 				}
 			}
 		}
@@ -104,17 +104,17 @@
 						class="msx {disabled ? 'disabled' : ''}"
 						href="#clicked"
 						on:click={() => {
-							disabled = true
+							disabled = true;
 							resendEmail(username)
 								.catch(err => {
-									alert("Failed to send verification code")
-									throw new Error("failed to send verification code")
-									disabled = false
+									alert("Failed to send verification code");
+									throw new Error("failed to send verification code");
+									disabled = false;
 								})
 								.then(_ => {
-									alert("Sent verification code")
-									disabled = false
-								})
+									alert("Sent verification code");
+									disabled = false;
+								});
 						}}>Resend verification code</a>
 				{/if}
 			</div>
@@ -128,7 +128,7 @@
 				{/if}
 				<Button
 					on:click={() => {
-						primaryButton()
+						primaryButton();
 					}}
 					args={"fill margin three-quarter"}>{options[0]}</Button>
 			</div>

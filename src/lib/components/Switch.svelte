@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	let checked: boolean
-	export let initial: boolean
-	checked = initial
-	const dispatch = createEventDispatcher()
+	import { createEventDispatcher } from "svelte";
+	let checked: boolean;
+	export let initial: boolean;
+	checked = initial;
+	const dispatch = createEventDispatcher();
 
 	function change() {
-		dispatch("change", !checked)
+		dispatch("change", !checked);
 	}
 </script>
 

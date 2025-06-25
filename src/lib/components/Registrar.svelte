@@ -1,22 +1,22 @@
 <script lang="ts">
-	import Cookies from "js-cookie"
-	import { getAuthToken } from "$lib"
+	import Cookies from "js-cookie";
+	import { getAuthToken } from "$lib";
 
-	import Button from "./Button.svelte"
-	import { onMount } from "svelte"
-	import Dropdown from "./Dropdown.svelte"
-	import { ServerContactor } from "../../serverContactor"
-	import { createEventDispatcher } from "svelte"
+	import Button from "./Button.svelte";
+	import { onMount } from "svelte";
+	import Dropdown from "./Dropdown.svelte";
+	import { ServerContactor } from "../../serverContactor";
+	import { createEventDispatcher } from "svelte";
 
-	let dispatch = createEventDispatcher()
-	let authToken: string | null
-	let serverContactor: ServerContactor
+	let dispatch = createEventDispatcher();
+	let authToken: string | null;
+	let serverContactor: ServerContactor;
 	onMount(() => {
-		authToken = getAuthToken()
-		serverContactor = new ServerContactor(authToken, localStorage.getItem("server_url"))
-	})
-	let domainInput: string
-	let selectedType: string = "A"
+		authToken = getAuthToken();
+		serverContactor = new ServerContactor(authToken, localStorage.getItem("server_url"));
+	});
+	let domainInput: string;
+	let selectedType: string = "A";
 </script>
 
 <form>

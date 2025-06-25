@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { serverURL } from "../../serverContactor"
-	import { t } from "$lib/translations"
-	import Placeholder from "./Placeholder.svelte"
-	import Markdown from "@magidoc/plugin-svelte-marked"
+	import { serverURL } from "../../serverContactor";
+	import { t } from "$lib/translations";
+	import Placeholder from "./Placeholder.svelte";
+	import Markdown from "@magidoc/plugin-svelte-marked";
 
-	export let title: string
-	export let description: string
-	export let date: number
-	export let url: string
-	export let inline: boolean = false
+	export let title: string;
+	export let description: string;
+	export let date: number;
+	export let url: string;
+	export let inline: boolean = false;
 </script>
 
 <div class={`wrapper ${!inline ? "border-shown" : "border-hidden"}`}>

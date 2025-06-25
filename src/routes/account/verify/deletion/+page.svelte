@@ -1,35 +1,35 @@
 <script lang="ts">
-	import { t } from "$lib/translations"
-	import { redirectToLogin } from "$lib"
-	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor"
-	import Holder from "$lib/components/Holder.svelte"
-	import Button from "$lib/components/Button.svelte"
+	import { t } from "$lib/translations";
+	import { redirectToLogin } from "$lib";
+	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
+	import Holder from "$lib/components/Holder.svelte";
+	import Button from "$lib/components/Button.svelte";
 
-	let doneVerifying: boolean = $state(false)
-	let valid: boolean = $state(false)
-	let clicked: boolean = $state(false)
+	let doneVerifying: boolean = $state(false);
+	let valid: boolean = $state(false);
+	let clicked: boolean = $state(false);
 
 	function confirmDeletion() {
-		const urlParams = new URLSearchParams(window.location.search)
+		const urlParams = new URLSearchParams(window.location.search);
 
 		verifyDeletion(urlParams.get("code") || "undefined")
 			.catch(err => {
-				if (err instanceof CodeError) console.error("Code is invalid")
-				if (err instanceof UserError) console.error("User does not exist")
-				valid = false
-				doneVerifying = true
-				throw new Error("Verification failed!")
+				if (err instanceof CodeError) console.error("Code is invalid");
+				if (err instanceof UserError) console.error("User does not exist");
+				valid = false;
+				doneVerifying = true;
+				throw new Error("Verification failed!");
 			})
 			.then(_ => {
-				valid = true
-				doneVerifying = true
-			})
+				valid = true;
+				doneVerifying = true;
+			});
 	}
 
 	$effect(() => {
-		if (valid) redirectToLogin(200, 3)
-		if (clicked) confirmDeletion()
-	})
+		if (valid) redirectToLogin(200, 3);
+		if (clicked) confirmDeletion();
+	});
 </script>
 
 <Holder>

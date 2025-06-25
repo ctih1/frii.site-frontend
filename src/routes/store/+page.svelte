@@ -1,39 +1,42 @@
 <script lang="ts">
-	import Modal from "$lib/components/Modal.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Placeholder from "$lib/components/Placeholder.svelte"
-	import { ServerContactor } from "./../../serverContactor"
-	import { redirectToLogin } from "../../helperFuncs"
-	import ShopItem from "$lib/components/ShopItem.svelte"
-	import { t } from "$lib/translations"
-	import Holder from "$lib/components/Holder.svelte"
-	import Cookies from "js-cookie"
-	import { getAuthToken } from "$lib"
+	import Modal from "$lib/components/Modal.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Placeholder from "$lib/components/Placeholder.svelte";
+	import { ServerContactor } from "./../../serverContactor";
+	import { redirectToLogin } from "../../helperFuncs";
+	import ShopItem from "$lib/components/ShopItem.svelte";
+	import { t } from "$lib/translations";
+	import Holder from "$lib/components/Holder.svelte";
+	import Cookies from "js-cookie";
+	import { getAuthToken } from "$lib";
 
-	let credits: number = 0
-	let sc = new ServerContactor(getAuthToken())
-	let modal: Modal
-	let loaded: boolean = false
+	let credits: number = 0;
+	let sc = new ServerContactor(getAuthToken());
+	let modal: Modal;
+	let loaded: boolean = false;
 
 	sc.getCredits().then(response => {
 		if (response.status !== 200) {
-			redirectToLogin(response.status)
+			redirectToLogin(response.status);
 		}
 		response.json().then(data => {
-			credits = data["credits"]
-			loaded = true
-		})
-	})
+			credits = data["credits"];
+			loaded = true;
+		});
+	});
 
 	function convertCredits() {
 		sc.convertCredits().then(response => {
 			if (response.status !== 200) {
-				modal.open("Something went wrong", "Something went wrong while converting domains!")
+				modal.open(
+					"Something went wrong",
+					"Something went wrong while converting domains!"
+				);
 			} else {
-				modal.open("Success!", "Succesfully converted")
-				credits -= 200
+				modal.open("Success!", "Succesfully converted");
+				credits -= 200;
 			}
-		})
+		});
 	}
 </script>
 

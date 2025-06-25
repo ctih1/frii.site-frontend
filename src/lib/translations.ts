@@ -1,7 +1,7 @@
-import i18n from "sveltekit-i18n"
-import lang from "../locales/+lang.json"
+import i18n from "sveltekit-i18n";
+import lang from "../locales/+lang.json";
 
-export const defaultLocale = "en"
+export const defaultLocale = "en";
 
 const config = {
 	fallbackLocale: "en",
@@ -78,13 +78,13 @@ const config = {
 			loader: async () => (await import("../locales/ru.json")).default
 		}
 	]
-}
+};
 
 export function addArguements(translation: string, replaced: Object): string {
 	for (const [key, value] of Object.entries(replaced)) {
-		translation = translation.replaceAll(key, value)
+		translation = translation.replaceAll(key, value);
 	}
-	return translation
+	return translation;
 }
 
 export const {
@@ -98,5 +98,5 @@ export const {
 	setLocale,
 	setRoute,
 	l
-} = new i18n(config)
-loading.subscribe($loading => $loading && console.log("Loading translations..."))
+} = new i18n(config);
+loading.subscribe($loading => $loading && console.log("Loading translations..."));

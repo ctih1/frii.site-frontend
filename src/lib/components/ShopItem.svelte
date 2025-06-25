@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	import { t, addArguements } from "$lib/translations"
-	import Button from "./Button.svelte"
-	let dispatch = createEventDispatcher()
+	import { createEventDispatcher } from "svelte";
+	import { t, addArguements } from "$lib/translations";
+	import Button from "./Button.svelte";
+	let dispatch = createEventDispatcher();
 
-	export let price: number
-	export let description: string
+	export let price: number;
+	export let description: string;
 	function onItemPurchase() {
-		dispatch("buy")
+		dispatch("buy");
 	}
 </script>
 

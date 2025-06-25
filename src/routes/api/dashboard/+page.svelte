@@ -1,119 +1,122 @@
 <script lang="ts">
-	import { getAuthToken } from "$lib"
+	import { getAuthToken } from "$lib";
 
-	import ApiKeyTable from "$lib/components/ApiKeyTable.svelte"
-	import Button from "$lib/components/Button.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import InputCompletor from "$lib/components/InputCompletor.svelte"
-	import Loader from "$lib/components/Loader.svelte"
-	import Modal from "$lib/components/Modal.svelte"
-	import Pool from "$lib/components/Pool.svelte"
-	import { t } from "$lib/translations"
-	import { onMount } from "svelte"
-	import { redirectToLogin } from "../../../helperFuncs"
-	import { AuthError, ServerContactor } from "../../../serverContactor"
+	import ApiKeyTable from "$lib/components/ApiKeyTable.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import InputCompletor from "$lib/components/InputCompletor.svelte";
+	import Loader from "$lib/components/Loader.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import Pool from "$lib/components/Pool.svelte";
+	import { t } from "$lib/translations";
+	import { onMount } from "svelte";
+	import { redirectToLogin } from "../../../helperFuncs";
+	import { AuthError, ServerContactor } from "../../../serverContactor";
 
-	let domainPool: Pool
-	let loader: Loader
-	let modal: Modal
-	let permPool: Pool
-	let comment: string
+	let domainPool: Pool;
+	let loader: Loader;
+	let modal: Modal;
+	let permPool: Pool;
+	let comment: string;
 
 	interface key {
-		key: string
-		comment: string
-		perms: string[]
-		domains: string[]
+		key: string;
+		comment: string;
+		perms: string[];
+		domains: string[];
 	}
 
-	let keys: key[]
-	let loaded: boolean = false
+	let keys: key[];
+	let loaded: boolean = false;
 
-	let sc: ServerContactor
+	let sc: ServerContactor;
 	onMount(() => {
-		sc = new ServerContactor(getAuthToken())
-		loader.show(undefined, $t("api_dashboard_loading"))
+		sc = new ServerContactor(getAuthToken());
+		loader.show(undefined, $t("api_dashboard_loading"));
 		sc.getApiKeys()
 			.catch(err => {
 				if (err instanceof AuthError) {
-					redirectToLogin(460)
+					redirectToLogin(460);
 				}
-				modal.open($t("api_load_failed"), $t("generic_fail_description"))
-				throw new Error("Failed to load ")
+				modal.open($t("api_load_failed"), $t("generic_fail_description"));
+				throw new Error("Failed to load ");
 			})
 			.then(data => {
-				keys = data as key[]
-				loader.hide()
-				loaded = true
-			})
+				keys = data as key[];
+				loader.hide();
+				loaded = true;
+			});
 
 		sc.getDomains()
 			.catch(error => {
 				if (error instanceof AuthError) {
-					redirectToLogin(460)
+					redirectToLogin(460);
 				}
-				modal.open($t("dashboard_domain_load_fail"), $t("generic_fail_description"))
-				throw new Error("Failed to load domains")
+				modal.open($t("dashboard_domain_load_fail"), $t("generic_fail_description"));
+				throw new Error("Failed to load domains");
 			})
 			.then(data => {
 				//@ts-ignore
-				formatDomains(data)
-			})
-	})
+				formatDomains(data);
+			});
+	});
 
-	let input: InputCompletor
-	let domainInput: InputCompletor
-	let domains: { displayText: string; valueText: string }[] = []
-	let valueDomains: string[] = []
-	let permissions: string[] = []
+	let input: InputCompletor;
+	let domainInput: InputCompletor;
+	let domains: { displayText: string; valueText: string }[] = [];
+	let valueDomains: string[] = [];
+	let permissions: string[] = [];
 
 	function formatDomains(data: Map<string, any>) {
 		new Map(Object.entries(data)).forEach((key, value) => {
 			domains.push({
 				displayText: value + (key["type"] === "TXT" ? "" : ".frii.site"),
 				valueText: value
-			})
-		})
-		domains = [...domains]
+			});
+		});
+		domains = [...domains];
 	}
 
 	function addItem(pool: Pool, detail: { displayText: string; valueText: string }) {
-		pool.addItem(detail)
+		pool.addItem(detail);
 	}
 
 	function undoRemove(
 		ic: InputCompletor,
 		item: { displayText: string; valueText: string }
 	): void {
-		ic.removeFromDeleted(item)
+		ic.removeFromDeleted(item);
 	}
 
 	function submitKey() {
 		domainPool.get().forEach((element: { displayText: string; valueText: string }) => {
-			valueDomains.push(element.valueText)
-		})
+			valueDomains.push(element.valueText);
+		});
 		permPool.get().forEach((element: { displayText: string; valueText: string }) => {
-			permissions.push(element.valueText)
-		})
-		loader.show(undefined, $t("api_dashboard_create_loading_desc"))
+			permissions.push(element.valueText);
+		});
+		loader.show(undefined, $t("api_dashboard_create_loading_desc"));
 
 		sc.createApi(valueDomains, permissions, comment).then(response => {
-			loader.hide()
+			loader.hide();
 			if (response.status === 403) {
-				modal.open($t("api_dashboard_create_fail"), $t("api_dashboard_create_fail_domains"))
+				modal.open(
+					$t("api_dashboard_create_fail"),
+					$t("api_dashboard_create_fail_domains")
+				);
 			} else if (response.status === 460) {
-				redirectToLogin(460)
+				redirectToLogin(460);
 			} else if (response.status === 200) {
 				modal.open(
 					$t("api_dashboard_create_success"),
 					$t("api_dashboard_create_success_description")
-				)
-				location.reload()
+				);
+				location.reload();
 			}
-		})
+		});
 	}
 
-	$: console.log(domains)
+	$: console.log(domains);
 </script>
 
 <Loader bind:this={loader} />
@@ -155,7 +158,7 @@
 						bind:this={permPool}
 						items={[]}
 						on:remove={event => {
-							undoRemove(input, event.detail)
+							undoRemove(input, event.detail);
 						}}></Pool>
 				</div>
 			</div>
@@ -173,7 +176,7 @@
 					bind:this={domainPool}
 					items={[]}
 					on:remove={event => {
-						undoRemove(domainInput, event.detail)
+						undoRemove(domainInput, event.detail);
 					}}></Pool>
 			</div>
 		</div>

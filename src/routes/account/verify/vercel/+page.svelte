@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from "$app/environment"
+	import { browser } from "$app/environment";
 	import {
 		AuthError,
 		CodeError,
@@ -8,54 +8,54 @@
 		ServerContactor,
 		serverURL,
 		UserError
-	} from "$lib"
-	import Button from "$lib/components/Button.svelte"
-	import Holder from "$lib/components/Holder.svelte"
-	import { t, addArguements } from "$lib/translations"
-	import { number } from "svelte-i18n"
+	} from "$lib";
+	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import { t, addArguements } from "$lib/translations";
+	import { number } from "svelte-i18n";
 
-	let value = $state("")
-	let json = $state("")
-	let currentPosition: number = $state(-1)
-	let userHasConencted: boolean = $state(false)
-	let userWasVerified: boolean = $state(false)
+	let value = $state("");
+	let json = $state("");
+	let currentPosition: number = $state(-1);
+	let userHasConencted: boolean = $state(false);
+	let userWasVerified: boolean = $state(false);
 
-	let serverContactor: ServerContactor
-	let intervalId: number = 0
+	let serverContactor: ServerContactor;
+	let intervalId: number = 0;
 
 	if (browser) {
-		serverContactor = new ServerContactor(getAuthToken())
+		serverContactor = new ServerContactor(getAuthToken());
 	}
 
 	function fetchQueueData() {
 		serverContactor
 			.getVercelQueue()
 			.catch(err => {
-				if (err instanceof AuthError) redirectToLogin(460)
+				if (err instanceof AuthError) redirectToLogin(460);
 				if (err instanceof CodeError) {
-					userHasConencted = false
-					userWasVerified = true
-					clearInterval(intervalId)
+					userHasConencted = false;
+					userWasVerified = true;
+					clearInterval(intervalId);
 				}
-				if (err instanceof UserError) connectToQueue()
-				throw new Error("Failed to get queue data1§")
+				if (err instanceof UserError) connectToQueue();
+				throw new Error("Failed to get queue data1§");
 			})
 			.then(position => {
-				currentPosition = Number(position)
-			})
+				currentPosition = Number(position);
+			});
 	}
 
 	function connectToQueue() {
-		console.log("connecting to queue")
+		console.log("connecting to queue");
 		serverContactor.joinVercelQueue(value).catch(err => {
-			alert("Failed to join queue")
-			throw new Error("Failed to join queue")
-		})
+			alert("Failed to join queue");
+			throw new Error("Failed to join queue");
+		});
 
-		userHasConencted = true
+		userHasConencted = true;
 
 		//@ts-ignore
-		intervalId = setInterval(() => fetchQueueData(), 3000)
+		intervalId = setInterval(() => fetchQueueData(), 3000);
 	}
 </script>
 

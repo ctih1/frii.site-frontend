@@ -1,27 +1,27 @@
-import { writable } from "svelte/store"
+import { writable } from "svelte/store";
 
 function getLocalStorageKey(key: string, defaultValue: any) {
 	if (typeof window === typeof undefined) {
-		return defaultValue
+		return defaultValue;
 	} else {
-		return localStorage.getItem(key) ?? defaultValue
+		return localStorage.getItem(key) ?? defaultValue;
 	}
 }
 
 function setKey(key: string, value: string) {
 	if (typeof window === typeof undefined) {
-		return null
+		return null;
 	} else {
-		localStorage.setItem(key, value)
+		localStorage.setItem(key, value);
 	}
 }
 
-const StoredDomainKey = "domainAmountStore"
-const DefaultDomainAmount = 3
+const StoredDomainKey = "domainAmountStore";
+const DefaultDomainAmount = 3;
 
-const storedDomainAmount: number = Number(getLocalStorageKey(StoredDomainKey, DefaultDomainAmount))
-export const domainAmount = writable(storedDomainAmount)
+const storedDomainAmount: number = Number(getLocalStorageKey(StoredDomainKey, DefaultDomainAmount));
+export const domainAmount = writable(storedDomainAmount);
 
 domainAmount.subscribe(value => {
-	setKey(StoredDomainKey, `${Number(value) || DefaultDomainAmount}`)
-})
+	setKey(StoredDomainKey, `${Number(value) || DefaultDomainAmount}`);
+});

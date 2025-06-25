@@ -1,50 +1,50 @@
 <script lang="ts">
-	import { onMount } from "svelte"
-	import { createEventDispatcher } from "svelte"
-	const dispatch = createEventDispatcher()
-	export let options: Array<String>
-	export let defaultValue: string
-	export let disabled: boolean
-	let toggled: boolean = false
-	let dropdown: HTMLDivElement
-	let button: HTMLButtonElement
-	let value: string = defaultValue
-	let selected: String
-	export let args: string | null = null
+	import { onMount } from "svelte";
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
+	export let options: Array<String>;
+	export let defaultValue: string;
+	export let disabled: boolean;
+	let toggled: boolean = false;
+	let dropdown: HTMLDivElement;
+	let button: HTMLButtonElement;
+	let value: string = defaultValue;
+	let selected: String;
+	export let args: string | null = null;
 	onMount(() => {
 		if (disabled) {
-			button.onclick = null
+			button.onclick = null;
 		}
-	})
+	});
 
 	export function toggleDisable() {
 		if (!disabled) {
-			button.onclick = toggleDropdown
-			dropdown.style.display = "none"
-			toggled = false
+			button.onclick = toggleDropdown;
+			dropdown.style.display = "none";
+			toggled = false;
 		} else {
-			button.onclick = null
+			button.onclick = null;
 		}
-		disabled = !disabled
+		disabled = !disabled;
 	}
 
 	function toggleDropdown(): void {
-		dispatch("click")
+		dispatch("click");
 		if (!toggled) {
-			dropdown.style.display = "block"
+			dropdown.style.display = "block";
 		} else {
-			dropdown.style.display = "none"
+			dropdown.style.display = "none";
 		}
-		toggled = !toggled
+		toggled = !toggled;
 	}
 	function onDropdownChange(element: String): void {
-		dispatch("optionchange", element)
-		selected = element
-		value = element.toString()
-		toggleDropdown()
+		dispatch("optionchange", element);
+		selected = element;
+		value = element.toString();
+		toggleDropdown();
 	}
 	export function getValue(): string {
-		return selected.toString()
+		return selected.toString();
 	}
 </script>
 

@@ -1,39 +1,39 @@
 <script lang="ts">
-	let blur: HTMLDivElement
-	export let reverse: boolean = false
-	export let startingPoint: number = 50
+	let blur: HTMLDivElement;
+	export let reverse: boolean = false;
+	export let startingPoint: number = 50;
 	function delay(time: number) {
-		return new Promise(resolve => setTimeout(resolve, time))
+		return new Promise(resolve => setTimeout(resolve, time));
 	}
 
 	export async function hide() {
 		for (let i = 100; i > 0; i--) {
-			blur.style.width = "0vw"
-			await delay(5)
-			blur.style.animation = ""
-			blur.style.backdropFilter = `blur(${i / 10}px)`
-			blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`
+			blur.style.width = "0vw";
+			await delay(5);
+			blur.style.animation = "";
+			blur.style.backdropFilter = `blur(${i / 10}px)`;
+			blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`;
 		}
 	}
 	export async function show() {
 		if (blur === undefined) {
-			return
+			return;
 		}
 		if (!reverse) {
 			for (let i = 0; i < 100; i++) {
-				await delay(10)
-				blur.style.width = "100vw"
-				blur.style.animation = ""
-				blur.style.backdropFilter = `blur(${i / 10}px)`
-				blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`
+				await delay(10);
+				blur.style.width = "100vw";
+				blur.style.animation = "";
+				blur.style.backdropFilter = `blur(${i / 10}px)`;
+				blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`;
 			}
 		} else {
 			for (let i = 100; i > startingPoint; i--) {
-				await delay(10)
-				blur.style.width = "100vw"
-				blur.style.animation = ""
-				blur.style.backdropFilter = `blur(${i / 10}px)`
-				blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`
+				await delay(10);
+				blur.style.width = "100vw";
+				blur.style.animation = "";
+				blur.style.backdropFilter = `blur(${i / 10}px)`;
+				blur.style["-webkit-backdrop-filter"] = `blur(${i / 10}px)`;
 			}
 		}
 	}

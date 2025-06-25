@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { browser } from "$app/environment"
-	let balls = $state(randomLocations())
+	import { browser } from "$app/environment";
+	let balls = $state(randomLocations());
 
 	function randomLocations() {
 		return Array.from({ length: 20 }, () => ({
 			x: Math.round(Math.random() * 100) + "%",
 			y: Math.round(Math.random() * 100) + "%"
-		}))
+		}));
 	}
-	balls = randomLocations()
+	balls = randomLocations();
 
 	if (browser && localStorage.getItem("toaster-mode") != "true") {
-		setTimeout(() => (balls = randomLocations()), 100)
-		setInterval(() => (balls = randomLocations()), 15000)
+		setTimeout(() => (balls = randomLocations()), 100);
+		setInterval(() => (balls = randomLocations()), 15000);
 	}
 </script>
 
