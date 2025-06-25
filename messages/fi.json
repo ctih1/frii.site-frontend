@@ -37,7 +37,6 @@
 	"dashboard_delete_error": "Verkkotunnuksen poistaminen epäonnistui",
 	"unhandled_error": "Käsittelemätön poikkeus tapahtui.",
 	"dashboard_delete_success": "Poistetiin {domain}",
-	"dashboard_delete_sucess_description": "{domain} poistettiin onnistuneesti",
 	"dashboard_register_success": "Rekisteröitiin {domain}!",
 	"dashboard_register_fail": "{domain} rekisteröiminen epäonnitui",
 	"dashboard_register_success_description": "Omistat nyt verkkotunnuksen. Etkö tiedä miten aloittaa? Käy katsomassa <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">wikiämme</a>",

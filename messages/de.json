@@ -87,5 +87,6 @@
 	"security_report_impact": "Einfluss des Fehlers auf frii.site",
 	"security_report_attacker": "Wie ein Angreifer diese Schwachstelle nutzen könnte",
 	"security_report_email": "Deine E-Mail Adresse, um dich zu kontaktieren",
-	"security_report_submit": "Senden"
+	"security_report_submit": "Senden",
+	"dashboard_delete_success_description": "{domain} wurde erfolgreich gelöscht."
 }
