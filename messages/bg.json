@@ -108,7 +108,6 @@
 	"api_dashboard_create_button": "Създаване",
 	"api_dashboard_comment_placeholder": "За тестване на моето супер яко приложение",
 	"index_aboutus": "За нас",
-	"index_token_login": "Влезте с токен",
 	"index_aboutus_description": "Ние сме безплатна услуга за хостинг на поддомейни, която съществува от 6 месеца. През това време сме регистрирали над 150 домейна за над 200 потребители по целия свят. Ние много ценим прозрачността и затова сме с отворен код, имаме <strong>безплатно</strong> API и публикуваме актуализации в нашата общност на <a href=\"https://github.com/ctih1/frii.site-frontend\">GitHub</a>",
 	"dashboard_domain_use": "Заявеният домейн вече е регистриран!",
 	"dashboard_domain_permissions": "Трябва да притежавате всички части на искания домейн.",
