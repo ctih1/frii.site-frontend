@@ -8,7 +8,17 @@
 	"arrowParens": "avoid",
 	"bracketSameLine": true,
 	"svelteAllowShorthand": false,
-	"svelteSortOrder": "options-styles-scripts-markup",
-	"plugins": ["prettier-plugin-organize-imports", "prettier-plugin-svelte"],
-	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+	"svelteSortOrder": "options-scripts-markup-styles",
+	"plugins": [
+		"prettier-plugin-organize-imports",
+		"prettier-plugin-svelte"
+	],
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		}
+	]
 }
