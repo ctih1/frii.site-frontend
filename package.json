@@ -8,7 +8,8 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"machine-translate": "inlang machine translate --project project.inlang"
 	},
 	"devDependencies": {
 		"@magidoc/plugin-svelte-marked": "^6.2.0",
@@ -27,7 +28,9 @@
 		"svelte-check": "^4.0.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^6.0.0"
+		"vite": "^6.0.0",
+		"@inlang/paraglide-js": "2.1.0",
+		"@inlang/cli": "^3.0.0"
 	},
 	"type": "module",
 	"dependencies": {
