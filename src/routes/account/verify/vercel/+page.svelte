@@ -10,7 +10,7 @@
 	} from "$lib";
 	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
-	import { m } from "../../paraglide/messages";
+	import { m } from "../../../../paraglide/messages";
 
 	let value = $state("");
 	let json = $state("");
@@ -66,7 +66,7 @@
 			<p>{m.vercel_verification_generic()}</p>
 		{:else}
 			<p>
-				{addArguements(m.vercel_verification_queue(), { "%position%": currentPosition })}
+				{m.vercel_verification_queue({ position: currentPosition })}
 			</p>
 		{/if}
 	{:else if userWasVerified}

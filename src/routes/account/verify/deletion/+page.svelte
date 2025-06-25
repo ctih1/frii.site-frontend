@@ -2,8 +2,8 @@
 	import { redirectToLogin } from "$lib";
 	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import { m } from "../../../../paraglide/messages";
 	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
-	import { m } from "../../paraglide/messages";
 
 	let doneVerifying: boolean = $state(false);
 	let valid: boolean = $state(false);

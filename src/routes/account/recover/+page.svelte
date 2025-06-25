@@ -6,7 +6,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 
 	import { redirectToLogin } from "$lib";
-	import { m } from "../../paraglide/messages";
+	import { m } from "../../../paraglide/messages";
 	import {
 		CodeError,
 		confirmPasswordChange,
