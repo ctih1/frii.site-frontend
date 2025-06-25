@@ -8,10 +8,10 @@
 	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import Pool from "$lib/components/Pool.svelte";
-	import { t } from "$lib/translations";
 	import { onMount } from "svelte";
 	import { redirectToLogin } from "../../../helperFuncs";
 	import { AuthError, ServerContactor } from "../../../serverContactor";
+	import { m } from "../../paraglide/messages";
 
 	let domainPool: Pool;
 	let loader: Loader;
@@ -32,13 +32,13 @@
 	let sc: ServerContactor;
 	onMount(() => {
 		sc = new ServerContactor(getAuthToken());
-		loader.show(undefined, $t("api_dashboard_loading"));
+		loader.show(undefined, m.api_dashboard_loading());
 		sc.getApiKeys()
 			.catch(err => {
 				if (err instanceof AuthError) {
 					redirectToLogin(460);
 				}
-				modal.open($t("api_load_failed"), $t("generic_fail_description"));
+				modal.open(m.api_load_failed(), m.generic_fail_description());
 				throw new Error("Failed to load ");
 			})
 			.then(data => {
@@ -52,7 +52,7 @@
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
 				}
-				modal.open($t("dashboard_domain_load_fail"), $t("generic_fail_description"));
+				modal.open(m.dashboard_domain_load_fail(), m.generic_fail_description());
 				throw new Error("Failed to load domains");
 			})
 			.then(data => {
@@ -95,21 +95,18 @@
 		permPool.get().forEach((element: { displayText: string; valueText: string }) => {
 			permissions.push(element.valueText);
 		});
-		loader.show(undefined, $t("api_dashboard_create_loading_desc"));
+		loader.show(undefined, m.api_dashboard_create_loading_desc());
 
 		sc.createApi(valueDomains, permissions, comment).then(response => {
 			loader.hide();
 			if (response.status === 403) {
-				modal.open(
-					$t("api_dashboard_create_fail"),
-					$t("api_dashboard_create_fail_domains")
-				);
+				modal.open(m.api_dashboard_create_fail(), m.api_dashboard_create_fail_domains());
 			} else if (response.status === 460) {
 				redirectToLogin(460);
 			} else if (response.status === 200) {
 				modal.open(
-					$t("api_dashboard_create_success"),
-					$t("api_dashboard_create_success_description")
+					m.api_dashboard_create_success(),
+					m.api_dashboard_create_success_description()
 				);
 				location.reload();
 			}
@@ -122,37 +119,37 @@
 <Loader bind:this={loader} />
 <Modal bind:this={modal} />
 <Holder>
-	<h1>{$t("api_title")}</h1>
+	<h1>{m.api_title()}</h1>
 	{#if loaded}
 		<ApiKeyTable keys={keys}></ApiKeyTable>
 	{/if}
 </Holder>
 
 <Holder>
-	<h1>{$t("api_dashboard_create_title")}</h1>
+	<h1>{m.api_dashboard_create_title()}</h1>
 	<form>
 		<div class="form-item">
-			<p>{$t("api_dashboard_comment_section")}</p>
+			<p>{m.api_dashboard_comment_section()}</p>
 			<input
 				bind:value={comment}
 				type="text"
 				style="min-height: 2em;"
-				placeholder={$t("api_dashboard_comment_placeholder")} />
+				placeholder={m.api_dashboard_comment_placeholder()} />
 		</div>
 		<div class="form-item">
 			<div class="flex">
-				<p>{$t("api_dashboard_permission_section")}</p>
+				<p>{m.api_dashboard_permission_section()}</p>
 				<div class="permissions">
 					<InputCompletor
 						bind:this={input}
 						on:enter={event => addItem(permPool, event.detail)}
 						suggestions={[
-							{ displayText: $t("api_permission_register"), valueText: "register" },
-							{ displayText: $t("api_dashboard_delete_perm"), valueText: "delete" },
-							{ displayText: $t("api_permission_modify"), valueText: "modify" },
-							{ displayText: $t("api_permission_list"), valueText: "list" }
+							{ displayText: m.api_permission_register(), valueText: "register" },
+							{ displayText: m.api_dashboard_delete_perm(), valueText: "delete" },
+							{ displayText: m.api_permission_modify(), valueText: "modify" },
+							{ displayText: m.api_permission_list(), valueText: "list" }
 						]}
-						inputPlaceholder={$t("api_dashboard_permission_input_placehoder")}
+						inputPlaceholder={m.api_dashboard_permission_input_placehoder()}
 						removeUsed={true} />
 					<Pool
 						bind:this={permPool}
@@ -165,7 +162,7 @@
 		</div>
 		<div class="form-item">
 			<div class="flex">
-				<p>{$t("api_dashboard_domains_section")}</p>
+				<p>{m.api_dashboard_domains_section()}</p>
 				<InputCompletor
 					bind:this={domainInput}
 					on:enter={event => addItem(domainPool, event.detail)}
@@ -181,7 +178,7 @@
 			</div>
 		</div>
 		<Button on:click={() => submitKey()} args="fill padding"
-			>{$t("api_dashboard_create_button")}</Button>
+			>{m.api_dashboard_create_button()}</Button>
 	</form>
 </Holder>
 

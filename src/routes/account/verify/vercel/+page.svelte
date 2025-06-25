@@ -6,13 +6,11 @@
 		getAuthToken,
 		redirectToLogin,
 		ServerContactor,
-		serverURL,
 		UserError
 	} from "$lib";
 	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
-	import { t, addArguements } from "$lib/translations";
-	import { number } from "svelte-i18n";
+	import { m } from "../../paraglide/messages";
 
 	let value = $state("");
 	let json = $state("");
@@ -63,22 +61,22 @@
 	<h1>Vercel verification</h1>
 	{#if userHasConencted}
 		{#if currentPosition === -1}
-			<p>{$t("vercel_verification_queue_join")}</p>
+			<p>{m.vercel_verification_queue_join()}</p>
 		{:else if currentPosition === 0}
-			<p>{$t("vercel_verification_generic")}</p>
+			<p>{m.vercel_verification_generic()}</p>
 		{:else}
 			<p>
-				{addArguements($t("vercel_verification_queue"), { "%position%": currentPosition })}
+				{addArguements(m.vercel_verification_queue(), { "%position%": currentPosition })}
 			</p>
 		{/if}
 	{:else if userWasVerified}
-		<p>{$t("vercel_verification_queue_over")}</p>
+		<p>{m.vercel_verification_queue_over()}</p>
 	{:else}
 		<input
 			bind:value={value}
 			placeholder="vc-domain-verify=***.frii.site,********************" />
 		<Button args="padding margin-1em-top" on:click={() => connectToQueue()}
-			>{$t("vercel_verification_queue_join_action_button")}</Button>
+			>{m.vercel_verification_queue_join_action_button()}</Button>
 	{/if}
 </Holder>
 

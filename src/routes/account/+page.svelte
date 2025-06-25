@@ -9,7 +9,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 
 	import { getAuthToken } from "$lib";
-	import { t } from "$lib/translations";
+	import { m } from "../../paraglide/messages";
 	import {
 		AuthError,
 		ConflictError,
@@ -56,35 +56,35 @@
 			Number($page.url.searchParams.get("c")) // switch status code that redirected user here
 		) {
 			case 460:
-				warningText = $t("account_signed_out");
+				warningText = m.account_signed_out();
 				break;
 
 			case 461:
 			case 462:
-				warningText = $t("account_permissions_lack");
+				warningText = m.account_permissions_lack();
 				break;
 		}
 	});
 
 	function handleLogin() {
-		loader.show(undefined, $t("account_login_loading_desc"));
+		loader.show(undefined, m.account_login_loading_desc());
 		login(username, password)
 			.catch(error => {
 				loader.hide();
 
 				if (error instanceof AuthError || error instanceof UserError) {
-					modal.open($t("login_failed"), $t("login_failed_description"));
+					modal.open(m.login_failed(), m.login_failed_description());
 				} else if (error instanceof PermissionError) {
 					modal.open(
-						$t("login_failed"),
-						$t("login_failed_verify"),
+						m.login_failed(),
+						m.login_failed_verify(),
 						undefined,
 						undefined,
 						true,
 						username
 					);
 				} else {
-					modal.open($t("login_failed"), $t("login_generic_error"));
+					modal.open(m.login_failed(), m.login_generic_error());
 				}
 
 				throw new Error("Login failed");
@@ -102,7 +102,7 @@
 				localStorage.removeItem("temp-token");
 				localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
 				localStorage.setItem("logged-in", "y");
-				modal.open($t("login_succeed"), $t("login_succeed_description"));
+				modal.open(m.login_succeed(), m.login_succeed_description());
 				setTimeout(() => {
 					// 3s timeout is for firefox, since an immediate redirect can cause a bug where localStorage doesnt save
 					redirectURL = redirectURL ?? "/";
@@ -112,13 +112,10 @@
 	}
 
 	function handleSignup() {
-		loader.show(undefined, $t("account_signup_loading_desc"));
+		loader.show(undefined, m.account_signup_loading_desc());
 		if (password !== repeatPassword) {
 			loader.hide();
-			modal.open(
-				$t("signup_password_not_match"),
-				$t("signup_password_not_match_description")
-			);
+			modal.open(m.signup_password_not_match(), m.signup_password_not_match_description());
 			return;
 		}
 		serverContactor
@@ -129,18 +126,17 @@
 				loader.hide();
 				if (err instanceof InviteError)
 					modal.open(
-						$t("account_register_invite_fail"),
-						$t("account_register_invite_fail_desc")
+						m.account_register_invite_fail(),
+						m.account_register_invite_fail_desc()
 					);
 				if (err instanceof ConflictError)
-					modal.open($t("signup_fail"), $t("signup_fail_username"));
-				if (err instanceof UserError)
-					modal.open($t("signup_fail"), $t("signup_fail_email"));
+					modal.open(m.signup_fail(), m.signup_fail_username());
+				if (err instanceof UserError) modal.open(m.signup_fail(), m.signup_fail_email());
 				throw new Error("Registration failed");
 			})
 			.then(_ => {
 				loader.hide();
-				modal.open($t("signup_success"), $t("signup_success_description"));
+				modal.open(m.signup_success(), m.signup_success_description());
 			});
 	}
 
@@ -162,17 +158,17 @@
 
 <svelte:head>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
-	<title>{$t("account_title_on_tab")}</title>
+	<title>{m.account_title_on_tab()}</title>
 </svelte:head>
 
 <Loader bind:this={loader} />
 <Holder>
-	<h1>{login_mode ? $t("login_text") : $t("signup_text")}</h1>
+	<h1>{login_mode ? m.login_text() : m.signup_text()}</h1>
 	<p>
 		{#if warningText}
 			{warningText}
 		{:else}
-			{login_mode ? $t("login_description") : $t("signup_description")}
+			{login_mode ? m.login_description() : m.signup_description()}
 		{/if}
 	</p>
 
@@ -181,28 +177,28 @@
 			<input bind:value={email} placeholder="email" type="email" />
 		{/if}
 
-		<input bind:value={username} placeholder={$t("username_placeholder")} type="text" />
+		<input bind:value={username} placeholder={m.username_placeholder()} type="text" />
 
-		<input bind:value={password} placeholder={$t("password_placeholder")} type="password" />
+		<input bind:value={password} placeholder={m.password_placeholder()} type="password" />
 
 		{#if !login_mode}
 			<input
 				bind:value={repeatPassword}
-				placeholder={$t("confirm_password_placeholder")}
+				placeholder={m.confirm_password_placeholder()}
 				type="password" />
-			<p>{@html $t("legal_text")}</p>
+			<p>{@html m.legal_text()}</p>
 		{/if}
 
 		{#if login_mode}
 			<h4 style="margin-top: 5px; margin-bottom: 5px;">
-				<a href="/account/recover">{$t("password_forget_intro")}</a>
+				<a href="/account/recover">{m.password_forget_intro()}</a>
 			</h4>
 		{/if}
 	</form>
 
 	<div class="button-holder">
 		<Button on:click={accountActionButtonClick} args={"fill"}>
-			{login_mode ? $t("login_button") : $t("signup_button")}
+			{login_mode ? m.login_button() : m.signup_button()}
 		</Button>
 	</div>
 
@@ -221,7 +217,7 @@
 		<a href="#" on:click={() => (login_mode = true)}>Login to an existing account</a>
 	{/if}
 	<a href="#" on:click={() => (login_mode = !login_mode)}>
-		{login_mode ? $t("signup_instead") : $t("login_instead")}
+		{login_mode ? m.signup_instead() : m.login_instead()}
 	</a>
 </Holder>
 

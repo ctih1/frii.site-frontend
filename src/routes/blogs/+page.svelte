@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { error } from "@sveltejs/kit";
-	import { serverURL } from "../../serverContactor";
-	import { t } from "$lib/translations";
 	import BlogCard from "$lib/components/BlogCard.svelte";
+	import { error } from "@sveltejs/kit";
+	import { onMount } from "svelte";
+	import { m } from "../../paraglide/messages";
+	import { serverURL } from "../../serverContactor";
 
 	import Holder from "$lib/components/Holder.svelte";
 	interface Iblog {
@@ -33,8 +33,8 @@
 </script>
 
 <Holder>
-	<h1>{$t("blogs_title")}</h1>
-	<p>{$t("blogs_description")}</p>
+	<h1>{m.blogs_title()}</h1>
+	<p>{m.blogs_description()}</p>
 	{#each blogs.sort((a, b) => b.date - a.date) as blog}
 		<BlogCard
 			inline={true}

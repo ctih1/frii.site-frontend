@@ -1,14 +1,12 @@
 <script lang="ts">
-	import Modal from "$lib/components/Modal.svelte";
-	import Button from "$lib/components/Button.svelte";
-	import Placeholder from "$lib/components/Placeholder.svelte";
-	import { ServerContactor } from "./../../serverContactor";
-	import { redirectToLogin } from "../../helperFuncs";
-	import ShopItem from "$lib/components/ShopItem.svelte";
-	import { t } from "$lib/translations";
-	import Holder from "$lib/components/Holder.svelte";
-	import Cookies from "js-cookie";
 	import { getAuthToken } from "$lib";
+	import Holder from "$lib/components/Holder.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import Placeholder from "$lib/components/Placeholder.svelte";
+	import ShopItem from "$lib/components/ShopItem.svelte";
+	import { redirectToLogin } from "../../helperFuncs";
+	import { m } from "../../paraglide/messages";
+	import { ServerContactor } from "./../../serverContactor";
 
 	let credits: number = 0;
 	let sc = new ServerContactor(getAuthToken());
@@ -43,7 +41,7 @@
 {#if loaded}
 	<Modal title="" description="" options={["OK"]} bind:this={modal}></Modal>
 	<Holder>
-		<h1>{$t("store_title")}</h1>
+		<h1>{m.store_title()}</h1>
 		<p>
 			WARNING: This page is still in beta. The styling, way credits work, or item prices have
 			not been determined yet.
@@ -55,8 +53,8 @@
 		<div class="shop">
 			<ShopItem
 				on:buy={() => convertCredits()}
-				description={$t("store_extra_domains_description")}
-				price={200}>{$t("store_extra_domains")}</ShopItem>
+				description={m.store_extra_domains_description()}
+				price={200}>{m.store_extra_domains()}</ShopItem>
 		</div>
 	</Holder>
 {:else}

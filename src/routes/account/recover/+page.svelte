@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 
+	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
 	import Modal from "$lib/components/Modal.svelte";
-	import Button from "$lib/components/Button.svelte";
 
+	import { redirectToLogin } from "$lib";
+	import { m } from "../../paraglide/messages";
 	import {
-		sendForgotCode,
-		confirmPasswordChange,
 		CodeError,
+		confirmPasswordChange,
+		sendForgotCode,
 		UserError
 	} from "./../../../serverContactor";
-	import { t } from "$lib/translations";
-	import { redirectToLogin } from "$lib";
 
 	let generatingNew: boolean = false;
 	let code: string | null = null;
@@ -27,8 +27,8 @@
 		if (generatingNew) {
 			if (password !== cPassword) {
 				modal.open(
-					$t("signup_password_not_match"),
-					$t("signup_password_not_match_description")
+					m.signup_password_not_match(),
+					m.signup_password_not_match_description()
 				);
 				return;
 			}
@@ -37,8 +37,8 @@
 				.catch(err => {
 					if (err instanceof CodeError)
 						modal.open(
-							$t("account_recovery_fail"),
-							$t("account_recovery_fail_description")
+							m.account_recovery_fail(),
+							m.account_recovery_fail_description()
 						);
 					if (err instanceof UserError) redirectToLogin(404);
 
@@ -46,8 +46,8 @@
 				})
 				.then(response => {
 					modal.open(
-						$t("account_recovery_success"),
-						$t("account_recovery_success_description")
+						m.account_recovery_success(),
+						m.account_recovery_success_description()
 					);
 				});
 		} else {
@@ -56,16 +56,13 @@
 					if (err instanceof UserError) redirectToLogin(404);
 
 					modal.open(
-						$t("account_recovery_start_fail"),
-						$t("account_recovery_start_fail_description")
+						m.account_recovery_start_fail(),
+						m.account_recovery_start_fail_description()
 					);
 					throw new Error("Failed to send password reset");
 				})
 				.then(_ => {
-					modal.open(
-						$t("account_recovery_sent"),
-						$t("account_recovery_sent_description")
-					);
+					modal.open(m.account_recovery_sent(), m.account_recovery_sent_description());
 				});
 		}
 	}
@@ -77,19 +74,19 @@
 	let modal: Modal;
 </script>
 
-<Modal countdown={undefined} description="" title="" options={[$t("modal_ok")]} bind:this={modal} />
+<Modal countdown={undefined} description="" title="" options={[m.modal_ok()]} bind:this={modal} />
 <Holder>
 	{#if generatingNew}
-		<h1>{$t("account_recovery_title")}</h1>
-		<input bind:value={password} placeholder={$t("password_placeholder")} />
-		<input bind:value={cPassword} placeholder={$t("confirm_password_placeholder")} />
+		<h1>{m.account_recovery_title()}</h1>
+		<input bind:value={password} placeholder={m.password_placeholder()} />
+		<input bind:value={cPassword} placeholder={m.confirm_password_placeholder()} />
 	{:else}
-		<h1>{$t("account_recovery_title")}</h1>
-		<p>{$t("account_recovery_description")}</p>
-		<input bind:value={username} placeholder={$t("username_placeholder")} />
+		<h1>{m.account_recovery_title()}</h1>
+		<p>{m.account_recovery_description()}</p>
+		<input bind:value={username} placeholder={m.username_placeholder()} />
 	{/if}
 	<Button on:click={handleButton} args="fill padding margin-1em-top"
-		>{$t("security_report_submit")}</Button>
+		>{m.security_report_submit()}</Button>
 </Holder>
 
 <style>

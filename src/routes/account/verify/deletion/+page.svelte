@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { t } from "$lib/translations";
 	import { redirectToLogin } from "$lib";
-	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
-	import Holder from "$lib/components/Holder.svelte";
 	import Button from "$lib/components/Button.svelte";
+	import Holder from "$lib/components/Holder.svelte";
+	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
+	import { m } from "../../paraglide/messages";
 
 	let doneVerifying: boolean = $state(false);
 	let valid: boolean = $state(false);
@@ -33,34 +33,34 @@
 </script>
 
 <Holder>
-	<h1>{$t("deletion_verif_title")}</h1>
+	<h1>{m.deletion_verif_title()}</h1>
 	<br />
 	{#if !clicked}
-		<p>{$t("account_del_desc")}</p>
+		<p>{m.account_del_desc()}</p>
 		<ol>
-			<li>{$t("account_del_steps_1")}</li>
-			<li>{$t("account_del_steps_2")}</li>
-			<li>{$t("account_del_steps_3")}</li>
-			<li>{$t("account_del_steps_4")}</li>
+			<li>{m.account_del_steps_1()}</li>
+			<li>{m.account_del_steps_2()}</li>
+			<li>{m.account_del_steps_3()}</li>
+			<li>{m.account_del_steps_4()}</li>
 		</ol>
 		<Button on:click={_ => (clicked = true)} args="danger padding"
-			>{$t("account_del_agree")}</Button>
+			>{m.account_del_agree()}</Button>
 	{/if}
 	<h2>
 		{#if !doneVerifying && clicked}
-			{$t("code_verif_loading")}
+			{m.code_verif_loading()}
 		{:else if !valid && clicked && doneVerifying}
-			{$t("code_verif_loading_wrong")}
+			{m.code_verif_loading_wrong()}
 		{:else if valid && clicked && doneVerifying}
-			{$t("account_verif_loading_success")}
+			{m.account_verif_loading_success()}
 		{/if}
 	</h2>
 	{#if doneVerifying}
 		<p>
 			{#if valid}
-				{$t("account_verif_loading_success_desc")}
+				{m.account_verif_loading_success_desc()}
 			{:else}
-				{$t("code_verif_loading_wrong_desc")}
+				{m.code_verif_loading_wrong_desc()}
 			{/if}
 		</p>
 	{/if}

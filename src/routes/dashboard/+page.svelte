@@ -6,9 +6,9 @@
 	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import Registrar from "$lib/components/Registrar.svelte";
-	import { addArguements, t } from "$lib/translations";
 	import { onMount } from "svelte";
 	import { redirectToLogin } from "../../helperFuncs";
+	import { m } from "../../paraglide/messages";
 	import {
 		AuthError,
 		ConflictError,
@@ -37,10 +37,7 @@
 
 	function deleteDomain(domain: string) {
 		modal.close();
-		loader.show(
-			undefined,
-			addArguements($t("dashboard_delete_loading_desc"), { "%domain%": domain })
-		);
+		loader.show(undefined, m.dashboard_delete_loading_desc({ domain: domain }));
 		serverContactor
 			.deleteDomain(domain)
 			.catch(error => {
@@ -48,87 +45,73 @@
 
 				if (error instanceof AuthError) redirectToLogin(460);
 
-				modal.open($t("dashboard_delete_error"), $t("unhandled_error"));
+				modal.open(m.dashboard_delete_error(), m.unhandled_error());
 
 				throw new Error("Failed to delete domain");
 			})
 			.then(() => {
 				loader.hide();
 				modal.open(
-					addArguements($t("dashboard_delete_success"), { "%domain%": domain }),
-					addArguements($t("dashboard_delete_success_description"), {
-						"%domain%": domain
-					})
+					m.dashboard_delete_success({ domain: domain }),
+					m.dashboard_delete_success_description({ domain: domain })
 				);
 				removeDomain(domain);
 			});
 	}
 
 	function registerDomain(domain: string, type: string) {
-		loader.show(
-			$t("loading"),
-			addArguements($t("dashboard_register_load_desc"), { "%domain%": domain })
-		);
+		loader.show(m.loading(), m.dashboard_register_load_desc({ domain: domain }));
 		serverContactor
 			.registerDomain(domain, type)
 			.catch(error => {
 				loader.hide();
-				const errorMessage = addArguements($t("dashboard_register_fail"), {
-					"%domain%": domain
-				});
+				const errorMessage = m.dashboard_register_fail({ domain: domain });
 
 				if (error instanceof AuthError) redirectToLogin(460);
-				if (error instanceof DNSError) modal.open(errorMessage, $t("dashboard_invalid"));
+				if (error instanceof DNSError) modal.open(errorMessage, m.dashboard_invalid());
 				if (error instanceof PermissionError)
-					modal.open(errorMessage, $t("dashboard_domain_permissions"));
+					modal.open(errorMessage, m.dashboard_domain_permissions());
 				if (error instanceof LimitError)
-					modal.open(errorMessage, $t("dashboard_domain_limit"));
+					modal.open(errorMessage, m.dashboard_domain_limit());
 				if (error instanceof ConflictError)
-					modal.open(errorMessage, $t("dashboard_domain_use"));
+					modal.open(errorMessage, m.dashboard_domain_use());
 
-				modal.open(errorMessage, $t("unhandled_error"));
+				modal.open(errorMessage, m.unhandled_error());
 				throw new Error("Failed to register dommain!");
 			})
 			.then(value => {
 				loader.hide();
 				modal.open(
-					addArguements($t("dashboard_register_success"), { "%domain%": domain }),
-					$t("dashboard_modify_success_description")
+					m.dashboard_register_success({ domain: domain }),
+					m.dashboard_modify_success_description()
 				);
 				domains.push({ type, domain, value });
 			});
 	}
 
 	function modifyDomain(name: string, value: string, type: string) {
-		loader.show(
-			$t("loading"),
-			addArguements($t("dashboard_modify_load_desc"), { "%domain%": name })
-		);
+		loader.show(m.loading(), m.dashboard_modify_load_desc({ domain: name }));
 		serverContactor
 			.modifyDomain(name, value, type)
 			.catch(error => {
 				loader.hide();
-				const errorMessage = addArguements($t("dashboard_modify_fail"), {
-					"%domain%": name
-				});
+				const errorMessage = m.dashboard_modify_fail({ domain: name });
 
 				if (error instanceof AuthError) redirectToLogin(460);
 				if (error instanceof DNSError)
-					modal.open(errorMessage, $t("dashboard_invalid_value"));
+					modal.open(errorMessage, m.dashboard_invalid_value());
 				if (error instanceof PermissionError)
-					modal.open(errorMessage, $t("dashboard_domain_permissions"));
+					modal.open(errorMessage, m.dashboard_domain_permissions());
 
-				modal.open(errorMessage, $t("unhandled_error"));
+				modal.open(errorMessage, m.unhandled_error());
 				throw Error("Failed to modify domain."); // stops execution to the .then block
 			})
 			.then(() => {
 				loader.hide();
 				console.log(name);
 				modal.open(
-					addArguements($t("dashboard_modify_success"), {
-						"%domain%": name + ".frii.site"
-					}),
-					$t("dashboard_modify_success_description")
+					m.dashboard_modify_success({ domain: name + ".frii.site" }),
+					m.dashboard_modify_success_description()
 				);
 			});
 	}
@@ -153,7 +136,7 @@
 					redirectToLogin(460);
 				} else {
 					console.error(error);
-					modal.open($t("dashboard_domain_load_fail"), $t("generic_fail_description"));
+					modal.open(m.dashboard_domain_load_fail(), m.generic_fail_description());
 					throw new Error("Failed to load domains");
 				}
 			})
@@ -170,7 +153,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t("dashboard_title")} - frii.site</title>
+	<title>{m.dashboard_title()} - frii.site</title>
 	<meta content="frii.site dashboard" property="og:title" />
 	<meta content="Manage all of your domains here!" property="og:description" />
 	<meta content="Manage all of your domains here!" name="description" />
@@ -182,18 +165,16 @@
 <Loader bind:this={loader} />
 
 <Holder>
-	<h1>{$t("dashboard_your_domains")}</h1>
-	<p>{$t("dashboard_domain_explanation")}</p>
+	<h1>{m.dashboard_your_domains()}</h1>
+	<p>{m.dashboard_domain_explanation()}</p>
 	<DomainTable
 		on:delete={event => {
 			userDeletionDomain = event.detail.domain;
 			modal.open(
-				addArguements($t("dashboard_domain_deletion_alert"), {
-					"%domain%": event.detail.domain
-				}),
-				$t("dashboard_domain_deletion_description"),
+				m.dashboard_domain_deletion_alert({ domain: event.detail.domain }),
+				m.dashboard_domain_deletion_description(),
 				modalTime,
-				[$t("cancel_modal"), $t("continue_modal")]
+				[m.cancel_modal(), m.continue_modal()]
 			);
 		}}
 		on:save={event => modifyDomain(event.detail.name, event.detail.value, event.detail.type)}
@@ -202,8 +183,8 @@
 		loaded={domainsLoaded} />
 </Holder>
 <Holder>
-	<h2>{$t("dashboard_register_new_domain")}</h2>
-	<p>{@html $t("dashboard_register_description")}</p>
+	<h2>{m.dashboard_register_new_domain()}</h2>
+	<p>{@html m.dashboard_register_description()}</p>
 	<Registrar on:click={event => registerDomain(event.detail.domain, event.detail.type)} />
 </Holder>
 
@@ -215,6 +196,6 @@
 	}}
 	on:secondary={() => deleteDomain(userDeletionDomain)}
 	bind:this={modal}
-	options={[$t("modal_ok")]}
+	options={[m.modal_ok()]}
 	description={""}
 	title={""}></Modal>

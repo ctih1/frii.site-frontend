@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { dev } from "$app/environment";
-	import { browser } from "$app/environment";
+	import { browser, dev } from "$app/environment";
 	import { onMount } from "svelte";
 
-	import Section from "$lib/components/Section.svelte";
 	import Blur from "$lib/components/Blur.svelte";
-	import Switch from "$lib/components/Switch.svelte";
-	import Tooltip from "$lib/components/Tooltip.svelte";
-	import Loader from "$lib/components/Loader.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import Placeholder from "$lib/components/Placeholder.svelte";
+	import Section from "$lib/components/Section.svelte";
+	import Switch from "$lib/components/Switch.svelte";
+	import Tooltip from "$lib/components/Tooltip.svelte";
 
 	import QR from "@svelte-put/qr/svg/QR.svelte";
 
-	import { ServerContactor, AuthError, ConflictError, UserError } from "../../../serverContactor";
-	import { t, locale, locales, addArguements } from "$lib/translations";
-	import { getAuthToken, redirectToLogin, createFile } from "$lib";
+	import { createFile, getAuthToken, redirectToLogin } from "$lib";
+	import { AuthError, ConflictError, ServerContactor, UserError } from "../../../serverContactor";
 
-	import { UAParser } from "ua-parser-js";
-	import Cookies from "js-cookie";
 	import copy from "clipboard-copy";
+	import Cookies from "js-cookie";
+	import { UAParser } from "ua-parser-js";
+	import { m } from "../../../paraglide/messages";
 
 	interface Session {
 		hash: string;
@@ -75,12 +74,8 @@
 				if (!data) {
 					throw Error("Data is not defined");
 				}
-				emailE = addArguements($t("account_email"), {
-					"%email%": data["email"]
-				});
-				usernameE = addArguements($t("account_username"), {
-					"%username%": data["username"]
-				});
+				emailE = m.account_email({ email: data["email"] });
+				usernameE = m.account_username({ username: data["username"] });
 				loaded = true;
 				verified = data["verified"];
 				//@ts-ignore
@@ -134,10 +129,7 @@
 					redirectToLogin(460);
 				}
 				if (err instanceof ConflictError) {
-					modal.open(
-						$t("account_invite_fail"),
-						$t("account_invite_fail_usage_description")
-					);
+					modal.open(m.account_invite_fail(), m.account_invite_fail_usage_description());
 				} else {
 				}
 				throw new Error("Failed to create invite");
@@ -145,9 +137,9 @@
 			.then(response => {
 				loader.hide();
 				modal.open(
-					$t("account_invite_success"),
-					addArguements($t("account_invite_success_desc"), {
-						"%link%": `https://www.frii.site/account?invite=${response["code"]}`
+					m.account_invite_success(),
+					m.account_invite_success_desc({
+						link: `https://www.frii.site/account?invite=${response["code"]}`
 					})
 				);
 				invites.push({
@@ -162,9 +154,9 @@
 
 	function handleDelete() {
 		if (noConfirm) {
-			modal.open($t("account_delete_confirm"), $t("acount_delete_confirm_description"), 10, [
-				$t("cancel_modal"),
-				$t("continue_modal")
+			modal.open(m.account_delete_confirm(), m.acount_delete_confirm_description(), 10, [
+				m.cancel_modal(),
+				m.continue_modal()
 			]);
 			noConfirm = false;
 			return;
@@ -173,11 +165,11 @@
 			.deleteAccount()
 			.catch(err => {
 				if (err instanceof AuthError) redirectToLogin(460);
-				modal.open($t("account_deletion_fail"), $t("account_deletion_fail_description"));
+				modal.open(m.account_deletion_fail(), m.account_deletion_fail_description());
 				throw new Error("Failed to delete account");
 			})
 			.then(_ => {
-				modal.open($t("account_check_email"), $t("account_check_email_description"));
+				modal.open(m.account_check_email(), m.account_check_email_description());
 			});
 	}
 	function gpdrData() {
@@ -202,7 +194,7 @@
 	}
 
 	function deleteSession(sessionHash: string) {
-		loader.show(undefined, $t("account_manage_sessions_delete_loader"));
+		loader.show(undefined, m.account_manage_sessions_delete_loader());
 		serverContactor
 			.logOut(sessionHash)
 			.catch(err => {
@@ -226,8 +218,8 @@
 <Blur bind:this={blurElement} />
 <Loader bind:this={loader} />
 <Holder>
-	<h1>{$t("account_management")}</h1>
-	<Section title={$t("account_details")} id="details">
+	<h1>{m.account_management()}</h1>
+	<Section title={m.account_details()} id="details">
 		<div class="details">
 			{#if loaded}
 				<h3 style="display: flex; align-items:center; width: fit-content;">
@@ -237,12 +229,12 @@
 				</h3>
 				<h3 id="username">
 					{usernameE}
-					<Tooltip>{$t("account_username_tooltip")}</Tooltip>
+					<Tooltip>{m.account_username_tooltip()}</Tooltip>
 				</h3>
 				<div class="permission">
 					<span class="material-symbols-outlined">lock</span>
 					<p>
-						{$t("dashboard_permission_domains")}:
+						{m.dashboard_permission_domains()}:
 						<strong>{maxDomains}</strong>
 					</p>
 				</div>
@@ -250,7 +242,7 @@
 					<div class="permission">
 						<span class="material-symbols-outlined">asterisk</span>
 						<p>
-							{$t("dashboard_permission_wildcards")}:
+							{m.dashboard_permission_wildcards()}:
 							<strong>{wildcards}</strong>
 						</p>
 					</div>
@@ -259,7 +251,7 @@
 					<div class="permission">
 						<span class="material-symbols-outlined">shield_person</span>
 						<p>
-							{$t("dashboard_permission_admin")}:
+							{m.dashboard_permission_admin()}:
 							<strong>{admin}</strong>
 						</p>
 					</div>
@@ -268,7 +260,7 @@
 					<div class="permission">
 						<span class="material-symbols-outlined">handyman</span>
 						<p>
-							{$t("dashboard_permission_vulnerabilities")}:
+							{m.dashboard_permission_vulnerabilities()}:
 							<strong>{vuln}</strong>
 						</p>
 					</div>
@@ -277,7 +269,7 @@
 					<div class="permission">
 						<span class="material-symbols-outlined">groups</span>
 						<p>
-							{$t("dashboard_permission_monitoring")}:
+							{m.dashboard_permission_monitoring()}:
 							<strong>{monitoring}</strong>
 						</p>
 					</div>
@@ -288,11 +280,11 @@
 			{/if}
 		</div>
 	</Section>
-	<h1>{$t("account_manage_account")}</h1>
-	<Section title={$t("account_manage")} id="manage">
+	<h1>{m.account_manage_account()}</h1>
+	<Section title={m.account_manage()} id="manage">
 		{#if browser}
 			<div class="switch">
-				<p>{$t("account_domain_del_cooldown")}</p>
+				<p>{m.account_domain_del_cooldown()}</p>
 				<Switch
 					initial={(localStorage.getItem("del-count") ?? "false") == "true"}
 					on:change={event => {
@@ -302,20 +294,20 @@
 			<div class="buttons">
 				<div>
 					<Button on:click={() => createInvite()} args={"padding"}
-						>{$t("account_invite")}</Button>
+						>{m.account_invite()}</Button>
 				</div>
 				<div>
 					<Button on:click={() => gpdrData()} args={"padding"}
-						>{$t("account_download_data")}</Button>
+						>{m.account_download_data()}</Button>
 				</div>
 				<div>
 					<Button on:click={() => logOut()} args={"padding danger"}
-						>{$t("account_log_out")}</Button>
+						>{m.account_log_out()}</Button>
 				</div>
 
 				<div class="danger">
 					<Button args={"danger padding"} on:click={() => handleDelete()}
-						>{$t("account_delete_account")}</Button>
+						>{m.account_delete_account()}</Button>
 				</div>
 			</div>
 		{/if}
@@ -347,7 +339,7 @@
 						</p>
 					{/if}
 					<Button args="padding" on:click={() => (invite.shown = !invite.shown)}
-						>{$t("account_show_invite_qr")}</Button>
+						>{m.account_show_invite_qr()}</Button>
 					{#if invite.shown}
 						<div class="h" style="display: flex; width: 100%; justify-content:center">
 							<QR
@@ -363,7 +355,7 @@
 		{/if}
 	</Section>
 
-	<Section title={$t("account_manage_sessions")} id="sessions">
+	<Section title={m.account_manage_sessions()} id="sessions">
 		{#each sessions as session}
 			{@const parser = new UAParser(session.user_agent)}
 			<div class="session">
@@ -394,7 +386,7 @@
 <Modal
 	bind:this={modal}
 	on:secondary={() => handleDelete()}
-	options={[$t("continue_modal")]}
+	options={[m.continue_modal()]}
 	title={""}
 	description={""}></Modal>
 

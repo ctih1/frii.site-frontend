@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { t } from "$lib/translations";
 	import { redirectToLogin } from "$lib";
-	import { CodeError, UserError, verifyEmail } from "../../../../serverContactor";
 	import Holder from "$lib/components/Holder.svelte";
+	import { onMount } from "svelte";
+	import { CodeError, UserError, verifyEmail } from "../../../../serverContactor";
+	import { m } from "../../paraglide/messages";
 
 	let doneVerifying: boolean = $state(false);
 	let valid: boolean = $state(false);
@@ -31,23 +31,23 @@
 </script>
 
 <Holder>
-	<h1>{$t("email_verif_title")}</h1>
+	<h1>{m.email_verif_title()}</h1>
 	<br />
 	<h2>
 		{#if !doneVerifying}
-			{$t("code_verif_loading")}
+			{m.code_verif_loading()}
 		{:else if !valid}
-			{$t("code_verif_loading_wrong")}
+			{m.code_verif_loading_wrong()}
 		{:else if valid}
-			{$t("code_verif_loading_success")}
+			{m.code_verif_loading_success()}
 		{/if}
 	</h2>
 	{#if doneVerifying}
 		<p>
 			{#if valid}
-				{$t("code_verif_loading_success_desc")}
+				{m.code_verif_loading_success_desc()}
 			{:else}
-				{$t("code_verif_loading_wrong_desc")}
+				{m.code_verif_loading_wrong_desc()}
 			{/if}
 		</p>
 	{/if}
