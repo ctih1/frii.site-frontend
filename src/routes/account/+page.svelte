@@ -24,31 +24,25 @@
 </style>
 
 <script lang="ts">
-	import { onMount } from "svelte"
+	import { browser, dev } from "$app/environment"
 	import { page } from "$app/stores"
-	import { dev } from "$app/environment"
-	import { browser } from "$app/environment"
+	import { onMount } from "svelte"
 
-	import Cookies from "js-cookie"
-
-	import Loader from "$lib/components/Loader.svelte"
 	import Button from "$lib/components/Button.svelte"
-	import Modal from "$lib/components/Modal.svelte"
 	import Holder from "$lib/components/Holder.svelte"
+	import Loader from "$lib/components/Loader.svelte"
+	import Modal from "$lib/components/Modal.svelte"
 
 	import { getAuthToken } from "$lib"
 	import { t } from "$lib/translations"
 	import {
-		createToken,
-		ServerContactor,
-		login,
 		AuthError,
-		UserError,
-		MFAError,
-		InviteError,
 		ConflictError,
+		InviteError,
 		PermissionError,
-		digestMessage
+		ServerContactor,
+		UserError,
+		login
 	} from "../../serverContactor"
 
 	let code: string | null = null
@@ -57,8 +51,7 @@
 	if (browser) {
 		const params: URLSearchParams = new URLSearchParams(window.location.search)
 		code = params.get("invite")
-		// valid = code!==null;
-		valid = true
+		valid = code !== null
 	}
 
 	let serverContactor: ServerContactor
