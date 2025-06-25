@@ -515,7 +515,7 @@ export class ServerContactor {
 				case 460:
 					throw new AuthError("Invalid session");
 				default:
-					throw new Error(`Failed to create invite. Status code: ${response.status}`);
+					throw new Error(`Failed to get domains. Status code: ${response.status}`);
 			}
 		}
 

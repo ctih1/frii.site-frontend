@@ -7,30 +7,20 @@
 	import Modal from "./Modal.svelte";
 	import Placeholder from "./Placeholder.svelte";
 
-	export let domains: Array<Array<string>>;
+	export interface Domain {
+		type: string;
+		domain: string;
+		value: string;
+	}
+	interface Props {
+		domains: Domain[];
+		loaded: boolean;
+	}
+	let { domains, loaded }: Props = $props();
 
 	let dispatcher = createEventDispatcher();
-	let dropdown: Dropdown;
-	let editing: boolean;
-	let content: HTMLInputElement;
-	let value: HTMLInputElement;
-	let selectedDomain: string;
-	let editButton: Button;
-	let loaded: boolean = false;
 	let modal: Modal;
-	let rowInputs: Array<Array<any>> = domains.map(() => []);
 
-	export function updateDomains(ndomains: Array<Array<string>>): void {
-		if (domains.length === 0) {
-			loaded = true;
-			return;
-		}
-		loaded = true;
-		domainAmount.set(domains.length);
-
-		rowInputs = domains.map(() => []);
-		domains = ndomains;
-	}
 	async function saveDomain(name: string, value: string, record: string) {
 		dispatcher("save", { name: name, value: value, type: record });
 	}
@@ -73,22 +63,18 @@
 		{/if}
 		{#each domains as domain, index}
 			<tr>
-				<td
-					><Dropdown
-						bind:this={rowInputs[index][0]}
-						on:optionchange={event => (domain[0] = event.detail)}
-						defaultValue={domain[0]}
+				<td>
+					<Dropdown
+						on:optionchange={event => (domain.type = event.detail)}
+						defaultValue={domain.type}
 						options={["A", "CNAME", "NS", "TXT"]}
-						disabled={true} /></td>
-				<td
-					><div class="container">
-						{#if domain[0] !== "TXT"}
+						disabled={true} />
+				</td>
+				<td>
+					<div class="container">
+						{#if domain.type !== "TXT"}
 							<div style="width: 75%" class="container">
-								<input
-									disabled
-									bind:this={rowInputs[index][1]}
-									type="text"
-									bind:value={domain[1]} />
+								<input disabled type="text" bind:value={domain.domain} />
 							</div>
 							<div style="width: 25%; min-width:55px;">
 								<input
@@ -98,25 +84,20 @@
 							</div>
 						{:else}
 							<div style="width: 100%" class="container">
-								<input
-									disabled
-									bind:this={rowInputs[index][1]}
-									type="text"
-									bind:value={domain[1]} />
+								<input disabled type="text" bind:value={domain.domain} />
 							</div>
 						{/if}
-					</div></td>
-				<td
-					><input
-						bind:this={rowInputs[index][2]}
-						type="text"
-						bind:value={domain[2]} /></td>
+					</div>
+				</td>
+				<td>
+					<input type="text" bind:value={domain.value} />
+				</td>
 				<td data-index={index} style="display: flex; flex-direction: row;">
 					<Button
-						on:click={() => saveDomain(domain[1], domain[2], domain[0])}
+						on:click={() => saveDomain(domain.domain, domain.value, domain.type)}
 						args={"fill three-quarters side-margin"}>Save</Button>
 					<Button
-						on:click={() => dispatcher("delete", { domain: domain[1] })}
+						on:click={() => dispatcher("delete", { domain: domain.domain })}
 						args={"fill danger quarter side-margin"}
 						><span class="material-symbols-outlined">delete</span></Button>
 				</td>

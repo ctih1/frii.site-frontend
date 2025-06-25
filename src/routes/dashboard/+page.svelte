@@ -1,11 +1,14 @@
 <script lang="ts">
-	import Registrar from "$lib/components/Registrar.svelte";
+	import { getAuthToken } from "$lib";
+	import type { Domain } from "$lib/components/DomainTable.svelte";
 	import DomainTable from "$lib/components/DomainTable.svelte";
-	import Modal from "$lib/components/Modal.svelte";
 	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/Loader.svelte";
-
-	import { t, l, locale, addArguements } from "$lib/translations";
+	import Modal from "$lib/components/Modal.svelte";
+	import Registrar from "$lib/components/Registrar.svelte";
+	import { addArguements, t } from "$lib/translations";
+	import { onMount } from "svelte";
+	import { redirectToLogin } from "../../helperFuncs";
 	import {
 		AuthError,
 		ConflictError,
@@ -14,16 +17,16 @@
 		PermissionError,
 		ServerContactor
 	} from "../../serverContactor";
-	import { onMount } from "svelte";
-	import { redirectToLogin } from "../../helperFuncs";
-	import { getAuthToken } from "$lib";
+
+	let domains: Domain[] = $state([]);
+	let domainsLoaded: boolean = $state(false);
+
+	let userConfirmedDeletion: boolean = false;
+	let userDeletionDomain: string = "";
 
 	let domainTable: DomainTable;
 	let modal: Modal;
-	let domains: Map<any, any>;
-	let domainlist: Array<Array<string>> = [];
 	let serverContactor: ServerContactor;
-	let domain2delete: string;
 	let loader: Loader;
 
 	function modalClose() {
@@ -32,14 +35,14 @@
 
 	let modalTime: number = 15;
 
-	function modalConfirm() {
+	function deleteDomain(domain: string) {
 		modal.close();
 		loader.show(
 			undefined,
-			addArguements($t("dashboard_delete_loading_desc"), { "%domain%": domain2delete })
+			addArguements($t("dashboard_delete_loading_desc"), { "%domain%": domain })
 		);
 		serverContactor
-			.deleteDomain(domain2delete)
+			.deleteDomain(domain)
 			.catch(error => {
 				loader.hide();
 
@@ -52,12 +55,12 @@
 			.then(() => {
 				loader.hide();
 				modal.open(
-					addArguements($t("dashboard_delete_success"), { "%domain%": domain2delete }),
+					addArguements($t("dashboard_delete_success"), { "%domain%": domain }),
 					addArguements($t("dashboard_delete_success_description"), {
-						"%domain%": domain2delete
+						"%domain%": domain
 					})
 				);
-				removeDomain(domain2delete);
+				removeDomain(domain);
 			});
 	}
 
@@ -92,8 +95,7 @@
 					addArguements($t("dashboard_register_success"), { "%domain%": domain }),
 					$t("dashboard_modify_success_description")
 				);
-				domainlist.push([type, domain, value]);
-				domainTable.updateDomains(domainlist);
+				domains.push({ type, domain, value });
 			});
 	}
 
@@ -132,10 +134,12 @@
 	}
 
 	function removeDomain(name: string) {
-		domainlist = domainlist.filter(function (domain) {
-			return domain.at(1) !== name;
+		domains = domains.filter(domain => {
+			return domain.domain !== name;
 		});
-		domainTable.updateDomains(domainlist);
+
+		// Triggers svelte's reactivity. This was a bug in svelte4, but I'm not sure if its necessary anymore. Keeping in case.
+		domains = [...domains];
 	}
 
 	onMount(() => {
@@ -147,15 +151,20 @@
 			.catch(error => {
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
+				} else {
+					console.error(error);
+					modal.open($t("dashboard_domain_load_fail"), $t("generic_fail_description"));
+					throw new Error("Failed to load domains");
 				}
 			})
 			.then(data => {
-				//@ts-ignore
-				let domains = Object.entries(data);
-				for (let [key, value] of domains) {
-					domainlist.push([value.type, key, value.ip]);
+				domainsLoaded = true;
+
+				// @ts-expect-error
+				const userDomains = Object.entries(data);
+				for (let [key, value] of userDomains) {
+					domains.push({ type: value.type, domain: key, value: value.ip });
 				}
-				domainTable.updateDomains(domainlist);
 			});
 	});
 </script>
@@ -177,9 +186,11 @@
 	<p>{$t("dashboard_domain_explanation")}</p>
 	<DomainTable
 		on:delete={event => {
-			domain2delete = event.detail.domain;
+			userDeletionDomain = event.detail.domain;
 			modal.open(
-				addArguements($t("dashboard_domain_deletion_alert"), { "%domain%": domain2delete }),
+				addArguements($t("dashboard_domain_deletion_alert"), {
+					"%domain%": event.detail.domain
+				}),
 				$t("dashboard_domain_deletion_description"),
 				modalTime,
 				[$t("cancel_modal"), $t("continue_modal")]
@@ -187,7 +198,8 @@
 		}}
 		on:save={event => modifyDomain(event.detail.name, event.detail.value, event.detail.type)}
 		bind:this={domainTable}
-		domains={domainlist} />
+		domains={domains}
+		loaded={domainsLoaded} />
 </Holder>
 <Holder>
 	<h2>{$t("dashboard_register_new_domain")}</h2>
@@ -197,8 +209,11 @@
 
 <Modal
 	overrideDefault={true}
-	on:primary={() => modalClose()}
-	on:secondary={() => modalConfirm()}
+	on:primary={() => {
+		modalClose();
+		if (userDeletionDomain) userDeletionDomain = "";
+	}}
+	on:secondary={() => deleteDomain(userDeletionDomain)}
 	bind:this={modal}
 	options={[$t("modal_ok")]}
 	description={""}
