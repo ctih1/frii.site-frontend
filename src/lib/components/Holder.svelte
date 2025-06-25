@@ -23,6 +23,12 @@
 			width: 80vw;
 		}
 	}
+
+	@media (max-width: 1200px) {
+		.card {
+			width: 60vw;
+		}
+	}
 	@media (orientation: portrait) {
 		.card {
 			width: 80vw;

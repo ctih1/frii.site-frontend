@@ -123,4 +123,15 @@
 		border: 2px solid var(--primary);
 		color: white;
 	}
+
+	.capitalize {
+		text-transform: capitalize;
+	}
+
+	.tiny-margin-bottom {
+		margin-bottom: 1px;
+	}
+	.tiny-margin-top {
+		margin-top: 1px;
+	}
 </style>
