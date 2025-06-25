@@ -10,8 +10,8 @@
 	import Pool from "$lib/components/Pool.svelte";
 	import { onMount } from "svelte";
 	import { redirectToLogin } from "../../../helperFuncs";
+	import { m } from "../../../paraglide/messages";
 	import { AuthError, ServerContactor } from "../../../serverContactor";
-	import { m } from "../../paraglide/messages";
 
 	let domainPool: Pool;
 	let loader: Loader;

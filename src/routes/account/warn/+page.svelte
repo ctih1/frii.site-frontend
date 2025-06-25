@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/stores";
 	import Holder from "$lib/components/Holder.svelte";
-	import { m } from "../../paraglide/messages";
+	import { m } from "../../../paraglide/messages";
 
 	const reason: string = $page.url.searchParams.get("reason") ?? "";
 	let warningText: string = "";
