@@ -3,3 +3,6 @@
 
 # Changed formatting for svelte files to be script markup style instead of style script markup 25/6/25
 cf24a7d4680781b385822b7dff432f1ebbba294c
+
+# Changed formatting rules to make the codebase more consistant
+0d8b887598b5c94c22e29277e863c2cef830a4b6
