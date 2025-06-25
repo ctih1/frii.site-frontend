@@ -7,5 +7,8 @@ cf24a7d4680781b385822b7dff432f1ebbba294c
 # Changed formatting rules to make the codebase more consistant
 0d8b887598b5c94c22e29277e863c2cef830a4b6
 
-# Moved localez n stuff
+# Moved locales
+733eec32d51b297a0942b7133e1c6f83ded84143
+
+# Locale format
 bbc7cd98328658dd931619af428f3ca0f562e460
