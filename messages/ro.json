@@ -116,7 +116,6 @@
 	"dashboardt_value": "Valoare",
 	"dashboardt_manage": "Manage",
 	"account_username_tooltip": "Acesta este SHA256 al username-ului dvs.",
-	"account_token": "Treceți peste mine pentru a vedea token-ul! Nu împărtășii cu nimeni!",
 	"account_domain_del_cooldown": "Avertizare in privința ștergerii contului countdown reducție",
 	"account_version_testing": "Vreau să testez update-uri in frii.site",
 	"account_recovery_title_new": "Create a new password",

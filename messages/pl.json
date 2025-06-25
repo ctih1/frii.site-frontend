@@ -37,7 +37,6 @@
   "dashboard_delete_error": "Nie można usunąć domeny",
   "unhandled_error": "Wystąpił nieznany błąd.",
   "dashboard_delete_success": "Pomyślnie usunięto {domain}",
-  "dashboard_delete_sucess_description": "{domain} została pomyślnie usunięty",
   "dashboard_register_success": "Pomyślnie zarejestrowano {domain}!",
   "dashboard_register_fail": "Nie udało się zarejestrować {domain}",
   "dashboard_register_success_description": "Teraz jesteś właścicielem domeny. Nie wiesz, jak coś ustawić? Odwiedź nasze <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a>",

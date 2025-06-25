@@ -37,7 +37,6 @@
 	"dashboard_delete_error": "Fehler beim Löschen der Domain",
 	"unhandled_error": "Ein unerwarteter Fehler ist aufgetreten.",
 	"dashboard_delete_success": "Domain {domain} gelöscht.",
-	"dashboard_delete_sucess_description": "{domain} wurde erfolgreich gelöscht.",
 	"dashboard_register_success": "Domain {domain} registriert!",
 	"dashboard_register_fail": "Registrierung von {domain} fehlgeschlagen.",
 	"dashboard_register_success_description": "Diese Domain gehört nun dir. Du brauchst Hilfe? Schau bei unserem <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">Wiki</a> vorbei.",

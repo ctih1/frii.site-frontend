@@ -116,7 +116,6 @@
 	"dashboardt_value": "Стойност",
 	"dashboardt_manage": "Управлявайте",
 	"account_username_tooltip": "Това е SHA256 хешът на вашето потребителско име.",
-	"account_token": "Задръжте курсора на мишката върху мен за вашия код! Не споделяйте това с никого!",
 	"account_domain_del_cooldown": "Намаляване на времето за обратно отброяване на предупреждение за изтриване на домейн",
 	"account_version_testing": "Искам да тествам нови функции на frii.site",
 	"account_recovery_title_new": "Създайте нова парола",
