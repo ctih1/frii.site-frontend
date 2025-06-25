@@ -1,6 +1,6 @@
 <script lang="ts">
-	import * as m from "$lib/paraglide/messages.js";
 	import { createEventDispatcher } from "svelte";
+	import { m } from "../../paraglide/messages";
 	import Button from "./Button.svelte";
 	import Modal from "./Modal.svelte";
 	let deleting: boolean = false;
