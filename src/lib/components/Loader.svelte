@@ -6,10 +6,7 @@
 	let _title: string = "";
 	let _description: string = "";
 
-	export function show(
-		title: string = m.loading(),
-		description: string = m.loader_description()
-	) {
+	export function show(title: string = m.loading(), description: string = m.loading()) {
 		visible = true;
 		_title = title;
 		_description = description;

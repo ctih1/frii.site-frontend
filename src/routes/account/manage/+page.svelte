@@ -10,12 +10,17 @@
 	import Placeholder from "$lib/components/Placeholder.svelte";
 	import Section from "$lib/components/Section.svelte";
 	import Switch from "$lib/components/Switch.svelte";
-	import Tooltip from "$lib/components/Tooltip.svelte";
 
 	import QR from "@svelte-put/qr/svg/QR.svelte";
 
 	import { createFile, getAuthToken, redirectToLogin } from "$lib";
-	import { AuthError, ConflictError, ServerContactor, UserError } from "../../../serverContactor";
+	import {
+		AuthError,
+		CodeError,
+		ConflictError,
+		ServerContactor,
+		UserError
+	} from "../../../serverContactor";
 
 	import copy from "clipboard-copy";
 	import Cookies from "js-cookie";
@@ -53,6 +58,17 @@
 	let monitoring = false;
 	let invites: invite[] = [];
 
+	let mfaWaitingForVerification: boolean = false;
+	let mfaIsVerified: boolean = false;
+	let mfaUrl: string = "";
+	let mfaVerificationCode: string = "";
+	let backupCodes: string[] = [];
+	let isDeletingMfa: boolean = false;
+	let isUsingBackupCodes: boolean = false;
+
+	let backupCode: string = "";
+	let mfaCode: string = "";
+
 	let allowBetaTesting: boolean = false;
 	if (browser) {
 		if (!localStorage.getItem("logged-in")) {
@@ -84,6 +100,7 @@
 				admin = data["permissions"]["admin"] ?? false;
 				vuln = data["permissions"]["reports"] ?? false;
 				monitoring = data["permissions"]["userdetails"] ?? false;
+				mfaIsVerified = data["mfa_enabled"];
 
 				let inviteObject = data["invites"];
 				let sessionObject = data["sessions"];
@@ -118,6 +135,84 @@
 				sessions = [...sessions];
 			});
 	});
+
+	function mfaSetup() {
+		loader.show(m.mfa_loading());
+		serverContactor
+			.createMfaCode()
+			.catch(error => {
+				loader.hide();
+				if (error instanceof AuthError) {
+					redirectToLogin(460);
+				}
+				if (error instanceof ConflictError) {
+					modal.open("", m.account_mfa_setup_exists());
+				}
+				throw new Error("Failed to begin 2fa setup");
+			})
+			.then(data => {
+				mfaWaitingForVerification = true;
+				mfaUrl = data?.app_link!;
+				backupCodes = data?.backup_codes!;
+				loader.hide();
+			});
+	}
+
+	function verifyMfa(code: string) {
+		loader.show(m.mfa_verification_loader());
+		serverContactor
+			.verifyMfaCode(code)
+			.catch(error => {
+				loader.hide();
+				if (error instanceof AuthError) {
+					redirectToLogin(460);
+				}
+				if (error instanceof CodeError) {
+					modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
+					throw new Error("Code already used");
+				}
+				if (error instanceof ConflictError) {
+					console.error(
+						"User has already verified code. user should have not gotten to this point again"
+					);
+				}
+				modal.open(m.unhandled_error(), m.generic_fail_description());
+				throw new Error("Failed to verify code");
+			})
+			.then(_ => {
+				loader.hide();
+				mfaIsVerified = true;
+			});
+	}
+
+	function removeMfa(code?: string, backupCode?: string) {
+		loader.show(m.mfa_remove_load());
+		serverContactor
+			.deleteMfaCode(
+				isUsingBackupCodes ? undefined : mfaCode,
+				isUsingBackupCodes ? backupCode : undefined
+			)
+			.catch(error => {
+				loader.hide();
+				if (error instanceof AuthError) {
+					redirectToLogin(460);
+				}
+				if (error instanceof CodeError) {
+					modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
+					throw new Error("Code already used");
+				}
+				modal.open(m.unhandled_error(), m.generic_fail_description());
+				throw new Error("Failed to verify code");
+			})
+			.then(_ => {
+				loader.hide();
+				mfaWaitingForVerification = false;
+				mfaIsVerified = false;
+				isDeletingMfa = false;
+
+				modal.open(m.mfa_disabled_message(), "");
+			});
+	}
 
 	function createInvite() {
 		loader.show("Creating invite...", "This shouldn't take long");
@@ -229,7 +324,6 @@
 				</h3>
 				<h3 id="username">
 					{usernameE}
-					<Tooltip>{m.account_username_tooltip()}</Tooltip>
 				</h3>
 				<div class="permission">
 					<span class="material-symbols-outlined">lock</span>
@@ -297,6 +391,79 @@
 						>{m.account_invite()}</Button>
 				</div>
 				<div>
+					{#if mfaIsVerified}
+						<Button on:click={() => (isDeletingMfa = true)} args={"padding danger"}
+							>{m.account_disable_mfa()}</Button>
+					{:else}
+						<Button on:click={() => mfaSetup()} args={"padding"}
+							>{m.account_enable_mfa()}</Button>
+					{/if}
+					{#if isDeletingMfa}
+						<div class="mfa-delete-wrapper">
+							{#if isUsingBackupCodes}
+								<div></div>
+								<div class="mfa-wrapper">
+									<input
+										bind:value={backupCode}
+										class="mfa-input"
+										placeholder="xxxxxxxx" />
+									<a onclick={_ => (isUsingBackupCodes = !isUsingBackupCodes)}>
+										{m.mfa_use_code()}</a>
+								</div>
+							{:else}
+								<div class="mfa-wrapper">
+									<input
+										bind:value={mfaCode}
+										class="mfa-input"
+										type="number"
+										placeholder="000000" />
+									<a onclick={_ => (isUsingBackupCodes = !isUsingBackupCodes)}>
+										{m.mfa_use_backup()}</a>
+								</div>
+							{/if}
+							<div class="mfa-button">
+								<Button on:click={() => removeMfa()} args={"padding danger"}
+									>{m.account_disable_mfa()}</Button>
+							</div>
+						</div>
+					{/if}
+					{#if mfaWaitingForVerification}
+						{#if !mfaIsVerified}
+							<h1>{m.mfa_verify_introduction()}</h1>
+							{#key mfaUrl}
+								<p>{m.mfa_qr_guide()}</p>
+								<div class="mfa-qr-wrapper">
+									<QR data={mfaUrl} />
+								</div>
+								<a href={mfaUrl}>{m.mfa_alternate_link_hint()}</a>
+
+								<h2>{m.mfa_verification_step()}</h2>
+								<input
+									bind:value={mfaVerificationCode}
+									class="mfa-input"
+									type="number"
+									placeholder="000000" />
+								<div class="mfa-button">
+									<Button
+										on:click={_ => verifyMfa(mfaVerificationCode)}
+										args={"fill padding"}>{m.mfa_verify_button()}</Button>
+								</div>
+							{/key}
+						{:else}
+							<h1>{m.mfa_success()}</h1>
+							<h2>{m.mfa_backup_codes()}</h2>
+							<ul>
+								{#each backupCodes as code}
+									<li>{code}</li>
+								{/each}
+							</ul>
+							<p>
+								{m.mfa_backup_warning()}
+							</p>
+						{/if}
+					{/if}
+				</div>
+				<div>
 					<Button on:click={() => gpdrData()} args={"padding"}
 						>{m.account_download_data()}</Button>
 				</div>
@@ -343,6 +510,7 @@
 					{#if invite.shown}
 						<div class="h" style="display: flex; width: 100%; justify-content:center">
 							<QR
+								version="H"
 								data="https://www.frii.site/account?invite={invite.code}"
 								shape="circle"
 								logo="https://www.frii.site/favicon.svg"
@@ -452,5 +620,47 @@
 			margin-right: auto;
 			width: 90%;
 		}
+	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	/* Firefox */
+	input[type="number"] {
+		-moz-appearance: textfield;
+	}
+
+	.mfa-qr-wrapper {
+		width: 50%;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.mfa-input {
+		font-size: 32px;
+		width: 10ch;
+		font-family: "Inter", sans-serif;
+		text-align: center;
+		background-color: rgb(40, 40, 40);
+		margin-bottom: 4px;
+	}
+	.mfa-button {
+		height: 3em;
+	}
+
+	.mfa-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mfa-wrapper a:hover {
+		cursor: pointer;
+	}
+
+	.mfa-delete-wrapper {
+		padding-bottom: 6em;
 	}
 </style>

@@ -95,7 +95,8 @@ export class LimitError extends Error {
 
 export async function login(
 	username: string,
-	password: string
+	password: string,
+	mfaCode?: string
 ): Promise<paths["/login"]["post"]["responses"]["200"]["content"]["application/json"]> {
 	const hashed_username: string = await digestMessage(username);
 	const hashed_password: string = await digestMessage(password);
@@ -104,7 +105,7 @@ export async function login(
 
 	const { data, error, response } = await client.POST("/login", {
 		params: {
-			header: { "x-auth-request": token }
+			header: { "x-auth-request": token, "x-mfa-code": mfaCode, "x-plain-username": username }
 		}
 	});
 
@@ -118,7 +119,7 @@ export async function login(
 			case 404:
 				throw new UserError("User not found.");
 			case 412:
-				throw new MFAError("Precondition failed.");
+				throw new MFAError("MFA code required failed.");
 			default:
 				throw new Error(`An unexpected error occurred. Status code: ${response.status}`);
 		}
@@ -251,27 +252,36 @@ export async function verifyDeletion(
 	return data;
 }
 
-export async function getLanguagePercentages(): Promise<
-	paths["/languages/percentages"]["get"]["responses"]["200"]["content"]["application/json"]
-> {
-	const { data, error } = await client.GET("/languages/percentages");
-	if (error) {
-		throw new Error(`Failed to get language percentages`);
-	}
-	return data;
-}
+export async function recoverMfaCode(username: string, password: string, backupCode: string) {
+	const hashed_username: string = await digestMessage(username);
+	const hashed_password: string = await digestMessage(password);
 
-export async function getTranslationKeys(
-	code: string
-): Promise<
-	paths[`/languages/{language}/missing-keys`]["get"]["responses"]["200"]["content"]["application/json"]
-> {
-	//@ts-ignore
-	const { data, error, response } = await client.GET(`/languages/${code}/missing-keys`);
+	const token: string = `${hashed_username}|${hashed_password}`;
+
+	const { data, error, response } = await client.DELETE("/mfa/recovery", {
+		params: {
+			header: {
+				"x-auth-request": token,
+				"x-backup-code": backupCode
+			}
+		}
+	});
+
 	if (error) {
-		throw new Error(`Failed to get translation keys.`);
+		switch (response.status) {
+			case 401:
+				throw new AuthError("Unauthorized. Please check your credentials.");
+			case 404:
+				throw new UserError("User not found.");
+			case 409:
+				throw new CodeError("Invalid backup code");
+			case 412:
+				throw new MFAError("MFA not setup.");
+			default:
+				throw new Error(`An unexpected error occurred. Status code: ${response.status}`);
+		}
 	}
-	//@ts-ignore
+
 	return data;
 }
 
@@ -639,6 +649,85 @@ export class ServerContactor {
 					throw new UserError("User not joined into queue");
 				case 408:
 					throw new CodeError("Verification is now ready");
+				default:
+					throw new Error("Failed to get queue position");
+			}
+		}
+
+		return data;
+	}
+
+	async createMfaCode() {
+		const { data, error, response } = await client.POST("/mfa/create", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 409:
+					throw new ConflictError("MFA already setup for user");
+				default:
+					throw new Error("Failed to create 2fa code");
+			}
+		}
+
+		return data;
+	}
+
+	async verifyMfaCode(code: string) {
+		const { data, error, response } = await client.POST("/mfa/verify", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token,
+					"x-mfa-code": code
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 401:
+					throw new CodeError("Invalid code");
+				case 409:
+					throw new ConflictError("MFA already setup for user");
+				default:
+					throw new Error("Failed to verify MFA code");
+			}
+		}
+
+		return data;
+	}
+
+	async deleteMfaCode(code?: string, backupCode?: string) {
+		const { data, error, response } = await client.DELETE("/mfa/delete", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token,
+					"x-mfa-code": code,
+					"x-backup-code": backupCode
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 401:
+					throw new CodeError("Invalid code");
+				default:
+					throw new Error("Failed to verify MFA code");
 			}
 		}
 

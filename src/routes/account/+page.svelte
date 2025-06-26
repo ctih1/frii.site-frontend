@@ -10,10 +10,12 @@
 
 	import { getAuthToken } from "$lib";
 	import { m } from "../../paraglide/messages";
+	import { localizeHref } from "../../paraglide/runtime";
 	import {
 		AuthError,
 		ConflictError,
 		InviteError,
+		MFAError,
 		PermissionError,
 		ServerContactor,
 		UserError,
@@ -39,6 +41,10 @@
 	let redirectURL: string; // Used to automatically redirect user to the right endpoint after login
 	let loader: Loader;
 	let warningText: string; // Used for example "it seems like you don't have permissions to access this"
+	let requiresMfa: boolean = false;
+	let mfaCode: string = "";
+
+	$: mfaCode = mfaCode.slice(0, 6);
 
 	function modalClose() {
 		modal.close();
@@ -68,7 +74,7 @@
 
 	function handleLogin() {
 		loader.show(undefined, m.account_login_loading_desc());
-		login(username, password)
+		login(username, password, mfaCode ? mfaCode : undefined)
 			.catch(error => {
 				loader.hide();
 
@@ -83,6 +89,11 @@
 						true,
 						username
 					);
+				} else if (error instanceof MFAError) {
+					if (mfaCode) {
+						modal.open(m.code_verif_loading_wrong(), m.mfa_wrong_code_desc());
+					}
+					requiresMfa = true;
 				} else {
 					modal.open(m.login_failed(), m.login_generic_error());
 				}
@@ -162,64 +173,77 @@
 </svelte:head>
 
 <Loader bind:this={loader} />
-<Holder>
-	<h1>{login_mode ? m.login_text() : m.signup_text()}</h1>
-	<p>
-		{#if warningText}
-			{warningText}
-		{:else}
-			{login_mode ? m.login_description() : m.signup_description()}
-		{/if}
-	</p>
+{#if requiresMfa}
+	<Holder>
+		<h1>2 Factor authentication</h1>
+		<p>Enter your one time code from your authenticator app</p>
+		<input style="font-size: 28px" bind:value={mfaCode} placeholder={"000000"} type="number" />
+		<Button args={"fill padding"} on:click={_ => handleLogin()}>{m.login_text()}</Button>
 
-	<form>
-		{#if !login_mode}
-			<input bind:value={email} placeholder="email" type="email" />
-		{/if}
-
-		<input bind:value={username} placeholder={m.username_placeholder()} type="text" />
-
-		<input bind:value={password} placeholder={m.password_placeholder()} type="password" />
-
-		{#if !login_mode}
-			<input
-				bind:value={repeatPassword}
-				placeholder={m.confirm_password_placeholder()}
-				type="password" />
-			<p>{@html m.legal_text()}</p>
-		{/if}
-
-		{#if login_mode}
-			<h4 style="margin-top: 5px; margin-bottom: 5px;">
-				<a href="/account/recover">{m.password_forget_intro()}</a>
-			</h4>
-		{/if}
-	</form>
-
-	<div class="button-holder">
-		<Button on:click={accountActionButtonClick} args={"fill"}>
-			{login_mode ? m.login_button() : m.signup_button()}
-		</Button>
-	</div>
-
-	{#if !login_mode && !valid}
-		<div style="display: flex; align-items: center; justify-content: center;">
-			<span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
-		</div>
-		<h1>Account creation closed</h1>
+		<a href={localizeHref("/account/recover/2fa")}>{m.mfa_disable_with_backup()}</a>
+		<br />
+		<a href="mailto:contact@frii.site">{m.mfa_unable_to_login()}</a>
+	</Holder>
+{:else}
+	<Holder>
+		<h1>{login_mode ? m.login_text() : m.signup_text()}</h1>
 		<p>
-			Due to numerous people using frii.site for scamming people, so we switched over to an
-			invite-based system. If you know someone who uses frii.site, you can ask them for an
-			invite.
+			{#if warningText}
+				{warningText}
+			{:else}
+				{login_mode ? m.login_description() : m.signup_description()}
+			{/if}
 		</p>
-		<p>Thank you for your support.</p>
 
-		<a href="#" on:click={() => (login_mode = true)}>Login to an existing account</a>
-	{/if}
-	<a href="#" on:click={() => (login_mode = !login_mode)}>
-		{login_mode ? m.signup_instead() : m.login_instead()}
-	</a>
-</Holder>
+		<form>
+			{#if !login_mode}
+				<input bind:value={email} placeholder="email" type="email" />
+			{/if}
+
+			<input bind:value={username} placeholder={m.username_placeholder()} type="text" />
+
+			<input bind:value={password} placeholder={m.password_placeholder()} type="password" />
+
+			{#if !login_mode}
+				<input
+					bind:value={repeatPassword}
+					placeholder={m.confirm_password_placeholder()}
+					type="password" />
+				<p>{@html m.legal_text()}</p>
+			{/if}
+
+			{#if login_mode}
+				<h4 style="margin-top: 5px; margin-bottom: 5px;">
+					<a href="/account/recover">{m.password_forget_intro()}</a>
+				</h4>
+			{/if}
+		</form>
+
+		<div class="button-holder">
+			<Button on:click={accountActionButtonClick} args={"fill"}>
+				{login_mode ? m.login_button() : m.signup_button()}
+			</Button>
+		</div>
+
+		{#if !login_mode && !valid}
+			<div style="display: flex; align-items: center; justify-content: center;">
+				<span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
+			</div>
+			<h1>Account creation closed</h1>
+			<p>
+				Due to numerous people using frii.site for scamming people, so we switched over to
+				an invite-based system. If you know someone who uses frii.site, you can ask them for
+				an invite.
+			</p>
+			<p>Thank you for your support.</p>
+
+			<a href="#" on:click={() => (login_mode = true)}>Login to an existing account</a>
+		{/if}
+		<a href="#" on:click={() => (login_mode = !login_mode)}>
+			{login_mode ? m.signup_instead() : m.login_instead()}
+		</a>
+	</Holder>
+{/if}
 
 <Modal
 	bind:this={modal}
@@ -252,5 +276,16 @@
 	}
 	a:hover {
 		cursor: pointer;
+	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	/* Firefox */
+	input[type="number"] {
+		-moz-appearance: textfield;
 	}
 </style>

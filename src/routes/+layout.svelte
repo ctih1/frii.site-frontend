@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { navigating } from "$app/stores";
-	import Holder from "$lib/components/Holder.svelte";
 	import Ads from "$lib/components/Ads.svelte";
-	import NProgress from "nprogress";
-	import Header from "$lib/components/Header.svelte";
-	import Button from "$lib/components/Button.svelte";
 	import Analytics from "$lib/components/Analytics.svelte";
+	import Button from "$lib/components/Button.svelte";
+	import Header from "$lib/components/Header.svelte";
+	import Holder from "$lib/components/Holder.svelte";
 	import "$lib/nprogress.css";
-	import { UserError } from "$lib";
-	import { browser } from "$app/environment";
-	import Error from "./+error.svelte";
+	import NProgress from "nprogress";
 	import { onMount } from "svelte";
 
 	let { children } = $props();
@@ -77,6 +74,7 @@
 </main>
 
 <style>
+	@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 	:root {
 		--primary: rgb(0, 123, 255);
 		--border-color: rgba(0, 0, 0, 0.086);
