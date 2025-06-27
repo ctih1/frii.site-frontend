@@ -18,20 +18,16 @@
 	.fill.card {
 		width: 90vw;
 	}
-	@media (max-width: 960px) {
-		.card {
-			width: 80vw;
-		}
-	}
 
 	@media (max-width: 1200px) {
 		.card {
 			width: 60vw;
 		}
 	}
-	@media (orientation: portrait) {
+	@media (orientation: portrait), (max-width: 960px) {
 		.card {
-			width: 80vw;
+			width: 90vw;
+			padding: 12px;
 		}
 	}
 </style>

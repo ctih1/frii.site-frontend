@@ -620,6 +620,10 @@
 			margin-right: auto;
 			width: 90%;
 		}
+
+		.mfa-input {
+			width: 100% !important;
+		}
 	}
 
 	input::-webkit-outer-spin-button,

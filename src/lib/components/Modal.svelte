@@ -164,6 +164,13 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
+
+	@media (orientation: portrait) {
+		.prompt {
+			width: 90vw;
+			font-size: medium;
+		}
+	}
 	.buttons {
 		margin-top: auto;
 		margin-bottom: 0px;
