@@ -93,9 +93,17 @@ export class LimitError extends Error {
 	}
 }
 
+export class CaptchaError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "CaptchaError";
+	}
+}
+
 export async function login(
 	username: string,
 	password: string,
+	captcha: string,
 	mfaCode?: string
 ): Promise<paths["/login"]["post"]["responses"]["200"]["content"]["application/json"]> {
 	const hashed_username: string = await digestMessage(username);
@@ -105,7 +113,12 @@ export async function login(
 
 	const { data, error, response } = await client.POST("/login", {
 		params: {
-			header: { "x-auth-request": token, "x-mfa-code": mfaCode, "x-plain-username": username }
+			header: {
+				"x-auth-request": token,
+				"x-mfa-code": mfaCode,
+				"x-plain-username": username,
+				"x-captcha-code": captcha
+			}
 		}
 	});
 
@@ -120,6 +133,8 @@ export async function login(
 				throw new UserError("User not found.");
 			case 412:
 				throw new MFAError("MFA code required failed.");
+			case 429:
+				throw new CaptchaError("Invalid Captcha");
 			default:
 				throw new Error(`An unexpected error occurred. Status code: ${response.status}`);
 		}
@@ -401,10 +416,12 @@ export class ServerContactor {
 		username: string,
 		password: string,
 		email: string,
+		captcha: string,
 		code: string
 	): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
 		const { data, error, response } = await client.POST("/sign-up", {
-			body: { username, password, email, language: navigator.language, invite: code }
+			body: { username, password, email, language: navigator.language, invite: code },
+			headers: { "x-captcha-code": captcha }
 		});
 
 		if (error) {
@@ -415,6 +432,8 @@ export class ServerContactor {
 					throw new ConflictError("Username taken");
 				case 422:
 					throw new UserError("Invalid email");
+				case 429:
+					throw new CaptchaError("Invalid Captcha");
 				default:
 					throw new Error(`Failed to register. Status code: ${response.status}`);
 			}

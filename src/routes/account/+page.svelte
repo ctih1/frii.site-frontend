@@ -43,6 +43,9 @@
 	let warningText: string; // Used for example "it seems like you don't have permissions to access this"
 	let requiresMfa: boolean = false;
 	let mfaCode: string = "";
+	let captchaSolved: boolean = false;
+	let captchaCode: string = "";
+	let loginButton: Button;
 
 	$: mfaCode = mfaCode.slice(0, 6);
 
@@ -74,7 +77,7 @@
 
 	function handleLogin() {
 		loader.show(undefined, m.account_login_loading_desc());
-		login(username, password, mfaCode ? mfaCode : undefined)
+		login(username, password, captchaCode, mfaCode ? mfaCode : undefined)
 			.catch(error => {
 				loader.hide();
 
@@ -131,7 +134,7 @@
 		}
 		serverContactor
 			//@ts-ignore
-			.register(username, password, email, code)
+			.register(username, password, email, captchaCode, code)
 
 			.catch(err => {
 				loader.hide();
@@ -152,6 +155,10 @@
 	}
 
 	function accountActionButtonClick() {
+		if (!captchaSolved) {
+			modal.open(m.captcha_fail(), "");
+			return;
+		}
 		if (serverContactor === undefined) {
 			return;
 		}
@@ -165,10 +172,28 @@
 	let login_mode: boolean = true;
 
 	valid ? (login_mode = false) : (login_mode = true);
+
+	if (browser) {
+		// if using synchronous loading, will be called once the DOM is ready
+		//@ts-ignore
+		turnstile.ready(function () {
+			// @ts-ignore
+			turnstile.render("#turnstile-container", {
+				sitekey: "0x4AAAAAABiGbbOhSUc5vWl9",
+				callback: function (token: string) {
+					captchaCode = token;
+					captchaSolved = true;
+
+					loginButton.enable();
+					console.log(`Challenge Success`);
+				}
+			});
+		});
+	}
 </script>
 
 <svelte:head>
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 	<title>{m.account_title_on_tab()}</title>
 </svelte:head>
 
@@ -217,28 +242,20 @@
 					<a href="/account/recover">{m.password_forget_intro()}</a>
 				</h4>
 			{/if}
+			<div class="cf-turnstile" data-sitekey="yourSitekey" data-callback="javascriptCallback">
+			</div>
 		</form>
-
+		<div data-sitekey="0x4AAAAAABiGbbOhSUc5vWl9" data-theme="dark" id="turnstile-container">
+		</div>
 		<div class="button-holder">
-			<Button on:click={accountActionButtonClick} args={"fill"}>
+			<Button
+				bind:this={loginButton}
+				startDisabled={true}
+				on:click={accountActionButtonClick}
+				args={"fill"}>
 				{login_mode ? m.login_button() : m.signup_button()}
 			</Button>
 		</div>
-
-		{#if !login_mode && !valid}
-			<div style="display: flex; align-items: center; justify-content: center;">
-				<span style="font-size: 8em;" class="material-symbols-outlined">warning</span>
-			</div>
-			<h1>Account creation closed</h1>
-			<p>
-				Due to numerous people using frii.site for scamming people, so we switched over to
-				an invite-based system. If you know someone who uses frii.site, you can ask them for
-				an invite.
-			</p>
-			<p>Thank you for your support.</p>
-
-			<a href="#" on:click={() => (login_mode = true)}>Login to an existing account</a>
-		{/if}
 		<a href="#" on:click={() => (login_mode = !login_mode)}>
 			{login_mode ? m.signup_instead() : m.login_instead()}
 		</a>

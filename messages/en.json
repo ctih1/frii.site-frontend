@@ -254,5 +254,6 @@
 	"mfa_recovery_fail": "Failed to remove 2FA",
 	"mfa_wrong_backup_code": "Invalid backup code",
 	"mfa_already_disabled": "Two factor authentication is already disabled",
-	"mfa_recovery_send": "Disable 2FA"
+	"mfa_recovery_send": "Disable 2FA",
+	"captcha_fail": "Please solve the captcha before continuing"
 }
