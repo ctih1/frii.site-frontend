@@ -47,7 +47,6 @@
 	</a>
 
 	<div class="item">
-		<span class="material-symbols-outlined">language</span>
 		<select
 			style="color: var(--primary);"
 			bind:this={selectElement}
