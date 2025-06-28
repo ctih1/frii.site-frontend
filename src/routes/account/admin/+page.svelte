@@ -228,6 +228,7 @@
 							: "not verified"})
 					</p>
 					<p>Created at {createdAt}</p>
+					<p>Last login: {new Date(user.last_login * 1000)}</p>
 					<p>Active sessions: {user.sessions.length}</p>
 					<h4>Permission</h4>
 					{#each Object.keys(user.permissions) as permission}
