@@ -277,7 +277,7 @@
 					</div>
 					{#each obj as key}
 						{@const val = user.domains[key]}
-						<h4>{key.replace("[dot]", ".")}.frii.site</h4>
+						<h4>{key.replaceAll("[dot]", ".")}.frii.site</h4>
 						<div class="domain-info">
 							<input class="domain-type" disabled value={val?.type} />
 							<input disabled value={val?.ip} />
