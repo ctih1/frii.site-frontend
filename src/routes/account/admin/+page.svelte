@@ -45,9 +45,13 @@
 		serverContactor
 			.canUseAdminPanel()
 			.catch(error => {
-				if (error instanceof AuthError) redirectToLogin(460);
-				if (error instanceof PermissionError) redirectToLogin(461);
-				redirectToLogin(500);
+				if (error instanceof AuthError) {
+					redirectToLogin(460);
+				} else if (error instanceof PermissionError) {
+					redirectToLogin(461);
+				} else {
+					redirectToLogin(500);
+				}
 				throw new Error("Failed to access admin dashboard");
 			})
 			.then(_ => {
