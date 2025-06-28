@@ -387,10 +387,6 @@
 			</div>
 			<div class="buttons">
 				<div>
-					<Button on:click={() => createInvite()} args={"padding"}
-						>{m.account_invite()}</Button>
-				</div>
-				<div>
 					{#if mfaIsVerified}
 						<Button on:click={() => (isDeletingMfa = true)} args={"padding danger"}
 							>{m.account_disable_mfa()}</Button>
@@ -480,48 +476,53 @@
 		{/if}
 	</Section>
 
-	<Section title="Invites" id="invites">
-		{#if browser}
-			{#each invites as invite, index}
-				{@const minres =
-					Math.min(window.innerHeight, window.innerWidth) /
-					(window.innerHeight > window.innerWidth ? 1.5 : 3)}
-				{@const showQRCode = false}
-				<div class="session invite">
-					<h3>
-						<a href="https://www.frii.site/account?invite={invite.code}"
-							>Invite #{index + 1}
-						</a>
-					</h3>
+	{#if invites.length > 0}
+		<Section title="Invites" id="invites">
+			{#if browser}
+				{#each invites as invite, index}
+					{@const minres =
+						Math.min(window.innerHeight, window.innerWidth) /
+						(window.innerHeight > window.innerWidth ? 1.5 : 3)}
+					{@const showQRCode = false}
+					<div class="session invite">
+						<h3>
+							<a href="https://www.frii.site/account?invite={invite.code}"
+								>Invite #{index + 1}
+							</a>
+						</h3>
 
-					<Button
-						args="padding"
-						on:click={_ => copy(`https://www.frii.site/account?invite=${invite.code}`)}
-						>Copy to clipboard</Button>
+						<Button
+							args="padding"
+							on:click={_ =>
+								copy(`https://www.frii.site/account?invite=${invite.code}`)}
+							>Copy to clipboard</Button>
 
-					<p>Used: <b>{invite.used ? "Yes" : "No"}</b></p>
-					{#if invite.used}
-						<p style="word-break: break-all; width: {minres}px">
-							Used by: <b>{invite.used_by}</b>
-						</p>
-					{/if}
-					<Button args="padding" on:click={() => (invite.shown = !invite.shown)}
-						>{m.account_show_invite_qr()}</Button>
-					{#if invite.shown}
-						<div class="h" style="display: flex; width: 100%; justify-content:center">
-							<QR
-								version="H"
-								data="https://www.frii.site/account?invite={invite.code}"
-								shape="circle"
-								logo="https://www.frii.site/favicon.svg"
-								width={minres}
-								height={minres} />
-						</div>
-					{/if}
-				</div>
-			{/each}
-		{/if}
-	</Section>
+						<p>Used: <b>{invite.used ? "Yes" : "No"}</b></p>
+						{#if invite.used}
+							<p style="word-break: break-all; width: {minres}px">
+								Used by: <b>{invite.used_by}</b>
+							</p>
+						{/if}
+						<Button args="padding" on:click={() => (invite.shown = !invite.shown)}
+							>{m.account_show_invite_qr()}</Button>
+						{#if invite.shown}
+							<div
+								class="h"
+								style="display: flex; width: 100%; justify-content:center">
+								<QR
+									version="H"
+									data="https://www.frii.site/account?invite={invite.code}"
+									shape="circle"
+									logo="https://www.frii.site/favicon.svg"
+									width={minres}
+									height={minres} />
+							</div>
+						{/if}
+					</div>
+				{/each}
+			{/if}
+		</Section>
+	{/if}
 
 	<Section title={m.account_manage_sessions()} id="sessions">
 		{#each sessions as session}

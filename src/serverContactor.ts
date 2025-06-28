@@ -416,11 +416,10 @@ export class ServerContactor {
 		username: string,
 		password: string,
 		email: string,
-		captcha: string,
-		code: string
+		captcha: string
 	): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
 		const { data, error, response } = await client.POST("/sign-up", {
-			body: { username, password, email, language: navigator.language, invite: code },
+			body: { username, password, email, language: navigator.language },
 			headers: { "x-captcha-code": captcha }
 		});
 
@@ -751,5 +750,210 @@ export class ServerContactor {
 		}
 
 		return data;
+	}
+
+	async findById(id: string) {
+		const { data, error, response } = await client.GET("/admin/user/get/id", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					id: id
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async findByDomain(domain: string) {
+		const { data, error, response } = await client.GET("/admin/user/get/domain", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					domain: domain
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async findByEmail(email: string) {
+		const { data, error, response } = await client.GET("/admin/user/get/email", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					email: email
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async deleteAccountAdmin(account: string, reasons: string[]) {
+		const { data, error, response } = await client.DELETE("/admin/user/delete", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			},
+			body: {
+				user_id: account,
+				reasons: reasons
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 503:
+					throw new DNSError("Failed to delete domains");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async reinstateAccount(account: string) {
+		const { data, error, response } = await client.POST("/admin/user/reinstate", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					user_id: account
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 503:
+					throw new DNSError("Failed to recoer domains");
+				case 404:
+					throw new UserError("User not found");
+				case 412:
+					throw new ConflictError("User already unbanned");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async updatePermission(account: string, permission: string, value: string | boolean | number) {
+		const { data, error, response } = await client.PATCH("/admin/user/permission", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					id: account,
+					permission: permission,
+					value: value
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async canUseAdminPanel() {
+		const { data, error, response } = await client.GET("/admin/user/can-access", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 403:
+					throw new PermissionError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user permission");
+			}
+		}
 	}
 }

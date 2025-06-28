@@ -516,6 +516,142 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/domain/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Domain */
+        delete: operations["delete_domain_admin_domain_delete_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/reinstate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reinstate User */
+        post: operations["reinstate_user_admin_user_reinstate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/can-access": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Can Access */
+        get: operations["can_access_admin_user_can_access_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete User */
+        delete: operations["delete_user_admin_user_delete_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/get/domain": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Domain */
+        get: operations["find_user_by_domain_admin_user_get_domain_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/get/id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Id */
+        get: operations["find_user_by_id_admin_user_get_id_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/get/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Email */
+        get: operations["find_user_by_email_admin_user_get_email_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/permission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change Permission */
+        patch: operations["change_permission_admin_user_permission_patch"];
+        trace?: never;
+    };
     "/status": {
         parameters: {
             query?: never;
@@ -537,6 +673,51 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AccountData */
+        AccountData: {
+            /** Username */
+            username: string;
+            /** Email */
+            email: string;
+            /** Lang */
+            lang: string;
+            country: components["schemas"]["CountryType"];
+            /** Created */
+            created: number;
+            /** Verified */
+            verified: boolean;
+            /** Permissions */
+            permissions: Record<string, never>;
+            /** Beta-Enroll */
+            "beta-enroll": boolean;
+            /** Sessions */
+            sessions: components["schemas"]["SessionType"][];
+            /** Invites */
+            invites: {
+                [key: string]: components["schemas"]["InviteType"];
+            };
+            /** Mfa Enabled */
+            mfa_enabled: boolean;
+            /** Domains */
+            domains: {
+                [key: string]: components["schemas"]["DomainFormat"];
+            };
+            /** Id */
+            id: string;
+            /** Banned */
+            banned: boolean;
+            /** Ban Reasons */
+            ban_reasons: string[];
+            /** Last Login */
+            last_login: number;
+        };
+        /** BanUser */
+        BanUser: {
+            /** User Id */
+            user_id: string;
+            /** Reasons */
+            reasons: string[];
+        };
         /** BlogType */
         BlogType: {
             /** Url */
@@ -553,7 +734,7 @@ export interface components {
             /** Ip */
             ip: string;
             /** Hostname */
-            hostname: string;
+            hostname?: string;
             /** City */
             city: string;
             /** Region */
@@ -646,8 +827,8 @@ export interface components {
             ip: string;
             /** Expire */
             expire: number;
-            /** Hash */
-            hash: string;
+            /** Owner-Hash */
+            "owner-hash": string;
         };
         /** SignUp */
         SignUp: {
@@ -659,8 +840,6 @@ export interface components {
             email: string;
             /** Language */
             language: string;
-            /** Invite */
-            invite: string;
         };
         /** UserPageType */
         UserPageType: {
@@ -676,9 +855,7 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: {
-                [key: string]: boolean;
-            };
+            permissions: Record<string, never>;
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
@@ -1453,6 +1630,7 @@ export interface operations {
             query?: never;
             header: {
                 "x-auth-request": string;
+                "x-captcha-code": string;
                 "x-mfa-code"?: string;
                 "x-plain-username"?: string;
             };
@@ -1500,12 +1678,21 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
+            /** @description Invalid captcha */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     sign_up_sign_up_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-captcha-code": string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1524,13 +1711,6 @@ export interface operations {
                     "application/json": unknown;
                 };
             };
-            /** @description Invalid invite */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
             /** @description Username is already in use */
             409: {
                 headers: {
@@ -1540,6 +1720,13 @@ export interface operations {
             };
             /** @description Email is already in use */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid captcha */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1982,8 +2169,8 @@ export interface operations {
     verify_mfa_setup_mfa_verify_post: {
         parameters: {
             query?: never;
-            header?: {
-                "x-mfa-code"?: string;
+            header: {
+                "x-mfa-code": string;
             };
             path?: never;
             cookie?: never;
@@ -2082,7 +2269,7 @@ export interface operations {
             query?: never;
             header: {
                 "x-auth-request": string;
-                "x-mfa-backup"?: string;
+                "x-backup-code": string;
             };
             path?: never;
             cookie?: never;
@@ -2134,6 +2321,402 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+        };
+    };
+    delete_domain_admin_domain_delete_delete: {
+        parameters: {
+            query: {
+                domain: string;
+                userid: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Domain deleted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    reinstate_user_admin_user_reinstate_post: {
+        parameters: {
+            query: {
+                user_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User reinstated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User already unbanned */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Failed to recover DNS records */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    can_access_admin_user_can_access_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User can access the admin panel */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description User cant access the admin panel */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_user_admin_user_delete_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BanUser"];
+            };
+        };
+        responses: {
+            /** @description User deleted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_domain_admin_user_get_domain_get: {
+        parameters: {
+            query: {
+                domain: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_id_admin_user_get_id_get: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_email_admin_user_get_email_get: {
+        parameters: {
+            query: {
+                email: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    change_permission_admin_user_permission_patch: {
+        parameters: {
+            query: {
+                id: string;
+                permission: string;
+                value: boolean | number | string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Permission changed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

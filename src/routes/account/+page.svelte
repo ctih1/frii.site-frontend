@@ -13,6 +13,7 @@
 	import { localizeHref } from "../../paraglide/runtime";
 	import {
 		AuthError,
+		CaptchaError,
 		ConflictError,
 		InviteError,
 		MFAError,
@@ -21,15 +22,6 @@
 		UserError,
 		login
 	} from "../../serverContactor";
-
-	let code: string | null = null;
-	let valid: boolean = false;
-
-	if (browser) {
-		const params: URLSearchParams = new URLSearchParams(window.location.search);
-		code = params.get("invite");
-		valid = code !== null;
-	}
 
 	let serverContactor: ServerContactor;
 
@@ -97,10 +89,16 @@
 						modal.open(m.code_verif_loading_wrong(), m.mfa_wrong_code_desc());
 					}
 					requiresMfa = true;
+				} else if (error instanceof CaptchaError) {
+					// @ts-ignore
+					turnstile.reset();
+					modal.open(m.captcha_fail(), "");
 				} else {
 					modal.open(m.login_failed(), m.login_generic_error());
 				}
 
+				// @ts-ignore
+				turnstile.reset();
 				throw new Error("Login failed");
 			})
 			.then(session => {
@@ -110,8 +108,7 @@
 				const date = new Date(Date.now() + 604800 * 1000).toUTCString();
 				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`;
 				if (!getAuthToken()) {
-					console.error("Browser did not accept cookies... using localstorage");
-					localStorage.setItem("auth-token", `${sessionId}`);
+					console.error("Browser did not accept cookies...");
 				}
 				localStorage.removeItem("temp-token");
 				localStorage.removeItem("verif-token"); // Prevents users from potentially relogging without creds if verif-token is in localstrage
@@ -134,7 +131,7 @@
 		}
 		serverContactor
 			//@ts-ignore
-			.register(username, password, email, captchaCode, code)
+			.register(username, password, email, captchaCode)
 
 			.catch(err => {
 				loader.hide();
@@ -146,11 +143,16 @@
 				if (err instanceof ConflictError)
 					modal.open(m.signup_fail(), m.signup_fail_username());
 				if (err instanceof UserError) modal.open(m.signup_fail(), m.signup_fail_email());
+				// @ts-ignore
+				turnstile.reset();
 				throw new Error("Registration failed");
 			})
 			.then(_ => {
 				loader.hide();
 				modal.open(m.signup_success(), m.signup_success_description());
+
+				// @ts-ignore
+				turnstile.reset();
 			});
 	}
 
@@ -164,14 +166,12 @@
 		}
 		if (login_mode) {
 			handleLogin();
-		} else if (valid) {
+		} else {
 			handleSignup();
 		}
 	}
 
 	let login_mode: boolean = true;
-
-	valid ? (login_mode = false) : (login_mode = true);
 
 	if (browser) {
 		// if using synchronous loading, will be called once the DOM is ready
@@ -242,11 +242,7 @@
 					<a href="/account/recover">{m.password_forget_intro()}</a>
 				</h4>
 			{/if}
-			<div class="cf-turnstile" data-sitekey="yourSitekey" data-callback="javascriptCallback">
-			</div>
 		</form>
-		<div data-sitekey="0x4AAAAAABiGbbOhSUc5vWl9" data-theme="dark" id="turnstile-container">
-		</div>
 		<div class="button-holder">
 			<Button
 				bind:this={loginButton}
@@ -261,7 +257,7 @@
 		</a>
 	</Holder>
 {/if}
-
+<div data-sitekey="0x4AAAAAABiGbbOhSUc5vWl9" data-theme="dark" id="turnstile-container"></div>
 <Modal
 	bind:this={modal}
 	on:primary={() => modalClose()}
@@ -304,5 +300,12 @@
 	/* Firefox */
 	input[type="number"] {
 		-moz-appearance: textfield;
+	}
+
+	#turnstile-container {
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 12px;
+		width: fit-content;
 	}
 </style>
