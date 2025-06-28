@@ -31,27 +31,28 @@
 	let deletionBegin: boolean = $state(false);
 	let reasons: string = $state("");
 
-	let newPermissionKey: string = $state();
-	let newPermissionValue: string = $state();
+	let newPermissionKey: string = $state("");
+	let newPermissionValue: string = $state("");
 
-	let { data } = $props();
+	let hasAccess: boolean = $state(false);
 
-	if (!data.hasAccess) {
-		redirectToLogin(461);
-	}
 	$effect(() => {
 		console.log(reasons.split("\n"));
 	});
 
 	onMount(() => {
 		serverContactor = new ServerContactor(getAuthToken());
-	});
-
-	$effect(() => {
-		console.log(data);
-		if (!data.hasAccess) {
-			redirectToLogin(data.code);
-		}
+		serverContactor
+			.canUseAdminPanel()
+			.catch(error => {
+				if (error instanceof AuthError) redirectToLogin(460);
+				if (error instanceof PermissionError) redirectToLogin(461);
+				redirectToLogin(500);
+				throw new Error("Failed to access admin dashboard");
+			})
+			.then(_ => {
+				hasAccess = true;
+			});
 	});
 
 	function stringIntoPermissionValueType(input: string): string | number | boolean {
@@ -182,9 +183,8 @@
 
 <Modal bind:this={modal} options={[m.modal_ok()]} description={""} title={""}></Modal>
 <Loader bind:this={loader} />
-
-{#if data.hasAccess}
-	<Holder>
+<Holder>
+	{#if hasAccess}
 		<h1>Admin tools</h1>
 
 		<Section id="search" title="Search">
@@ -295,8 +295,10 @@
 				</div>
 			{/each}
 		</Section>
-	</Holder>
-{/if}
+	{:else}
+		<h1>Checking permissions...</h1>
+	{/if}
+</Holder>
 
 <style>
 	.search-buttons {
