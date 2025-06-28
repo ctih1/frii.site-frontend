@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 		redirect(302, "/account?c=302&r=/");
 	}
 
-	const res = await fetch(`https://canary.frii.site/admin/user/can-access`, {
+	const res = await fetch(`https://beta.frii.site/admin/user/can-access`, {
 		headers: {
 			"X-Auth-Token": token
 		}
