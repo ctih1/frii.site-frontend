@@ -66,10 +66,6 @@
 			<button class="sidebar-button" onclick={_ => (sidebarOpened = !sidebarOpened)}>
 				<span class="material-symbols-outlined"> menu </span>
 			</button>
-			<div class="logo">
-				<img alt="logo" src="/favicon.svg" />
-				<p>frii.site</p>
-			</div>
 		</div>
 		<div class="secondary">
 			<a class="item" href={localizeHref("/")}>
