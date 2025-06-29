@@ -12,10 +12,11 @@
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "devDependencies": {
+    "@iconify/json": "^2.2.353",
     "@inlang/cli": "^3.0.0",
     "@inlang/paraglide-js": "2.1.0",
     "@internationalized/date": "^3.8.2",
-    "@lucide/svelte": "^0.525.0",
+    "@lucide/svelte": "^0.515.0",
     "@magidoc/plugin-svelte-marked": "^6.2.0",
     "@sveltejs/adapter-auto": "^4.0.0",
     "@sveltejs/kit": "^2.16.0",

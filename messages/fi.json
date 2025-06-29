@@ -128,7 +128,7 @@
 	"account_recovery_sent_description": "jos et löydä sitä, tarkista roskapostikansiosi",
 	"account_recovery_start_fail": "vahvistusviestin lähetys epäonnistui",
 	"account_recovery_start_fail_description": "Kirjoititko käyttäjänimesi oikein? Se on merkkikokoriippuvainen.",
-	"password_forget_intro": "unohditko salasanasi",
+	"password_forget_intro": "Unohditko salasanasi?",
 	"dashboard_permission_domains": "Maksimi verkkotunnusten määrä",
 	"dashboard_permission_wildcards": "villikortit",
 	"dashboard_permission_admin": "järjestelmänvalvojat",

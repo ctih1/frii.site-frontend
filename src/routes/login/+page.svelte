@@ -1,11 +1,12 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { login } from "$lib";
+    import { AuthError, CaptchaError, login, MFAError, PermissionError, UserError } from "$lib";
     import { Button } from "$lib/components/ui/button/index";
     import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
     import { Input } from "$lib/components/ui/input/index";
     import { Label } from "$lib/components/ui/label/index";
     import { fade } from "svelte/transition";
+    import { m } from "../../paraglide/messages";
 
     let isLoggingIn: boolean = $state(true);
     let username: string = $state("");
@@ -13,21 +14,43 @@
     let password: string = $state("");
     let repeatPassword: string = $state("");
 
+    let emailInvalid: boolean = $derived(validateEmail(email));
     let actionButtonDisabled: boolean = $state(false);
     let buttonLoadingState: boolean = $state(false);
 
+    let errorTitle: string = $state("");
+    let errorDescription: string = $state("");
+
+    let requiresMfa: boolean = $state(false)
+
     let captchaToken: string = "";
+    let captchaDone: boolean = $state(false);
+
+    function validateEmail(email: string) {
+        return !String(email)
+            .toLowerCase()
+            .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
 
     function resetTurnstile() {
-        actionButtonDisabled = true;
-
+        captchaDone = false;
         // @ts-ignore
         resetTurnstile.reset();
     }
 
     function logIn() {
         login(username,password, captchaToken).catch(error => {
+            buttonLoadingState = false;
+            errorTitle = m.login_failed();
+            if(error instanceof AuthError || error instanceof UserError) errorDescription = m.login_failed_description();
+            else if(error instanceof PermissionError) errorDescription = m.login_failed_verify();
+            else if(error instanceof MFAError) requiresMfa = true;
+            else if(error instanceof CaptchaError) errorDescription = m.captcha_fail();
+            else errorDescription = m.login_generic_error();
 
+            resetTurnstile();
         })
     }
 
@@ -43,13 +66,35 @@
 			turnstile.render("#turnstile-container", {
 				sitekey: "0x4AAAAAABiGbbOhSUc5vWl9",
 				callback: function (token: string) {
-					actionButtonDisabled = true;
                     captchaToken = token;
+                    captchaDone = true;
+
 					console.log(`Challenge Success`);
 				}
 			});
 		});
 	}
+    
+    $effect(() => {
+        if(!captchaDone) {
+            console.log("Captcha not done...");
+            actionButtonDisabled = true;
+            return
+        }
+        console.log("captcha done");
+
+        if(isLoggingIn) {
+            console.log(username, password);
+            if(!username || !password) actionButtonDisabled = true;
+            else actionButtonDisabled = false;
+
+            console.log(`Checking login... ${actionButtonDisabled}`);
+        } else {
+            if(repeatPassword !== password || !username || !email || emailInvalid) actionButtonDisabled = true;
+            else actionButtonDisabled = false;
+        }
+
+    })
 </script>
 
 <svelte:head>
@@ -60,43 +105,41 @@
 <div class="login-holder bg-card w-[100vw] p-8 rounded-lg max-w-[500px] m-auto">
     <div class="flex flex-col">
         <img class="w-8" src="/favicon.svg" alt="logo">
-        <div class="text-wrapper h-10">
-            {#key isLoggingIn}
-                <h1 transition:fade={{duration: 100}} class="text-3xl font-bold absolute">
-                    {#if isLoggingIn} 
-                        Log into your frii.site account
-                    {:else}
-                        Sign up for a frii.site account
-                    {/if}
-                </h1>
-            {/key}
-        </div>
+        <h1 class="text-3xl font-bold">
+            {#if isLoggingIn} 
+                {m.login_prompt()}
+            {:else}
+                {m.signup_prompt()}
+            {/if}
+        </h1>
     </div>
-    <InlineAlert title="Error logging in" description="Login failed" variant={"error"} />
+    <InlineAlert title={errorTitle} description={errorDescription} variant={"error"} />
+    {#if }
     <form class="mt-6">
         <div class="flex flex-col gap-6">
             <div class="grid gap-2">
-                <Label for="username">Username</Label>
+                <Label for="username">{m.username_placeholder()}</Label>
                 <Input bind:value={username} id="username" type="text" placeholder="username" required />
-
-                <Label for="email">Email</Label>
-                <Input bind:value={email} id="email" type="email" placeholder="user@gmail.com" required />
-
+                
+                {#if !isLoggingIn}
+                    <Label for="email">Email</Label>
+                    <Input aria-invalid={emailInvalid} bind:value={email} id="email" type="email" placeholder="user@gmail.com" required />
+                {/if}
                 <div class="flex items-center h-4">
-                    <Label for="password">Password</Label>
+                    <Label for="password">{m.password_placeholder()}</Label>
                     {#if isLoggingIn}
                     <a
                         transition:fade={{duration: 100}}
                         href="##"
                         class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                     >
-                    Forgot your password?
+                    {m.password_forget_intro()}
                     </a>
                     {/if}
                 </div>
                 <Input bind:value={password} id="password" type="password" placeholder="*********" required />
                 {#if !isLoggingIn}
-                    <Label for="repeat-password">Repeat password</Label>
+                    <Label for="repeat-password">{m.confirm_password_placeholder()}</Label>
                     <Input aria-invalid={!!repeatPassword && repeatPassword !== password} bind:value={repeatPassword} id="repeat-password" type="password" placeholder="*********" required />
                 {/if}
             </div>
@@ -106,10 +149,10 @@
     <Button onclick={() => {
         buttonLoadingState = true;
         isLoggingIn ? logIn() : signUp()
-     }} loading={buttonLoadingState} disabled={!actionButtonDisabled} type="submit" class="w-full mt-4">Login</Button>  
+     }} loading={buttonLoadingState} disabled={actionButtonDisabled} type="submit" class="w-full mt-4">{isLoggingIn ? m.login_button() : m.signup_button()}</Button>  
     
     <a onclick={_ => isLoggingIn = !isLoggingIn} href="##" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
-    Sign up instead
+        {isLoggingIn ? m.signup_instead() : m.login_instead()}
     </a>
 </div>
 
