@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { get } from "svelte/store";
-	import { getStatus } from "../../serverContactor";
 	import { browser } from "$app/environment";
+	import { getStatus } from "../../serverContactor";
 	let height: number;
 	let loaded: boolean = false;
 	let danger: boolean = false;

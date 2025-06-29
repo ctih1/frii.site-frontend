@@ -255,5 +255,9 @@
 	"mfa_wrong_backup_code": "Invalid backup code",
 	"mfa_already_disabled": "Two factor authentication is already disabled",
 	"mfa_recovery_send": "Disable 2FA",
-	"captcha_fail": "Please solve the captcha before continuing"
+	"captcha_fail": "Please solve the captcha before continuing",
+	"2fa_login_title": "2 Factor authentication",
+	"mfa_login_prompt": "2 Factor authentication",
+	"mfa_login_description": "Enter your one time code from your authenticator app",
+	"mfa_input_label": "2FA code"
 }
