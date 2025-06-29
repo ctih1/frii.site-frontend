@@ -203,7 +203,7 @@
 			margin-right: 12px;
 		}
 	}
-	.logo {
+	.logo img {
 		margin-left: 8px;
 		width: 15px;
 	}
