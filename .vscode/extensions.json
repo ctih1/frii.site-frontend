@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "lokalise.i18n-ally",
+    "esbenp.prettier-vscode",
+    "YoavBls.pretty-ts-errors",
+    "1YiB.svelte-bundle",
+    "inlang.vs-code-extension"
+  ]
+}

@@ -1,22 +1,20 @@
 <script lang="ts">
-  import Holder from "$lib/components/Holder.svelte"
-  import Button from "$lib/components/Button.svelte"
-  import { page } from "$app/stores";
-  import { t } from "$lib/translations";
+	import { page } from "$app/stores";
+	import Holder from "$lib/components/Holder.svelte";
+	import { m } from "../../../paraglide/messages";
 
-  const reason:string = $page.url.searchParams.get("reason") ?? "";
-  let warningText:string = "";
+	const reason: string = $page.url.searchParams.get("reason") ?? "";
+	let warningText: string = "";
 
-  switch(reason) {
-    case "permission":
-    case "feature":
-      warningText = $t("account_permissions_lack");
-      break;
-  }
-
+	switch (reason) {
+		case "permission":
+		case "feature":
+			warningText = m.account_permissions_lack();
+			break;
+	}
 </script>
 
 <Holder>
-    <h1>{$t("account_uhoh_annoyance")}</h1>
-    <p>{warningText}</p>
+	<h1>{m.account_uhoh_annoyance()}</h1>
+	<p>{warningText}</p>
 </Holder>

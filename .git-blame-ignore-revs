@@ -1,0 +1,14 @@
+# Formatted project 24/6/25
+3b274c7bcf682c3a0e4c289b5cd182f11013762a
+
+# Changed formatting for svelte files to be script markup style instead of style script markup 25/6/25
+cf24a7d4680781b385822b7dff432f1ebbba294c
+
+# Changed formatting rules to make the codebase more consistant
+0d8b887598b5c94c22e29277e863c2cef830a4b6
+
+# Moved locales
+733eec32d51b297a0942b7133e1c6f83ded84143
+
+# Locale format
+bbc7cd98328658dd931619af428f3ca0f562e460
