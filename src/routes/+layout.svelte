@@ -9,42 +9,44 @@
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
 	import "../app.css";
-	
+
 	let { children } = $props();
 	let userRespectsPrivacyInsane = $state(false);
 	let userDoesntCareAndWantsAdblock = $state(false);
-	
+
 	NProgress.configure({
 		minimum: 0.6,
 		trickle: true,
 		trickleSpeed: 200
 	});
-	
+
 	$effect(() => {
 		if ($navigating) {
 			NProgress.start();
 		}
-	
+
 		if (!$navigating) {
 			NProgress.done();
 			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
 		}
-	
+
 		console.log(userRespectsPrivacyInsane);
 	});
-	
+
 	onMount(() => {
 		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null;
-	
+
 		if (!userDoesntCareAndWantsAdblock) {
-			fetch("https://mc.yandex.ru/metrika/tag.js").then(() => {
-				userRespectsPrivacyInsane = false;
-			}).catch(() => {
-				userRespectsPrivacyInsane = true;
-			});
+			fetch("https://mc.yandex.ru/metrika/tag.js")
+				.then(() => {
+					userRespectsPrivacyInsane = false;
+				})
+				.catch(() => {
+					userRespectsPrivacyInsane = true;
+				});
 		}
 	});
-	
+
 	function userDoesntWantToSupportUs() {
 		// :(
 		localStorage.setItem("adblock-warn-surpress", "yes");
@@ -73,8 +75,23 @@
 </main>
 
 <style>
-	@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+	@font-face {
+		font-family: "Inter";
+		src: url("/fonts/InterVariable.woff2") format("woff2");
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+
 	:global(*) {
 		font-family: "Inter", sans-serif;
+	}
+
+	:global(a) {
+		color: var(--color-primary);
+	}
+
+	:global(body) {
+		overflow-x: hidden;
 	}
 </style>

@@ -16,7 +16,7 @@ export function redirectToLogin(code: number = 0, timeoutSeconds: number = 0): v
 		} else if (code === 462) {
 			window.location.href = localizeHref(`/account/warn?reason=feature`);
 		} else {
-			window.location.href = localizeHref(`/account?r=${window.location.pathname}&c=${code}`);
+			window.location.href = localizeHref(`/login?r=${window.location.pathname}&c=${code}`);
 		}
 	}, timeoutSeconds * 1000);
 }

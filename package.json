@@ -33,6 +33,7 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-svelte": "^3.4.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "super-sitemap": "^1.0.3",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "tailwind-merge": "^3.3.1",

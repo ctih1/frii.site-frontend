@@ -20,7 +20,8 @@
 		PermissionError,
 		ServerContactor,
 		UserError,
-		login
+		login,
+		register
 	} from "../../serverContactor";
 
 	let serverContactor: ServerContactor;
@@ -129,10 +130,9 @@
 			modal.open(m.signup_password_not_match(), m.signup_password_not_match_description());
 			return;
 		}
-		serverContactor
-			//@ts-ignore
-			.register(username, password, email, captchaCode)
 
+		//@ts-ignore
+		register(username, password, email, captchaCode)
 			.catch(err => {
 				loader.hide();
 				if (err instanceof InviteError)

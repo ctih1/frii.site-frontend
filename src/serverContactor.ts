@@ -143,13 +143,44 @@ export async function login(
 	return data;
 }
 
+export async function register(
+	username: string,
+	password: string,
+	email: string,
+	captcha: string
+): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
+	const { data, error, response } = await client.POST("/sign-up", {
+		body: { username, password, email, language: navigator.language },
+		params: {
+			header: { "x-captcha-code": captcha }
+		}
+	});
+
+	if (error) {
+		switch (response.status) {
+			case 400:
+				throw new InviteError("Invalid invite");
+			case 409:
+				throw new ConflictError("Username taken");
+			case 422:
+				throw new UserError("Invalid email");
+			case 429:
+				throw new CaptchaError("Invalid Captcha");
+			default:
+				throw new Error(`Failed to register. Status code: ${response.status}`);
+		}
+	}
+
+	return data;
+}
+
 export async function getStatus(): Promise<
 	paths["/status"]["get"]["responses"]["200"]["content"]["application/json"]
 > {
 	const { data, error, response } = await client.GET("/status");
 
 	if (error) {
-		throw new Error(`Failed to get status. Status code: ${response.status}`);
+		throw new Error(`Failed to get status.`);
 	}
 
 	return data;
@@ -412,35 +443,6 @@ export class ServerContactor {
 		return data;
 	}
 
-	async register(
-		username: string,
-		password: string,
-		email: string,
-		captcha: string
-	): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
-		const { data, error, response } = await client.POST("/sign-up", {
-			body: { username, password, email, language: navigator.language },
-			headers: { "x-captcha-code": captcha }
-		});
-
-		if (error) {
-			switch (response.status) {
-				case 400:
-					throw new InviteError("Invalid invite");
-				case 409:
-					throw new ConflictError("Username taken");
-				case 422:
-					throw new UserError("Invalid email");
-				case 429:
-					throw new CaptchaError("Invalid Captcha");
-				default:
-					throw new Error(`Failed to register. Status code: ${response.status}`);
-			}
-		}
-
-		return data;
-	}
-
 	async deleteAccount(): Promise<
 		paths["/deletion/send"]["delete"]["responses"]["200"]["content"]["application/json"]
 	> {
@@ -488,9 +490,9 @@ export class ServerContactor {
 	async getGDPR(): Promise<
 		paths["/gdpr"]["get"]["responses"]["200"]["content"]["application/json"]
 	> {
-		// TODO: Implement on backend
 		const { data, error, response } = await client.GET("/gdpr", {
 			params: {
+				//@ts-ignore
 				header: { "X-Auth-Token": this.token }
 			}
 		});

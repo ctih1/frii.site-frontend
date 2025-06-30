@@ -261,5 +261,6 @@
 	"mfa_login_description": "Enter your one time code from your authenticator app",
 	"mfa_input_label": "2FA code",
 	"login_prompt": "Log into your frii.site account",
-	"signup_prompt": "Sign up for a frii.site account"
+	"signup_prompt": "Sign up for a frii.site account",
+	"signup_tos_and_privacy": "I agree to the <a href=\"{tosLink}\">terms of service</a> and <a href=\"{privacyLink}\">privacy policy</a>"
 }

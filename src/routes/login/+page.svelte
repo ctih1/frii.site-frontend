@@ -3,27 +3,35 @@
 	import {
 		AuthError,
 		CaptchaError,
+		ConflictError,
 		getAuthToken,
 		login,
 		MFAError,
 		PermissionError,
+		register,
 		UserError
 	} from "$lib";
+	import favicon from "$lib/assets/favicon.svg";
 	import { Button } from "$lib/components/ui/button/index";
+	import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
 	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
 	import * as InputOTP from "$lib/components/ui/input-otp/index.js";
 	import { Input } from "$lib/components/ui/input/index";
 	import { Label } from "$lib/components/ui/label/index";
 	import { REGEXP_ONLY_DIGITS } from "bits-ui";
 	import Cookies from "js-cookie";
+	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 	import { m } from "../../paraglide/messages";
+
+	let { data } = $props();
 
 	let isLoggingIn: boolean = $state(true);
 	let username: string = $state("");
 	let email: string = $state("");
 	let password: string = $state("");
 	let repeatPassword: string = $state("");
+	let agreementsChecked: boolean = $state(false);
 
 	let emailInvalid: boolean = $derived(validateEmail(email));
 	let actionButtonDisabled: boolean = $state(false);
@@ -31,6 +39,9 @@
 
 	let errorTitle: string = $state("");
 	let errorDescription: string = $state("");
+
+	let alertTitle: string = $state("");
+	let alertDescription: string = $state("");
 
 	let requiresMfa: boolean = $state(false);
 	let mfaInvalid: boolean = $state(false);
@@ -92,14 +103,32 @@
 				localStorage.setItem("logged-in", "y");
 				setTimeout(() => {
 					// 3s timeout is for firefox, since an immediate redirect can cause a bug where localStorage doesnt save
-					window.location.href = redirectURL ?? "/";
+					window.location.href = data.redirectURL ?? "/";
 				}, 3000);
 			});
 	}
 
-	function signUp() {}
+	function signUp() {
+		register(username, password, email, captchaToken)
+			.catch(error => {
+				errorTitle = m.signup_fail();
+				if (error instanceof ConflictError) errorDescription = m.signup_fail_username();
+				if (error instanceof UserError) errorDescription = m.signup_fail_email();
+				if (error instanceof CaptchaError) errorDescription = m.captcha_fail();
 
-	if (browser) {
+				resetTurnstile();
+				throw new Error("Signup failed");
+			})
+			.then(_ => {
+				alertTitle = m.signup_success();
+				alertDescription = m.signup_success_description();
+
+				isLoggingIn = true;
+				resetTurnstile();
+			});
+	}
+
+	onMount(() => {
 		// if using synchronous loading, will be called once the DOM is ready
 		//@ts-ignore
 		turnstile.ready(function () {
@@ -114,7 +143,7 @@
 				}
 			});
 		});
-	}
+	});
 
 	$effect(() => {
 		if (!captchaDone) {
@@ -130,7 +159,13 @@
 
 			console.log(`Checking login... ${actionButtonDisabled}`);
 		} else {
-			if (repeatPassword !== password || !username || !email || emailInvalid)
+			if (
+				repeatPassword !== password ||
+				!username ||
+				!email ||
+				emailInvalid ||
+				!agreementsChecked
+			)
 				actionButtonDisabled = true;
 			else actionButtonDisabled = false;
 		}
@@ -139,12 +174,11 @@
 
 <svelte:head>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
-	<link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
 </svelte:head>
 
 <div class="login-holder bg-card m-auto w-[100vw] max-w-[500px] rounded-lg p-8">
 	<div class="flex flex-col">
-		<img class="w-8" src="/favicon.svg" alt="logo" />
+		<img class="w-8" src={favicon} alt="logo" />
 		<h1 class="text-3xl font-bold">
 			{#if isLoggingIn}
 				{m.login_prompt()}
@@ -154,6 +188,7 @@
 		</h1>
 	</div>
 	<InlineAlert title={errorTitle} description={errorDescription} variant={"error"} />
+	<InlineAlert title={alertTitle} description={alertDescription} variant={"note"} />
 	{#if requiresMfa}
 		<div class="mfa-screen mt-12">
 			<h2 class="text-2xl font-semibold">{m.login_mfa_required()}</h2>
@@ -233,6 +268,18 @@
 							type="password"
 							placeholder="*********"
 							required />
+
+						<div class="agreement flex">
+							<Checkbox
+								bind:checked={agreementsChecked}
+								class="mr-2"
+								id="agreements" />
+							<Label for="agreements"
+								>{@html m.signup_tos_and_privacy({
+									tosLink: "/terms",
+									privacyLink: "/privacy"
+								})}</Label>
+						</div>
 					{/if}
 				</div>
 			</div>
@@ -244,7 +291,7 @@
 				isLoggingIn ? logIn() : signUp();
 			}}
 			loading={buttonLoadingState}
-			disabled={actionButtonDisabled}
+			disabled={!browser || actionButtonDisabled}
 			type="submit"
 			class="mt-4 w-full">{isLoggingIn ? m.login_button() : m.signup_button()}</Button>
 
