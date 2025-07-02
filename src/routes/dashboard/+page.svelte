@@ -51,6 +51,7 @@
 			})
 			.then(() => {
 				loader.hide();
+				window.gtag?.("event", "domain_delete");
 				modal.open(
 					m.dashboard_delete_success({ domain: domain }),
 					m.dashboard_delete_success_description({ domain: domain })
@@ -81,6 +82,7 @@
 			})
 			.then(value => {
 				loader.hide();
+				window.gtag?.("event", "domain_register");
 				modal.open(
 					m.dashboard_register_success({ domain: domain }),
 					m.dashboard_modify_success_description()
@@ -109,6 +111,7 @@
 			.then(() => {
 				loader.hide();
 				console.log(name);
+				window.gtag?.("event", "domain_modify");
 				modal.open(
 					m.dashboard_modify_success({ domain: name + ".frii.site" }),
 					m.dashboard_modify_success_description()
