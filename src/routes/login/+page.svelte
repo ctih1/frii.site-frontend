@@ -120,6 +120,7 @@
 				throw new Error("Signup failed");
 			})
 			.then(_ => {
+				window.gtag?.("event", "sign_up");
 				alertTitle = m.signup_success();
 				alertDescription = m.signup_success_description();
 
@@ -202,7 +203,7 @@
 					<InputOTP.Group>
 						{#each cells as cell (cell)}
 							<InputOTP.Slot
-								class="h-16 w-16 text-2xl"
+								class="h-14 w-14 text-2xl"
 								aria-invalid={mfaInvalid}
 								cell={cell} />
 						{/each}
