@@ -105,6 +105,7 @@
 				// @ts-ignore
 				const sessionId: string = session["auth-token"];
 				loader.hide();
+				window.gtag?.("event", "log_in");
 				const date = new Date(Date.now() + 604800 * 1000).toUTCString();
 				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`;
 				if (!getAuthToken()) {
@@ -150,6 +151,7 @@
 			.then(_ => {
 				loader.hide();
 				modal.open(m.signup_success(), m.signup_success_description());
+				window.gtag?.("event", "sign_up");
 
 				// @ts-ignore
 				turnstile.reset();
