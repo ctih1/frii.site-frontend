@@ -67,6 +67,7 @@
 				throw new Error("Failed to delete domain");
 			})
 			.then(() => {
+				window.gtag?.("event", "domain_delete");
 				button.deletionLoading = false;
 				toast.success(m.dashboard_delete_success({ domain: domain }), {
 					description: m.dashboard_delete_success_description({ domain: domain })
@@ -99,6 +100,7 @@
 			})
 			.then(value => {
 				registerNewDomainLoading = false;
+				window.gtag?.("event", "domain_register");
 				toast.success(m.dashboard_register_success({ domain: domain }));
 				domains.push({
 					type,
@@ -132,6 +134,7 @@
 				throw Error("Failed to modify domain."); // stops execution to the .then block
 			})
 			.then(() => {
+				window.gtag?.("event", "domain_modify");
 				domain.isLoading = false;
 				toast.success(m.dashboard_modify_success({ domain: domain.domain + ".frii.site" }));
 			});

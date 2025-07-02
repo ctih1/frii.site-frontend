@@ -88,6 +88,7 @@
 			.then(session => {
 				// @ts-expect-error no types implemented for this
 				const sessionId: string = session["auth-token"];
+				window.gtag?.("event", "log_in");
 
 				const date = new Date(Date.now() + 604800 * 1000).toUTCString();
 				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`;
