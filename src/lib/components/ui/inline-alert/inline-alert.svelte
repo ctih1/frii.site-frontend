@@ -6,11 +6,14 @@
 		variant: "error" | "note";
 		title: string;
 		description: string;
+		trigger?: number;
+		className?: string;
 	}
-	let { variant, title, description }: Props = $props();
+	let { variant, title, description, className, trigger }: Props = $props();
 	let closed: boolean = $state(true);
 
 	$effect(() => {
+		trigger;
 		if (title && description) {
 			closed = false;
 		}
@@ -19,7 +22,7 @@
 
 {#if !closed}
 	<div
-		class={`alert mt-4 h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"}`}>
+		class={`alert mt-4 h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"} ${className}`}>
 		<div class="flex justify-between">
 			<div class="text flex items-center">
 				{#if variant === "error"}
@@ -30,7 +33,9 @@
 				<h2 class="text-xl font-semibold">{title}</h2>
 			</div>
 			<div>
-				<a onclick={_ => (closed = true)} href="##"><MaterialSymbolsCloseSmallRounded /></a>
+				<a onclick={_ => (closed = true)} href="##"
+					><MaterialSymbolsCloseSmallRounded
+						class={variant === "error" ? "text-red-600" : ""} /></a>
 			</div>
 		</div>
 

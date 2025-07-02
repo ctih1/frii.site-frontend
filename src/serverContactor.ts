@@ -583,29 +583,6 @@ export class ServerContactor {
 		return;
 	}
 
-	async contributeLanguageKeys(code: string, keys: { key: string; val: string }[]) {
-		//@ts-ignore
-		const { data, error, response } = await client.POST(`/languages/${code}/contribute`, {
-			params: {
-				header: {
-					"X-Auth-Token": this.token
-				}
-			},
-
-			body: {
-				keys: keys
-			}
-		});
-		if (error) {
-			switch (response.status) {
-				case 460:
-					throw new AuthError("Invalid session");
-				case 500:
-					throw new Error("Internal server error");
-			}
-		}
-	}
-
 	async getApiKeys() {
 		const { data, error, response } = await client.GET("/api/get-keys", {
 			params: {
@@ -613,6 +590,87 @@ export class ServerContactor {
 				header: {
 					"X-Auth-Token": this.token
 				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async getApiKey(hash: string) {
+		const { data, error, response } = await client.GET("/api/get-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				},
+				query: {
+					hash: hash
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async deleteApiKey(hash: string) {
+		const { data, error, response } = await client.DELETE("/api/delete-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			},
+			body: {
+				hash: hash
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async createApiKey(
+		comment: string,
+		domains: string[],
+		permissions: ("delete" | "register" | "modify" | "list")[]
+	) {
+		const { data, error, response } = await client.POST("/api/create-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": this.token
+				}
+			},
+			body: {
+				comment,
+				domains,
+				permissions
 			}
 		});
 

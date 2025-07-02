@@ -5,7 +5,9 @@
 	import Button from "$lib/components/Button.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import { Toaster } from "$lib/components/ui/sonner";
 	import "$lib/nprogress.css";
+	import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
 	import "../app.css";
@@ -15,7 +17,7 @@
 	let userDoesntCareAndWantsAdblock = $state(false);
 
 	NProgress.configure({
-		minimum: 0.6,
+		minimum: 0.55,
 		trickle: true,
 		trickleSpeed: 200
 	});
@@ -29,11 +31,10 @@
 			NProgress.done();
 			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
 		}
-
-		console.log(userRespectsPrivacyInsane);
 	});
 
 	onMount(() => {
+		polyfillCountryFlagEmojis();
 		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null;
 
 		if (!userDoesntCareAndWantsAdblock) {
@@ -66,6 +67,7 @@
 		</div>
 	</Holder>
 {/if}
+<Toaster />
 <Header />
 <Analytics />
 <Ads></Ads>
@@ -84,7 +86,7 @@
 	}
 
 	:global(*) {
-		font-family: "Inter", sans-serif;
+		font-family: "Twemoji Country Flags", "Inter", sans-serif;
 	}
 
 	:global(a) {

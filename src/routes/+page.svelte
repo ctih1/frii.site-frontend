@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import Github from "$lib/assets/github.svg";
+	import Footer from "$lib/components/Footer.svelte";
 	import Button from "$lib/components/ui/button/button.svelte";
 	import Label from "$lib/components/ui/label/label.svelte";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
@@ -7,6 +9,7 @@
 	import MaterialSymbolsCheckCircleRounded from "~icons/material-symbols/check-circle-rounded";
 	import MaterialSymbolsKeyboardArrowDownRounded from "~icons/material-symbols/keyboard-arrow-down-rounded";
 	import { localizeHref } from "../paraglide/runtime.js";
+
 	//@ts-ignore
 
 	let { data } = $props();
@@ -20,7 +23,7 @@
 
 <svelte:window bind:scrollY={scrollY} />
 
-<div class="content">
+<div class="content pb-44">
 	<div class="introduction flex h-screen w-screen items-center p-10">
 		<div class="description w-3/5">
 			<h1 class="ml-8 w-fit text-9xl font-bold">frii.site</h1>
@@ -106,7 +109,9 @@
 
 	<div class="selling-points mt-64">
 		<div class="support flex">
-			<div class="visual ml-32 w-2/5"></div>
+			<div class="visual ml-32 w-2/5">
+				<img class="w-3/5" alt="github logo" src={Github} />
+			</div>
 			<div class="text mr-32 w-3/5">
 				<h2 class="w-fit text-5xl font-semibold">Completely open source</h2>
 				<p class="mt-4 text-xl">
@@ -129,6 +134,8 @@
 		</div>
 	</div>
 </div>
+
+<Footer />
 
 {#if scrollY < 50}
 	<div transition:fade={{ duration: 100 }}>

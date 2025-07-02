@@ -30,7 +30,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Is Available */
+        /**
+         * Is Available
+         * @description Check whether a domain is available. No authentication required
+         */
         get: operations["is_available_api_domain_available_get"];
         put?: never;
         post?: never;
@@ -40,7 +43,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/domains/get": {
+    "/api/domains": {
         parameters: {
             query?: never;
             header?: never;
@@ -48,7 +51,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get Domains */
-        get: operations["get_domains_api_domains_get_get"];
+        get: operations["get_domains_api_domains_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -448,6 +451,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/get-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Api Keys */
+        get: operations["get_api_keys_api_get_keys_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/get-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Key */
+        get: operations["get_key_api_get_key_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/delete-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Api Key */
+        delete: operations["delete_api_key_api_delete_key_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/mfa/create": {
         parameters: {
             query?: never;
@@ -601,6 +655,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/delete/record": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Dns Record */
+        delete: operations["delete_dns_record_admin_user_delete_record_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/get/id": {
         parameters: {
             query?: never;
@@ -710,6 +781,31 @@ export interface components {
             ban_reasons: string[];
             /** Last Login */
             last_login: number;
+        };
+        /** ApiCreationBody */
+        ApiCreationBody: {
+            /** Permissions */
+            permissions: ("register" | "modify" | "delete" | "list")[];
+            /** Domains */
+            domains: string[];
+            /** Comment */
+            comment: string;
+        };
+        /** ApiDeletion */
+        ApiDeletion: {
+            /** Hash */
+            hash: string;
+        };
+        /** ApiType */
+        ApiType: {
+            /** String */
+            string: string;
+            /** Perms */
+            perms: ("register" | "modify" | "delete" | "list")[];
+            /** Domains */
+            domains: string[];
+            /** Comment */
+            comment: string;
         };
         /** BanUser */
         BanUser: {
@@ -971,6 +1067,7 @@ export interface operations {
         parameters: {
             query: {
                 domain: string;
+                type?: string;
             };
             header?: never;
             path?: never;
@@ -989,6 +1086,13 @@ export interface operations {
             };
             /** @description Domain does not exist, or user does not own it. */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Domain type couldn't be fetched, specify the type using the query parameter `type` */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1132,7 +1236,7 @@ export interface operations {
             };
         };
     };
-    get_domains_api_domains_get_get: {
+    get_domains_api_domains_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -2085,16 +2189,14 @@ export interface operations {
     };
     create_api_token_api_create_key_post: {
         parameters: {
-            query: {
-                comment: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": string[];
+                "application/json": components["schemas"]["ApiCreationBody"];
             };
         };
         responses: {
@@ -2109,6 +2211,120 @@ export interface operations {
             };
             /** @description User does not own requested domains */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_api_keys_api_get_keys_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: components["schemas"]["ApiType"];
+                    };
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_key_api_get_key_get: {
+        parameters: {
+            query: {
+                hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_api_key_api_delete_key_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApiDeletion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Key does not exist */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2555,6 +2771,59 @@ export interface operations {
             };
             /** @description Invalid permissions */
             461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_dns_record_admin_user_delete_record_delete: {
+        parameters: {
+            query: {
+                record: string;
+                type: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Failed to delete record */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
