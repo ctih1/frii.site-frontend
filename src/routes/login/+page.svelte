@@ -23,6 +23,7 @@
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 	import { m } from "../../paraglide/messages";
+	import { localizeHref } from "../../paraglide/runtime";
 
 	let { data } = $props();
 
@@ -178,7 +179,7 @@
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </svelte:head>
 
-<div class="login-holder bg-card m-auto w-[100vw] max-w-[500px] rounded-lg p-8">
+<div class="login-holder bg-card m-auto mt-8 w-[100vw] max-w-[500px] rounded-lg p-8">
 	<div class="flex flex-col">
 		<img class="w-8" src={favicon} alt="logo" />
 		<h1 class="text-3xl font-bold">
@@ -221,6 +222,9 @@
 				disabled={!captchaDone || mfaCode.length != 6}
 				type="submit"
 				class="mt-4 w-full">{m.login_button()}</Button>
+
+			<a class="text-sm" href={localizeHref("/account/recover/2fa")}
+				>{m.mfa_disable_with_backup()}</a>
 		</div>
 	{:else}
 		<form class="mt-6">

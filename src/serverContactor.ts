@@ -116,7 +116,7 @@ export async function login(
 			header: {
 				"x-auth-request": token,
 				"x-mfa-code": mfaCode,
-				"x-plain-username": username,
+				"x-plain-username": username, // Older versions of the backend didnt save usernames so this is the only way to give the backend the users actual username
 				"x-captcha-code": captcha
 			}
 		}
@@ -443,13 +443,15 @@ export class ServerContactor {
 		return data;
 	}
 
-	async deleteAccount(): Promise<
+	async deleteAccount(
+		mfaCode: string
+	): Promise<
 		paths["/deletion/send"]["delete"]["responses"]["200"]["content"]["application/json"]
 	> {
 		const { data, error, response } = await client.DELETE("/deletion/send", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": this.token, "X-MFA-Code": mfaCode }
 			}
 		});
 

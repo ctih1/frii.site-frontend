@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Dialog as DialogPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
+	import { Dialog as DialogPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -10,8 +10,7 @@
 </script>
 
 <DialogPrimitive.Description
-	bind:ref
+	bind:ref={ref}
 	data-slot="dialog-description"
-	class={cn("text-muted-foreground text-sm", className)}
-	{...restProps}
-/>
+	class={cn("text-sm text-gray-400", className)}
+	{...restProps} />

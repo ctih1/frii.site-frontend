@@ -265,5 +265,6 @@
 	"api_dashboard_register_perm": "Register new domains",
 	"api_dashboard_delete_perm": "Delete",
 	"api_dashboard_list_perm": "View domains",
-	"api_dashboard_modify_perm": "Modify"
+	"api_dashboard_modify_perm": "Modify",
+	"account_hello_user": "Hello, {user}!"
 }

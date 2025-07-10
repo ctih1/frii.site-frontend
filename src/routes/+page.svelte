@@ -47,13 +47,13 @@
 					<Label class="text-lg">Independent control</Label>
 				</div>
 			</div>
-			<div class="actions mt-auto mb-0 flex space-x-2">
-				<Button onclick={_ => goto(localizeHref("/login?register=true"))} class="w-1/2"
+			<div class="actions mt-auto mb-0 flex justify-between">
+				<Button onclick={_ => goto(localizeHref("/login?register=true"))} class="w-[49%]"
 					>Sign up now</Button>
 				<Button
 					variant={"secondary"}
 					onclick={_ => goto(localizeHref("/dashboard"))}
-					class="w-1/2">Go to the dashboard</Button>
+					class="w-[49%]">Go to the dashboard</Button>
 			</div>
 		</div>
 	</div>
@@ -156,6 +156,9 @@
 	}
 
 	@media (max-width: 900px), (orientation: portrait) {
+		.right-side {
+			margin-right: 0px;
+		}
 		.about-us {
 			margin-top: 2rem;
 			width: 100%;
