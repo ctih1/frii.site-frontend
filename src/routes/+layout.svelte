@@ -7,10 +7,17 @@
 	import Holder from "$lib/components/Holder.svelte";
 	import { Toaster } from "$lib/components/ui/sonner";
 	import "$lib/nprogress.css";
+	import { sidebarOpen } from "$lib/store";
 	import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
+	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
+	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
+	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
+	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
+	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
 	import "../app.css";
+	import { localizeHref } from "../paraglide/runtime";
 
 	let { children } = $props();
 	let userRespectsPrivacyInsane = $state(false);
@@ -28,6 +35,7 @@
 		}
 
 		if (!$navigating) {
+			$sidebarOpen = false;
 			NProgress.done();
 			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
 		}
@@ -68,7 +76,18 @@
 	</Holder>
 {/if}
 <Toaster />
-<Header />
+<Header>
+	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/")}
+		><MaterialSymbolsHomeRounded />Home</a>
+	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/dashboard")}
+		><MaterialSymbolsTeamDashboard />Dashboard</a>
+	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/account/manage")}
+		><MaterialSymbolsAccountCircle />Account</a>
+	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/report")}
+		><MaterialSymbolsFlagRounded />Report</a>
+	<a class="flex flex-row text-2xl font-medium" href="https://guides.frii.site"
+		><MaterialSymbolsMenuBookRounded />Guides</a>
+</Header>
 <Analytics />
 <Ads></Ads>
 <svelte:head></svelte:head>

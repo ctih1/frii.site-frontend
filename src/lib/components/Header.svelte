@@ -1,72 +1,71 @@
 <script lang="ts">
-	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
-	import MaterialSymbolsBookRibbonRounded from "~icons/material-symbols/book-ribbon-rounded";
-	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
-	import MaterialSymbolsHome from "~icons/material-symbols/home";
-	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
+	import * as Select from "$lib/components/ui/select/index.js";
+	import { sidebarOpen } from "$lib/store";
+	import { fade } from "svelte/transition";
+	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
+	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
 	import { getFlagEmoji } from "../../helperFuncs";
-	import { m } from "../../paraglide/messages";
-	import type { Locale } from "../../paraglide/runtime";
-	import { getLocale, locales, localizeHref, setLocale } from "../../paraglide/runtime";
+	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
 
-	import Modal from "./Modal.svelte";
-	let header: HTMLElement;
-	let modal: Modal;
-
-	let selectElement: HTMLSelectElement;
-	let isSidebar: boolean = $state(true);
-	let sidebarOpened: boolean = $state(false);
-
-	let height = $state(0);
-	let width = $state(0);
-
-	$effect(() => {
-		isSidebar = height > width;
-	});
+	let { children } = $props();
 </script>
 
-<svelte:window bind:innerHeight={height} bind:innerWidth={width} />
-<header class="bg-card flex h-16 items-center space-x-8 pr-6 pl-6 text-xl [&>div]:items-center">
-	<a class="item flex" href={localizeHref("/")}>
-		<MaterialSymbolsHome />
-		<p>{m.dashboard_home()}</p>
-	</a>
+<header
+	id="header"
+	class="bg-card flex h-full w-screen max-w-screen items-center space-x-6 pr-8 pl-4">
+	<button
+		id="popout-toggle"
+		class="hidden h-12 w-12"
+		onclick={_ => ($sidebarOpen = !$sidebarOpen)}>
+		{#key $sidebarOpen}
+			<div transition:fade={{ duration: 100 }} class="absolute top-0">
+				{#if !$sidebarOpen}
+					<MaterialSymbolsMenuRounded class="h-12 w-12" />
+				{:else}
+					<MaterialSymbolsCloseRounded class="h-12 w-12" />
+				{/if}
+			</div>
+		{/key}
+	</button>
+	{@render children()}
 
-	<a class="item flex" href={localizeHref("/dashboard")}>
-		<MaterialSymbolsTeamDashboard />
-		<p>{m.dashboard_navbar()}</p>
-	</a>
-
-	<a class="item flex" href={localizeHref("/account/manage")}>
-		<MaterialSymbolsAccountCircle />
-		<p>{m.dashboard_account()}</p>
-	</a>
-
-	<a class="item flex" href={localizeHref("/report")}>
-		<MaterialSymbolsFlagRounded />
-		<p>{m.dashboard_abuse()}</p>
-	</a>
-
-	<a class="item flex" href="https://guides.frii.site">
-		<MaterialSymbolsBookRibbonRounded />
-		<p>{m.guides_link_navbar()}</p>
-	</a>
-
-	<div class="item">
-		<select
-			style="color: var(--primary);"
-			bind:this={selectElement}
-			onchange={_ => setLocale(selectElement.value as Locale)}>
+	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
+		<Select.Trigger class="mr-0 ml-auto w-1/8 min-w-24"
+			>{getFlagEmoji(getLocale())} - {getLocale()}</Select.Trigger>
+		<Select.Content>
 			{#each locales as locale}
-				<option selected={locale === getLocale()} value={locale}
-					>{getFlagEmoji(locale)} {locale}</option>
+				<Select.Item value={locale} label={getFlagEmoji(locale) + locale}>
+					{getFlagEmoji(locale)} - {locale}
+				</Select.Item>
 			{/each}
-		</select>
-	</div>
+		</Select.Content>
+	</Select.Root>
 </header>
+{#if $sidebarOpen}
+	<div
+		transition:fade={{ duration: 100 }}
+		id="popout"
+		class="popout bg-card absolute z-50 hidden h-full w-full max-w-96 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
+		{@render children()}
+	</div>
+{/if}
 
 <style>
-	.item {
-		align-items: center;
+	@media (max-width: 960px) {
+		:global(#header a) {
+			display: none;
+		}
+		#header {
+			justify-content: space-between;
+		}
+		#popout-toggle {
+			display: block;
+		}
+		#popout {
+			display: flex;
+		}
+		#logo {
+			display: block;
+		}
 	}
 </style>
