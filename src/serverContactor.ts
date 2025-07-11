@@ -6,7 +6,7 @@ import { redirectToLogin } from "./helperFuncs";
 export let serverURL = "https://api.frii.site";
 if (browser) {
 	let subdomain = window.location.hostname.split(".")[0];
-	if (subdomain === "canary") {
+	if (subdomain === "canary" || subdomain === "development") {
 		serverURL = "https://beta.frii.site";
 	}
 	if (localStorage.getItem("url_override")) {

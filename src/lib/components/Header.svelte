@@ -12,7 +12,7 @@
 
 <header
 	id="header"
-	class="bg-card flex h-full w-screen max-w-screen items-center space-x-6 pr-8 pl-4">
+	class="bg-card flex h-full w-screen max-w-screen items-center space-x-6 pt-1 pr-4 pb-1 pl-4">
 	<button
 		id="popout-toggle"
 		class="hidden h-12 w-12"
@@ -30,7 +30,7 @@
 	{@render children()}
 
 	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
-		<Select.Trigger class="mr-0 ml-auto w-1/8 min-w-24"
+		<Select.Trigger class="mr-0 ml-auto w-24"
 			>{getFlagEmoji(getLocale())} - {getLocale()}</Select.Trigger>
 		<Select.Content>
 			{#each locales as locale}

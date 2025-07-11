@@ -77,15 +77,15 @@
 {/if}
 <Toaster />
 <Header>
-	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/")}
+	<a class="flex flex-row text-xl font-medium" href={localizeHref("/")}
 		><MaterialSymbolsHomeRounded />Home</a>
-	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/dashboard")}
+	<a class="flex flex-row items-center text-xl font-medium" href={localizeHref("/dashboard")}
 		><MaterialSymbolsTeamDashboard />Dashboard</a>
-	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/account/manage")}
+	<a class="flex flex-row text-xl font-medium" href={localizeHref("/account/manage")}
 		><MaterialSymbolsAccountCircle />Account</a>
-	<a class="flex flex-row text-2xl font-medium" href={localizeHref("/report")}
+	<a class="flex flex-row text-xl font-medium" href={localizeHref("/report")}
 		><MaterialSymbolsFlagRounded />Report</a>
-	<a class="flex flex-row text-2xl font-medium" href="https://guides.frii.site"
+	<a class="flex flex-row items-center text-xl font-medium" href="https://guides.frii.site"
 		><MaterialSymbolsMenuBookRounded />Guides</a>
 </Header>
 <Analytics />
