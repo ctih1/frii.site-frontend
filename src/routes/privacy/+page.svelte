@@ -3,7 +3,7 @@
 </script>
 
 <Holder>
-	<p><strong>PRIVACY POLICY</strong></p>
+	<h1 class="text-2xl font-semibold">PRIVACY POLICY</h1>
 	<p><strong>Last updated May 12, 2024</strong></p>
 	<p>
 		This privacy notice for frii.site ('<strong>we</strong>', '<strong>us</strong>', or '<strong
@@ -944,6 +944,17 @@
 		You have the right to request access to the personal information we collect from you, change
 		that information, or delete it. To request to review, update, or delete your personal
 		information, please visit: <a href="http://www.frii.site/account/manage"
-			>http://www.frii.site/account/manage</a> .
+			>https://www.frii.site/account/manage</a
+		>, or contact us at support@frii.site.
 	</p>
 </Holder>
+
+<style>
+	ul {
+		list-style: disc;
+		margin-left: 2em;
+	}
+	* {
+		margin-top: 1em;
+	}
+</style>
