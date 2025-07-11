@@ -33,7 +33,7 @@
 </script>
 
 <Holder>
-	<h1>{m.deletion_verif_title()}</h1>
+	<h1 class="text-2xl font-semibold">{m.deletion_verif_title()}</h1>
 	<br />
 	{#if !clicked}
 		<p>{m.account_del_desc()}</p>

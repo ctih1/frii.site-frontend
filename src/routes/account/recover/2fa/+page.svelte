@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { AuthError, CodeError, MFAError, recoverMfaCode, UserError } from "$lib";
-	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import { Button } from "$lib/components/ui/button";
+	import { Input } from "$lib/components/ui/input";
 	import { m } from "../../../../paraglide/messages";
 
 	let username: string = $state("");
@@ -39,14 +40,14 @@
 <Modal bind:this={modal} description="" title="" options={["Continue"]}></Modal>
 <Loader bind:this={loader} />
 <Holder>
-	<h1>{m.mfa_recovery()}</h1>
+	<h1 class="text-2xl font-semibold">{m.mfa_recovery()}</h1>
 
-	<form>
-		<input type="text" placeholder="Username" bind:value={username} />
-		<input type="password" placeholder="Password" bind:value={password} />
-		<input type="text" placeholder="Backup code" bind:value={backupCode} />
+	<form class="space-y-2">
+		<Input type="text" placeholder="Username" bind:value={username} />
+		<Input type="password" placeholder="Password" bind:value={password} />
+		<Input type="text" placeholder="Backup code" bind:value={backupCode} />
 
-		<Button on:click={_ => sendRemoval()} args={"fill padding"}>
+		<Button onclick={_ => sendRemoval()}>
 			{m.mfa_recovery_send()}
 		</Button>
 	</form>
@@ -58,12 +59,6 @@
 		display: flex;
 		flex-direction: column;
 		height: fit-content;
-	}
-	form input {
-		margin-top: 0.25em;
-		margin-bottom: 0.25em;
-		height: 3em;
-		font-size: 16px;
 	}
 
 	.support-tip {
