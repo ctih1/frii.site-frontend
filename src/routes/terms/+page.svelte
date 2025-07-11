@@ -5,8 +5,9 @@
 <svelte:head>
 	<title>Terms of Service</title>
 </svelte:head>
+
 <Holder>
-	<h1>Terms and Conditions</h1>
+	<h1 class="text-2xl font-semibold">Terms and Conditions</h1>
 	<p>Last updated: May 12, 2024</p>
 	<p>Please read these terms and conditions carefully before using Our Service.</p>
 	<h2>Interpretation and Definitions</h2>
@@ -261,3 +262,13 @@
 		<li>By email: contact@frii.site</li>
 	</ul>
 </Holder>
+
+<style>
+	ul {
+		list-style: disc;
+		margin-left: 2em;
+	}
+	* {
+		margin-top: 1em;
+	}
+</style>
