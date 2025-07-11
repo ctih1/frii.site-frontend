@@ -37,6 +37,7 @@
 	"dashboard_delete_error": "Verkkotunnuksen poistaminen epäonnistui",
 	"unhandled_error": "Käsittelemätön poikkeus tapahtui.",
 	"dashboard_delete_success": "Poistetiin {domain}",
+	"dashboard_delete_success_description": "{domain} poistettiin onnistuneesti",
 	"dashboard_register_success": "Rekisteröitiin {domain}!",
 	"dashboard_register_fail": "{domain} rekisteröiminen epäonnitui",
 	"dashboard_register_success_description": "Omistat nyt verkkotunnuksen. Etkö tiedä miten aloittaa? Käy katsomassa <a href=\"https://github.com/ctih1/frii.site-frontend/wiki\">wikiämme</a>",
@@ -182,16 +183,15 @@
 	"index_reviews": "Arvostelut",
 	"index_bottom_hook": "Mitä odotat!",
 	"index_bottom_hook_desc": "Mene hankkimaan verkkotunnus - Se on ilmaista!",
-	"blogs_description": "Lue uusimmat uutiset frii.sitestä täältä!",
-	"dashboard_delete_success_description": "{domain} poistettiin onnistuneesti",
 	"account_manage_sessions": "Kirjautuneet laitteet",
 	"account_manage_sessions_delete_loader": "Kirjaudutaan ulos",
+	"blogs_description": "Lue uusimmat uutiset frii.sitestä täältä!",
+	"blogs_title": "Blogipostaukset",
 	"account_permissions_lack": "Sinulla ei ole oikeutta tehdä tätä.",
 	"account_signed_out": "Näyttää siltä, että sinut kirjattiin ulos!",
 	"account_uhoh_annoyance": "Voi ei!",
-	"blogs_title": "Blogipostaukset",
 	"account_invite": "Luo kutsu",
 	"account_invite_fail": "Kutsun luominen epäonnistui",
-	"email_verif_title": "Sähköpostin varmistus",
-	"account_invite_fail_usage_description": "kutsuraja saavutettu"
+	"account_invite_fail_usage_description": "kutsuraja saavutettu",
+	"email_verif_title": "Sähköpostin varmistus"
 }
