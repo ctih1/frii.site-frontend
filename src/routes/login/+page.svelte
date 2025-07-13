@@ -9,6 +9,7 @@
 		MFAError,
 		PermissionError,
 		register,
+		resendEmail,
 		UserError
 	} from "$lib";
 	import favicon from "$lib/assets/favicon.svg";
@@ -51,6 +52,9 @@
 	let captchaToken: string = "";
 	let captchaDone: boolean = $state(false);
 
+	let accountNeedsEmailVerification: boolean = $state(false);
+	let resendEmailClicked: boolean = $state(false);
+
 	function validateEmail(email: string) {
 		return !String(email)
 			.toLowerCase()
@@ -72,9 +76,10 @@
 				errorTitle = m.login_failed();
 				if (error instanceof AuthError || error instanceof UserError)
 					errorDescription = m.login_failed_description();
-				else if (error instanceof PermissionError)
+				else if (error instanceof PermissionError) {
 					errorDescription = m.login_failed_verify();
-				else if (error instanceof MFAError) {
+					accountNeedsEmailVerification = true;
+				} else if (error instanceof MFAError) {
 					if (!requiresMfa) {
 						requiresMfa = true;
 					} else {
@@ -192,6 +197,26 @@
 	</div>
 	<InlineAlert title={errorTitle} description={errorDescription} variant={"error"} />
 	<InlineAlert title={alertTitle} description={alertDescription} variant={"note"} />
+
+	{#if accountNeedsEmailVerification}
+		<Button
+			variant={"ghost"}
+			loading={resendEmailClicked}
+			onclick={_ => {
+				resendEmailClicked = true;
+				resendEmail(username)
+					.catch(_ => {
+						resendEmailClicked = false;
+						errorDescription = "Failed to send verification";
+						throw new Error("Failed to send resend email");
+					})
+					.then(_ => {
+						resendEmailClicked = false;
+						alertTitle = m.login_failed_verify();
+						alertDescription = m.login_failed_verify_description();
+					});
+			}}>Resend verification</Button>
+	{/if}
 	{#if requiresMfa}
 		<div class="mfa-screen mt-12">
 			<h2 class="text-2xl font-semibold">{m.login_mfa_required()}</h2>
@@ -205,7 +230,7 @@
 					<InputOTP.Group>
 						{#each cells as cell (cell)}
 							<InputOTP.Slot
-								class="h-14 w-14 text-2xl"
+								class="h-14 text-2xl"
 								aria-invalid={mfaInvalid}
 								cell={cell} />
 						{/each}

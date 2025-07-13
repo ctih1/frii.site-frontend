@@ -22,7 +22,7 @@
 
 {#if !closed}
 	<div
-		class={`alert mt-4 h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"} ${className}`}>
+		class={`alert mt-4 min-h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"} ${className}`}>
 		<div class="flex justify-between">
 			<div class="text flex items-center">
 				{#if variant === "error"}

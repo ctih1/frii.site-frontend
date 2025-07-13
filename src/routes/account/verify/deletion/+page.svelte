@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { redirectToLogin } from "$lib";
-	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import { Button } from "$lib/components/ui/button";
 	import { m } from "../../../../paraglide/messages";
 	import { CodeError, UserError, verifyDeletion } from "../../../../serverContactor";
 
@@ -43,7 +43,7 @@
 			<li>{m.account_del_steps_3()}</li>
 			<li>{m.account_del_steps_4()}</li>
 		</ol>
-		<Button on:click={_ => (clicked = true)} args="danger padding"
+		<Button onclick={_ => (clicked = true)} variant={"destructive"}
 			>{m.account_del_agree()}</Button>
 	{/if}
 	<h2>
