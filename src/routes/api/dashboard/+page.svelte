@@ -188,7 +188,7 @@
 							{/if}
 						</Button>
 					</div>
-					<p class="font-semibold">Permissions:</p>
+					<p class="font-semibold">{m.api_dashboard_permission_section()}</p>
 					<ul class="list-disc [&>li]:ml-8">
 						{#each key.perms as permission}
 							{#if permission === "modify"}
@@ -205,7 +205,7 @@
 							{/if}
 						{/each}
 					</ul>
-					<p class="font-semibold">Domains:</p>
+					<p class="font-semibold">{m.api_dashboard_domains_section()}</p>
 					<ul class="list-disc [&>li]:ml-8">
 						{#each key.domains as domain}
 							<li>{domain}.frii.site</li>
@@ -214,14 +214,14 @@
 
 					<Dialog.Root onOpenChange={open => (dialogOpen = open)} open={dialogOpen}>
 						<Dialog.Trigger>
-							<Button variant={"destructive"}>Delete</Button>
+							<Button variant={"destructive"}
+								>{m.api_dashboard_delete_action()}</Button>
 						</Dialog.Trigger>
 						<Dialog.Content>
 							<Dialog.Header>
-								<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
+								<Dialog.Title>{m.api_dashboard_delete_title()}</Dialog.Title>
 								<Dialog.Description>
-									This action cannot be undone. This will permanently delete your
-									account and remove your data from our servers.
+									{m.api_dashboard_delete_description()}
 								</Dialog.Description>
 							</Dialog.Header>
 							<Dialog.Footer>
@@ -231,7 +231,8 @@
 										key.deletionLoading = true;
 									}}
 									loading={key.deletionLoading}
-									variant={"destructive"}>Delete</Button>
+									variant={"destructive"}
+									>{m.api_dashboard_delete_action()}</Button>
 							</Dialog.Footer>
 						</Dialog.Content>
 					</Dialog.Root>
@@ -249,10 +250,10 @@
 </div>
 
 <div class="create bg-card max-w-8xl mt-16 mr-auto ml-auto w-10/12 rounded-2xl p-6">
-	<h1 class="text-2xl font-semibold">Create API key</h1>
+	<h1 class="text-2xl font-semibold">{m.api_dashboard_create_title()}</h1>
 	<form class="mt-4 items-center space-y-4 space-x-2">
 		<div class="w-full max-w-96 space-y-2">
-			<Label for="comment">Comment</Label>
+			<Label for="comment">{m.api_dashboard_create_comment_input()}</Label>
 			<Input
 				placeholder={m.api_dashboard_comment_placeholder()}
 				aria-required={true}
@@ -260,7 +261,7 @@
 				id="comment" />
 		</div>
 		<div class="space-y-2">
-			<Label>Domains</Label>
+			<Label>{m.api_dashboard_create_affected_domains_input()}</Label>
 			<Select.Root bind:value={selectedDomains} type="multiple">
 				<Select.Trigger class="w-96"
 					>{selectedDomains.join(", ").slice(0, 45)}...</Select.Trigger>
@@ -272,7 +273,7 @@
 			</Select.Root>
 		</div>
 		<div class="space-y-2">
-			<Label>Permissions</Label>
+			<Label>{m.api_dashboard_create_affected_permission_input()}</Label>
 			<Select.Root bind:value={selectedPermissions} type="multiple">
 				<Select.Trigger class="w-96"
 					>{selectedPermissions.join(", ").slice(0, 45)}...</Select.Trigger>
@@ -291,6 +292,6 @@
 				apiCreationLoading = true;
 				registerKey();
 			}}
-			loading={apiCreationLoading}>Create</Button>
+			loading={apiCreationLoading}>{m.api_dashboard_create_action()}</Button>
 	</form>
 </div>
