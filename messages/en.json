@@ -238,7 +238,7 @@
 	"mfa_verify_button": "Verify",
 	"mfa_success": "Successfully enabled two factor authentication!",
 	"mfa_backup_codes": "Your backup codes",
-	"mfa_backup_warning": "Please save these codes somewhere securely. You can not recover your\r\n\t\t\t\t\t\t\t\taccount without these.",
+	"mfa_backup_warning": "Please save these codes somewhere securely. You can not recover your account without these.",
 	"mfa_verification_loader": "Verifying your code...",
 	"mfa_fail_hint": "Please refresh and try again",
 	"account_disable_mfa": "Remove two factor authentication",

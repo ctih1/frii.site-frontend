@@ -89,7 +89,7 @@
 			})
 			.then(_ => {
 				mfaButtonLoading = false;
-				toast.success("2FA enabled!", { duration: 9000 });
+				toast.success(m.mfa_success(), { duration: 9000 });
 				mfaIsVerified = true;
 			});
 	}
@@ -202,14 +202,14 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Disable 2FA</Dialog.Title>
+							<Dialog.Title>{m.mfa_recovery_send()}</Dialog.Title>
 							<Dialog.Description>
-								Please enter your 2FA or backup code
+								{m.mfa_login_description()}
 							</Dialog.Description>
 
 							{#if usingBackupCode}
 								<div class="space-y-2">
-									<Label for="backup-code">Backup code</Label>
+									<Label for="backup-code">{m.mfa_use_backup()}</Label>
 									<Input bind:value={mfaCode} id="backup-code" />
 								</div>
 							{:else}
@@ -234,8 +234,7 @@
 							<Button
 								onclick={_ => (usingBackupCode = !usingBackupCode)}
 								variant={"ghost"}
-								>{#if usingBackupCode}Use 2FA code instead{:else}Use backup code
-									instead{/if}</Button>
+								>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
 						</Dialog.Header>
 
 						<Dialog.Footer>
@@ -247,7 +246,7 @@
 								}}
 								disabled={(!usingBackupCode && mfaCode.length != 6) ||
 									(usingBackupCode && mfaCode.length < 16)}
-								variant={"destructive"}>Delete</Button>
+								variant={"destructive"}>{m.mfa_recovery_send()}</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
@@ -260,19 +259,20 @@
 						<Dialog.Header>
 							{#if !mfaUrl}
 								<Dialog.Title>Please wait...</Dialog.Title>
-								<Dialog.Description>Starting MFA setup</Dialog.Description>
+								<Dialog.Description>{m.mfa_loading()}</Dialog.Description>
 							{:else}
 								<Dialog.Title>Setup 2Fa</Dialog.Title>
 								<Dialog.Description>
-									Please scan the QR code below to get started
+									{m.mfa_qr_guide()}
 								</Dialog.Description>
 
 								<QR backgroundFill="white" data={mfaUrl} />
 
-								<Button href={mfaUrl} variant={"link"}>Or use this link</Button>
+								<Button href={mfaUrl} variant={"link"}
+									>{m.mfa_alternate_link_hint()}</Button>
 
 								<h2 class="text-xl font-semibold">
-									Now enter the code from your authentication app
+									{m.mfa_verification_step()}
 								</h2>
 
 								<InputOTP.Root
@@ -295,7 +295,7 @@
 
 							{#if mfaIsVerified}
 								<h2 class="text-xl font-semibold">
-									Please copy these backup codes somewhere safe
+									{m.mfa_backup_warning()}
 								</h2>
 								<ul class="list-disc [&>li]:ml-8">
 									{#each backupCodes as code}
@@ -312,7 +312,7 @@
 									mfaButtonLoading = true;
 									verifyMfa(mfaCode);
 								}}
-								disabled={mfaCode.length != 6}>Enable 2FA</Button>
+								disabled={mfaCode.length != 6}>{m.account_enable_mfa()}</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
@@ -325,12 +325,12 @@
 					<Dialog.Header>
 						<Dialog.Title>{m.account_delete_account()}</Dialog.Title>
 						<Dialog.Description>
-							Please enter your 2FA or backup code
+							{m.mfa_login_description()}
 						</Dialog.Description>
 
 						{#if usingBackupCode}
 							<div class="space-y-2">
-								<Label for="backup-code">Backup code</Label>
+								<Label for="backup-code">{m.mfa_use_backup()}</Label>
 								<Input bind:value={mfaCode} id="backup-code" />
 							</div>
 						{:else}
@@ -355,7 +355,7 @@
 						<Button
 							onclick={_ => (usingBackupCode = !usingBackupCode)}
 							variant={"ghost"}
-							>{#if usingBackupCode}Use 2FA code instead{:else}Use backup code instead{/if}</Button>
+							>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
 					</Dialog.Header>
 
 					<Dialog.Footer>
@@ -363,7 +363,7 @@
 							<p class="text-sm">{m.acount_delete_confirm_description()}</p>
 							<div class="flex space-x-2">
 								<Checkbox bind:checked={deleteAccountChecked} id="understand" />
-								<Label for="understand">I understand and want to continue</Label>
+								<Label for="understand">{m.account_del_agree()}</Label>
 							</div>
 						</div>
 						<Button
@@ -375,11 +375,11 @@
 							disabled={!deleteAccountChecked ||
 								(!usingBackupCode && mfaCode.length != 6) ||
 								(usingBackupCode && mfaCode.length < 16)}
-							variant={"destructive"}>Delete</Button>
+							variant={"destructive"}>{m.account_delete_account()}</Button>
 					</Dialog.Footer>
 				</Dialog.Content>
 			</Dialog.Root>
-			<Button onclick={_ => gpdrData()}>Download GDPR</Button>
+			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
 			<Button variant={"secondary"} onclick={_ => logOut()}>Log out</Button>
 		</div>
 	</div>
