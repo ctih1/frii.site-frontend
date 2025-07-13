@@ -252,7 +252,7 @@
 								domain.isLoading = true;
 								modifyDomain(domain);
 							}}
-							class="w-1/2 max-w-40">Save</Button>
+							class="w-1/2 max-w-40">{m.dashboard_save_modification()}</Button>
 						<Separator orientation={"vertical"} />
 						<Button
 							loading={domain.deletionLoading}
@@ -275,7 +275,9 @@
 							}}
 							class="w-1/2 max-w-40"
 							variant={"destructive"}
-							>{#if domain.deletionWarned}Confirm?{:else}Delete{/if}</Button>
+							>{#if domain.deletionWarned}
+								{m.dashboard_delete_domain_confirm()}{:else}{m.dashboard_delete_domain_button()}
+							{/if}</Button>
 					{:else}
 						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
 						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
@@ -315,7 +317,7 @@
 				registerDomain(newDomain, newDomainType);
 			}}
 			disabled={!newDomain}
-			class="ml-6 min-w-24">Register</Button>
+			class="ml-6 min-w-24">{m.dashboard_register_domain_button()}</Button>
 	</div>
 </div>
 

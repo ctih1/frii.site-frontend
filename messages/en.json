@@ -268,5 +268,9 @@
 	"api_dashboard_modify_perm": "Modify",
 	"account_hello_user": "Hello, {user}!",
 	"login_resend_email": "Resend email verification",
-	"login_email_label": "Email"
+	"login_email_label": "Email",
+	"dashboard_delete_domain_button": "Delete",
+	"dashboard_delete_domain_confirm": "Confirm?",
+	"dashboard_save_modification": "Save",
+	"dashboard_register_domain_button": "Register"
 }
