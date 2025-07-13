@@ -17,6 +17,7 @@
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
 	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
 	import "../app.css";
+	import { m } from "../paraglide/messages";
 	import { localizeHref } from "../paraglide/runtime";
 
 	let { children } = $props();
@@ -78,15 +79,15 @@
 <Toaster />
 <Header>
 	<a class="flex flex-row text-xl font-medium" href={localizeHref("/")}
-		><MaterialSymbolsHomeRounded />Home</a>
+		><MaterialSymbolsHomeRounded />{m.dashboard_home()}</a>
 	<a class="flex flex-row items-center text-xl font-medium" href={localizeHref("/dashboard")}
-		><MaterialSymbolsTeamDashboard />Dashboard</a>
+		><MaterialSymbolsTeamDashboard />{m.dashboard_navbar()}</a>
 	<a class="flex flex-row text-xl font-medium" href={localizeHref("/account/manage")}
-		><MaterialSymbolsAccountCircle />Account</a>
+		><MaterialSymbolsAccountCircle />{m.dashboard_account()}</a>
 	<a class="flex flex-row text-xl font-medium" href={localizeHref("/report")}
-		><MaterialSymbolsFlagRounded />Report</a>
+		><MaterialSymbolsFlagRounded />{m.dashboard_abuse()}</a>
 	<a class="flex flex-row items-center text-xl font-medium" href="https://guides.frii.site"
-		><MaterialSymbolsMenuBookRounded />Guides</a>
+		><MaterialSymbolsMenuBookRounded />{m.guides_link_navbar()}</a>
 </Header>
 <Analytics />
 <Ads></Ads>
