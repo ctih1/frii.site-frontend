@@ -295,7 +295,7 @@
 		description={registerErrorDescription}
 		className="mb-6"
 		trigger={alertUpdate} />
-	<div class="content flex space-x-2">
+	<div class="content flex space-y-2 space-x-2">
 		<Select.Root bind:value={newDomainType} type="single" name="domain">
 			<Select.Trigger class="w-1/8 min-w-24">{newDomainType}</Select.Trigger>
 			<Select.Content>
@@ -317,7 +317,7 @@
 				registerDomain(newDomain, newDomainType);
 			}}
 			disabled={!newDomain}
-			class="ml-6 min-w-24">{m.dashboard_register_domain_button()}</Button>
+			class="w-24">{m.dashboard_register_domain_button()}</Button>
 	</div>
 </div>
 
@@ -336,6 +336,13 @@
 		.actions {
 			width: 100%;
 			justify-content: space-between;
+		}
+
+		.content {
+			flex-direction: column;
+		}
+		:global(.content button) {
+			width: 100%;
 		}
 	}
 </style>
