@@ -215,7 +215,7 @@
 						alertTitle = m.login_failed_verify();
 						alertDescription = m.login_failed_verify_description();
 					});
-			}}>Resend verification</Button>
+			}}>{m.login_resend_email()}</Button>
 	{/if}
 	{#if requiresMfa}
 		<div class="mfa-screen mt-12">
@@ -264,7 +264,7 @@
 						required />
 
 					{#if !isLoggingIn}
-						<Label for="email">Email</Label>
+						<Label for="email">{m.login_email_label()}</Label>
 						<Input
 							aria-invalid={emailInvalid}
 							bind:value={email}

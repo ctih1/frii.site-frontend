@@ -266,5 +266,7 @@
 	"api_dashboard_delete_perm": "Delete",
 	"api_dashboard_list_perm": "View domains",
 	"api_dashboard_modify_perm": "Modify",
-	"account_hello_user": "Hello, {user}!"
+	"account_hello_user": "Hello, {user}!",
+	"login_resend_email": "Resend email verification",
+	"login_email_label": "Email"
 }
