@@ -105,7 +105,8 @@
 				Cookies.set("auth-token", sessionId, {
 					secure: !dev,
 					domain: window.origin,
-					sameSite: "Strict"
+					sameSite: "Strict",
+					path: "/"
 				});
 				localStorage.setItem("logged-in", "y");
 				setTimeout(() => {
