@@ -64,8 +64,5 @@
 		#popout {
 			display: flex;
 		}
-		#logo {
-			display: block;
-		}
 	}
 </style>
