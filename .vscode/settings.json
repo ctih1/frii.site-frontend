@@ -16,7 +16,8 @@
             "strings": true
         },
         "editor.suggest.insertMode": "replace",
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": false
     },
     "editor.codeActionsOnSave": {
         "source.organizeImports": "always",
