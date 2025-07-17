@@ -80,9 +80,14 @@
 <Header>
 	<a class="flex flex-row text-xl font-medium" href={localizeHref("/")}
 		><MaterialSymbolsHomeRounded />{m.dashboard_home()}</a>
-	<a class="flex flex-row items-center text-xl font-medium" href={localizeHref("/dashboard")}
-		><MaterialSymbolsTeamDashboard />{m.dashboard_navbar()}</a>
-	<a class="flex flex-row text-xl font-medium" href={localizeHref("/account/manage")}
+	<a
+		class="flex flex-row items-center text-xl font-medium"
+		href={localizeHref("/dashboard")}
+		data-sveltekit-preload-data="off"><MaterialSymbolsTeamDashboard />{m.dashboard_navbar()}</a>
+	<a
+		class="flex flex-row text-xl font-medium"
+		href={localizeHref("/account/manage")}
+		data-sveltekit-preload-data="off"
 		><MaterialSymbolsAccountCircle />{m.dashboard_account()}</a>
 	<a class="flex flex-row text-xl font-medium" href={localizeHref("/report")}
 		><MaterialSymbolsFlagRounded />{m.dashboard_abuse()}</a>
