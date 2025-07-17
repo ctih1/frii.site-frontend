@@ -1,7 +1,7 @@
 import { browser } from "$app/environment";
 import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
-import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
+import { redirectToLogin, setAuthToken } from "./helperFuncs";
 
 export let serverURL = "https://api.frii.site";
 if (browser) {
@@ -21,7 +21,7 @@ const client = createClient<paths>({ baseUrl: serverURL });
 
 const JWTAuthMiddleware: Middleware = {
 	async onResponse({ request, response, options }) {
-		if (response.status === 460 && getAuthToken()) {
+		if (response.status === 460) {
 			console.log("Refreshing auth token");
 
 			const authCode = await tryRefreshToken();
