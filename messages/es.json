@@ -99,8 +99,8 @@
 	"footer_dev_coding": "Guía de contribución",
 	"footer_dev_partner": "Programa de socios",
 	"blog_read": "Leer más...",
-	"blogs_description": "¡Lee las últimas noticias sobre frii.site aquí!",
 	"blogs_title": "Publicaciones de blog",
-	"account_permissions_lack": "Parece que no tienes los permisos adecuados para hacer esto.",
-	"account_uhoh_annoyance": "¡Oh, no!"
+	"blogs_description": "¡Lee las últimas noticias sobre frii.site aquí!",
+	"account_uhoh_annoyance": "¡Oh, no!",
+	"account_permissions_lack": "Parece que no tienes los permisos adecuados para hacer esto."
 }
