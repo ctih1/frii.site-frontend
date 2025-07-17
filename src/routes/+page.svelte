@@ -178,6 +178,10 @@
 			margin-left: auto;
 			margin-right: auto;
 		}
+
+		h2 {
+			font-size: 2.75em;
+		}
 	}
 
 	@media (max-width: 600px) {

@@ -44,3 +44,17 @@ export function getFlagEmoji(countryCode: String): string {
 export function getAuthToken() {
 	return Cookies.get("auth-token") ?? localStorage.getItem("auth-token");
 }
+
+export function setAuthToken(token: string) {
+	const tokenExpirationMin = 10;
+	const expires = new Date(new Date().getTime() + tokenExpirationMin * 60000);
+
+	console.log(expires);
+
+	Cookies.set("auth-token", token, {
+		secure: !dev,
+		expires: expires,
+		sameSite: "Strict",
+		path: "/"
+	});
+}

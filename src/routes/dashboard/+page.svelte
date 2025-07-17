@@ -196,7 +196,7 @@
 
 <Loader bind:this={loader} />
 
-<div class="domain-holder bg-card max-w-8xl mt-16 mr-auto ml-auto w-10/12 rounded-2xl p-6">
+<div class="domain-holder bg-card max-w-8xl mt-16 mr-auto ml-auto w-11/12 rounded-2xl p-6">
 	<h1 class="text-3xl font-semibold">{m.dashboard_your_domains()}</h1>
 	<p>{m.dashboard_domain_explanation()}</p>
 
@@ -207,9 +207,9 @@
 		className="mb-6 mt-6"
 		trigger={alertUpdate} />
 
-	<div class="domains">
+	<div class="domains space-y-2">
 		{#each domainsLoaded ? domains : new Array(data.domainAmount) as domain}
-			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-y-1 space-x-1">
+			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-x-1">
 				<div class="basic-controls flex w-2/5 space-x-1">
 					{#if domainsLoaded}
 						<Select.Root type="single" name="domain" bind:value={domain.type}>
@@ -288,7 +288,7 @@
 	</div>
 </div>
 
-<div class="registrar bg-card max-w-8xl mt-8 mr-auto mb-8 ml-auto w-10/12 rounded-2xl p-6">
+<div class="registrar bg-card max-w-8xl mt-8 mr-auto mb-8 ml-auto w-11/12 rounded-2xl p-6">
 	<InlineAlert
 		variant={"error"}
 		title={registerErrorTitle}
@@ -330,6 +330,9 @@
 			flex-direction: column;
 			height: 8rem;
 		}
+		.domain div {
+			height: 2.5em;
+		}
 		.value {
 			width: 100%;
 		}
@@ -341,8 +344,11 @@
 		.content {
 			flex-direction: column;
 		}
-		:global(.content button) {
+		:global(.registrar .content button) {
 			width: 100%;
+		}
+		.domain-holder {
+			padding: 0.5em;
 		}
 	}
 </style>

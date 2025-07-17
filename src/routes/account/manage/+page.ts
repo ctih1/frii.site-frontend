@@ -4,7 +4,7 @@ export interface Session {
 	hash: string;
 	user_agent: string;
 	ip: string;
-	expire: number;
+	expires: number;
 	loading: boolean;
 }
 
@@ -31,7 +31,7 @@ export const load = async () => {
 
 	sessionObject.forEach(element => {
 		sessions.push({
-			expire: element["expire"],
+			expires: element["expires"],
 
 			// @ts-ignore
 			hash: element["_id"],

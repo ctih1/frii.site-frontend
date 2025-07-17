@@ -10,12 +10,12 @@
 		ServerContactor,
 		UserError
 	} from "$lib";
-	import Button from "$lib/components/Button.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
 	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import Section from "$lib/components/Section.svelte";
+	import { Button } from "$lib/components/ui/button";
 	import { onMount } from "svelte";
 	import type { components } from "../../../api";
 	import { m } from "../../../paraglide/messages";
@@ -189,19 +189,15 @@
 <Loader bind:this={loader} />
 <Holder>
 	{#if hasAccess}
-		<h1>Admin tools</h1>
+		<h1 class="text-2xl font-semibold">Admin tools</h1>
 
 		<Section id="search" title="Search">
 			<input bind:value={searchString} id="finder" placeholder="Search term" />
 			<div class="search-buttons">
-				<Button on:click={_ => sha256usernameThenLoad()} args={"padding"}
-					>Find user by name</Button>
-				<Button on:click={_ => loadByUsername(searchString)} args={"padding"}
-					>Find user by id</Button>
-				<Button on:click={_ => loadByDomain(searchString)} args={"padding"}
-					>Find user by domain</Button>
-				<Button on:click={_ => loadByEmail(searchString)} args={"padding"}
-					>Find user by email</Button>
+				<Button onclick={_ => sha256usernameThenLoad()}>Find user by name</Button>
+				<Button onclick={_ => loadByUsername(searchString)}>Find user by id</Button>
+				<Button onclick={_ => loadByDomain(searchString)}>Find user by domain</Button>
+				<Button onclick={_ => loadByEmail(searchString)}>Find user by email</Button>
 			</div>
 		</Section>
 
@@ -251,13 +247,12 @@
 							{/if}
 							<div class="permission-button">
 								<Button
-									on:click={_ =>
+									onclick={_ =>
 										updatePermission(
 											user.id,
 											permission,
 											user.permissions[permission] ?? 0
-										)}
-									args={"padding"}>Update</Button>
+										)}>Update</Button>
 							</div>
 						</div>
 					{/each}
@@ -266,13 +261,12 @@
 						<input bind:value={newPermissionValue} placeholder="value" />
 						<div class="permission-button">
 							<Button
-								on:click={_ =>
+								onclick={_ =>
 									updatePermission(
 										user.id,
 										newPermissionKey,
 										stringIntoPermissionValueType(newPermissionValue)
-									)}
-								args={"padding"}>Create</Button>
+									)}>Create</Button>
 						</div>
 					</div>
 					{#each obj as key}
@@ -289,13 +283,12 @@
 					{/if}
 					{#if !user.banned}
 						<Button
-							args={"padding danger"}
-							on:click={_ =>
+							variant={"destructive"}
+							onclick={_ =>
 								!deletionBegin ? (deletionBegin = true) : terminateAccount(user.id)}
 							>Terminate account</Button>
 					{:else}
-						<Button args={"padding"} on:click={_ => reinstateAccount(user.id)}
-							>Reinstate account</Button>
+						<Button onclick={_ => reinstateAccount(user.id)}>Reinstate account</Button>
 					{/if}
 				</div>
 			{/each}

@@ -1,13 +1,15 @@
 import { browser } from "$app/environment";
-import createClient from "openapi-fetch";
+import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
-import { redirectToLogin } from "./helperFuncs";
+import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
 
 export let serverURL = "https://api.frii.site";
 if (browser) {
 	let subdomain = window.location.hostname.split(".")[0];
-	if (subdomain === "canary" || subdomain === "development") {
+	if (subdomain === "canary") {
 		serverURL = "https://beta.frii.site";
+	} else if (subdomain === "development") {
+		serverURL = "https://alpha.frii.site";
 	}
 	if (localStorage.getItem("url_override")) {
 		serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
@@ -16,6 +18,55 @@ if (browser) {
 }
 
 const client = createClient<paths>({ baseUrl: serverURL });
+
+const JWTAuthMiddleware: Middleware = {
+	async onResponse({ request, response, options }) {
+		if (response.status === 460 && getAuthToken()) {
+			console.log("Refreshing auth token");
+
+			const authCode = await tryRefreshToken();
+
+			if (!authCode) {
+				redirectToLogin(465);
+				throw new Error("Redirecting to login");
+			} else {
+				console.log("was success");
+				setAuthToken(authCode);
+				let req = request.clone();
+				req.headers.set("X-Auth-Token", authCode);
+				return await options.fetch(req);
+			}
+		}
+
+		return response;
+	}
+};
+
+// Automatically refresh auth tokens
+client.use(JWTAuthMiddleware);
+
+async function tryRefreshToken(): Promise<string | false> {
+	try {
+		const res = await fetch(`${serverURL}/refresh`, {
+			method: "POST",
+			credentials: "include"
+		});
+
+		if (!res.ok) return false;
+
+		const data = await res.json();
+
+		if (data["auth-token"]) {
+			// refresh token gets set with the request itself as Set-Cookie header
+			return data["auth-token"];
+		}
+
+		return false;
+	} catch (err) {
+		console.error("Refresh token request failed", err);
+		return false;
+	}
+}
 
 export async function digestMessage(message: string): Promise<string> {
 	const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -119,7 +170,8 @@ export async function login(
 				"x-plain-username": username, // Older versions of the backend didnt save usernames so this is the only way to give the backend the users actual username
 				"x-captcha-code": captcha
 			}
-		}
+		},
+		credentials: "include"
 	});
 
 	if (error) {

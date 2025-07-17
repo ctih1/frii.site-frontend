@@ -10,6 +10,7 @@
 		PermissionError,
 		register,
 		resendEmail,
+		setAuthToken,
 		UserError
 	} from "$lib";
 	import favicon from "$lib/assets/favicon.svg";
@@ -102,12 +103,7 @@
 					console.error("Browser did not accept cookies...");
 				}
 				Cookies.set("logged-in", "yes");
-				Cookies.set("auth-token", sessionId, {
-					secure: !dev,
-					domain: window.origin,
-					sameSite: "Strict",
-					path: "/"
-				});
+				setAuthToken(sessionId);
 				localStorage.setItem("logged-in", "y");
 				setTimeout(() => {
 					// 3s timeout is for firefox, since an immediate redirect can cause a bug where localStorage doesnt save

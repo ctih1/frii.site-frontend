@@ -26,10 +26,10 @@
 	import { UAParser } from "ua-parser-js";
 	import MaterialSymbolsDesktopMac from "~icons/material-symbols/desktop-mac";
 	import { m } from "../../../paraglide/messages";
-
 	let serverContactor: ServerContactor;
 
 	let { data } = $props();
+	let sessions: Session[] = $state(data.sessions);
 
 	let mfaIsVerified: boolean = $state(false);
 	let backupCodes: string[] = $state([]);
@@ -42,6 +42,7 @@
 	let mfaButtonLoading: boolean = $state(false);
 
 	let dialogOpen: boolean = $state(false);
+	let deleteOpen: boolean = $state(false);
 
 	onMount(() => {
 		serverContactor = new ServerContactor(getAuthToken());
@@ -166,7 +167,7 @@
 					redirectToLogin(200);
 				} else {
 					session.loading = false;
-					data.sessions = data.sessions.filter(sess => {
+					sessions = sessions.filter(sess => {
 						return sess.hash !== session.hash;
 					});
 				}
@@ -317,7 +318,7 @@
 					</Dialog.Content>
 				</Dialog.Root>
 			{/if}
-			<Dialog.Root onOpenChange={open => (dialogOpen = open)} open={dialogOpen}>
+			<Dialog.Root onOpenChange={open => (deleteOpen = open)} open={deleteOpen}>
 				<Dialog.Trigger>
 					<Button variant={"destructive"}>{m.account_delete_account()}</Button>
 				</Dialog.Trigger>
@@ -385,9 +386,9 @@
 	</div>
 
 	<div class="mt-4 space-y-4">
-		{#each data.sessions as session}
+		{#each sessions as session}
 			{@const ua = new UAParser(session.user_agent)}
-			{@const expires = new Date(session.expire * 1000)}
+			{@const expires = new Date(session.expires * 1000)}
 			<div
 				transition:fade={{ duration: 100 }}
 				class="session bg-popover w-full max-w-96 rounded-xl p-4">
