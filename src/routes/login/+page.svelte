@@ -218,32 +218,34 @@
 		<div class="mfa-screen mt-12">
 			<h2 class="text-2xl font-semibold">{m.login_mfa_required()}</h2>
 			<p>{m.login_mfa_description()}</p>
-			<InputOTP.Root
-				bind:value={mfaCode}
-				class="m-auto mt-8 w-fit"
-				maxlength={6}
-				pattern={REGEXP_ONLY_DIGITS}>
-				{#snippet children({ cells })}
-					<InputOTP.Group>
-						{#each cells as cell (cell)}
-							<InputOTP.Slot
-								class="h-14 text-2xl"
-								aria-invalid={mfaInvalid}
-								cell={cell} />
-						{/each}
-					</InputOTP.Group>
-				{/snippet}
-			</InputOTP.Root>
+			<form>
+				<InputOTP.Root
+					bind:value={mfaCode}
+					class="m-auto mt-8 w-fit"
+					maxlength={6}
+					pattern={REGEXP_ONLY_DIGITS}>
+					{#snippet children({ cells })}
+						<InputOTP.Group>
+							{#each cells as cell (cell)}
+								<InputOTP.Slot
+									class="h-14 text-2xl"
+									aria-invalid={mfaInvalid}
+									cell={cell} />
+							{/each}
+						</InputOTP.Group>
+					{/snippet}
+				</InputOTP.Root>
 
-			<Button
-				onclick={() => {
-					buttonLoadingState = true;
-					logIn();
-				}}
-				loading={buttonLoadingState}
-				disabled={!captchaDone || mfaCode.length != 6}
-				type="submit"
-				class="mt-4 w-full">{m.login_button()}</Button>
+				<Button
+					onclick={() => {
+						buttonLoadingState = true;
+						logIn();
+					}}
+					loading={buttonLoadingState}
+					disabled={!captchaDone || mfaCode.length != 6}
+					type="submit"
+					class="mt-4 w-full">{m.login_button()}</Button>
+			</form>
 
 			<a class="text-sm" href={localizeHref("/account/recover/2fa")}
 				>{m.mfa_disable_with_backup()}</a>
