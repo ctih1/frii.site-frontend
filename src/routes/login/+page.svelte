@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser, dev } from "$app/environment";
+	import { browser } from "$app/environment";
 	import {
 		AuthError,
 		CaptchaError,
@@ -98,7 +98,6 @@
 				window.gtag?.("event", "log_in");
 
 				const date = new Date(Date.now() + 604800 * 1000).toUTCString();
-				document.cookie = `auth-token=${sessionId}; expires=${date}; SameSite=Strict; ${!dev ? "Secure" : ""}`;
 				if (!getAuthToken()) {
 					console.error("Browser did not accept cookies...");
 				}
@@ -277,7 +276,7 @@
 						{#if isLoggingIn}
 							<a
 								transition:fade={{ duration: 100 }}
-								href="##"
+								href={localizeHref("/account/recover/")}
 								class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
 								{m.password_forget_intro()}
 							</a>

@@ -36,7 +36,7 @@ export const load = async () => {
 			// @ts-ignore
 			hash: element["_id"],
 			ip: element["ip"],
-			user_agent: element["user-agent"],
+			user_agent: element["user-agent"] ?? element["agent"],
 			loading: false
 		});
 	});
