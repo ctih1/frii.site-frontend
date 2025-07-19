@@ -311,17 +311,17 @@
 					{/if}
 				</div>
 			</div>
-		</form>
 
-		<Button
-			onclick={() => {
-				buttonLoadingState = true;
-				isLoggingIn ? logIn() : signUp();
-			}}
-			loading={buttonLoadingState}
-			disabled={!browser || actionButtonDisabled}
-			type="submit"
-			class="mt-4 w-full">{isLoggingIn ? m.login_button() : m.signup_button()}</Button>
+			<Button
+				onclick={() => {
+					buttonLoadingState = true;
+					isLoggingIn ? logIn() : signUp();
+				}}
+				loading={buttonLoadingState}
+				disabled={!browser || actionButtonDisabled}
+				type="submit"
+				class="mt-4 w-full">{isLoggingIn ? m.login_button() : m.signup_button()}</Button>
+		</form>
 
 		<a
 			onclick={_ => (isLoggingIn = !isLoggingIn)}

@@ -436,7 +436,14 @@ export class ServerContactor {
 	}
 
 	async registerDomain(domain: string, type: string): Promise<string> {
-		const value = type === "CNAME" || type === "NS" ? "example.com" : "0.0.0.0";
+		let value: string = "0.0.0.0";
+		if (type === "CNAME" || type === "NS") {
+			value = "example.com";
+		}
+		if (type === "TXT") {
+			value = "test-txt";
+		}
+
 		const { data, error, response } = await client.POST("/domain/register", {
 			body: { domain, type, value },
 			params: {
