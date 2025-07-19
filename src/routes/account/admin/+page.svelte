@@ -2,7 +2,6 @@
 	import {
 		AuthError,
 		ConflictError,
-		digestMessage,
 		DNSError,
 		getAuthToken,
 		PermissionError,
@@ -10,15 +9,20 @@
 		ServerContactor,
 		UserError
 	} from "$lib";
-	import Dropdown from "$lib/components/Dropdown.svelte";
 	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/Loader.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import Section from "$lib/components/Section.svelte";
+	import * as Accordion from "$lib/components/ui/accordion/index.js";
 	import { Button } from "$lib/components/ui/button";
+	import Input from "$lib/components/ui/input/input.svelte";
+	import * as Select from "$lib/components/ui/select/index.js";
 	import { onMount } from "svelte";
+	import { toast } from "svelte-sonner";
+	import { UAParser } from "ua-parser-js";
 	import type { components } from "../../../api";
 	import { m } from "../../../paraglide/messages";
+	import { getLocale } from "../../../paraglide/runtime";
 
 	// You can create a type alias for easier use
 	type AccountData = components["schemas"]["AccountData"];
@@ -35,6 +39,10 @@
 	let newPermissionValue: string = $state("");
 
 	let hasAccess: boolean = $state(false);
+
+	let loading: boolean = $state(false);
+
+	let domainDeleteReason = $state("");
 
 	$effect(() => {
 		console.log(reasons.split("\n"));
@@ -63,6 +71,17 @@
 		if (input === "false" || input === "true") return input === "true";
 		if (Number(input)) return Number(input);
 		return input;
+	}
+
+	function deleteDomain(domain: string, userId: string, reason: string) {
+		serverContactor
+			.adminDeleteDomain(userId, domain, reason)
+			.catch(error => {
+				if (error instanceof PermissionError) redirectToLogin(461);
+				if (error instanceof AuthError) redirectToLogin(460);
+				throw new Error("failed to delete domain");
+			})
+			.then(_ => toast.success("Deleted domain succesfully"));
 	}
 
 	function terminateAccount(id: string) {
@@ -124,18 +143,12 @@
 			});
 	}
 
-	function sha256usernameThenLoad() {
-		digestMessage(searchString).then(hash => {
-			loadByUsername(hash);
-		});
-	}
-
-	function loadByUsername(id: string) {
-		loader.show();
+	function loadByUsername(username: string) {
+		loading = true;
 		serverContactor
-			.findById(id)
+			.findByUsername(username)
 			.catch(error => {
-				loader.hide();
+				loading = false;
 				if (error instanceof AuthError) redirectToLogin(460);
 				if (error instanceof PermissionError) redirectToLogin(461);
 				if (error instanceof UserError)
@@ -143,17 +156,35 @@
 				throw new Error("Failed to get user data");
 			})
 			.then(data => {
-				loader.hide();
+				loading = false;
+				collectedUserData = [data!];
+			});
+	}
+
+	function loadById(id: string) {
+		loading = true;
+		serverContactor
+			.findById(id)
+			.catch(error => {
+				loading = false;
+				if (error instanceof AuthError) redirectToLogin(460);
+				if (error instanceof PermissionError) redirectToLogin(461);
+				if (error instanceof UserError)
+					modal.open("No matches found", "your query returned no matches");
+				throw new Error("Failed to get user data");
+			})
+			.then(data => {
+				loading = false;
 				collectedUserData = [data!];
 			});
 	}
 
 	function loadByDomain(domain: string) {
-		loader.show();
+		loading = true;
 		serverContactor
 			.findByDomain(domain)
 			.catch(error => {
-				loader.hide();
+				loading = false;
 				if (error instanceof AuthError) redirectToLogin(460);
 				if (error instanceof PermissionError) redirectToLogin(461);
 				if (error instanceof UserError)
@@ -161,7 +192,7 @@
 				throw new Error("Failed to get user data");
 			})
 			.then(data => {
-				loader.hide();
+				loading = false;
 				collectedUserData = [data!];
 			});
 	}
@@ -191,15 +222,20 @@
 	{#if hasAccess}
 		<h1 class="text-2xl font-semibold">Admin tools</h1>
 
-		<Section id="search" title="Search">
-			<input bind:value={searchString} id="finder" placeholder="Search term" />
-			<div class="search-buttons">
-				<Button onclick={_ => sha256usernameThenLoad()}>Find user by name</Button>
-				<Button onclick={_ => loadByUsername(searchString)}>Find user by id</Button>
-				<Button onclick={_ => loadByDomain(searchString)}>Find user by domain</Button>
-				<Button onclick={_ => loadByEmail(searchString)}>Find user by email</Button>
+		<div class="space-y-2">
+			<p class="text-sm">Search</p>
+			<Input bind:value={searchString} id="finder" placeholder="Search term" />
+			<div class="search-buttons flex justify-between [&>button]:w-1/5">
+				<Button loading={loading} onclick={_ => loadByUsername(searchString)}
+					>Find user by name</Button>
+				<Button loading={loading} onclick={_ => loadById(searchString)}
+					>Find user by id</Button>
+				<Button loading={loading} onclick={_ => loadByDomain(searchString)}
+					>Find user by domain</Button>
+				<Button loading={loading} onclick={_ => loadByEmail(searchString)}
+					>Find user by email</Button>
 			</div>
-		</Section>
+		</div>
 
 		<Section id="manage" title="Manage">
 			{#if collectedUserData.length < 1}
@@ -210,7 +246,7 @@
 				{@const obj = Object.keys(user.domains)}
 
 				<div class="user">
-					<h2 class={user.banned ? "danger" : ""}>
+					<h2 class={`${user.banned ? "text-red-600" : ""} text-2xl font-semibold`}>
 						{user.username}
 						{#if user.banned}
 							(banned)
@@ -226,26 +262,89 @@
 					<p>Created at {createdAt}</p>
 					<p>Last login: {new Date(user.last_login * 1000)}</p>
 					<p>Active sessions: {user.sessions.length}</p>
-					<h4>Permission</h4>
+
+					<Accordion.Root type="single">
+						<Accordion.Item>
+							<Accordion.Trigger
+								><h2 class="text-xl font-semibold">
+									Sessions ({user.sessions.length})
+								</h2></Accordion.Trigger>
+							<Accordion.Content>
+								<Accordion.Root type="multiple">
+									{#each user.sessions as session}
+										{@const date = new Date(session.expires * 1000)}
+										{@const ua =
+											"user-agent" in session
+												? new UAParser(session["user-agent"])
+												: "agent" in session
+													? new UAParser(session["agent"])
+													: new UAParser("")}
+										<Accordion.Item>
+											<Accordion.Trigger>
+												({"user-agent" in session ? "Old" : "New"})
+												{ua.getBrowser().name}
+												{ua.getDevice().vendor}
+												{date.toLocaleString(getLocale())}
+											</Accordion.Trigger>
+											<Accordion.Content>
+												{#if "user-agent" in session}
+													<p>{session["user-agent"]}</p>
+												{:else if "agent" in session}
+													<p>{session.agent}</p>
+													<p>
+														Created: {new Date(
+															session.created * 1000
+														).toLocaleString(getLocale())}
+													</p>
+												{/if}
+												<p>ip: {session.ip}</p>
+											</Accordion.Content>
+										</Accordion.Item>
+									{/each}
+								</Accordion.Root>
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion.Root>
+
+					<Accordion.Root type="single">
+						<Accordion.Item>
+							<Accordion.Trigger
+								><h2 class="text-xl font-semibold">
+									Accessed from ({user.accessed_from.length})
+								</h2></Accordion.Trigger>
+							<Accordion.Content>
+								<Accordion.Root type="multiple">
+									{#each user.accessed_from as ip}
+										<p>{ip}</p>
+									{/each}
+								</Accordion.Root>
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion.Root>
+
+					<h4 class="text-xl font-semibold">Permission</h4>
 					{#each Object.keys(user.permissions) as permission}
-						<div class="permission">
+						<div class="permission flex max-w-full items-center space-y-2 space-x-2">
 							<p class="permission-key">{permission} -&gt;</p>
 							{#if typeof user.permissions[permission] === "boolean"}
-								<div class="permission-value">
-									<Dropdown
-										options={["true", "false"]}
-										defaultValue={user.permissions[permission]}
-										disabled={false}
-										on:optionchange={e =>
-											(user.permissions[permission] = e.detail === "true")}
-									></Dropdown>
-								</div>
+								<Select.Root
+									onValueChange={value =>
+										(user.permissions[permission] = value === "true")}
+									type="single"
+									name="domain">
+									<Select.Trigger class="w-1/8 min-w-24"
+										>{user.permissions[permission]
+											? "Yes"
+											: "No"}</Select.Trigger>
+									<Select.Content>
+										<Select.Item value="false" label="false">No</Select.Item>
+										<Select.Item value="true" label="true">Yes</Select.Item>
+									</Select.Content>
+								</Select.Root>
 							{:else}
-								<input
-									class="permission-value"
-									bind:value={user.permissions[permission]} />
+								<Input bind:value={user.permissions[permission]} />
 							{/if}
-							<div class="permission-button">
+							<div class="mr-2 ml-auto">
 								<Button
 									onclick={_ =>
 										updatePermission(
@@ -256,9 +355,12 @@
 							</div>
 						</div>
 					{/each}
-					<div class="permission">
-						<input bind:value={newPermissionKey} placeholder="key" />
-						<input bind:value={newPermissionValue} placeholder="value" />
+
+					<div class="permission space-y-2">
+						<div class="buttons flex [&>button]:w-1/2">
+							<Input bind:value={newPermissionKey} placeholder="key" />
+							<Input bind:value={newPermissionValue} placeholder="value" />
+						</div>
 						<div class="permission-button">
 							<Button
 								onclick={_ =>
@@ -269,14 +371,29 @@
 									)}>Create</Button>
 						</div>
 					</div>
-					{#each obj as key}
-						{@const val = user.domains[key]}
-						<h4>{key.replaceAll("[dot]", ".")}.frii.site</h4>
-						<div class="domain-info">
-							<input class="domain-type" disabled value={val?.type} />
-							<input disabled value={val?.ip} />
-						</div>
-					{/each}
+					<div class="domains space-y-2">
+						{#each obj as key}
+							{@const val = user.domains[key]}
+							<div class="domain space-y-1">
+								<h4>{key.replaceAll("[dot]", ".")}.frii.site</h4>
+								<div class="domain-info flex space-x-2">
+									<Input class="w-24" disabled value={val?.type} />
+									<Input class="w-full" disabled value={val?.ip} />
+								</div>
+								<div class="delete-bar flex w-full space-x-2">
+									<Input
+										bind:value={domainDeleteReason}
+										class="w-full"
+										placeholder="Reason" />
+									<Button
+										onclick={_ =>
+											deleteDomain(key, user.id, domainDeleteReason)}
+										variant={"destructive"}>Delete</Button>
+								</div>
+							</div>
+						{/each}
+					</div>
+
 					{#if deletionBegin}
 						<textarea placeholder="Reasons. Seperate by newlines" bind:value={reasons}
 						></textarea>
@@ -284,6 +401,7 @@
 					{#if !user.banned}
 						<Button
 							variant={"destructive"}
+							class="mt-4"
 							onclick={_ =>
 								!deletionBegin ? (deletionBegin = true) : terminateAccount(user.id)}
 							>Terminate account</Button>
@@ -297,64 +415,3 @@
 		<h1>Checking permissions...</h1>
 	{/if}
 </Holder>
-
-<style>
-	.search-buttons {
-		display: flex;
-	}
-	:global(.search-buttons button) {
-		margin: 4px;
-	}
-	#finder {
-		height: 3em;
-		background-color: rgb(40, 40, 40);
-		font-size: large;
-	}
-	.domain-type {
-		width: 20%;
-	}
-	.domain-info {
-		display: flex;
-	}
-	h4 {
-		margin-bottom: 0px;
-	}
-	.domain-info input {
-		height: 3em;
-		background-color: rgb(40, 40, 40);
-	}
-
-	textarea {
-		background-color: rgb(40, 40, 40);
-		border-radius: 0.5em;
-		color: white;
-		font-size: 16px;
-	}
-
-	.user p {
-		margin: 4px;
-	}
-
-	.danger {
-		color: rgb(200, 17, 17);
-	}
-	.permission {
-		display: flex;
-		margin-bottom: 12px;
-		padding: 4px;
-	}
-	.permission:nth-child(even) {
-		background-color: rgb(40, 40, 40);
-	}
-	.permission-value {
-		width: 50%;
-		background-color: rgb(40, 40, 40);
-	}
-	.permission-key {
-		width: fit-content;
-	}
-	.permission-button {
-		margin-left: auto;
-		margin-right: 0px;
-	}
-</style>

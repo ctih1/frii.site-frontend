@@ -264,6 +264,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh */
+        post: operations["refresh_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/sign-up": {
         parameters: {
             query?: never;
@@ -689,6 +706,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/get/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Username */
+        get: operations["find_user_by_username_admin_user_get_username_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/get/email": {
         parameters: {
             query?: never;
@@ -758,11 +792,15 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: Record<string, never>;
+            permissions: {
+                [key: string]: unknown;
+            };
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: components["schemas"]["SessionType"][];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
+                [key: string]: unknown;
+            }[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -778,9 +816,13 @@ export interface components {
             /** Banned */
             banned: boolean;
             /** Ban Reasons */
-            ban_reasons: string[];
+            ban_reasons: string[] | null;
             /** Last Login */
             last_login: number;
+            /** Api Key Amount */
+            api_key_amount: number;
+            /** Accessed From */
+            accessed_from: string[];
         };
         /** ApiCreationBody */
         ApiCreationBody: {
@@ -852,11 +894,17 @@ export interface components {
             /** Country Flag Url */
             country_flag_url: string;
             /** Country Flag */
-            country_flag: Record<string, never>;
+            country_flag: {
+                [key: string]: unknown;
+            };
             /** Country Currency */
-            country_currency: Record<string, never>;
+            country_currency: {
+                [key: string]: unknown;
+            };
             /** Continent */
-            continent: Record<string, never>;
+            continent: {
+                [key: string]: unknown;
+            };
             /** Latitude */
             latitude: string;
             /** Longitude */
@@ -908,23 +956,41 @@ export interface components {
             /** App Link */
             app_link: string;
         };
+        /** NewSessionType */
+        NewSessionType: {
+            /** Owner */
+            owner: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "refresh" | "access";
+            /** Created */
+            created: number;
+            /** Expires */
+            expires: number;
+            /** Agent */
+            agent: string;
+            /** Ip */
+            ip: string;
+        };
+        /** OldSessionType */
+        OldSessionType: {
+            /** User-Agent */
+            "user-agent": string;
+            /** Ip */
+            ip: string;
+            /** Expires */
+            expires: number;
+            /** Id */
+            id: string;
+        };
         /** PasswordReset */
         PasswordReset: {
             /** Code */
             code: string;
             /** Hashed Password */
             hashed_password: string;
-        };
-        /** SessionType */
-        SessionType: {
-            /** User-Agent */
-            "user-agent": string;
-            /** Ip */
-            ip: string;
-            /** Expire */
-            expire: number;
-            /** Owner-Hash */
-            "owner-hash": string;
         };
         /** SignUp */
         SignUp: {
@@ -951,11 +1017,15 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: Record<string, never>;
+            permissions: {
+                [key: string]: unknown;
+            };
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: components["schemas"]["SessionType"][];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
+                [key: string]: unknown;
+            }[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -1067,7 +1137,7 @@ export interface operations {
         parameters: {
             query: {
                 domain: string;
-                type?: string;
+                type?: string | null;
             };
             header?: never;
             path?: never;
@@ -1252,7 +1322,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        [key: string]: components["schemas"]["DomainFormat"];
+                        [key: string]: components["schemas"]["DomainFormat"] | null;
                     };
                 };
             };
@@ -1661,7 +1731,7 @@ export interface operations {
         parameters: {
             query?: {
                 n?: number;
-                content?: number;
+                content?: number | null;
             };
             header?: never;
             path?: never;
@@ -1735,8 +1805,8 @@ export interface operations {
             header: {
                 "x-auth-request": string;
                 "x-captcha-code": string;
-                "x-mfa-code"?: string;
-                "x-plain-username"?: string;
+                "x-mfa-code"?: string | null;
+                "x-plain-username"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -1784,6 +1854,33 @@ export interface operations {
             };
             /** @description Invalid captcha */
             429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    refresh_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Refreshed tokens succesfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid key */
+            460: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1958,7 +2055,9 @@ export interface operations {
     send_account_deletion_deletion_send_delete: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-mfa-code": string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1971,6 +2070,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Invalid session */
@@ -2161,7 +2269,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Session does not exist */
@@ -2438,8 +2548,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-mfa-code"?: string;
-                "x-backup-code"?: string;
+                "x-mfa-code"?: string | null;
+                "x-backup-code"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -2545,6 +2655,7 @@ export interface operations {
             query: {
                 domain: string;
                 userid: string;
+                reason: string;
             };
             header?: never;
             path?: never;
@@ -2835,6 +2946,58 @@ export interface operations {
         parameters: {
             query: {
                 id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_username_admin_user_get_username_get: {
+        parameters: {
+            query: {
+                username: string;
             };
             header?: never;
             path?: never;

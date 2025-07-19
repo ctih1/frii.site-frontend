@@ -1,7 +1,7 @@
 import { browser } from "$app/environment";
 import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
-import { redirectToLogin, setAuthToken } from "./helperFuncs";
+import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
 
 export let serverURL = "https://api.frii.site";
 if (browser) {
@@ -384,7 +384,6 @@ export async function recoverMfaCode(username: string, password: string, backupC
 }
 
 export class ServerContactor {
-	token: string;
 	serverURL: string;
 
 	constructor(token: string | null, urlOverride: string | null = null) {
@@ -392,8 +391,8 @@ export class ServerContactor {
 		if (urlOverride) {
 			this.serverURL = urlOverride;
 		}
-		this.token = token as string;
-		if (this.token === null && window.location.pathname !== "/account") {
+
+		if (getAuthToken() === null && window.location.pathname !== "/account") {
 			redirectToLogin(302);
 		}
 	}
@@ -417,7 +416,7 @@ export class ServerContactor {
 			body: { domain, type, value },
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -442,7 +441,7 @@ export class ServerContactor {
 			body: { domain, type, value },
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -469,14 +468,16 @@ export class ServerContactor {
 	}
 
 	async deleteDomain(
-		domain: string
+		domain: string,
+		userId: string,
+		reason: string
 	): Promise<
 		paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]
 	> {
 		const { data, error, response } = await client.DELETE("/domain/delete", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token },
+				header: { "X-Auth-Token": getAuthToken() },
 				query: { domain: domain }
 			}
 		});
@@ -503,7 +504,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.DELETE("/deletion/send", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token, "X-MFA-Code": mfaCode }
+				header: { "X-Auth-Token": getAuthToken(), "X-MFA-Code": mfaCode }
 			}
 		});
 
@@ -525,7 +526,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.GET("/settings", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -547,7 +548,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.GET("/gdpr", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -564,7 +565,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.POST("/invite/create", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -589,7 +590,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.GET("/domain/get", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -613,7 +614,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					specific: id !== undefined,
 					id: id
 				}
@@ -642,7 +643,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -664,7 +665,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					hash: hash
@@ -689,7 +690,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			},
 			body: {
@@ -718,7 +719,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			},
 			body: {
@@ -746,7 +747,7 @@ export class ServerContactor {
 				query: { value: value },
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -768,7 +769,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -794,7 +795,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -818,7 +819,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					"x-mfa-code": code
 				}
 			}
@@ -845,7 +846,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					"x-mfa-code": code,
 					"x-backup-code": backupCode
 				}
@@ -871,10 +872,39 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					id: id
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async findByUsername(username: string) {
+		const { data, error, response } = await client.GET("/admin/user/get/username", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					username: username
 				}
 			}
 		});
@@ -900,7 +930,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					domain: domain
@@ -929,7 +959,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					email: email
@@ -958,7 +988,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			},
 			body: {
@@ -990,7 +1020,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					user_id: account
@@ -1023,7 +1053,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					id: account,
@@ -1049,12 +1079,43 @@ export class ServerContactor {
 		return data;
 	}
 
+	async adminDeleteDomain(account: string, domain: string, reason: string) {
+		const { data, error, response } = await client.DELETE("/admin/domain/delete", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					userid: account,
+					reason: reason,
+					domain: domain
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
 	async canUseAdminPanel() {
 		const { data, error, response } = await client.GET("/admin/user/can-access", {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});

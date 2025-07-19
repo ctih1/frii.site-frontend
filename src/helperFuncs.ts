@@ -42,7 +42,7 @@ export function getFlagEmoji(countryCode: String): string {
 }
 
 export function getAuthToken() {
-	return Cookies.get("auth-token") ?? localStorage.getItem("auth-token");
+	return Cookies.get("auth-token");
 }
 
 export function setAuthToken(token: string) {
