@@ -36,15 +36,15 @@
 
 			<div class="details mt-12 mb-12 flex w-full justify-between text-3xl">
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class=" text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded style="color: rgb(219, 29, 29);" />
 					<Label class="text-lg">{m.home_talking_point_1()}</Label>
 				</div>
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded style="color: rgb(219, 29, 29);;" />
 					<Label class="text-lg">{m.home_talking_point_2()}</Label>
 				</div>
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded style="color: rgb(219, 29, 29);" />
 					<Label class="text-lg">{m.home_talking_point_3()}</Label>
 				</div>
 			</div>
@@ -135,8 +135,8 @@
 		background:
 			radial-gradient(
 				circle at -25% -25%,
-				lch(61.66% 59.87 273.43 / 0.712) 0%,
-				lch(2.43% 2.83 273.1) 85%
+				lch(53.23% 104.58 40 / 0.712) 0%,
+				lch(2.43% 2.83 273.1) 55%
 			),
 			url("data:image/svg+xml,%3Csvg viewBox='0 0 362 362' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='10' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 	}
