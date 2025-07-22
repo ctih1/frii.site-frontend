@@ -45,7 +45,7 @@
 	let deleteOpen: boolean = $state(false);
 
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken());
+		serverContactor = new ServerContactor(getAuthToken() ?? null);
 	});
 
 	function mfaSetup() {

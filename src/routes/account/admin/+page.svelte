@@ -15,8 +15,11 @@
 	import Section from "$lib/components/Section.svelte";
 	import * as Accordion from "$lib/components/ui/accordion/index.js";
 	import { Button } from "$lib/components/ui/button";
+	import { Checkbox } from "$lib/components/ui/checkbox";
 	import Input from "$lib/components/ui/input/input.svelte";
+	import { Label } from "$lib/components/ui/label";
 	import * as Select from "$lib/components/ui/select/index.js";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import { onMount } from "svelte";
 	import { toast } from "svelte-sonner";
 	import { UAParser } from "ua-parser-js";
@@ -41,6 +44,8 @@
 	let hasAccess: boolean = $state(false);
 
 	let loading: boolean = $state(false);
+
+	let replaceLastResult: boolean = $state(true);
 
 	let domainDeleteReason = $state("");
 
@@ -157,7 +162,7 @@
 			})
 			.then(data => {
 				loading = false;
-				collectedUserData = [data!];
+				collectedUserData.push(data!);
 			});
 	}
 
@@ -175,7 +180,7 @@
 			})
 			.then(data => {
 				loading = false;
-				collectedUserData = [data!];
+				collectedUserData.push(data!);
 			});
 	}
 
@@ -193,7 +198,7 @@
 			})
 			.then(data => {
 				loading = false;
-				collectedUserData = [data!];
+				collectedUserData.push(data!);
 			});
 	}
 
@@ -211,9 +216,15 @@
 			})
 			.then(data => {
 				loader.hide();
-				collectedUserData = [data!];
+				collectedUserData.push(data!);
 			});
 	}
+
+	$effect(() => {
+		if (replaceLastResult && collectedUserData.length > 1) {
+			collectedUserData.shift();
+		}
+	});
 </script>
 
 <Modal bind:this={modal} options={[m.modal_ok()]} description={""} title={""}></Modal>
@@ -237,22 +248,55 @@
 			</div>
 		</div>
 
-		<Section id="manage" title="Manage">
+		<div class="mt-4 flex space-x-2">
+			<Checkbox bind:checked={replaceLastResult} id="multiple" />
+			<Label for="multiple">Replace previous search results</Label>
+		</div>
+
+		<Section id="manage" title="manage">
 			{#if collectedUserData.length < 1}
 				<p>Please collect data to manage users.</p>
 			{/if}
-			{#each collectedUserData as user}
+			{#each collectedUserData.toReversed() as user}
 				{@const createdAt = new Date(user.created * 1000)}
 				{@const obj = Object.keys(user.domains)}
 
-				<div class="user">
+				<div class="user mt-8">
 					<h2 class={`${user.banned ? "text-red-600" : ""} text-2xl font-semibold`}>
 						{user.username}
 						{#if user.banned}
 							(banned)
 						{/if}
 					</h2>
-					<p>From: {user.country.country} ({user.country.city}, locale: {user.lang})</p>
+
+					<p>Previous bans:</p>
+					<ul class="list-disc [&>li]:ml-8 [&>p]:ml-4">
+						{#each user.ban_reasons as reason, index}
+							{#if typeof reason === "string"}
+								<li>{reason}</li>
+							{:else}
+								<p>Ban #{index + 1}</p>
+								{#each reason as reas}
+									<li>{reason}</li>
+								{/each}
+							{/if}
+						{/each}
+					</ul>
+
+					<Accordion.Root type="single">
+						<Accordion.Item>
+							<Accordion.Trigger
+								><h2 class="text-xl font-semibold">
+									From: {user.country.country} ({user.country.city}, locale: {user.lang})
+								</h2></Accordion.Trigger>
+							<Accordion.Content>
+								<p>Registration IP: {user.country.ip}</p>
+								<p>Hostname: {user.country.hostname}</p>
+								<p>ISP org: {user.country.org}</p>
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion.Root>
+
 					<p>Enrolled in beta? {user["beta-enroll"] ?? false}</p>
 					<p>
 						Email: <a href={`mailto:${user.email}`}>{user.email}</a> ({user.verified
@@ -262,7 +306,7 @@
 					<p>Created at {createdAt}</p>
 					<p>Last login: {new Date(user.last_login * 1000)}</p>
 					<p>Active sessions: {user.sessions.length}</p>
-
+					<p>API keys: {user.api_key_amount}</p>
 					<Accordion.Root type="single">
 						<Accordion.Item>
 							<Accordion.Trigger
@@ -406,9 +450,11 @@
 								!deletionBegin ? (deletionBegin = true) : terminateAccount(user.id)}
 							>Terminate account</Button>
 					{:else}
-						<Button onclick={_ => reinstateAccount(user.id)}>Reinstate account</Button>
+						<Button class="mt-4" onclick={_ => reinstateAccount(user.id)}
+							>Reinstate account</Button>
 					{/if}
 				</div>
+				<Separator class="mt-4" />
 			{/each}
 		</Section>
 	{:else}
