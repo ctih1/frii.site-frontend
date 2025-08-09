@@ -266,6 +266,7 @@
 				<Select.Trigger class="w-96"
 					>{selectedDomains.join(", ").slice(0, 45)}...</Select.Trigger>
 				<Select.Content>
+					<Select.Item value="*">{m.api_dashboard_domain_any()}</Select.Item>
 					{#each domains as domain}
 						<Select.Item value={domain.domain}>{domain.domain}.frii.site</Select.Item>
 					{/each}
