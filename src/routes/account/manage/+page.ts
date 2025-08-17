@@ -24,6 +24,7 @@ export const load = async () => {
 	const username = accountSettings.username;
 	const email = accountSettings.email;
 	const maxDomains = accountSettings.permissions["max-domains"] ?? 3;
+	const maxSubdomains = accountSettings.permissions["max-subdomains"] ?? 50;
 	const mfaEnabled = accountSettings.mfa_enabled;
 	const sessionObject = accountSettings.sessions;
 
@@ -46,7 +47,8 @@ export const load = async () => {
 		email,
 		maxDomains,
 		mfaEnabled,
-		sessions
+		sessions,
+		maxSubdomains
 	};
 };
 

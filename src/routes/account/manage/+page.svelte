@@ -193,6 +193,14 @@
 		</p>
 	</div>
 
+	<div class="permission flex items-center">
+		<span class="material-symbols-outlined">lock</span>
+		<p>
+			{m.account_max_subdomains()}:
+			<strong>{data.maxSubdomains}</strong>
+		</p>
+	</div>
+
 	<div class="mt-8">
 		<h2 class="text-2xl font-semibold">{m.account_manage_account()}</h2>
 		<div class="buttons space-y-1">

@@ -299,5 +299,6 @@
 	"home_frontend_link": "Our frontend repo",
 	"home_backend_link": "Our backend repo",
 	"home_setup_vercel_link": "How to setup Vercel",
-	"api_dashboard_domain_any": "Any domain"
+	"api_dashboard_domain_any": "Any domain",
+	"account_max_subdomains": "Max subdomains"
 }
