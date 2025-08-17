@@ -30,7 +30,7 @@
 	{@render children()}
 
 	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
-		<Select.Trigger class="mr-0 ml-auto w-24"
+		<Select.Trigger class="mr-4 ml-auto w-24"
 			>{getFlagEmoji(getLocale())} - {getLocale()}</Select.Trigger>
 		<Select.Content>
 			{#each locales as locale}
