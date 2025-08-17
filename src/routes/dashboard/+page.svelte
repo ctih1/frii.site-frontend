@@ -150,7 +150,10 @@
 	}
 
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken(), localStorage.getItem("server_url"));
+		serverContactor = new ServerContactor(
+			getAuthToken() ?? "",
+			localStorage.getItem("server_url")
+		);
 		serverContactor
 			.getDomains()
 			.catch(error => {
@@ -264,10 +267,6 @@
 									setTimeout(() => {
 										domain.buttonDisabled = false;
 									}, 700);
-
-									setTimeout(() => {
-										domain.deletionWarned = false;
-									}, 7000);
 								} else {
 									domain.deletionLoading = true;
 									deleteDomain(domain.domain, domain);
