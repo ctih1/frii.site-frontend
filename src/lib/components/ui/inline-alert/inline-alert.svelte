@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from "svelte/transition";
 	import MaterialSymbolsCloseSmallRounded from "~icons/material-symbols/close-small-rounded";
 	import MaterialSymbolsExclamationRounded from "~icons/material-symbols/exclamation-rounded";
 	import MaterialSymbolsWarningOutlineRounded from "~icons/material-symbols/warning-outline-rounded";
@@ -16,13 +17,16 @@
 		trigger;
 		if (title && description) {
 			closed = false;
+		} else {
+			closed = true;
 		}
 	});
 </script>
 
 {#if !closed}
 	<div
-		class={`alert mt-4 min-h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"} ${className}`}>
+		class={`alert mt-4 min-h-24 rounded-lg border-2 p-4 ${variant === "error" ? "bg-alert" : "bg-note"} ${className}`}
+		transition:fade={{ duration: 100 }}>
 		<div class="flex justify-between">
 			<div class="text flex items-center">
 				{#if variant === "error"}

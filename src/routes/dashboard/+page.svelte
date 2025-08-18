@@ -43,6 +43,9 @@
 	let registerErrorTitle: string = $state("");
 	let registerErrorDescription: string = $state("");
 
+	let registerNoteTitle: string = $state("");
+	let registerNoteDescription: string = $state("");
+
 	let domainErrorTitle: string = $state("");
 	let domainErrorDescription: string = $state("");
 
@@ -185,6 +188,19 @@
 				}
 			});
 	});
+
+	$effect(() => {
+		if (newDomain.includes(".frii.site")) {
+			registerNoteTitle = "Please remove the .frii.site suffix.";
+			registerNoteDescription =
+				'frii.site automatically adds the ".frii.site" portion of your domain';
+			alertUpdate++;
+		} else {
+			registerNoteTitle = "";
+			registerNoteDescription = "";
+			alertUpdate++;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -292,6 +308,12 @@
 		variant={"error"}
 		title={registerErrorTitle}
 		description={registerErrorDescription}
+		className="mb-6"
+		trigger={alertUpdate} />
+	<InlineAlert
+		variant={"note"}
+		title={registerNoteTitle}
+		description={registerNoteDescription}
 		className="mb-6"
 		trigger={alertUpdate} />
 	<div class="content flex space-y-2 space-x-2">
