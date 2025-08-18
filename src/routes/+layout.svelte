@@ -119,7 +119,7 @@
 	@font-face {
 		font-family: "Inter";
 		src: url("/fonts/InterVariable.woff2") format("woff2");
-		font-weight: normal;
+		font-weight: 100 600;
 		font-style: normal;
 		font-display: swap;
 	}
