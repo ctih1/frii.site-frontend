@@ -191,9 +191,8 @@
 
 	$effect(() => {
 		if (newDomain.includes(".frii.site")) {
-			registerNoteTitle = "Please remove the .frii.site suffix.";
-			registerNoteDescription =
-				'frii.site automatically adds the ".frii.site" portion of your domain';
+			registerNoteTitle = m.dashboard_suffix_warn_title();
+			registerNoteDescription = m.dashboard_suffix_warn_desc();
 			alertUpdate++;
 		} else {
 			registerNoteTitle = "";
