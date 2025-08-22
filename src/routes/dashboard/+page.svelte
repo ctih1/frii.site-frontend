@@ -194,7 +194,7 @@
 			registerNoteTitle = m.dashboard_suffix_warn_title();
 			registerNoteDescription = m.dashboard_suffix_warn_desc();
 			alertUpdate++;
-		} else {
+		} else if (registerNoteTitle || registerNoteDescription) {
 			registerNoteTitle = "";
 			registerNoteDescription = "";
 			alertUpdate++;

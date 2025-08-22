@@ -1,5 +1,4 @@
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
-import { sentrySvelteKit } from "@sentry/sveltekit";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
 import Icons from "unplugin-icons/vite";
@@ -12,9 +11,6 @@ export default defineConfig({
 			project: "./project.inlang",
 			outdir: "./src/paraglide",
 			strategy: ["cookie", "localStorage", "url", "baseLocale"]
-		}),
-		sentrySvelteKit({
-			sourceMapsUploadOptions: { org: "friisite", project: "frontend" }
 		}),
 		sveltekit(),
 		Icons({
