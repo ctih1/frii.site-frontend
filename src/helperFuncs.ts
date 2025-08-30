@@ -2,7 +2,11 @@ import { dev } from "$app/environment";
 import Cookies from "js-cookie";
 import { localizeHref } from "./paraglide/runtime";
 
-export function redirectToLogin(code: number = 0, timeoutSeconds: number = 0): void {
+export function redirectToLogin(
+	code: number = 0,
+	timeoutSeconds: number = 0,
+	no_reroute: boolean = false
+): void {
 	setTimeout(() => {
 		Cookies.remove("logged-in");
 		Cookies.remove("auth-token", {
@@ -16,7 +20,9 @@ export function redirectToLogin(code: number = 0, timeoutSeconds: number = 0): v
 		} else if (code === 462) {
 			window.location.href = localizeHref(`/account/warn?reason=feature`);
 		} else {
-			window.location.href = localizeHref(`/login?r=${window.location.pathname}&c=${code}`);
+			window.location.href = localizeHref(
+				`/login?r=${no_reroute ? "/" : window.location.pathname}&c=${code}`
+			);
 		}
 	}, timeoutSeconds * 1000);
 }

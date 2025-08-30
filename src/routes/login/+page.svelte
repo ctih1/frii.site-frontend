@@ -199,6 +199,7 @@
 	{#if accountNeedsEmailVerification}
 		<Button
 			variant={"ghost"}
+			class="mt-4"
 			loading={resendEmailClicked}
 			onclick={_ => {
 				resendEmailClicked = true;

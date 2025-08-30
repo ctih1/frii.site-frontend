@@ -25,7 +25,7 @@
 	});
 
 	$effect(() => {
-		if (valid) redirectToLogin(200, 2);
+		if (valid) redirectToLogin(200, 2, true);
 	});
 </script>
 
