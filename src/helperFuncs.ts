@@ -1,16 +1,29 @@
+import { dev } from "$app/environment";
 import Cookies from "js-cookie";
 import { localizeHref } from "./paraglide/runtime";
 
-export function redirectToLogin(code: number = 0, timeoutSeconds: number = 0): void {
+export function redirectToLogin(
+	code: number = 0,
+	timeoutSeconds: number = 0,
+	no_reroute: boolean = false
+): void {
 	setTimeout(() => {
-		localStorage.removeItem("logged-in");
+		Cookies.remove("logged-in");
+		Cookies.remove("auth-token", {
+			secure: !dev,
+			domain: window.origin,
+			sameSite: "Strict"
+		});
+
 		if (code === 461) {
 			window.location.href = localizeHref(`/account/warn?reason=permission`);
-		}
-		if (code === 462) {
+		} else if (code === 462) {
 			window.location.href = localizeHref(`/account/warn?reason=feature`);
+		} else {
+			window.location.href = localizeHref(
+				`/login?r=${no_reroute ? "/" : window.location.pathname}&c=${code}`
+			);
 		}
-		window.location.href = localizeHref(`/account?r=${window.location.pathname}&c=${code}`);
 	}, timeoutSeconds * 1000);
 }
 export function createFile(filename: string, content: string): boolean {
@@ -30,10 +43,24 @@ export function getFlagEmoji(countryCode: String): string {
 	let codePoints = countryCode
 		.toUpperCase()
 		.split("")
-		.map(char => 127397 + char.charCodeAt());
+		.map(char => 127397 + char.charCodeAt(0));
 	return String.fromCodePoint(...codePoints);
 }
 
 export function getAuthToken() {
-	return Cookies.get("auth-token") ?? localStorage.getItem("auth-token");
+	return Cookies.get("auth-token");
+}
+
+export function setAuthToken(token: string) {
+	const tokenExpirationMin = 10;
+	const expires = new Date(new Date().getTime() + tokenExpirationMin * 60000);
+
+	console.log(expires);
+
+	Cookies.set("auth-token", token, {
+		secure: !dev,
+		expires: expires,
+		sameSite: "Strict",
+		path: "/"
+	});
 }

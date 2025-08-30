@@ -1,327 +1,202 @@
 <script lang="ts">
-	//@ts-ignore
-	import BlogCard from "$lib/components/BlogCard.svelte";
-	import BubbleBackground from "$lib/components/BubbleBackground.svelte";
-	import Button from "$lib/components/Button.svelte";
+	import { goto } from "$app/navigation";
+	import Github from "$lib/assets/github.svg";
 	import Footer from "$lib/components/Footer.svelte";
-	import Review from "$lib/components/Review.svelte";
+	import Button from "$lib/components/ui/button/button.svelte";
+	import Label from "$lib/components/ui/label/label.svelte";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import { fade } from "svelte/transition";
+	import MaterialSymbolsCheckCircleRounded from "~icons/material-symbols/check-circle-rounded";
+	import MaterialSymbolsKeyboardArrowDownRounded from "~icons/material-symbols/keyboard-arrow-down-rounded";
 	import { m } from "../paraglide/messages.js";
 	import { localizeHref } from "../paraglide/runtime.js";
 
+	//@ts-ignore
+
 	let { data } = $props();
 
-	let blogsShouldBeShown: boolean = $state(data.shouldBeShown);
-	let blogs: Iblog[] = $state(data.blogs);
-
-	interface Ireview {
-		author: string;
-		description: string;
-		stars: number;
-	}
-
-	interface Iblog {
-		url: string;
-		date: number;
-		body: string;
-		title: string;
-	}
-
-	let reviews: Ireview[] = [
-		{
-			author: "Rage65",
-			description:
-				"I have been using (frii.site) to get a domain for my website for a while now and it's been great!",
-			stars: 5
-		},
-		{
-			author: "Luka Rantalainen",
-			description: "frii.site has served me well for my domain registraation needs.",
-			stars: 4
-		},
-		{
-			author: "Planethac",
-			description: "Good service for a good price!",
-			stars: 4
-		}
-	];
-
-	$effect(() => {
-		console.log(data);
-	});
+	let scrollY: number = $state(0);
 </script>
 
 <svelte:head>
 	<title>frii.site - Register subdomains for free!</title>
 </svelte:head>
 
-<BubbleBackground>
-	<div class="head">
-		<h1 class="title" style="font-size: 10em">frii.site</h1>
-		<p class="tagline">{m.index_tagline()}</p>
-		<div class="buttons">
-			<Button on:click={() => (window.location.href = "/account")} args="padding fill margin"
-				><p class="button-text">{m.index_register_account()}</p></Button>
-			<Button
-				on:click={() => (window.location.href = "/dashboard")}
-				args="padding fill margin secondary"
-				><p class="button-text">{m.index_goto_dashboard()}</p></Button>
+<svelte:window bind:scrollY={scrollY} />
+
+<div class="content pb-44">
+	<div class="introduction flex h-screen w-screen items-center p-10">
+		<div class="description w-3/5">
+			<h1 class="ml-8 w-fit text-9xl font-bold">frii.site</h1>
 		</div>
-	</div>
-	<div class="introduction-wrapper">
-		<div class="center">
-			<h1 style="font-size: 5em; margin-bottom: 0px;">
-				<strong>{m.index_aboutus()}</strong>
-			</h1>
-			<hr style="width: 50%;opacity: 0.1; height: 4px;" />
-			<p class="description" style="margin-top: 10px;">
-				{@html m.index_aboutus_description()}
+		<div class="right-side mr-8 h-fit w-2/5 items-center">
+			<p class="about-us text-3xl leading-10 font-semibold">
+				{m.home_description()}
 			</p>
-		</div>
-		<div class="left">
-			<h2>
-				<span class="material-symbols-outlined">lock_open_right</span>{m.index_tp_freedom()}
-			</h2>
-			<p>{m.index_tp_freedom_desc()}</p>
-		</div>
-		<div class="right">
-			<h2><span class="material-symbols-outlined">lock</span>{m.index_tp_security()}</h2>
-			<p>{m.index_tp_security_desc()}</p>
-		</div>
-		<div class="bottom-left">
-			<h2><span class="material-symbols-outlined">support</span>{m.index_tp_support()}</h2>
-			<p>{m.index_tp_support_desc()}</p>
-		</div>
-		<div class="bottom-right">
-			<h2>
-				<span class="material-symbols-outlined">encrypted</span>{m.index_tp_privacy()}
-			</h2>
-			<p>{m.index_tp_privacy_desc()}</p>
-		</div>
-	</div>
-	<div class="reviews">
-		<h1 style="font-size: 3em;">{m.index_reviews()}</h1>
-		<div class="review-cards">
-			{#each reviews as review, index}
-				<Review
-					descrption={review.description}
-					author={review.author}
-					stars={review.stars}
-					index={index} />
-			{/each}
-		</div>
-	</div>
-	{#if blogsShouldBeShown}
-		<div class="blogs">
-			<h3 style="font-size: 3em; width: fit-content; margin-left: auto; margin-right: auto;">
-				Latest updates
-			</h3>
-			<div class="latest-releases">
-				{#each blogs as blog}
-					<BlogCard
-						title={blog.title}
-						description={blog.body}
-						date={blog.date}
-						url={blog.url} />
-				{/each}
+
+			<div class="details mt-12 mb-12 flex w-full justify-between text-3xl">
+				<div class="item flex">
+					<MaterialSymbolsCheckCircleRounded class=" text-blue-600" />
+					<Label class="text-lg">{m.home_talking_point_1()}</Label>
+				</div>
+				<div class="item flex">
+					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<Label class="text-lg">{m.home_talking_point_2()}</Label>
+				</div>
+				<div class="item flex">
+					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<Label class="text-lg">{m.home_talking_point_3()}</Label>
+				</div>
+			</div>
+			<div class="actions mt-auto mb-0 flex justify-between">
+				<Button onclick={_ => goto(localizeHref("/login?register=true"))} class="w-[49%]"
+					>{m.home_signup_action()}</Button>
+				<Button
+					variant={"secondary"}
+					onclick={_ => goto(localizeHref("/dashboard"))}
+					class="w-[49%]">{m.index_goto_dashboard()}</Button>
 			</div>
 		</div>
-	{/if}
-	<div class="bottom-hooker">
-		<h1>{m.index_bottom_hook()}</h1>
-		<p>{m.index_bottom_hook_desc()}</p>
-		<div class="button-hook">
-			<Button
-				on:click={() => (window.location.href = localizeHref("/account"))}
-				args="padding fill margin"
-				><p class="button-text">{m.index_register_account()}</p></Button>
+	</div>
+
+	<div class="selling-points mt-64">
+		<div class="free flex">
+			<div class="text ml-32 w-3/5">
+				<h2 class="w-fit text-5xl font-semibold">{m.home_selling_point_always_free()}</h2>
+				<p class="mt-4 text-xl">{m.home_selling_point_always_free_description()}</p>
+				<Button class="mt-6" href={localizeHref("/terms/domains")} variant={"outline"}
+					>Read our domain guidelines</Button>
+			</div>
+			<div class="visual w-2/5"></div>
 		</div>
 	</div>
-	<Footer />
-</BubbleBackground>
+
+	<div class="selling-points mt-64">
+		<div class="services flex">
+			<div class="visual ml-32 w-2/5"></div>
+			<div class="text mr-32 w-3/5">
+				<h2 class="w-fit text-5xl font-semibold">{m.home_selling_point_support()}</h2>
+				<p class="mt-4 text-xl">{m.home_selling_point_support_description()}</p>
+
+				<Separator class="mt-4 mb-4" />
+				<p>{m.home_related()}</p>
+				<Button href="https://guides.frii.site/guides/vercel.html" variant={"ghost"}
+					>{m.home_setup_vercel_link()}</Button>
+			</div>
+		</div>
+	</div>
+
+	<div class="selling-points mt-64">
+		<div class="management flex">
+			<div class="text ml-32 w-3/5">
+				<h2 class="w-fit text-5xl font-semibold">{m.home_selling_point_independent()}</h2>
+				<p class="mt-4 text-xl">
+					{m.home_selling_point_independent_description()}
+				</p>
+			</div>
+			<div class="visual mr-32 w-2/5"></div>
+		</div>
+	</div>
+
+	<div class="selling-points mt-64">
+		<div class="support flex">
+			<div class="visual ml-32 w-2/5">
+				<img class="w-3/5" alt="github logo" src={Github} />
+			</div>
+			<div class="text mr-32 w-3/5">
+				<h2 class="w-fit text-5xl font-semibold">{m.home_selling_point_open_source()}</h2>
+				<p class="mt-4 text-xl">{m.home_selling_point_open_source_description()}</p>
+
+				<Separator class="mt-4 mb-4" />
+				<p>{m.home_see_more()}</p>
+				<Button
+					href="https://guides.frii.site/translation/getting_started.html"
+					variant={"secondary"}>{m.home_translate_contribute()}</Button>
+				<Button href="https://github.com/ctih1/frii.site-frontend" variant={"ghost"}
+					>{m.home_frontend_link()}</Button>
+				<Button href="https://github.com/ctih1/frii.site-backend" variant={"ghost"}
+					>{m.home_backend_link()}</Button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<Footer />
+
+{#if scrollY < 50}
+	<div transition:fade={{ duration: 100 }}>
+		<MaterialSymbolsKeyboardArrowDownRounded class="absolute top-11/12 left-1/2 text-xl" />
+	</div>
+{/if}
 
 <style>
-	.head {
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		justify-content: center;
-		height: 100vh;
+	.content {
+		background-color: rgb(17, 17, 31);
+		background:
+			radial-gradient(
+				circle at -25% -25%,
+				lch(61.66% 59.87 273.43 / 0.712) 0%,
+				lch(2.43% 2.83 273.1) 85%
+			),
+			url("data:image/svg+xml,%3Csvg viewBox='0 0 362 362' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='10' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 	}
 
-	.title {
-		margin-bottom: 0px;
-	}
-	.tagline {
-		padding: 0px 2em 1em 2em;
-		margin: 0px;
-		font-size: 25px;
-	}
-
-	.buttons {
-		display: flex;
-		justify-content: space-evenly;
-		width: 50%;
-		height: 3em;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.button-text {
-		font-size: 1.5em;
-	}
-
-	.introduction-wrapper {
-		display: grid;
-		min-width: 100vw;
-		min-height: 100vh;
-		grid-template-rows: repeat(3, 1fr);
-		grid-template-columns: repeat(3, 1fr);
-		margin-top: 2em;
-	}
-	.introduction-wrapper div {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 1em;
-		text-align: center;
-	}
-	.introduction-wrapper div h2 {
-		display: flex;
-		align-items: center;
-		font-size: 3em;
-		margin-bottom: 0px;
-	}
-	.introduction-wrapper div * {
-		-webkit-hyphens: auto;
-		-moz-hyphens: auto;
-		-ms-hyphens: auto;
-		hyphens: auto;
-		word-break: break-all;
-	}
-	.introduction-wrapper div h2 span {
-		color: var(--primary);
-		font-size: 1em;
-	}
-	.center {
-		grid-area: 2 / 2 / 3 / 3;
-		text-align: center;
-		min-width: fit-content;
-		grid-column: 1 / 4;
-		background-color: initial !important;
-	}
-	.description {
-		max-width: 80ch;
-	}
-	.left {
-		grid-area: 1 / 1 / 2 / 2;
-	}
-	.bottom-left {
-		grid-area: 3 / 1 / 4 / 2;
-	}
-	.bottom-right {
-		grid-area: 3 / 3 / 4 / 4;
-	}
-	.right {
-		grid-area: 1 / 3 / 2 / 4;
-	}
-
-	.blogs {
-		margin-top: 25vh;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-	}
-
-	.latest-releases {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: repeat(1, 1fr);
-		margin-bottom: 25vh;
-		gap: 20px;
-		padding: 2em;
-	}
-
-	.reviews {
-		margin-top: 25vh;
-		height: fit-content;
-		margin-bottom: 50vh;
-	}
-
-	.reviews h1 {
-		text-align: center;
-	}
-
-	.review-cards {
-		display: flex;
-		justify-content: space-evenly;
-		width: 100vw;
-	}
-
-	.bottom-hooker {
-		width: 100vw;
-		text-align: center;
-		margin-bottom: 75vh;
-	}
-	.bottom-hooker * {
-		margin: 10px;
-	}
-	.bottom-hooker h1 {
-		font-size: 5em;
-	}
-	.bottom-hooker p {
-		font-size: 1.75em;
-	}
-
-	.button-hook {
-		width: 75%;
-		max-width: 500px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	@media (orientation: portrait) {
-		.introduction-wrapper {
-			display: flex !important;
-			flex-direction: column;
+	@media (max-width: 900px), (orientation: portrait) {
+		.right-side {
+			margin-right: 0px;
 		}
-		.introduction-wrapper div {
-			margin: 2em;
+		.about-us {
+			margin-top: 2rem;
+			width: 100%;
+			max-width: 38rem;
+			text-align: center;
+			margin-right: auto;
+			margin-left: auto;
 		}
-		.buttons {
-			width: 90vw;
-		}
-		.latest-releases {
-			display: flex;
-			flex-direction: column;
-		}
-		.review-cards {
+		.introduction {
+			padding: 0px;
 			margin-left: auto;
 			margin-right: auto;
-			padding: 0px;
+			width: 90%;
+			padding-top: 30vh;
 			flex-direction: column;
-			justify-content: center;
-			width: 100vw;
 		}
-		.bottom-hooker h1 {
-			font-size: 3em;
+		.introduction div {
+			width: 100%;
 		}
-		.bottom-hooker p {
-			font-size: 1.5em;
+		.description h1 {
+			margin-left: auto;
+			margin-right: auto;
 		}
-		.title {
-			font-size: 6em !important;
+
+		.visual {
+			display: none;
+		}
+
+		.text {
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		h2 {
+			font-size: 2.75em;
 		}
 	}
 
-	@keyframes textChange {
-		from {
-			transform: translateX(0px);
-			opcaity: 1;
+	@media (max-width: 600px) {
+		.description h1 {
+			font-size: 6em;
 		}
-		to {
-			transform: translateX(100px);
-			opacity: 0;
+		.about-us {
+			font-size: 1.5em;
+			line-height: normal;
+		}
+
+		.details {
+			margin-left: 12px;
+			width: fit-content;
+			flex-direction: column;
 		}
 	}
 </style>

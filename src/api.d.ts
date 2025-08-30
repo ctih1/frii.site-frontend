@@ -30,7 +30,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Is Available */
+        /**
+         * Is Available
+         * @description Check whether a domain is available. No authentication required
+         */
         get: operations["is_available_api_domain_available_get"];
         put?: never;
         post?: never;
@@ -40,7 +43,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/domains/get": {
+    "/api/domains": {
         parameters: {
             query?: never;
             header?: never;
@@ -48,7 +51,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get Domains */
-        get: operations["get_domains_api_domains_get_get"];
+        get: operations["get_domains_api_domains_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -261,6 +264,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh */
+        post: operations["refresh_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/sign-up": {
         parameters: {
             query?: never;
@@ -448,6 +468,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/get-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Api Keys */
+        get: operations["get_api_keys_api_get_keys_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/get-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Key */
+        get: operations["get_key_api_get_key_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/delete-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Api Key */
+        delete: operations["delete_api_key_api_delete_key_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/mfa/create": {
         parameters: {
             query?: never;
@@ -601,6 +672,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/delete/record": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Dns Record */
+        delete: operations["delete_dns_record_admin_user_delete_record_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/get/id": {
         parameters: {
             query?: never;
@@ -610,6 +698,23 @@ export interface paths {
         };
         /** Find User By Id */
         get: operations["find_user_by_id_admin_user_get_id_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/get/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Username */
+        get: operations["find_user_by_username_admin_user_get_username_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -691,7 +796,7 @@ export interface components {
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: components["schemas"]["SessionType"][];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -707,9 +812,38 @@ export interface components {
             /** Banned */
             banned: boolean;
             /** Ban Reasons */
-            ban_reasons: string[];
+            ban_reasons: string[] | string[][];
             /** Last Login */
             last_login: number;
+            /** Api Key Amount */
+            api_key_amount: number;
+            /** Accessed From */
+            accessed_from: string[];
+        };
+        /** ApiCreationBody */
+        ApiCreationBody: {
+            /** Permissions */
+            permissions: ("register" | "modify" | "delete" | "list")[];
+            /** Domains */
+            domains: string[];
+            /** Comment */
+            comment: string;
+        };
+        /** ApiDeletion */
+        ApiDeletion: {
+            /** Hash */
+            hash: string;
+        };
+        /** ApiType */
+        ApiType: {
+            /** String */
+            string: string;
+            /** Perms */
+            perms: ("register" | "modify" | "delete" | "list")[];
+            /** Domains */
+            domains: string[];
+            /** Comment */
+            comment: string;
         };
         /** BanUser */
         BanUser: {
@@ -812,23 +946,41 @@ export interface components {
             /** App Link */
             app_link: string;
         };
+        /** NewSessionType */
+        NewSessionType: {
+            /** Owner */
+            owner: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "refresh" | "access";
+            /** Created */
+            created: number;
+            /** Expires */
+            expires: number;
+            /** Agent */
+            agent: string;
+            /** Ip */
+            ip: string;
+        };
+        /** OldSessionType */
+        OldSessionType: {
+            /** User-Agent */
+            "user-agent": string;
+            /** Ip */
+            ip: string;
+            /** Expires */
+            expires: number;
+            /** Id */
+            id: string;
+        };
         /** PasswordReset */
         PasswordReset: {
             /** Code */
             code: string;
             /** Hashed Password */
             hashed_password: string;
-        };
-        /** SessionType */
-        SessionType: {
-            /** User-Agent */
-            "user-agent": string;
-            /** Ip */
-            ip: string;
-            /** Expire */
-            expire: number;
-            /** Owner-Hash */
-            "owner-hash": string;
         };
         /** SignUp */
         SignUp: {
@@ -859,7 +1011,7 @@ export interface components {
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: components["schemas"]["SessionType"][];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -971,6 +1123,7 @@ export interface operations {
         parameters: {
             query: {
                 domain: string;
+                type?: string;
             };
             header?: never;
             path?: never;
@@ -989,6 +1142,13 @@ export interface operations {
             };
             /** @description Domain does not exist, or user does not own it. */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Domain type couldn't be fetched, specify the type using the query parameter `type` */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1132,7 +1292,7 @@ export interface operations {
             };
         };
     };
-    get_domains_api_domains_get_get: {
+    get_domains_api_domains_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1687,6 +1847,33 @@ export interface operations {
             };
         };
     };
+    refresh_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Refreshed tokens succesfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid key */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     sign_up_sign_up_post: {
         parameters: {
             query?: never;
@@ -1854,7 +2041,9 @@ export interface operations {
     send_account_deletion_deletion_send_delete: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-mfa-code": string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1867,6 +2056,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Invalid session */
@@ -2085,16 +2283,14 @@ export interface operations {
     };
     create_api_token_api_create_key_post: {
         parameters: {
-            query: {
-                comment: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": string[];
+                "application/json": components["schemas"]["ApiCreationBody"];
             };
         };
         responses: {
@@ -2109,6 +2305,120 @@ export interface operations {
             };
             /** @description User does not own requested domains */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_api_keys_api_get_keys_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: components["schemas"]["ApiType"];
+                    };
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_key_api_get_key_get: {
+        parameters: {
+            query: {
+                hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_api_key_api_delete_key_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApiDeletion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Key does not exist */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2329,6 +2639,7 @@ export interface operations {
             query: {
                 domain: string;
                 userid: string;
+                reason: string;
             };
             header?: never;
             path?: never;
@@ -2562,10 +2873,115 @@ export interface operations {
             };
         };
     };
+    delete_dns_record_admin_user_delete_record_delete: {
+        parameters: {
+            query: {
+                record: string;
+                type: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Failed to delete record */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     find_user_by_id_admin_user_get_id_get: {
         parameters: {
             query: {
                 id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_username_admin_user_get_username_get: {
+        parameters: {
+            query: {
+                username: string;
             };
             header?: never;
             path?: never;

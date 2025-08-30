@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { getAuthToken } from "$lib";
 	import type { Domain } from "$lib/components/DomainTable.svelte";
-	import DomainTable from "$lib/components/DomainTable.svelte";
-	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/Loader.svelte";
-	import Modal from "$lib/components/Modal.svelte";
-	import Registrar from "$lib/components/Registrar.svelte";
+	import Button from "$lib/components/ui/button/button.svelte";
+	import Input from "$lib/components/ui/input/input.svelte";
+	import * as Select from "$lib/components/ui/select/index.js";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
 	import { onMount } from "svelte";
+	import { toast } from "svelte-sonner";
 	import { redirectToLogin } from "../../helperFuncs";
 	import { m } from "../../paraglide/messages";
 	import {
@@ -18,104 +20,126 @@
 		ServerContactor
 	} from "../../serverContactor";
 
-	let domains: Domain[] = $state([]);
+	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
+	import Cookies from "js-cookie";
+	import { fade } from "svelte/transition";
+
+	interface DashboardDomain extends Domain {
+		deletionWarned: boolean;
+		isLoading: boolean;
+		buttonDisabled: boolean;
+		deletionLoading: boolean;
+	}
+
+	let { data } = $props();
+
+	let domains: DashboardDomain[] = $state([]);
 	let domainsLoaded: boolean = $state(false);
 
-	let userConfirmedDeletion: boolean = false;
-	let userDeletionDomain: string = "";
+	let registerNewDomainLoading: boolean = $state(false);
+	let newDomain: string = $state("");
+	let newDomainType: string = $state("A");
 
-	let domainTable: DomainTable;
-	let modal: Modal;
+	let registerErrorTitle: string = $state("");
+	let registerErrorDescription: string = $state("");
+
+	let registerNoteTitle: string = $state("");
+	let registerNoteDescription: string = $state("");
+
+	let domainErrorTitle: string = $state("");
+	let domainErrorDescription: string = $state("");
+
+	let alertUpdate: number = $state(0);
+
 	let serverContactor: ServerContactor;
 	let loader: Loader;
 
-	function modalClose() {
-		modal.close();
-	}
+	const SupportedTypes = ["A", "CNAME", "TXT", "NS"];
 
-	let modalTime: number = 15;
-
-	function deleteDomain(domain: string) {
-		modal.close();
-		loader.show(undefined, m.dashboard_delete_loading_desc({ domain: domain }));
+	function deleteDomain(domain: string, button: DashboardDomain) {
 		serverContactor
 			.deleteDomain(domain)
 			.catch(error => {
-				loader.hide();
-
+				button.deletionLoading = false;
 				if (error instanceof AuthError) redirectToLogin(460);
 
-				modal.open(m.dashboard_delete_error(), m.unhandled_error());
+				domainErrorTitle = m.dashboard_delete_error();
+				domainErrorDescription = m.unhandled_error();
+				alertUpdate++;
 
 				throw new Error("Failed to delete domain");
 			})
 			.then(() => {
-				loader.hide();
 				window.gtag?.("event", "domain_delete");
-				modal.open(
-					m.dashboard_delete_success({ domain: domain }),
-					m.dashboard_delete_success_description({ domain: domain })
-				);
+				button.deletionLoading = false;
+				toast.success(m.dashboard_delete_success({ domain: domain }), {
+					description: m.dashboard_delete_success_description({ domain: domain })
+				});
 				removeDomain(domain);
 			});
 	}
 
 	function registerDomain(domain: string, type: string) {
-		loader.show(m.loading(), m.dashboard_register_load_desc({ domain: domain }));
 		serverContactor
 			.registerDomain(domain, type)
 			.catch(error => {
-				loader.hide();
-				const errorMessage = m.dashboard_register_fail({ domain: domain });
+				registerNewDomainLoading = false;
+				registerErrorTitle = m.dashboard_register_fail({ domain: domain });
 
 				if (error instanceof AuthError) redirectToLogin(460);
-				if (error instanceof DNSError) modal.open(errorMessage, m.dashboard_invalid());
-				if (error instanceof PermissionError)
-					modal.open(errorMessage, m.dashboard_domain_permissions());
-				if (error instanceof LimitError)
-					modal.open(errorMessage, m.dashboard_domain_limit());
-				if (error instanceof ConflictError)
-					modal.open(errorMessage, m.dashboard_domain_use());
-
-				modal.open(errorMessage, m.unhandled_error());
+				else if (error instanceof DNSError)
+					registerErrorDescription = m.dashboard_invalid();
+				else if (error instanceof PermissionError)
+					registerErrorDescription = m.dashboard_domain_permissions();
+				else if (error instanceof LimitError)
+					registerErrorDescription = m.dashboard_domain_limit();
+				else if (error instanceof ConflictError)
+					registerErrorDescription = m.dashboard_domain_use();
+				else {
+					registerErrorDescription = m.unhandled_error();
+				}
+				alertUpdate++;
 				throw new Error("Failed to register dommain!");
 			})
 			.then(value => {
-				loader.hide();
+				registerNewDomainLoading = false;
 				window.gtag?.("event", "domain_register");
-				modal.open(
-					m.dashboard_register_success({ domain: domain }),
-					m.dashboard_modify_success_description()
-				);
-				domains.push({ type, domain, value });
+				toast.success(m.dashboard_register_success({ domain: domain }));
+				domains.push({
+					type,
+					domain,
+					value,
+					isLoading: false,
+					deletionWarned: false,
+					buttonDisabled: false,
+					deletionLoading: false
+				});
+				Cookies.set("domain-amount", domains.length.toString());
 			});
 	}
 
-	function modifyDomain(name: string, value: string, type: string) {
-		loader.show(m.loading(), m.dashboard_modify_load_desc({ domain: name }));
+	function modifyDomain(domain: DashboardDomain) {
 		serverContactor
-			.modifyDomain(name, value, type)
+			.modifyDomain(domain.domain, domain.value, domain.type)
 			.catch(error => {
-				loader.hide();
-				const errorMessage = m.dashboard_modify_fail({ domain: name });
+				domain.isLoading = false;
+				domainErrorTitle = m.dashboard_modify_fail({ domain: domain.domain });
 
 				if (error instanceof AuthError) redirectToLogin(460);
-				if (error instanceof DNSError)
-					modal.open(errorMessage, m.dashboard_invalid_value());
-				if (error instanceof PermissionError)
-					modal.open(errorMessage, m.dashboard_domain_permissions());
-
-				modal.open(errorMessage, m.unhandled_error());
+				else if (error instanceof DNSError)
+					domainErrorDescription = m.dashboard_invalid_value();
+				else if (error instanceof PermissionError)
+					domainErrorDescription = m.dashboard_domain_permissions();
+				else {
+					domainErrorDescription = m.unhandled_error();
+				}
+				alertUpdate++;
 				throw Error("Failed to modify domain."); // stops execution to the .then block
 			})
 			.then(() => {
-				loader.hide();
-				console.log(name);
 				window.gtag?.("event", "domain_modify");
-				modal.open(
-					m.dashboard_modify_success({ domain: name + ".frii.site" }),
-					m.dashboard_modify_success_description()
-				);
+				domain.isLoading = false;
+				toast.success(m.dashboard_modify_success({ domain: domain.domain + ".frii.site" }));
 			});
 	}
 
@@ -129,9 +153,10 @@
 	}
 
 	onMount(() => {
-		modalTime = localStorage.getItem("del-count") ? 3 : 10;
-
-		serverContactor = new ServerContactor(getAuthToken(), localStorage.getItem("server_url"));
+		serverContactor = new ServerContactor(
+			getAuthToken() ?? "",
+			localStorage.getItem("server_url")
+		);
 		serverContactor
 			.getDomains()
 			.catch(error => {
@@ -139,19 +164,41 @@
 					redirectToLogin(460);
 				} else {
 					console.error(error);
-					modal.open(m.dashboard_domain_load_fail(), m.generic_fail_description());
+					domainErrorTitle = m.dashboard_domain_load_fail();
+					domainErrorDescription = m.generic_fail_description();
 					throw new Error("Failed to load domains");
 				}
 			})
 			.then(data => {
 				domainsLoaded = true;
-
 				// @ts-expect-error
 				const userDomains = Object.entries(data);
+				Cookies.set("domain-amount", userDomains.length.toString());
+
 				for (let [key, value] of userDomains) {
-					domains.push({ type: value.type, domain: key, value: value.ip });
+					domains.push({
+						type: value.type,
+						domain: key,
+						value: value.ip,
+						isLoading: false,
+						deletionWarned: false,
+						buttonDisabled: false,
+						deletionLoading: false
+					});
 				}
 			});
+	});
+
+	$effect(() => {
+		if (newDomain.includes(".frii.site")) {
+			registerNoteTitle = m.dashboard_suffix_warn_title();
+			registerNoteDescription = m.dashboard_suffix_warn_desc();
+			alertUpdate++;
+		} else if (registerNoteTitle || registerNoteDescription) {
+			registerNoteTitle = "";
+			registerNoteDescription = "";
+			alertUpdate++;
+		}
 	});
 </script>
 
@@ -167,38 +214,161 @@
 
 <Loader bind:this={loader} />
 
-<Holder>
-	<h1>{m.dashboard_your_domains()}</h1>
+<div class="domain-holder bg-card max-w-8xl mt-16 mr-auto ml-auto w-11/12 rounded-2xl p-6">
+	<h1 class="text-3xl font-semibold">{m.dashboard_your_domains()}</h1>
 	<p>{m.dashboard_domain_explanation()}</p>
-	<DomainTable
-		on:delete={event => {
-			userDeletionDomain = event.detail.domain;
-			modal.open(
-				m.dashboard_domain_deletion_alert({ domain: event.detail.domain }),
-				m.dashboard_domain_deletion_description(),
-				modalTime,
-				[m.cancel_modal(), m.continue_modal()]
-			);
-		}}
-		on:save={event => modifyDomain(event.detail.name, event.detail.value, event.detail.type)}
-		bind:this={domainTable}
-		domains={domains}
-		loaded={domainsLoaded} />
-</Holder>
-<Holder>
-	<h2>{m.dashboard_register_new_domain()}</h2>
-	<p>{@html m.dashboard_register_description()}</p>
-	<Registrar on:click={event => registerDomain(event.detail.domain, event.detail.type)} />
-</Holder>
 
-<Modal
-	overrideDefault={true}
-	on:primary={() => {
-		modalClose();
-		if (userDeletionDomain) userDeletionDomain = "";
-	}}
-	on:secondary={() => deleteDomain(userDeletionDomain)}
-	bind:this={modal}
-	options={[m.modal_ok()]}
-	description={""}
-	title={""}></Modal>
+	<InlineAlert
+		variant={"error"}
+		title={domainErrorTitle}
+		description={domainErrorDescription}
+		className="mb-6 mt-6"
+		trigger={alertUpdate} />
+
+	<div class="domains space-y-2">
+		{#each domainsLoaded ? domains : new Array(data.domainAmount) as domain}
+			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-x-1">
+				<div class="basic-controls flex w-2/5 space-x-1">
+					{#if domainsLoaded}
+						<Select.Root type="single" name="domain" bind:value={domain.type}>
+							<Select.Trigger class="w-1/8 min-w-24">{domain.type}</Select.Trigger>
+							<Select.Content>
+								{#each SupportedTypes as type}
+									<Select.Item value={type} label={type}>
+										{type}
+									</Select.Item>
+								{/each}
+							</Select.Content>
+						</Select.Root>
+					{:else}
+						<Skeleton class="w-1/8 min-w-24" />
+					{/if}
+					<div class="domain-name flex w-full">
+						{#if domainsLoaded}
+							<Input class="rounded-r-none" value={domain.domain} disabled={true} />
+							<Input
+								class="w-1/4 min-w-20 rounded-l-none"
+								value=".frii.site"
+								disabled={true} />
+						{:else}
+							<Skeleton class="w-full" />
+						{/if}
+					</div>
+				</div>
+				<div class="value w-2/5">
+					{#if domainsLoaded}
+						<Input bind:value={domain.value} />
+					{:else}
+						<Skeleton class="h-full w-full" />
+					{/if}
+				</div>
+				<div class="actions flex w-1/4 space-x-0.5">
+					{#if domainsLoaded}
+						<Button
+							loading={domain.isLoading}
+							onclick={_ => {
+								domain.isLoading = true;
+								modifyDomain(domain);
+							}}
+							class="w-1/2 max-w-40">{m.dashboard_save_modification()}</Button>
+						<Separator orientation={"vertical"} />
+						<Button
+							loading={domain.deletionLoading}
+							disabled={domain.buttonDisabled}
+							onclick={_ => {
+								if (!domain.deletionWarned) {
+									domain.deletionWarned = true;
+									domain.buttonDisabled = true;
+									setTimeout(() => {
+										domain.buttonDisabled = false;
+									}, 700);
+								} else {
+									domain.deletionLoading = true;
+									deleteDomain(domain.domain, domain);
+								}
+							}}
+							class="w-1/2 max-w-40"
+							variant={"destructive"}
+							>{#if domain.deletionWarned}
+								{m.dashboard_delete_domain_confirm()}{:else}{m.dashboard_delete_domain_button()}
+							{/if}</Button>
+					{:else}
+						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
+						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</div>
+</div>
+
+<div class="registrar bg-card max-w-8xl mt-8 mr-auto mb-8 ml-auto w-11/12 rounded-2xl p-6">
+	<InlineAlert
+		variant={"error"}
+		title={registerErrorTitle}
+		description={registerErrorDescription}
+		className="mb-6"
+		trigger={alertUpdate} />
+	<InlineAlert
+		variant={"note"}
+		title={registerNoteTitle}
+		description={registerNoteDescription}
+		className="mb-6"
+		trigger={alertUpdate} />
+	<div class="content flex space-y-2 space-x-2">
+		<Select.Root bind:value={newDomainType} type="single" name="domain">
+			<Select.Trigger class="w-1/8 min-w-24">{newDomainType}</Select.Trigger>
+			<Select.Content>
+				{#each SupportedTypes as type}
+					<Select.Item value={type} label={type}>
+						{type}
+					</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
+		<div class="domain-bar flex w-full">
+			<Input bind:value={newDomain} class="rounded-r-none" placeholder="domain" />
+			<Input class="w-1/4 min-w-20 rounded-l-none" disabled={true} value=".frii.site" />
+		</div>
+		<Button
+			loading={registerNewDomainLoading}
+			onclick={_ => {
+				registerNewDomainLoading = true;
+				registerDomain(newDomain, newDomainType);
+			}}
+			disabled={!newDomain}
+			class="w-24">{m.dashboard_register_domain_button()}</Button>
+	</div>
+</div>
+
+<style>
+	@media (orientation: portrait), (max-width: 700px) {
+		.basic-controls {
+			width: 100%;
+		}
+		.domain {
+			flex-direction: column;
+			height: 8rem;
+		}
+		.domain div {
+			height: 2.5em;
+		}
+		.value {
+			width: 100%;
+		}
+		.actions {
+			width: 100%;
+			justify-content: space-between;
+		}
+
+		.content {
+			flex-direction: column;
+		}
+		:global(.registrar .content button) {
+			width: 100%;
+		}
+		.domain-holder {
+			padding: 0.5em;
+		}
+	}
+</style>

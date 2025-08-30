@@ -1,671 +1,435 @@
 <script lang="ts">
-	import { browser, dev } from "$app/environment";
-	import { onMount } from "svelte";
-
-	import Blur from "$lib/components/Blur.svelte";
-	import Button from "$lib/components/Button.svelte";
-	import Holder from "$lib/components/Holder.svelte";
-	import Loader from "$lib/components/Loader.svelte";
-	import Modal from "$lib/components/Modal.svelte";
-	import Placeholder from "$lib/components/Placeholder.svelte";
-	import Section from "$lib/components/Section.svelte";
-	import Switch from "$lib/components/Switch.svelte";
-
-	import QR from "@svelte-put/qr/svg/QR.svelte";
-
+	import { dev } from "$app/environment";
 	import { createFile, getAuthToken, redirectToLogin } from "$lib";
+	import * as Dialog from "$lib/components/ui/dialog/index.js";
+	import * as InputOTP from "$lib/components/ui/input-otp/index.js";
+	import MaterialSymbolsSmartphone from "~icons/material-symbols/smartphone";
 	import {
 		AuthError,
 		CodeError,
 		ConflictError,
-		ServerContactor,
-		UserError
+		MFAError,
+		ServerContactor
 	} from "../../../serverContactor";
+	import type { Session } from "./+page";
 
-	import copy from "clipboard-copy";
+	import { Button } from "$lib/components/ui/button";
+	import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
+	import { Input } from "$lib/components/ui/input";
+	import { Label } from "$lib/components/ui/label";
+	import QR from "@svelte-put/qr/img/QR.svelte";
+	import { REGEXP_ONLY_DIGITS } from "bits-ui";
 	import Cookies from "js-cookie";
+	import { onMount } from "svelte";
+	import { toast } from "svelte-sonner";
+	import { fade } from "svelte/transition";
 	import { UAParser } from "ua-parser-js";
+	import MaterialSymbolsDesktopMac from "~icons/material-symbols/desktop-mac";
 	import { m } from "../../../paraglide/messages";
-
-	interface Session {
-		hash: string;
-		user_agent: string;
-		ip: string;
-		expire: number;
-	}
-
-	interface invite {
-		code: string;
-		used: boolean;
-		used_by: string | null;
-		shown: boolean;
-	}
-
-	let loader: Loader;
 	let serverContactor: ServerContactor;
-	let modal: Modal;
-	let noConfirm: boolean = true;
-	let sessions: Session[] = [];
-	let blurElement: Blur;
-	let emailE: string;
-	let usernameE: string;
-	let loaded: boolean = false;
-	let verified: boolean = false;
-	let maxDomains = 0;
-	let wildcards = false;
-	let admin = false;
-	let vuln = false;
-	let monitoring = false;
-	let invites: invite[] = [];
 
-	let mfaWaitingForVerification: boolean = false;
-	let mfaIsVerified: boolean = false;
-	let mfaUrl: string = "";
-	let mfaVerificationCode: string = "";
-	let backupCodes: string[] = [];
-	let isDeletingMfa: boolean = false;
-	let isUsingBackupCodes: boolean = false;
+	let { data } = $props();
+	let sessions: Session[] = $state(data.sessions);
 
-	let backupCode: string = "";
-	let mfaCode: string = "";
+	let mfaIsVerified: boolean = $state(false);
+	let backupCodes: string[] = $state([]);
+	let mfaUrl: string = $state("");
+	let mfaCode: string = $state("");
+	let mfaInvalid: boolean = $state(false);
+	let usingBackupCode: boolean = $state(false);
+	let deleteAccountChecked: boolean = $state(false);
 
-	let allowBetaTesting: boolean = false;
-	if (browser) {
-		if (!localStorage.getItem("logged-in")) {
-			redirectToLogin(-1);
-		}
-		allowBetaTesting = Boolean(localStorage.getItem("allow-testing")) ?? false;
-	}
+	let mfaButtonLoading: boolean = $state(false);
+
+	let dialogOpen: boolean = $state(false);
+	let deleteOpen: boolean = $state(false);
+
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken(), localStorage.getItem("server_url"));
-
-		serverContactor
-			.getAccountSettings()
-			.catch(error => {
-				if (error instanceof AuthError) {
-					redirectToLogin(460);
-				}
-			})
-			.then(data => {
-				if (!data) {
-					throw Error("Data is not defined");
-				}
-				emailE = m.account_email({ email: data["email"] });
-				usernameE = m.account_username({ username: data["username"] });
-				loaded = true;
-				verified = data["verified"];
-				//@ts-ignore
-				maxDomains = data["permissions"]["max-domains"] ?? 4;
-				wildcards = data["permissions"]["wildcards"] ?? false;
-				admin = data["permissions"]["admin"] ?? false;
-				vuln = data["permissions"]["reports"] ?? false;
-				monitoring = data["permissions"]["userdetails"] ?? false;
-				mfaIsVerified = data["mfa_enabled"];
-
-				let inviteObject = data["invites"];
-				let sessionObject = data["sessions"];
-
-				for (let i = 0; i < Object.entries(inviteObject).length; i++) {
-					let name: string | undefined = Object.keys(inviteObject)[i];
-					if (name === undefined) {
-						continue;
-					}
-					invites.push({
-						code: name,
-						//@ts-ignore
-						used: inviteObject[name]["used"],
-						//@ts-ignore
-						used_by: inviteObject[name]["used_by"],
-						shown: false
-					});
-				}
-
-				invites = [...invites];
-
-				sessionObject.forEach(element => {
-					sessions.push({
-						expire: element["expire"],
-						//@ts-ignore
-						hash: element["_id"],
-						ip: element["ip"],
-						user_agent: element["user-agent"]
-					});
-				});
-
-				sessions = [...sessions];
-			});
+		serverContactor = new ServerContactor(getAuthToken() ?? null);
 	});
 
 	function mfaSetup() {
-		loader.show(m.mfa_loading());
+		// get backup codes & setup authenticator
 		serverContactor
 			.createMfaCode()
 			.catch(error => {
-				loader.hide();
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
 				}
 				if (error instanceof ConflictError) {
-					modal.open("", m.account_mfa_setup_exists());
+					toast.error(m.account_mfa_setup_exists());
 				}
 				throw new Error("Failed to begin 2fa setup");
 			})
 			.then(data => {
-				mfaWaitingForVerification = true;
 				mfaUrl = data?.app_link!;
 				backupCodes = data?.backup_codes!;
-				loader.hide();
 			});
 	}
 
 	function verifyMfa(code: string) {
-		loader.show(m.mfa_verification_loader());
+		// verify that the user's authenticator app actually worked and scanned the qr properly
 		serverContactor
 			.verifyMfaCode(code)
 			.catch(error => {
-				loader.hide();
+				mfaButtonLoading = false;
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
 				}
 				if (error instanceof CodeError) {
-					modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
-					throw new Error("Code already used");
+					// modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
+					throw new Error("Invalid code");
 				}
 				if (error instanceof ConflictError) {
 					console.error(
 						"User has already verified code. user should have not gotten to this point again"
 					);
 				}
-				modal.open(m.unhandled_error(), m.generic_fail_description());
+				// modal.open(m.unhandled_error(), m.generic_fail_description());
 				throw new Error("Failed to verify code");
 			})
 			.then(_ => {
-				loader.hide();
+				mfaButtonLoading = false;
+				toast.success(m.mfa_success(), { duration: 9000 });
 				mfaIsVerified = true;
 			});
 	}
 
-	function removeMfa(code?: string, backupCode?: string) {
-		loader.show(m.mfa_remove_load());
+	function removeMfa(code: string) {
+		mfaInvalid = false;
 		serverContactor
-			.deleteMfaCode(
-				isUsingBackupCodes ? undefined : mfaCode,
-				isUsingBackupCodes ? backupCode : undefined
-			)
+			.deleteMfaCode(usingBackupCode ? undefined : code, usingBackupCode ? code : undefined)
 			.catch(error => {
-				loader.hide();
+				// loader.hide();
+				mfaButtonLoading = false;
+				mfaInvalid = true;
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
 				}
 				if (error instanceof CodeError) {
-					modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
+					// modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
 					throw new Error("Code already used");
 				}
-				modal.open(m.unhandled_error(), m.generic_fail_description());
+				// modal.open(m.unhandled_error(), m.generic_fail_description());
 				throw new Error("Failed to verify code");
 			})
 			.then(_ => {
-				loader.hide();
-				mfaWaitingForVerification = false;
 				mfaIsVerified = false;
-				isDeletingMfa = false;
-
-				modal.open(m.mfa_disabled_message(), "");
+				mfaButtonLoading = false;
+				dialogOpen = false;
+				toast.success(m.mfa_disabled_message());
 			});
 	}
 
-	function createInvite() {
-		loader.show("Creating invite...", "This shouldn't take long");
+	function handleDelete(mfaCode: string) {
+		// sends an account deletion email to the user
 		serverContactor
-			.createInvite()
+			.deleteAccount(mfaCode)
 			.catch(err => {
-				loader.hide();
-				if (err instanceof AuthError) {
-					redirectToLogin(460);
-				}
-				if (err instanceof ConflictError) {
-					modal.open(m.account_invite_fail(), m.account_invite_fail_usage_description());
-				} else {
-				}
-				throw new Error("Failed to create invite");
-			})
-			.then(response => {
-				loader.hide();
-				modal.open(
-					m.account_invite_success(),
-					m.account_invite_success_desc({
-						link: `https://www.frii.site/account?invite=${response["code"]}`
-					})
-				);
-				invites.push({
-					code: response["code"],
-					used: false,
-					used_by: null,
-					shown: false
-				});
-				invites = [...invites];
-			});
-	}
+				mfaButtonLoading = false;
 
-	function handleDelete() {
-		if (noConfirm) {
-			modal.open(m.account_delete_confirm(), m.acount_delete_confirm_description(), 10, [
-				m.cancel_modal(),
-				m.continue_modal()
-			]);
-			noConfirm = false;
-			return;
-		}
-		serverContactor
-			.deleteAccount()
-			.catch(err => {
 				if (err instanceof AuthError) redirectToLogin(460);
-				modal.open(m.account_deletion_fail(), m.account_deletion_fail_description());
+				else if (err instanceof MFAError) toast.error(m.mfa_wrong_code_desc());
+				else
+					toast.error(m.account_deletion_fail(), {
+						description: m.generic_fail_description()
+					});
 				throw new Error("Failed to delete account");
 			})
 			.then(_ => {
-				modal.open(m.account_check_email(), m.account_check_email_description());
+				mfaButtonLoading = false;
+				toast.success(m.account_check_email(), {
+					description: m.account_check_email_description(),
+					duration: 9000
+				});
 			});
 	}
 	function gpdrData() {
+		// We don't store that much data so we can just fetch it from the server
 		serverContactor.getGDPR().then(data => {
 			createFile("data.json", JSON.stringify(data));
 		});
 	}
-	function logOut() {
+	function logOut(session?: Session) {
+		// If session isn't specified, the user is logging themselves out
 		serverContactor
-			.logOut()
+			.logOut(session?.hash)
 			.catch(err => {
 				throw new Error(
 					"Failed to delete session. Please file an issue report over on our github (ctih1/frii.site-frontend)"
 				);
 			})
 			.then(_ => {
-				Cookies.remove("auth-token", { secure: !dev });
-				localStorage.removeItem("logged-in");
-				localStorage.removeItem("auth-token");
-				redirectToLogin(200);
+				if (!session) {
+					Cookies.remove("auth-token", { secure: !dev });
+					localStorage.removeItem("logged-in");
+					localStorage.removeItem("auth-token");
+					redirectToLogin(200);
+				} else {
+					session.loading = false;
+					sessions = sessions.filter(sess => {
+						return sess.hash !== session.hash;
+					});
+				}
 			});
 	}
 
-	function deleteSession(sessionHash: string) {
-		loader.show(undefined, m.account_manage_sessions_delete_loader());
-		serverContactor
-			.logOut(sessionHash)
-			.catch(err => {
-				if (err instanceof UserError) console.error("Session with that ID does not exist");
-				if (err instanceof AuthError) redirectToLogin(460);
-				throw Error("Failed to delete session");
-			})
-			.then(_ => {
-				loader.hide();
-				sessions = sessions.filter(el => {
-					return el.hash !== sessionHash;
-				});
-				sessions = [...sessions];
-			});
-	}
+	$effect(() => {
+		usingBackupCode; // Since svelte5 doesnt let you declare dependencies $effect
+		dialogOpen; // same with this
+		mfaCode = "";
+	});
 </script>
 
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<Blur bind:this={blurElement} />
-<Loader bind:this={loader} />
-<Holder>
-	<h1>{m.account_management()}</h1>
-	<Section title={m.account_details()} id="details">
-		<div class="details">
-			{#if loaded}
-				<h3 style="display: flex; align-items:center; width: fit-content;">
-					{emailE}{#if verified}<verified style="margin-left: 0.5em;"
-							><span class="material-symbols-outlined">check</span></verified
-						>{/if}
-				</h3>
-				<h3 id="username">
-					{usernameE}
-				</h3>
-				<div class="permission">
-					<span class="material-symbols-outlined">lock</span>
-					<p>
-						{m.dashboard_permission_domains()}:
-						<strong>{maxDomains}</strong>
-					</p>
-				</div>
-				{#if wildcards}
-					<div class="permission">
-						<span class="material-symbols-outlined">asterisk</span>
-						<p>
-							{m.dashboard_permission_wildcards()}:
-							<strong>{wildcards}</strong>
-						</p>
-					</div>
-				{/if}
-				{#if admin}
-					<div class="permission">
-						<span class="material-symbols-outlined">shield_person</span>
-						<p>
-							{m.dashboard_permission_admin()}:
-							<strong>{admin}</strong>
-						</p>
-					</div>
-				{/if}
-				{#if vuln}
-					<div class="permission">
-						<span class="material-symbols-outlined">handyman</span>
-						<p>
-							{m.dashboard_permission_vulnerabilities()}:
-							<strong>{vuln}</strong>
-						</p>
-					</div>
-				{/if}
-				{#if monitoring}
-					<div class="permission">
-						<span class="material-symbols-outlined">groups</span>
-						<p>
-							{m.dashboard_permission_monitoring()}:
-							<strong>{monitoring}</strong>
-						</p>
-					</div>
-				{/if}
-			{:else}
-				<h3 style="height: 1em; width:20vw;"><Placeholder /></h3>
-				<h3 style="height: 1em; width:20vw;"><Placeholder /></h3>
-			{/if}
-		</div>
-	</Section>
-	<h1>{m.account_manage_account()}</h1>
-	<Section title={m.account_manage()} id="manage">
-		{#if browser}
-			<div class="switch">
-				<p>{m.account_domain_del_cooldown()}</p>
-				<Switch
-					initial={(localStorage.getItem("del-count") ?? "false") == "true"}
-					on:change={event => {
-						localStorage.setItem("del-count", event.detail);
-					}} />
-			</div>
-			<div class="buttons">
-				<div>
-					{#if mfaIsVerified}
-						<Button on:click={() => (isDeletingMfa = true)} args={"padding danger"}
-							>{m.account_disable_mfa()}</Button>
-					{:else}
-						<Button on:click={() => mfaSetup()} args={"padding"}
-							>{m.account_enable_mfa()}</Button>
-					{/if}
-					{#if isDeletingMfa}
-						<div class="mfa-delete-wrapper">
-							{#if isUsingBackupCodes}
-								<div></div>
-								<div class="mfa-wrapper">
-									<input
-										bind:value={backupCode}
-										class="mfa-input"
-										placeholder="xxxxxxxx" />
-									<a onclick={_ => (isUsingBackupCodes = !isUsingBackupCodes)}>
-										{m.mfa_use_code()}</a>
+<div class="account bg-card mt-16 mr-auto ml-auto w-11/12 max-w-5xl rounded-2xl p-6">
+	<h1 class="text-3xl font-semibold">{m.account_hello_user({ user: data.username })}</h1>
+	<p>{m.account_email({ email: data.email })}</p>
+	<h3 id="username">{m.account_username({ username: data.username })}</h3>
+	<div class="permission flex items-center">
+		<span class="material-symbols-outlined">lock</span>
+		<p>
+			{m.dashboard_permission_domains()}:
+			<strong>{data.maxDomains}</strong>
+		</p>
+	</div>
+
+	<div class="permission flex items-center">
+		<span class="material-symbols-outlined">lock</span>
+		<p>
+			{m.account_max_subdomains()}:
+			<strong>{data.maxSubdomains}</strong>
+		</p>
+	</div>
+
+	<div class="mt-8">
+		<h2 class="text-2xl font-semibold">{m.account_manage_account()}</h2>
+		<div class="buttons space-y-1">
+			{#if data.mfaEnabled}
+				<Dialog.Root onOpenChange={open => (dialogOpen = open)} open={dialogOpen}>
+					<Dialog.Trigger>
+						<Button variant={"destructive"}>{m.account_disable_mfa()}</Button>
+					</Dialog.Trigger>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>{m.mfa_recovery_send()}</Dialog.Title>
+							<Dialog.Description>
+								{m.mfa_login_description()}
+							</Dialog.Description>
+
+							{#if usingBackupCode}
+								<div class="space-y-2">
+									<Label for="backup-code">{m.mfa_use_backup()}</Label>
+									<Input bind:value={mfaCode} id="backup-code" />
 								</div>
 							{:else}
-								<div class="mfa-wrapper">
-									<input
-										bind:value={mfaCode}
-										class="mfa-input"
-										type="number"
-										placeholder="000000" />
-									<a onclick={_ => (isUsingBackupCodes = !isUsingBackupCodes)}>
-										{m.mfa_use_backup()}</a>
-								</div>
+								<InputOTP.Root
+									bind:value={mfaCode}
+									class="m-auto mt-8 w-fit"
+									maxlength={6}
+									pattern={REGEXP_ONLY_DIGITS}>
+									{#snippet children({ cells })}
+										<InputOTP.Group>
+											{#each cells as cell (cell)}
+												<InputOTP.Slot
+													class="h-16 text-2xl"
+													aria-invalid={mfaInvalid}
+													cell={cell} />
+											{/each}
+										</InputOTP.Group>
+									{/snippet}
+								</InputOTP.Root>
 							{/if}
-							<div class="mfa-button">
-								<Button on:click={() => removeMfa()} args={"padding danger"}
-									>{m.account_disable_mfa()}</Button>
+
+							<Button
+								onclick={_ => (usingBackupCode = !usingBackupCode)}
+								variant={"ghost"}
+								>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
+						</Dialog.Header>
+
+						<Dialog.Footer>
+							<Button
+								loading={mfaButtonLoading}
+								onclick={_ => {
+									mfaButtonLoading = true;
+									removeMfa(mfaCode);
+								}}
+								disabled={(!usingBackupCode && mfaCode.length != 6) ||
+									(usingBackupCode && mfaCode.length < 16)}
+								variant={"destructive"}>{m.mfa_recovery_send()}</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+			{:else}
+				<Dialog.Root onOpenChange={open => (dialogOpen = open)} open={dialogOpen}>
+					<Dialog.Trigger>
+						<Button onclick={_ => mfaSetup()}>{m.account_enable_mfa()}</Button>
+					</Dialog.Trigger>
+					<Dialog.Content>
+						<Dialog.Header>
+							{#if !mfaUrl}
+								<Dialog.Title>Please wait...</Dialog.Title>
+								<Dialog.Description>{m.mfa_loading()}</Dialog.Description>
+							{:else}
+								<Dialog.Title>Setup 2Fa</Dialog.Title>
+								{#if !mfaIsVerified}
+									<Dialog.Description>
+										{m.mfa_qr_guide()}
+									</Dialog.Description>
+
+									<QR backgroundFill="white" data={mfaUrl} />
+									<Button href={mfaUrl} variant={"link"}
+										>{m.mfa_alternate_link_hint()}</Button>
+
+									<h2 class="text-xl font-semibold">
+										{m.mfa_verification_step()}
+									</h2>
+
+									<InputOTP.Root
+										bind:value={mfaCode}
+										class="m-auto w-fit"
+										maxlength={6}
+										pattern={REGEXP_ONLY_DIGITS}>
+										{#snippet children({ cells })}
+											<InputOTP.Group>
+												{#each cells as cell (cell)}
+													<InputOTP.Slot
+														class="h-16 text-2xl"
+														aria-invalid={mfaInvalid}
+														cell={cell} />
+												{/each}
+											</InputOTP.Group>
+										{/snippet}
+									</InputOTP.Root>
+								{:else}
+									<h2 class="text-xl font-semibold">
+										{m.mfa_backup_warning()}
+									</h2>
+									<ul class="list-disc [&>li]:ml-8">
+										{#each backupCodes as code}
+											<li>{code}</li>
+										{/each}
+									</ul>
+								{/if}
+							{/if}
+						</Dialog.Header>
+
+						<Dialog.Footer>
+							{#if !mfaIsVerified}
+								<Button
+									loading={mfaButtonLoading}
+									onclick={_ => {
+										mfaButtonLoading = true;
+										verifyMfa(mfaCode);
+									}}
+									disabled={mfaCode.length != 6}>{m.account_enable_mfa()}</Button>
+							{/if}
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+			{/if}
+			<Dialog.Root onOpenChange={open => (deleteOpen = open)} open={deleteOpen}>
+				<Dialog.Trigger>
+					<Button variant={"destructive"}>{m.account_delete_account()}</Button>
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>{m.account_delete_account()}</Dialog.Title>
+						<Dialog.Description>
+							{m.mfa_login_description()}
+						</Dialog.Description>
+
+						{#if usingBackupCode}
+							<div class="space-y-2">
+								<Label for="backup-code">{m.mfa_use_backup()}</Label>
+								<Input bind:value={mfaCode} id="backup-code" />
 							</div>
-						</div>
-					{/if}
-					{#if mfaWaitingForVerification}
-						{#if !mfaIsVerified}
-							<h1>{m.mfa_verify_introduction()}</h1>
-							{#key mfaUrl}
-								<p>{m.mfa_qr_guide()}</p>
-								<div class="mfa-qr-wrapper">
-									<QR data={mfaUrl} />
-								</div>
-								<a href={mfaUrl}>{m.mfa_alternate_link_hint()}</a>
-
-								<h2>{m.mfa_verification_step()}</h2>
-								<input
-									bind:value={mfaVerificationCode}
-									class="mfa-input"
-									type="number"
-									placeholder="000000" />
-								<div class="mfa-button">
-									<Button
-										on:click={_ => verifyMfa(mfaVerificationCode)}
-										args={"fill padding"}>{m.mfa_verify_button()}</Button>
-								</div>
-							{/key}
 						{:else}
-							<h1>{m.mfa_success()}</h1>
-							<h2>{m.mfa_backup_codes()}</h2>
-							<ul>
-								{#each backupCodes as code}
-									<li>{code}</li>
-								{/each}
-							</ul>
-							<p>
-								{m.mfa_backup_warning()}
-							</p>
+							<InputOTP.Root
+								bind:value={mfaCode}
+								class="m-auto mt-8 w-fit"
+								maxlength={6}
+								pattern={REGEXP_ONLY_DIGITS}>
+								{#snippet children({ cells })}
+									<InputOTP.Group>
+										{#each cells as cell (cell)}
+											<InputOTP.Slot
+												class="h-16 text-2xl"
+												aria-invalid={mfaInvalid}
+												cell={cell} />
+										{/each}
+									</InputOTP.Group>
+								{/snippet}
+							</InputOTP.Root>
 						{/if}
-					{/if}
-				</div>
-				<div>
-					<Button on:click={() => gpdrData()} args={"padding"}
-						>{m.account_download_data()}</Button>
-				</div>
-				<div>
-					<Button on:click={() => logOut()} args={"padding danger"}
-						>{m.account_log_out()}</Button>
-				</div>
-
-				<div class="danger">
-					<Button args={"danger padding"} on:click={() => handleDelete()}
-						>{m.account_delete_account()}</Button>
-				</div>
-			</div>
-		{/if}
-	</Section>
-
-	{#if invites.length > 0}
-		<Section title="Invites" id="invites">
-			{#if browser}
-				{#each invites as invite, index}
-					{@const minres =
-						Math.min(window.innerHeight, window.innerWidth) /
-						(window.innerHeight > window.innerWidth ? 1.5 : 3)}
-					{@const showQRCode = false}
-					<div class="session invite">
-						<h3>
-							<a href="https://www.frii.site/account?invite={invite.code}"
-								>Invite #{index + 1}
-							</a>
-						</h3>
 
 						<Button
-							args="padding"
-							on:click={_ =>
-								copy(`https://www.frii.site/account?invite=${invite.code}`)}
-							>Copy to clipboard</Button>
+							onclick={_ => (usingBackupCode = !usingBackupCode)}
+							variant={"ghost"}
+							>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
+					</Dialog.Header>
 
-						<p>Used: <b>{invite.used ? "Yes" : "No"}</b></p>
-						{#if invite.used}
-							<p style="word-break: break-all; width: {minres}px">
-								Used by: <b>{invite.used_by}</b>
-							</p>
-						{/if}
-						<Button args="padding" on:click={() => (invite.shown = !invite.shown)}
-							>{m.account_show_invite_qr()}</Button>
-						{#if invite.shown}
-							<div
-								class="h"
-								style="display: flex; width: 100%; justify-content:center">
-								<QR
-									version="H"
-									data="https://www.frii.site/account?invite={invite.code}"
-									shape="circle"
-									logo="https://www.frii.site/favicon.svg"
-									width={minres}
-									height={minres} />
+					<Dialog.Footer>
+						<div class="space-y-2">
+							<p class="text-sm">{m.acount_delete_confirm_description()}</p>
+							<div class="flex space-x-2">
+								<Checkbox bind:checked={deleteAccountChecked} id="understand" />
+								<Label for="understand">{m.account_del_agree()}</Label>
 							</div>
-						{/if}
-					</div>
-				{/each}
-			{/if}
-		</Section>
-	{/if}
+						</div>
+						<Button
+							loading={mfaButtonLoading}
+							onclick={_ => {
+								mfaButtonLoading = true;
+								handleDelete(mfaCode);
+							}}
+							disabled={!deleteAccountChecked ||
+								(!usingBackupCode && mfaCode.length != 6) ||
+								(usingBackupCode && mfaCode.length < 16)}
+							variant={"destructive"}>{m.account_delete_account()}</Button>
+					</Dialog.Footer>
+				</Dialog.Content>
+			</Dialog.Root>
+			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
+			<Button variant={"secondary"} onclick={_ => logOut()}>Log out</Button>
+		</div>
+	</div>
 
-	<Section title={m.account_manage_sessions()} id="sessions">
+	<div class="mt-4 space-y-4">
 		{#each sessions as session}
-			{@const parser = new UAParser(session.user_agent)}
-			<div class="session">
-				<h3 class="session-header">
-					<span class="material-symbols-outlined">
-						{#if parser.getDevice().type === "mobile"}
-							smartphone
-						{:else}
-							desktop_windows
-						{/if}
-					</span>
-					{parser.getOS().name ?? "Unknown OS"}
-					{parser.getOS().version ?? ""} - {parser.getBrowser().name ?? "Unknown browser"}
-					{parser.getBrowser().version ?? ""}
-				</h3>
-				<p class="ip">{session.ip}</p>
-				<p style="display: flex; align-items: center;">
-					<span class="material-symbols-outlined">update</span>Expires: {new Date(
-						session.expire * 1000
-					).toUTCString()}
+			{@const ua = new UAParser(session.user_agent)}
+			{@const expires = new Date(session.expires * 1000)}
+			<div
+				transition:fade={{ duration: 100 }}
+				class="session bg-popover w-full max-w-96 rounded-xl p-4">
+				<div class="device flex items-center">
+					{#if ua.getDevice().type === "mobile"}
+						<MaterialSymbolsSmartphone class="text-4xl" />
+					{:else}
+						<MaterialSymbolsDesktopMac class="text-4xl" />
+					{/if}
+					<h1 class="text-2xl font-semibold">
+						{ua.getOS().name}
+					</h1>
+					<h2 class="ml-2 text-xl font-medium">
+						{ua.getBrowser().name}
+						{ua.getBrowser().version}
+					</h2>
+				</div>
+				<p>
+					Expires: {expires.toLocaleString()}
 				</p>
-				<Button args="danger" on:click={() => deleteSession(session.hash)}>Remove</Button>
+				<div class="footer flex items-center justify-between">
+					<Button
+						loading={session.loading}
+						onclick={_ => {
+							console.log("Click!");
+							session.loading = true;
+							logOut(session);
+						}}
+						variant={"destructive"}>Log out</Button>
+					<p class="text-right opacity-50">{session.ip}</p>
+				</div>
 			</div>
 		{/each}
-	</Section>
-</Holder>
-
-<Modal
-	bind:this={modal}
-	on:secondary={() => handleDelete()}
-	options={[m.continue_modal()]}
-	title={""}
-	description={""}></Modal>
-
-<style>
-	.buttons div {
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
-	}
-	.switch {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-	}
-	.switch * {
-		width: fit-content;
-	}
-	.switch p {
-		margin-right: 1em;
-	}
-	verified {
-		align-items: center;
-		justify-content: center;
-		display: flex;
-		background-color: var(--primary);
-		border-radius: 50%;
-		height: 1.5em;
-		width: 1.5em;
-	}
-	verified span {
-		color: white;
-	}
-	#username {
-		overflow-wrap: break-word;
-		word-break: break-all;
-	}
-	.permission {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-
-	.session {
-		width: fit-content;
-		border-radius: 0.5em;
-		padding: 0.5em;
-		margin-top: 1em;
-		margin-bottom: 1em;
-		background-color: var(--secondary-color);
-	}
-	.session-header {
-		display: flex;
-		align-items: center;
-		margin-top: 0px;
-		margin-bottom: 0px;
-	}
-	.ip {
-		margin-top: 0px;
-	}
-
-	@media (orientation: portrait) {
-		.invite {
-			margin-left: auto;
-			margin-right: auto;
-			width: 90%;
-		}
-
-		.mfa-input {
-			width: 100% !important;
-		}
-	}
-
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	/* Firefox */
-	input[type="number"] {
-		-moz-appearance: textfield;
-	}
-
-	.mfa-qr-wrapper {
-		width: 50%;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	.mfa-input {
-		font-size: 32px;
-		width: 10ch;
-		font-family: "Inter", sans-serif;
-		text-align: center;
-		background-color: rgb(40, 40, 40);
-		margin-bottom: 4px;
-	}
-	.mfa-button {
-		height: 3em;
-	}
-
-	.mfa-wrapper {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.mfa-wrapper a:hover {
-		cursor: pointer;
-	}
-
-	.mfa-delete-wrapper {
-		padding-bottom: 6em;
-	}
-</style>
+	</div>
+</div>

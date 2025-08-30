@@ -6,6 +6,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 
 	import { redirectToLogin } from "$lib";
+	import Input from "$lib/components/ui/input/input.svelte";
 	import { m } from "../../../paraglide/messages";
 	import {
 		CodeError,
@@ -76,14 +77,14 @@
 
 <Modal countdown={undefined} description="" title="" options={[m.modal_ok()]} bind:this={modal} />
 <Holder>
+	<h1 class="text-2xl font-semibold">{m.account_recovery_title()}</h1>
+
 	{#if generatingNew}
-		<h1>{m.account_recovery_title()}</h1>
-		<input bind:value={password} placeholder={m.password_placeholder()} />
-		<input bind:value={cPassword} placeholder={m.confirm_password_placeholder()} />
+		<Input bind:value={password} placeholder={m.password_placeholder()} />
+		<Input bind:value={cPassword} placeholder={m.confirm_password_placeholder()} />
 	{:else}
-		<h1>{m.account_recovery_title()}</h1>
 		<p>{m.account_recovery_description()}</p>
-		<input bind:value={username} placeholder={m.username_placeholder()} />
+		<Input bind:value={username} placeholder={m.username_placeholder()} />
 	{/if}
 	<Button on:click={handleButton} args="fill padding margin-1em-top"
 		>{m.security_report_submit()}</Button>

@@ -15,6 +15,6 @@
 </script>
 
 <Holder>
-	<h1>{m.account_uhoh_annoyance()}</h1>
+	<h1 class="text-2xl font-semibold">{m.account_uhoh_annoyance()}</h1>
 	<p>{warningText}</p>
 </Holder>

@@ -10,7 +10,11 @@
 	"bracketSpacing": true,
 	"svelteAllowShorthand": false,
 	"svelteSortOrder": "options-scripts-markup-styles",
-	"plugins": ["prettier-plugin-organize-imports", "prettier-plugin-svelte"],
+	"plugins": [
+		"prettier-plugin-organize-imports",
+		"prettier-plugin-svelte",
+		"prettier-plugin-tailwindcss"
+	],
 	"overrides": [
 		{
 			"files": "*.svelte",

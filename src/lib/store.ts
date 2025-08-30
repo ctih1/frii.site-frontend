@@ -25,3 +25,5 @@ export const domainAmount = writable(storedDomainAmount);
 domainAmount.subscribe(value => {
 	setKey(StoredDomainKey, `${Number(value) || DefaultDomainAmount}`);
 });
+
+export const sidebarOpen = writable(false);

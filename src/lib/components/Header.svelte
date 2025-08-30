@@ -1,228 +1,68 @@
 <script lang="ts">
-	import { slide } from "svelte/transition";
+	import * as Select from "$lib/components/ui/select/index.js";
+	import { sidebarOpen } from "$lib/store";
+	import { fade } from "svelte/transition";
+	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
+	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
 	import { getFlagEmoji } from "../../helperFuncs";
-	import { m } from "../../paraglide/messages";
-	import type { Locale } from "../../paraglide/runtime";
-	import { getLocale, locales, localizeHref, setLocale } from "../../paraglide/runtime";
+	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
 
-	import { circOut } from "svelte/easing";
-	import Modal from "./Modal.svelte";
-	let header: HTMLElement;
-	let modal: Modal;
-
-	let selectElement: HTMLSelectElement;
-	let isSidebar: boolean = $state(true);
-	let sidebarOpened: boolean = $state(false);
-
-	let height = $state(0);
-	let width = $state(0);
-
-	$effect(() => {
-		isSidebar = height > width;
-	});
-	export function getHeight(): number {
-		return Number(header.style.height.substring(0, header.style.height.length - 2));
-	}
+	let { children } = $props();
 </script>
 
-<svelte:window bind:innerHeight={height} bind:innerWidth={width} />
-
-{#if isSidebar && sidebarOpened}
-	<div transition:slide={{ easing: circOut, duration: 220 }} class="sidebar-wrapper">
-		<div class="sidebar">
-			<a class="item" href={localizeHref("/account/manage")}>
-				<span class="material-symbols-outlined">person</span>
-				<p>{m.dashboard_account()}</p>
-			</a>
-
-			<a class="item" href={localizeHref("/report")}>
-				<span class="material-symbols-outlined">flag</span>
-				<p>{m.dashboard_abuse()}</p>
-			</a>
-
-			<a class="item" href="https://guides.frii.site">
-				<span class="material-symbols-outlined">menu_book</span>
-				<p>{m.guides_link_navbar()}</p>
-			</a>
-
-			<div class="item">
-				<p>Language:</p>
-				<select
-					style="color: var(--primary);"
-					bind:this={selectElement}
-					onchange={_ => setLocale(selectElement.value as Locale)}>
-					{#each locales as locale}
-						<option selected={locale === getLocale()} value={locale}
-							>{getFlagEmoji(locale)} {locale}</option>
-					{/each}
-				</select>
+<header
+	id="header"
+	class="bg-card flex h-full w-screen max-w-screen items-center space-x-6 pt-1 pr-4 pb-1 pl-4">
+	<button
+		id="popout-toggle"
+		class="hidden h-12 w-12"
+		onclick={_ => ($sidebarOpen = !$sidebarOpen)}>
+		{#key $sidebarOpen}
+			<div transition:fade={{ duration: 100 }} class="absolute top-0">
+				{#if !$sidebarOpen}
+					<MaterialSymbolsMenuRounded class="h-12 w-12" />
+				{:else}
+					<MaterialSymbolsCloseRounded class="h-12 w-12" />
+				{/if}
 			</div>
-		</div>
+		{/key}
+	</button>
+	{@render children()}
+
+	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
+		<Select.Trigger class="mr-4 ml-auto w-24"
+			>{getFlagEmoji(getLocale())} - {getLocale()}</Select.Trigger>
+		<Select.Content>
+			{#each locales as locale}
+				<Select.Item value={locale} label={getFlagEmoji(locale) + locale}>
+					{getFlagEmoji(locale)} - {locale}
+				</Select.Item>
+			{/each}
+		</Select.Content>
+	</Select.Root>
+</header>
+{#if $sidebarOpen}
+	<div
+		transition:fade={{ duration: 100 }}
+		id="popout"
+		class="popout bg-card absolute z-50 hidden h-full w-full max-w-96 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
+		{@render children()}
 	</div>
 {/if}
-<header bind:this={header}>
-	{#if isSidebar}
-		<div class="primary">
-			<button class="sidebar-button" onclick={_ => (sidebarOpened = !sidebarOpened)}>
-				<span class="material-symbols-outlined"> menu </span>
-			</button>
-			<div class="logo">
-				<img alt="logo" src="/favicon.svg" />
-				<p>frii.site</p>
-			</div>
-		</div>
-		<div class="secondary">
-			<a class="item" href={localizeHref("/")}>
-				<span class="material-symbols-outlined">home</span>
-				<p>{m.dashboard_home()}</p>
-			</a>
-
-			<a class="item" href={localizeHref("/dashboard")}>
-				<span class="material-symbols-outlined">apps</span>
-				<p>{m.dashboard_navbar()}</p>
-			</a>
-		</div>
-	{/if}
-
-	{#if !isSidebar}
-		<a class="item" href={localizeHref("/")}>
-			<span class="material-symbols-outlined">home</span>
-			<p>{m.dashboard_home()}</p>
-		</a>
-
-		<a class="item" href={localizeHref("/dashboard")}>
-			<span class="material-symbols-outlined">apps</span>
-			<p>{m.dashboard_navbar()}</p>
-		</a>
-
-		<a class="item" href={localizeHref("/account/manage")}>
-			<span class="material-symbols-outlined">person</span>
-			<p>{m.dashboard_account()}</p>
-		</a>
-
-		<a class="item" href={localizeHref("/report")}>
-			<span class="material-symbols-outlined">flag</span>
-			<p>{m.dashboard_abuse()}</p>
-		</a>
-
-		<a class="item" href="https://guides.frii.site">
-			<span class="material-symbols-outlined">menu_book</span>
-			<p>{m.guides_link_navbar()}</p>
-		</a>
-
-		<div class="item">
-			<select
-				style="color: var(--primary);"
-				bind:this={selectElement}
-				onchange={_ => setLocale(selectElement.value as Locale)}>
-				{#each locales as locale}
-					<option selected={locale === getLocale()} value={locale}
-						>{getFlagEmoji(locale)} {locale}</option>
-				{/each}
-			</select>
-		</div>
-	{/if}
-</header>
 
 <style>
-	header {
-		position: asbolute;
-		display: flex;
-		align-items: center;
-		top: 0px;
-		left: 0px;
-		background-color: var(--offwhite-color);
-		min-height: 50px;
-		max-width: 100vw;
-		z-index: 10;
-	}
-	header * {
-		align-items: center;
-		text-align: center;
-	}
-	.item {
-		display: flex;
-		align-items: center;
-		margin-left: 1em;
-		margin-right: 1em;
-	}
-	.item * {
-		height: 100%;
-		font-weight: 500;
-	}
-
-	.sidebar-button {
-		background: none;
-		border: none;
-	}
-
-	.sidebar-button:hover {
-		cursor: pointer;
-	}
-
-	.sidebar-wrapper {
-		position: absolute;
-		left: 0px;
-		top: 50px;
-		width: 200px;
-		background-color: var(--offwhite-color);
-		border-bottom-right-radius: 0.5em;
-		z-index: 5;
-		padding: 12px;
-	}
-	.sidebar {
-		display: flex;
-		flex-direction: column;
-	}
-	.sidebar .item {
-		margin: 4px;
-		border-radius: 0.5em;
-		padding: 4px;
-	}
-	.sidebar .item p {
-		color: var(--primary);
-	}
-
-	@media (orientation: portrait) {
-		.item {
-			margin-left: 0.25em;
-			margin-right: 0.25em;
+	@media (max-width: 960px) {
+		:global(#header a) {
+			display: none;
 		}
-		.material-symbols-outlined {
-			font-size: 40px;
+		#header {
+			justify-content: space-between;
 		}
-		header {
-			display: flex;
-			justify-content: unset;
+		#popout-toggle {
+			display: block;
 		}
-		header div {
+		#popout {
 			display: flex;
 		}
-		header .secondary {
-			margin-left: auto;
-			margin-right: 12px;
-		}
-	}
-	.logo {
-		margin-left: 8px;
-		width: 15px;
-	}
-	.logo p {
-		color: white;
-		margin: 0px;
-		margin-left: 6px;
-		font-size: 20px;
-		font-weight: 600;
-		padding: 0px;
-	}
-	select {
-		border-style: none;
-		background-color: var(--offwhite-color);
-	}
-	select * {
-		color: var(--primary);
-	}
-	span {
-		color: var(--primary);
 	}
 </style>

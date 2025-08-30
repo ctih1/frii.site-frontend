@@ -16,7 +16,8 @@
             "strings": true
         },
         "editor.suggest.insertMode": "replace",
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": false
     },
     "editor.codeActionsOnSave": {
         "source.organizeImports": "always",
@@ -25,5 +26,21 @@
     "gitlens.advanced.blame.customArguments": [
         "--ignore-revs-file",
         ".git-blame-ignore-revs"
-    ]
+    ],
+    "sherlock.editorColors": {
+    "info": {
+        "foreground": "#color",
+        "background": "rgba(number, number, number, 0.2)", // needs transparency
+        "border": "#color"
+    },
+    "error": {
+        "foreground": "#color",
+        "background": "rgba(number, number, number, 0.2)", // needs transparency
+        "border": "#color"
+    },
+    "messageLintRuleLevels": {
+		"messageLintRule.inlang.messageWithoutSource": "error",
+	}
+}
+
 }

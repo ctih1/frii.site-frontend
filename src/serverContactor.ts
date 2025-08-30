@@ -1,13 +1,15 @@
 import { browser } from "$app/environment";
-import createClient from "openapi-fetch";
+import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
-import { redirectToLogin } from "./helperFuncs";
+import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
 
 export let serverURL = "https://api.frii.site";
 if (browser) {
 	let subdomain = window.location.hostname.split(".")[0];
 	if (subdomain === "canary") {
 		serverURL = "https://beta.frii.site";
+	} else if (subdomain === "development") {
+		serverURL = "https://alpha.frii.site";
 	}
 	if (localStorage.getItem("url_override")) {
 		serverURL = localStorage.getItem("url_override") ?? "https://api.frii.site";
@@ -16,6 +18,55 @@ if (browser) {
 }
 
 const client = createClient<paths>({ baseUrl: serverURL });
+
+const JWTAuthMiddleware: Middleware = {
+	async onResponse({ request, response, options }) {
+		if (response.status === 460) {
+			console.log("Refreshing auth token");
+
+			const authCode = await tryRefreshToken();
+
+			if (!authCode) {
+				redirectToLogin(465);
+				throw new Error("Redirecting to login");
+			} else {
+				console.log("was success");
+				setAuthToken(authCode);
+				let req = request.clone();
+				req.headers.set("X-Auth-Token", authCode);
+				return await options.fetch(req);
+			}
+		}
+
+		return response;
+	}
+};
+
+// Automatically refresh auth tokens
+client.use(JWTAuthMiddleware);
+
+async function tryRefreshToken(): Promise<string | false> {
+	try {
+		const res = await fetch(`${serverURL}/refresh`, {
+			method: "POST",
+			credentials: "include"
+		});
+
+		if (!res.ok) return false;
+
+		const data = await res.json();
+
+		if (data["auth-token"]) {
+			// refresh token gets set with the request itself as Set-Cookie header
+			return data["auth-token"];
+		}
+
+		return false;
+	} catch (err) {
+		console.error("Refresh token request failed", err);
+		return false;
+	}
+}
 
 export async function digestMessage(message: string): Promise<string> {
 	const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -116,10 +167,11 @@ export async function login(
 			header: {
 				"x-auth-request": token,
 				"x-mfa-code": mfaCode,
-				"x-plain-username": username,
+				"x-plain-username": username, // Older versions of the backend didnt save usernames so this is the only way to give the backend the users actual username
 				"x-captcha-code": captcha
 			}
-		}
+		},
+		credentials: "include"
 	});
 
 	if (error) {
@@ -143,13 +195,44 @@ export async function login(
 	return data;
 }
 
+export async function register(
+	username: string,
+	password: string,
+	email: string,
+	captcha: string
+): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
+	const { data, error, response } = await client.POST("/sign-up", {
+		body: { username, password, email, language: navigator.language },
+		params: {
+			header: { "x-captcha-code": captcha }
+		}
+	});
+
+	if (error) {
+		switch (response.status) {
+			case 400:
+				throw new InviteError("Invalid invite");
+			case 409:
+				throw new ConflictError("Username taken");
+			case 422:
+				throw new UserError("Invalid email");
+			case 429:
+				throw new CaptchaError("Invalid Captcha");
+			default:
+				throw new Error(`Failed to register. Status code: ${response.status}`);
+		}
+	}
+
+	return data;
+}
+
 export async function getStatus(): Promise<
 	paths["/status"]["get"]["responses"]["200"]["content"]["application/json"]
 > {
 	const { data, error, response } = await client.GET("/status");
 
 	if (error) {
-		throw new Error(`Failed to get status. Status code: ${response.status}`);
+		throw new Error(`Failed to get status.`);
 	}
 
 	return data;
@@ -301,7 +384,6 @@ export async function recoverMfaCode(username: string, password: string, backupC
 }
 
 export class ServerContactor {
-	token: string;
 	serverURL: string;
 
 	constructor(token: string | null, urlOverride: string | null = null) {
@@ -309,8 +391,8 @@ export class ServerContactor {
 		if (urlOverride) {
 			this.serverURL = urlOverride;
 		}
-		this.token = token as string;
-		if (this.token === null && window.location.pathname !== "/account") {
+
+		if (getAuthToken() === null && window.location.pathname !== "/account") {
 			redirectToLogin(302);
 		}
 	}
@@ -334,7 +416,7 @@ export class ServerContactor {
 			body: { domain, type, value },
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -354,12 +436,19 @@ export class ServerContactor {
 	}
 
 	async registerDomain(domain: string, type: string): Promise<string> {
-		const value = type === "CNAME" || type === "NS" ? "example.com" : "0.0.0.0";
+		let value: string = "0.0.0.0";
+		if (type === "CNAME" || type === "NS") {
+			value = "example.com";
+		}
+		if (type === "TXT") {
+			value = "test-txt";
+		}
+
 		const { data, error, response } = await client.POST("/domain/register", {
 			body: { domain, type, value },
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -393,7 +482,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.DELETE("/domain/delete", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token },
+				header: { "X-Auth-Token": getAuthToken() },
 				query: { domain: domain }
 			}
 		});
@@ -412,42 +501,15 @@ export class ServerContactor {
 		return data;
 	}
 
-	async register(
-		username: string,
-		password: string,
-		email: string,
-		captcha: string
-	): Promise<paths["/sign-up"]["post"]["responses"]["200"]["content"]["application/json"]> {
-		const { data, error, response } = await client.POST("/sign-up", {
-			body: { username, password, email, language: navigator.language },
-			headers: { "x-captcha-code": captcha }
-		});
-
-		if (error) {
-			switch (response.status) {
-				case 400:
-					throw new InviteError("Invalid invite");
-				case 409:
-					throw new ConflictError("Username taken");
-				case 422:
-					throw new UserError("Invalid email");
-				case 429:
-					throw new CaptchaError("Invalid Captcha");
-				default:
-					throw new Error(`Failed to register. Status code: ${response.status}`);
-			}
-		}
-
-		return data;
-	}
-
-	async deleteAccount(): Promise<
+	async deleteAccount(
+		mfaCode: string
+	): Promise<
 		paths["/deletion/send"]["delete"]["responses"]["200"]["content"]["application/json"]
 	> {
 		const { data, error, response } = await client.DELETE("/deletion/send", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken(), "X-MFA-Code": mfaCode }
 			}
 		});
 
@@ -469,7 +531,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.GET("/settings", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -488,10 +550,10 @@ export class ServerContactor {
 	async getGDPR(): Promise<
 		paths["/gdpr"]["get"]["responses"]["200"]["content"]["application/json"]
 	> {
-		// TODO: Implement on backend
 		const { data, error, response } = await client.GET("/gdpr", {
 			params: {
-				header: { "X-Auth-Token": this.token }
+				//@ts-ignore
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -508,7 +570,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.POST("/invite/create", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -533,7 +595,7 @@ export class ServerContactor {
 		const { data, error, response } = await client.GET("/domain/get", {
 			params: {
 				//@ts-ignore
-				header: { "X-Auth-Token": this.token }
+				header: { "X-Auth-Token": getAuthToken() }
 			}
 		});
 
@@ -557,7 +619,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					specific: id !== undefined,
 					id: id
 				}
@@ -581,36 +643,94 @@ export class ServerContactor {
 		return;
 	}
 
-	async contributeLanguageKeys(code: string, keys: { key: string; val: string }[]) {
-		//@ts-ignore
-		const { data, error, response } = await client.POST(`/languages/${code}/contribute`, {
-			params: {
-				header: {
-					"X-Auth-Token": this.token
-				}
-			},
-
-			body: {
-				keys: keys
-			}
-		});
-		if (error) {
-			switch (response.status) {
-				case 460:
-					throw new AuthError("Invalid session");
-				case 500:
-					throw new Error("Internal server error");
-			}
-		}
-	}
-
 	async getApiKeys() {
 		const { data, error, response } = await client.GET("/api/get-keys", {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async getApiKey(hash: string) {
+		const { data, error, response } = await client.GET("/api/get-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					hash: hash
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async deleteApiKey(hash: string) {
+		const { data, error, response } = await client.DELETE("/api/delete-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			},
+			body: {
+				hash: hash
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to get api keys");
+			}
+		}
+
+		return data;
+	}
+
+	async createApiKey(
+		comment: string,
+		domains: string[],
+		permissions: ("delete" | "register" | "modify" | "list")[]
+	) {
+		const { data, error, response } = await client.POST("/api/create-key", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			},
+			body: {
+				comment,
+				domains,
+				permissions
 			}
 		});
 
@@ -632,7 +752,7 @@ export class ServerContactor {
 				query: { value: value },
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -654,7 +774,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -680,7 +800,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});
@@ -704,7 +824,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					"x-mfa-code": code
 				}
 			}
@@ -731,7 +851,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token,
+					"X-Auth-Token": getAuthToken(),
 					"x-mfa-code": code,
 					"x-backup-code": backupCode
 				}
@@ -757,10 +877,39 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					id: id
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async findByUsername(username: string) {
+		const { data, error, response } = await client.GET("/admin/user/get/username", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					username: username
 				}
 			}
 		});
@@ -786,7 +935,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					domain: domain
@@ -815,7 +964,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					email: email
@@ -844,7 +993,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			},
 			body: {
@@ -876,7 +1025,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					user_id: account
@@ -909,7 +1058,7 @@ export class ServerContactor {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				},
 				query: {
 					id: account,
@@ -935,12 +1084,43 @@ export class ServerContactor {
 		return data;
 	}
 
+	async adminDeleteDomain(account: string, domain: string, reason: string) {
+		const { data, error, response } = await client.DELETE("/admin/domain/delete", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					userid: account,
+					reason: reason,
+					domain: domain
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
 	async canUseAdminPanel() {
 		const { data, error, response } = await client.GET("/admin/user/can-access", {
 			params: {
 				//@ts-ignore
 				header: {
-					"X-Auth-Token": this.token
+					"X-Auth-Token": getAuthToken()
 				}
 			}
 		});

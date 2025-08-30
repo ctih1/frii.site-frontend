@@ -25,14 +25,14 @@
 	});
 
 	$effect(() => {
-		if (valid) redirectToLogin(200, 2);
+		if (valid) redirectToLogin(200, 2, true);
 	});
 </script>
 
 <Holder>
-	<h1>{m.email_verif_title()}</h1>
+	<h1 class="text-2xl font-semibold">{m.email_verif_title()}</h1>
 	<br />
-	<h2>
+	<h2 class="text-xl font-semibold">
 		{#if !doneVerifying}
 			{m.code_verif_loading()}
 		{:else if !valid}

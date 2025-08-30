@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import { getAuthToken, ServerContactor, serverURL } from "$lib";
-	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import { Button } from "$lib/components/ui/button";
 	import copy from "clipboard-copy";
 
 	const commit = __BUILD_COMMIT__;
@@ -38,14 +38,14 @@
 </script>
 
 <Holder>
-	<h1>Technical information:</h1>
+	<h1 class="text-2xl font-semibold">Technical information:</h1>
 	<code bind:this={code}>
 		commit: {commit}
 		server: {serverURL}
 		width: {deviceWidth}
 		height: {deviceHeight}
 		ua: {useragent}
-		uid: {userId}
+		username: {userId}
 	</code>
-	<Button args="padding" on:click={_ => copy(code.innerText)}>Copy to clipboard</Button>
+	<Button onclick={_ => copy(code.innerText)}>Copy to clipboard</Button>
 </Holder>

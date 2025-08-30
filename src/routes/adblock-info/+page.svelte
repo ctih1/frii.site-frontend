@@ -19,7 +19,7 @@
 </script>
 
 <Holder>
-	<h1>Due to you using an adblocker</h1>
+	<h1 class="text-2xl font-semibold">Due to you using an adblocker</h1>
 	<p>(Naively assuming that you click an ad 3 out of 20 times with a cost per click of $0.1)</p>
 
 	<p>You have lost me ${calculateLoss()} in ad revenue</p>

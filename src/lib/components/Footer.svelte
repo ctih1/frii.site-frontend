@@ -1,21 +1,25 @@
 <script lang="ts">
 	import { m } from "../../paraglide/messages";
 	import { serverURL } from "../../serverContactor";
+	import Separator from "./ui/separator/separator.svelte";
 
 	const commit = __BUILD_COMMIT__;
 	const time = __BUILD_TIME__;
 </script>
 
-<div class="footer">
+<div class="footer bg-secondary pt-8">
 	<div class="contact">
-		<h3>{m.footer_contact()}</h3>
+		<h3 class="text-lg font-medium">{m.footer_contact()}</h3>
+		<Separator />
+
 		<a href="mailto: support@frii.site">{m.footer_contact_support()}</a>
 		<a href="mailto: urgent@frii.site">{m.footer_contact_urgent()}</a>
 		<a href="mailto: support@frii.site">{m.footer_contact_social()}</a>
 		<a href="https://discord.gg/FjujyhvbMY">{m.footer_contact_discord()}</a>
 	</div>
 	<div class="starting">
-		<h3>{m.footer_started()}</h3>
+		<h3 class="text-lg font-medium">{m.footer_started()}</h3>
+		<Separator />
 		<a href="https://github.com/ctih1/frii.site-frontend/wiki/FAQ">{m.footer_started_faq()}</a>
 		<a href="https://github.com/ctih1/frii.site-frontend/wiki/Getting-Started#getting-started"
 			>{m.footer_started_register()}</a>
@@ -28,7 +32,8 @@
 		<a href="https://github.com/ctih1/frii.site-frontend/wiki/API">{m.footer_started_api()}</a>
 	</div>
 	<div class="dev">
-		<h3>{m.footer_dev()}</h3>
+		<h3 class="text-lg font-medium">{m.footer_dev()}</h3>
+		<Separator />
 		<a href="https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide"
 			>{m.footer_dev_translations()}</a>
 		<a href="https://github.com/ctih1/frii.site-frontend/blob/master/.github/CONTRIBUTING.md"
@@ -50,7 +55,6 @@
 		width: 100%;
 		padding-bottom: 2em;
 		text-align: center;
-		background-color: var(--offwhite-color);
 	}
 	.footer * {
 		display: flex;

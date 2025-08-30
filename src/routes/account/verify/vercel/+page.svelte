@@ -8,8 +8,9 @@
 		ServerContactor,
 		UserError
 	} from "$lib";
-	import Button from "$lib/components/Button.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+	import { Button } from "$lib/components/ui/button";
+	import Input from "$lib/components/ui/input/input.svelte";
 	import { m } from "../../../../paraglide/messages";
 
 	let value = $state("");
@@ -58,7 +59,7 @@
 </script>
 
 <Holder>
-	<h1>Vercel verification</h1>
+	<h1 class="text-2xl font-semibold">Vercel verification</h1>
 	{#if userHasConencted}
 		{#if currentPosition === -1}
 			<p>{m.vercel_verification_queue_join()}</p>
@@ -72,16 +73,10 @@
 	{:else if userWasVerified}
 		<p>{m.vercel_verification_queue_over()}</p>
 	{:else}
-		<input
+		<Input
 			bind:value={value}
 			placeholder="vc-domain-verify=***.frii.site,********************" />
-		<Button args="padding margin-1em-top" on:click={() => connectToQueue()}
+		<Button class="mt-4" onclick={() => connectToQueue()}
 			>{m.vercel_verification_queue_join_action_button()}</Button>
 	{/if}
 </Holder>
-
-<style>
-	input {
-		height: 4em;
-	}
-</style>

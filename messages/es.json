@@ -183,11 +183,11 @@
 	"index_reviews": "Reseñas",
 	"index_bottom_hook": "¿¡Qué estás esperando!?",
 	"index_bottom_hook_desc": "Registra tu subdominio. ¡Es gratis!",
-	"blogs_title": "Publicaciones de blog",
-	"blogs_description": "¡Lee las últimas noticias sobre frii.site aquí!",
 	"account_manage_sessions": "Dispositivos conectados",
 	"account_manage_sessions_delete_loader": "Cerrar sesión...",
-	"account_uhoh_annoyance": "¡Oh, no!",
+	"blogs_description": "¡Lee las últimas noticias sobre frii.site aquí!",
+	"blogs_title": "Publicaciones de blog",
+	"account_permissions_lack": "Parece que no tienes los permisos adecuados para hacer esto.",
 	"account_signed_out": "Parece que has cerrado sesión.",
-	"account_permissions_lack": "Parece que no tienes los permisos adecuados para hacer esto."
+	"account_uhoh_annoyance": "¡Oh, no!"
 }
