@@ -114,6 +114,7 @@
 	function signUp() {
 		register(username, password, email, captchaToken)
 			.catch(error => {
+				buttonLoadingState = false;
 				errorTitle = m.signup_fail();
 				if (error instanceof ConflictError) errorDescription = m.signup_fail_username();
 				if (error instanceof UserError) errorDescription = m.signup_fail_email();
@@ -123,6 +124,7 @@
 				throw new Error("Signup failed");
 			})
 			.then(_ => {
+				buttonLoadingState = false;
 				window.gtag?.("event", "sign_up");
 				alertTitle = m.signup_success();
 				alertDescription = m.signup_success_description();
