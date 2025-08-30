@@ -271,57 +271,58 @@
 								<Dialog.Description>{m.mfa_loading()}</Dialog.Description>
 							{:else}
 								<Dialog.Title>Setup 2Fa</Dialog.Title>
-								<Dialog.Description>
-									{m.mfa_qr_guide()}
-								</Dialog.Description>
+								{#if !mfaIsVerified}
+									<Dialog.Description>
+										{m.mfa_qr_guide()}
+									</Dialog.Description>
 
-								<QR backgroundFill="white" data={mfaUrl} />
+									<QR backgroundFill="white" data={mfaUrl} />
+									<Button href={mfaUrl} variant={"link"}
+										>{m.mfa_alternate_link_hint()}</Button>
 
-								<Button href={mfaUrl} variant={"link"}
-									>{m.mfa_alternate_link_hint()}</Button>
+									<h2 class="text-xl font-semibold">
+										{m.mfa_verification_step()}
+									</h2>
 
-								<h2 class="text-xl font-semibold">
-									{m.mfa_verification_step()}
-								</h2>
-
-								<InputOTP.Root
-									bind:value={mfaCode}
-									class="m-auto w-fit"
-									maxlength={6}
-									pattern={REGEXP_ONLY_DIGITS}>
-									{#snippet children({ cells })}
-										<InputOTP.Group>
-											{#each cells as cell (cell)}
-												<InputOTP.Slot
-													class="h-16 text-2xl"
-													aria-invalid={mfaInvalid}
-													cell={cell} />
-											{/each}
-										</InputOTP.Group>
-									{/snippet}
-								</InputOTP.Root>
-							{/if}
-
-							{#if mfaIsVerified}
-								<h2 class="text-xl font-semibold">
-									{m.mfa_backup_warning()}
-								</h2>
-								<ul class="list-disc [&>li]:ml-8">
-									{#each backupCodes as code}
-										<li>{code}</li>
-									{/each}
-								</ul>
+									<InputOTP.Root
+										bind:value={mfaCode}
+										class="m-auto w-fit"
+										maxlength={6}
+										pattern={REGEXP_ONLY_DIGITS}>
+										{#snippet children({ cells })}
+											<InputOTP.Group>
+												{#each cells as cell (cell)}
+													<InputOTP.Slot
+														class="h-16 text-2xl"
+														aria-invalid={mfaInvalid}
+														cell={cell} />
+												{/each}
+											</InputOTP.Group>
+										{/snippet}
+									</InputOTP.Root>
+								{:else}
+									<h2 class="text-xl font-semibold">
+										{m.mfa_backup_warning()}
+									</h2>
+									<ul class="list-disc [&>li]:ml-8">
+										{#each backupCodes as code}
+											<li>{code}</li>
+										{/each}
+									</ul>
+								{/if}
 							{/if}
 						</Dialog.Header>
 
 						<Dialog.Footer>
-							<Button
-								loading={mfaButtonLoading}
-								onclick={_ => {
-									mfaButtonLoading = true;
-									verifyMfa(mfaCode);
-								}}
-								disabled={mfaCode.length != 6}>{m.account_enable_mfa()}</Button>
+							{#if !mfaIsVerified}
+								<Button
+									loading={mfaButtonLoading}
+									onclick={_ => {
+										mfaButtonLoading = true;
+										verifyMfa(mfaCode);
+									}}
+									disabled={mfaCode.length != 6}>{m.account_enable_mfa()}</Button>
+							{/if}
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>

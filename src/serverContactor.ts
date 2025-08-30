@@ -475,9 +475,7 @@ export class ServerContactor {
 	}
 
 	async deleteDomain(
-		domain: string,
-		userId: string,
-		reason: string
+		domain: string
 	): Promise<
 		paths["/domain/delete"]["delete"]["responses"]["200"]["content"]["application/json"]
 	> {
