@@ -1,79 +1,69 @@
 import os
-import re
 import json
+import re
 
-SOURCE_DIR = "src"
+SRC_DIR = "src"
+LOCALE_FILE = "messages/en.json"  # change this
 LOCALES_DIR = "messages"
-LOCALE_FILES = [f for f in os.listdir(LOCALES_DIR) if f.endswith(".json")]
-PROTECTED_KEYS = {"$schema"}  # ❌ Never delete these
+PROTECTED_KEYS = {"$schema"}  # keys to never delete
 
-KEY_PATTERN = re.compile(r"{?\s*m\.([a-zA-Z0-9_]+)\s*\(\s*(?:{[^}]*})?\s*\)\s*}?")
-
-def get_all_files(directory, extensions={".js", ".ts", ".tsx", ".svelte", ".jsx"}):
+def get_all_source_files(directory):
     files = []
     for root, _, filenames in os.walk(directory):
+        if "paraglide" in root:
+            continue
         for filename in filenames:
-            if any(filename.endswith(ext) for ext in extensions):
+            if not filename.endswith(".json"):  # skip JSON files
                 files.append(os.path.join(root, filename))
     return files
 
-def extract_used_keys(file_paths):
-    used_keys = set()
-    for path in file_paths:
-        with open(path, encoding="utf-8", errors="ignore") as f:
+def is_key_used(key, files):
+    pattern = re.compile(r"\b" + re.escape(key) + r"\b")
+    for file in files:
+        with open(file, "r", encoding="utf-8") as f:
             content = f.read()
-            matches = KEY_PATTERN.findall(content)
-            used_keys.update(matches)
-    return used_keys
+            if "api_dashboard" in key or key in content:
+                return True
 
-def load_locale(file_path):
-    with open(file_path, encoding="utf-8") as f:
-        return json.load(f)
+    print(f"Couldnt find key {key}")
+    return False
 
-def write_locale(file_path, data):
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+def clean_locales():
+    # load the canonical keys from en.json
+    en_file = os.path.join(LOCALES_DIR, "en.json")
+    with open(en_file, "r", encoding="utf-8") as f:
+        en_data = json.load(f)
+    canonical_keys = set(en_data.keys())
 
-def prompt_yes_no(message):
-    answer = input(f"\n❓ {message} (yes/no): ").strip().lower()
-    return answer == "yes"
+    # list all JSON files
+    locale_files = [f for f in os.listdir(LOCALES_DIR) if f.endswith(".json")]
 
-def main():
-    print("🔍 Scannin your codebase for used keys fam...\n")
+    # get all source files once
+    source_files = get_all_source_files(SRC_DIR)
 
-    files = get_all_files(SOURCE_DIR)
-    used_keys = extract_used_keys(files)
-    print(f"✅ Found {len(used_keys)} used keys in codebase.")
+    total_removed = 0
 
-    total_keys_removed = 0
-
-    for locale_file in LOCALE_FILES:
+    for locale_file in locale_files:
         path = os.path.join(LOCALES_DIR, locale_file)
-        locale_data = load_locale(path)
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
 
-        all_keys = set(locale_data.keys())
-        clean_keys = all_keys - PROTECTED_KEYS
-        unused_keys = sorted(clean_keys - used_keys)
+        removed_count = 0
+        for key in list(data.keys()):
+            if key in PROTECTED_KEYS:
+                continue
+            if key not in canonical_keys or not is_key_used(key, source_files):
+                del data[key]
+                removed_count += 1
+                print(f"🗑️ Removed {key} from {locale_file}")
 
-        if unused_keys:
-            print(f"\n📂 Locale: {locale_file}")
-            print(f"🗑️ Found {len(unused_keys)} unused keys (excluding protected):")
-            for key in unused_keys:
-                print(f"   - {key}")
+        if removed_count > 0:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+            total_removed += removed_count
 
-            if prompt_yes_no(f"🚨 Delete these from {locale_file}?"):
-                for key in unused_keys:
-                    del locale_data[key]
-                write_locale(path, locale_data)
-                total_keys_removed += len(unused_keys)
-                print(f"✅ Deleted {len(unused_keys)} keys from {locale_file}")
-            else:
-                print(f"⛔ Skipped deleting from {locale_file}")
-        else:
-            print(f"✅ No unused keys in {locale_file} (or only protected)")
-
-    print(f"\n🎯 DONE. Total keys removed: {total_keys_removed}")
+    print(f"\n✅ Done. Total keys removed: {total_removed}")
 
 if __name__ == "__main__":
-    main()
+    clean_locales()
