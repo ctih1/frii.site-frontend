@@ -94,12 +94,6 @@
 	<a class="flex flex-row items-center text-xl font-medium" href="https://guides.frii.site"
 		><MaterialSymbolsMenuBookRounded />{m.guides_link_navbar()}</a>
 </Header>
-<div>
-	<p>
-		You are currently using our new authentication. Please provide feedback at
-		<a href="https://discord.gg/ANeVwQ5yWq">https://discord.gg/ANeVwQ5yWq</a>
-	</p>
-</div>
 <Analytics />
 <Ads></Ads>
 
