@@ -45,6 +45,10 @@
 				<p>{m.guides_link_navbar()}</p>
 			</a>
 
+			<a class="item" href="https://canary.frii.site">
+				<p>Test new website</p>
+			</a>
+
 			<div class="item">
 				<p>Language:</p>
 				<select
@@ -99,6 +103,10 @@
 		<a class="item" href={localizeHref("/report")}>
 			<span class="material-symbols-outlined">flag</span>
 			<p>{m.dashboard_abuse()}</p>
+		</a>
+
+		<a class="item" href="https://canary.frii.site">
+			<p>Test new website</p>
 		</a>
 
 		<a class="item" href="https://guides.frii.site">
