@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import consola from "consola";
 import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
 import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
@@ -22,15 +23,19 @@ const client = createClient<paths>({ baseUrl: serverURL });
 const JWTAuthMiddleware: Middleware = {
 	async onResponse({ request, response, options }) {
 		if (response.status === 460) {
-			console.log("Refreshing auth token");
+			let start = new Date();
+			consola.info("Refreshing session");
 
 			const authCode = await tryRefreshToken();
 
 			if (!authCode) {
+				consola.warn("Failed to refresh session");
 				redirectToLogin(465);
 				throw new Error("Redirecting to login");
 			} else {
-				console.log("was success");
+				let ms = new Date().getTime() - start.getTime();
+				consola.info(`Refreshed session in ${ms}ms`);
+
 				setAuthToken(authCode);
 				let req = request.clone();
 				req.headers.set("X-Auth-Token", authCode);
@@ -175,7 +180,6 @@ export async function login(
 	});
 
 	if (error) {
-		console.log(error);
 		switch (response.status) {
 			case 401:
 				throw new AuthError("Unauthorized. Please check your credentials.");
@@ -614,7 +618,7 @@ export class ServerContactor {
 	}
 
 	async logOut(id?: string | undefined): Promise<void> {
-		console.log(id);
+		consola.info("Logging out session");
 		const { data, error, response } = await client.PATCH(`/logout`, {
 			params: {
 				//@ts-ignore

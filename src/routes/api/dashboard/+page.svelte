@@ -8,6 +8,7 @@
 	import Label from "$lib/components/ui/label/label.svelte";
 	import * as Select from "$lib/components/ui/select/index.js";
 	import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
+	import consola from "consola";
 	import { onMount } from "svelte";
 	import { toast } from "svelte-sonner";
 	import { fade } from "svelte/transition";
@@ -64,7 +65,7 @@
 	}
 
 	function deleteKey(key: Key) {
-		console.log("Deleting key " + key.comment);
+		consola.debug(`Deleting key with command ${key.comment}`);
 		key.decrypted = "Loading..";
 		serverContactor
 			.deleteApiKey(key.hash)

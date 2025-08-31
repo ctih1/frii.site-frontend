@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/sveltekit";
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
+import consola from "consola";
 import { paraglideMiddleware } from "./paraglide/server";
 
 Sentry.init({
@@ -10,7 +11,7 @@ Sentry.init({
 
 const paraglideHandle: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
-		console.log("Running paraglide");
+		consola.debug("Running paraglide");
 		event.request = localizedRequest;
 		return resolve(event, {
 			transformPageChunk: ({ html }) => {

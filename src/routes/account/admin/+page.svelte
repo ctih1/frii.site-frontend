@@ -49,10 +49,6 @@
 
 	let domainDeleteReason = $state("");
 
-	$effect(() => {
-		console.log(reasons.split("\n"));
-	});
-
 	onMount(() => {
 		serverContactor = new ServerContactor(getAuthToken());
 		serverContactor

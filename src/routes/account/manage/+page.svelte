@@ -20,6 +20,7 @@
 	import { Label } from "$lib/components/ui/label";
 	import QR from "@svelte-put/qr/img/QR.svelte";
 	import { REGEXP_ONLY_DIGITS } from "bits-ui";
+	import consola from "consola";
 	import Cookies from "js-cookie";
 	import { onMount } from "svelte";
 	import { toast } from "svelte-sonner";
@@ -28,6 +29,7 @@
 	import MaterialSymbolsDesktopMac from "~icons/material-symbols/desktop-mac";
 	import { m } from "../../../paraglide/messages";
 	import { localizeHref } from "../../../paraglide/runtime";
+
 	let serverContactor: ServerContactor;
 
 	let { data } = $props();
@@ -51,15 +53,18 @@
 	});
 
 	function mfaSetup() {
+		consola.info("Starting MFA setup");
 		// get backup codes & setup authenticator
 		serverContactor
 			.createMfaCode()
 			.catch(error => {
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
+					return;
 				}
 				if (error instanceof ConflictError) {
 					toast.error(m.account_mfa_setup_exists());
+					return;
 				}
 				throw new Error("Failed to begin 2fa setup");
 			})
@@ -77,15 +82,17 @@
 				mfaButtonLoading = false;
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
+					return;
 				}
 				if (error instanceof CodeError) {
-					// modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
-					throw new Error("Invalid code");
+					consola.warn("Invalid MFA code");
+					toast.error(m.code_verif_loading_wrong(), {
+						description: m.code_verif_loading_wrong_desc()
+					});
+					return;
 				}
 				if (error instanceof ConflictError) {
-					console.error(
-						"User has already verified code. user should have not gotten to this point again"
-					);
+					consola.error("MFA code already exist. This shouldn't be able to happen");
 				}
 				// modal.open(m.unhandled_error(), m.generic_fail_description());
 				throw new Error("Failed to verify code");
@@ -103,16 +110,25 @@
 			.deleteMfaCode(usingBackupCode ? undefined : code, usingBackupCode ? code : undefined)
 			.catch(error => {
 				// loader.hide();
+				consola.warn("Failed to remove MFA");
+
 				mfaButtonLoading = false;
 				mfaInvalid = true;
 				if (error instanceof AuthError) {
 					redirectToLogin(460);
+					return;
 				}
 				if (error instanceof CodeError) {
-					// modal.open(m.code_verif_loading_wrong(), m.mfa_fail_hint());
-					throw new Error("Code already used");
+					consola.warn("Invalid MFA code while removing MFA");
+					toast.error(m.code_verif_loading_wrong(), {
+						description: m.mfa_fail_hint()
+					});
+					return;
 				}
-				// modal.open(m.unhandled_error(), m.generic_fail_description());
+
+				toast.error(m.unhandled_error(), {
+					description: m.generic_fail_description()
+				});
 				throw new Error("Failed to verify code");
 			})
 			.then(_ => {
@@ -128,6 +144,7 @@
 		serverContactor
 			.deleteAccount(mfaCode)
 			.catch(err => {
+				consola.warn("Failed to send account deletion email");
 				mfaButtonLoading = false;
 
 				if (err instanceof AuthError) redirectToLogin(460);
@@ -154,6 +171,7 @@
 	}
 	function logOut(session?: Session) {
 		// If session isn't specified, the user is logging themselves out
+		consola.info("Logging out a session");
 		serverContactor
 			.logOut(session?.hash)
 			.catch(err => {
@@ -162,6 +180,7 @@
 				);
 			})
 			.then(_ => {
+				consola.info("Succesfully logged session out");
 				if (!session) {
 					Cookies.remove("auth-token", { secure: !dev });
 					localStorage.removeItem("logged-in");
@@ -426,7 +445,6 @@
 					<Button
 						loading={session.loading}
 						onclick={_ => {
-							console.log("Click!");
 							session.loading = true;
 							logOut(session);
 						}}

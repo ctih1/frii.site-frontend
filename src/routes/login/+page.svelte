@@ -21,6 +21,7 @@
 	import { Input } from "$lib/components/ui/input/index";
 	import { Label } from "$lib/components/ui/label/index";
 	import { REGEXP_ONLY_DIGITS } from "bits-ui";
+	import consola from "consola";
 	import Cookies from "js-cookie";
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
@@ -144,8 +145,7 @@
 				callback: function (token: string) {
 					captchaToken = token;
 					captchaDone = true;
-
-					console.log(`Challenge Success`);
+					consola.info("Solved captcha");
 				}
 			});
 		});
@@ -153,17 +153,16 @@
 
 	$effect(() => {
 		if (!captchaDone) {
-			console.log("Captcha not done...");
+			consola.warn("Captcha not done...");
 			actionButtonDisabled = true;
 			return;
 		}
-		console.log("captcha done");
 
 		if (isLoggingIn) {
 			if (!username || !password) actionButtonDisabled = true;
 			else actionButtonDisabled = false;
 
-			console.log(`Checking login... ${actionButtonDisabled}`);
+			consola.debug(`Checking login...: ${actionButtonDisabled}`);
 		} else {
 			if (
 				repeatPassword !== password ||

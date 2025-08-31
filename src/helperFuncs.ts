@@ -1,4 +1,5 @@
 import { dev } from "$app/environment";
+import consola from "consola";
 import Cookies from "js-cookie";
 import { localizeHref } from "./paraglide/runtime";
 
@@ -8,6 +9,8 @@ export function redirectToLogin(
 	no_reroute: boolean = false
 ): void {
 	setTimeout(() => {
+		consola.info(`Redirecting to login with code ${code}`);
+
 		Cookies.remove("logged-in");
 		Cookies.remove("auth-token", {
 			secure: !dev,
@@ -27,6 +30,8 @@ export function redirectToLogin(
 	}, timeoutSeconds * 1000);
 }
 export function createFile(filename: string, content: string): boolean {
+	consola.info("Creating a downloadable file");
+
 	let a: HTMLElement = document.createElement("a");
 	a.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
 	a.setAttribute("download", filename);
@@ -48,6 +53,7 @@ export function getFlagEmoji(countryCode: String): string {
 }
 
 export function getAuthToken() {
+	consola.debug("Getting auth token");
 	return Cookies.get("auth-token");
 }
 
@@ -55,7 +61,7 @@ export function setAuthToken(token: string) {
 	const tokenExpirationMin = 10;
 	const expires = new Date(new Date().getTime() + tokenExpirationMin * 60000);
 
-	console.log(expires);
+	consola.debug(`Creating a new token that expires on ${expires}`);
 
 	Cookies.set("auth-token", token, {
 		secure: !dev,

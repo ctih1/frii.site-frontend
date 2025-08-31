@@ -8,6 +8,7 @@
 	import { Toaster } from "$lib/components/ui/sonner";
 	import "$lib/nprogress.css";
 	import { sidebarOpen } from "$lib/store";
+	import consola from "consola";
 	import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
@@ -32,12 +33,15 @@
 
 	$effect(() => {
 		if ($navigating) {
+			consola.debug("Starting navigation");
 			NProgress.start();
 		}
 
 		if (!$navigating) {
 			$sidebarOpen = false;
 			NProgress.done();
+			consola.debug("Navigation done");
+
 			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
 		}
 	});
@@ -50,15 +54,19 @@
 			fetch("https://mc.yandex.ru/metrika/tag.js")
 				.then(() => {
 					userRespectsPrivacyInsane = false;
+					consola.info("Adblock not detected");
 				})
 				.catch(() => {
 					userRespectsPrivacyInsane = true;
+					consola.info("Adblock detected");
 				});
 		}
 	});
 
 	function userDoesntWantToSupportUs() {
 		// :(
+		consola.info("User skipped adblock prompt");
+
 		localStorage.setItem("adblock-warn-surpress", "yes");
 		userDoesntCareAndWantsAdblock = true;
 	}

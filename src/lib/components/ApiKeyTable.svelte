@@ -18,7 +18,6 @@
 		return "<span class='material-symbols-outlined'>close</span>";
 	}
 	export let keys: key[];
-	console.log(keys);
 	let dispatcher = createEventDispatcher();
 	let modal: Modal;
 	let keyTarget: string;

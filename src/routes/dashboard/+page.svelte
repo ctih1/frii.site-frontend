@@ -21,6 +21,7 @@
 	} from "../../serverContactor";
 
 	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
+	import consola from "consola";
 	import Cookies from "js-cookie";
 	import { fade } from "svelte/transition";
 
@@ -57,9 +58,13 @@
 	const SupportedTypes = ["A", "CNAME", "TXT", "NS"];
 
 	function deleteDomain(domain: string, button: DashboardDomain) {
+		consola.info(`Deleting domain ${domain}`);
+
 		serverContactor
 			.deleteDomain(domain)
 			.catch(error => {
+				consola.info(`Failed to delete domain ${domain}`);
+
 				button.deletionLoading = false;
 				if (error instanceof AuthError) redirectToLogin(460);
 
@@ -70,6 +75,8 @@
 				throw new Error("Failed to delete domain");
 			})
 			.then(() => {
+				consola.info(`Deleted domain ${domain} succesfully`);
+
 				window.gtag?.("event", "domain_delete");
 				button.deletionLoading = false;
 				toast.success(m.dashboard_delete_success({ domain: domain }), {
@@ -80,9 +87,12 @@
 	}
 
 	function registerDomain(domain: string, type: string) {
+		consola.info("Regsitering a domain");
+
 		serverContactor
 			.registerDomain(domain, type)
 			.catch(error => {
+				consola.warn("Failed to register a domain");
 				registerNewDomainLoading = false;
 				registerErrorTitle = m.dashboard_register_fail({ domain: domain });
 
@@ -102,6 +112,7 @@
 				throw new Error("Failed to register dommain!");
 			})
 			.then(value => {
+				consola.info("Registered domain");
 				registerNewDomainLoading = false;
 				window.gtag?.("event", "domain_register");
 				toast.success(m.dashboard_register_success({ domain: domain }));
@@ -119,9 +130,12 @@
 	}
 
 	function modifyDomain(domain: DashboardDomain) {
+		consola.info(`Modifying domain ${domain.domain}`);
+
 		serverContactor
 			.modifyDomain(domain.domain, domain.value, domain.type)
 			.catch(error => {
+				consola.warn("Failed to modify domain");
 				domain.isLoading = false;
 				domainErrorTitle = m.dashboard_modify_fail({ domain: domain.domain });
 
@@ -137,6 +151,8 @@
 				throw Error("Failed to modify domain."); // stops execution to the .then block
 			})
 			.then(() => {
+				consola.warn("Modified domain");
+
 				window.gtag?.("event", "domain_modify");
 				domain.isLoading = false;
 				toast.success(m.dashboard_modify_success({ domain: domain.domain + ".frii.site" }));
@@ -144,6 +160,8 @@
 	}
 
 	function removeDomain(name: string) {
+		consola.debug("Removing domain from frontend");
+
 		domains = domains.filter(domain => {
 			return domain.domain !== name;
 		});
