@@ -208,5 +208,6 @@
   "api_dashboard_create_success_description": "You can now use this API key.",
   "api_dashboard_loading": "Loading API keys...",
   "dashboard_suffix_warn_title": "Please remove the .frii.site suffix.",
-  "dashboard_suffix_warn_desc": "frii.site automatically adds the \".frii.site\" portion of your domain"
+  "dashboard_suffix_warn_desc": "frii.site automatically adds the \".frii.site\" portion of your domain",
+  "account_api_dashboard_link": "Manage your API Keys"
 }

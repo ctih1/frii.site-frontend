@@ -23,6 +23,7 @@
 		decrypted?: string;
 		visible: boolean;
 		deletionLoading?: boolean;
+		dialogOpen: boolean;
 	}
 
 	const Permissions = ["register", "modify", "delete", "list"] as const;
@@ -58,12 +59,12 @@
 				}
 			})
 			.then(data => {
-				console.log(data);
 				key.decrypted = data ?? "";
 			});
 	}
 
 	function deleteKey(key: Key) {
+		console.log("Deleting key " + key.comment);
 		key.decrypted = "Loading..";
 		serverContactor
 			.deleteApiKey(key.hash)
@@ -122,7 +123,8 @@
 						comment: value.comment,
 						perms: value.perms,
 						domains: value.domains,
-						visible: false
+						visible: false,
+						dialogOpen: false
 					});
 				}
 			});
@@ -212,7 +214,9 @@
 						{/each}
 					</ul>
 
-					<Dialog.Root onOpenChange={open => (dialogOpen = open)} open={dialogOpen}>
+					<Dialog.Root
+						onOpenChange={open => (key.dialogOpen = open)}
+						open={key.dialogOpen}>
 						<Dialog.Trigger>
 							<Button variant={"destructive"}
 								>{m.api_dashboard_delete_action()}</Button>

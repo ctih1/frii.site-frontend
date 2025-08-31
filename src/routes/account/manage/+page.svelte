@@ -13,6 +13,7 @@
 	} from "../../../serverContactor";
 	import type { Session } from "./+page";
 
+	import { goto } from "$app/navigation";
 	import { Button } from "$lib/components/ui/button";
 	import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
 	import { Input } from "$lib/components/ui/input";
@@ -26,6 +27,7 @@
 	import { UAParser } from "ua-parser-js";
 	import MaterialSymbolsDesktopMac from "~icons/material-symbols/desktop-mac";
 	import { m } from "../../../paraglide/messages";
+	import { localizeHref } from "../../../paraglide/runtime";
 	let serverContactor: ServerContactor;
 
 	let { data } = $props();
@@ -390,6 +392,8 @@
 				</Dialog.Content>
 			</Dialog.Root>
 			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
+			<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
+				>{m.account_api_dashboard_link()}</Button>
 			<Button variant={"secondary"} onclick={_ => logOut()}>Log out</Button>
 		</div>
 	</div>
