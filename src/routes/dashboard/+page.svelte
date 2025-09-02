@@ -55,7 +55,7 @@
 	let serverContactor: ServerContactor;
 	let loader: Loader;
 
-	const SupportedTypes = ["A", "CNAME", "TXT", "NS"];
+	const SupportedTypes = ["A", "AAAA", "CNAME", "TXT", "NS"];
 
 	function deleteDomain(domain: string, button: DashboardDomain) {
 		consola.info(`Deleting domain ${domain}`);

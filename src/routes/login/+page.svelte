@@ -66,6 +66,7 @@
 	}
 
 	function resetTurnstile() {
+		consola.debug("Resetting captcha");
 		captchaDone = false;
 		// @ts-ignore
 		turnstile.reset();
@@ -84,11 +85,13 @@
 				} else if (error instanceof MFAError) {
 					if (!requiresMfa) {
 						requiresMfa = true;
+						return;
 					} else {
 						errorDescription = m.mfa_wrong_code_desc();
 					}
 				} else if (error instanceof CaptchaError) errorDescription = m.captcha_fail();
 				else errorDescription = m.login_generic_error();
+				consola.warn(errorDescription);
 
 				resetTurnstile();
 				throw new Error("Login failed");
@@ -122,6 +125,7 @@
 				if (error instanceof CaptchaError) errorDescription = m.captcha_fail();
 
 				resetTurnstile();
+				consola.warn(errorDescription);
 				throw new Error("Signup failed");
 			})
 			.then(_ => {

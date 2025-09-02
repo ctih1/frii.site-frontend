@@ -447,6 +447,9 @@ export class ServerContactor {
 		if (type === "TXT") {
 			value = "test-txt";
 		}
+		if (type === "AAAA") {
+			value = "0000:0000:0000:0000:0000:0000:0000:0000";
+		}
 
 		const { data, error, response } = await client.POST("/domain/register", {
 			body: { domain, type, value },
