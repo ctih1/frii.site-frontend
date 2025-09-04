@@ -2,6 +2,7 @@
 	import { navigating } from "$app/stores";
 	import Ads from "$lib/components/Ads.svelte";
 	import Analytics from "$lib/components/Analytics.svelte";
+	import Banner from "$lib/components/Banner.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import Holder from "$lib/components/Holder.svelte";
@@ -102,6 +103,8 @@
 	<a class="flex flex-row items-center text-xl font-medium" href="https://guides.frii.site"
 		><MaterialSymbolsMenuBookRounded />{m.guides_link_navbar()}</a>
 </Header>
+<Banner />
+
 <Analytics />
 <Ads></Ads>
 
