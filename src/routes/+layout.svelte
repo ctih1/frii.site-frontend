@@ -2,9 +2,11 @@
 	import { navigating } from "$app/stores";
 	import Ads from "$lib/components/Ads.svelte";
 	import Analytics from "$lib/components/Analytics.svelte";
+	import Banner from "$lib/components/Banner.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import Holder from "$lib/components/Holder.svelte";
+
 	import "$lib/nprogress.css";
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
@@ -66,6 +68,7 @@
 	</Holder>
 {/if}
 <Header />
+<Banner></Banner>
 <Analytics />
 <Ads></Ads>
 <svelte:head></svelte:head>
