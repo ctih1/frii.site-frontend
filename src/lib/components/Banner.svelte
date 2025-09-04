@@ -1,15 +1,26 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
+	import consola from "consola";
 	import { getStatus } from "../../serverContactor";
 	let height: number;
 	let loaded: boolean = false;
 	let danger: boolean = false;
 
 	let message: string;
-	getStatus().catch(err => {
-		danger = true;
-		message = "We are experiencing server difficulties.";
-	});
+	getStatus()
+		.catch(err => {
+			consola.error(err);
+			danger = true;
+			message = "We are experiencing server difficulties.";
+		})
+		.then(status => {
+			if (status["message"]) {
+				consola.info("Recieved message on server");
+				hidden = false;
+				danger = true;
+				message = status["message"];
+			}
+		});
 	loaded = true;
 
 	let hidden: boolean = false;
@@ -23,11 +34,13 @@
 			localStorage.getItem("notification-hidden-message") === message;
 		return hidden;
 	}
+
+	calcIsHidden();
 </script>
 
 {#if loaded && danger && !hidden}
 	<div bind:clientHeight={height} class="bar">
-		<span style="margin-left: 1em;" class="material-symbols-outlined">warning</span>
+		<span style="margin-right: 0.5em" class="material-symbols-outlined">warning</span>
 		<p>{message}</p>
 
 		<a
@@ -37,12 +50,10 @@
 				hidden = true;
 			}}>X</a>
 	</div>
-	<div style="height: {height}px" class="pusher"></div>
 {/if}
 
 <style>
 	.bar {
-		position: absolute;
 		display: flex;
 		align-items: center;
 		background-color: var(--primary);
