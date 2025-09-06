@@ -48,7 +48,8 @@ export const load = async () => {
 		maxDomains,
 		mfaEnabled,
 		sessions,
-		maxSubdomains
+		maxSubdomains,
+		permissions: new Map(Object.entries(accountSettings.permissions)) || new Map()
 	};
 };
 

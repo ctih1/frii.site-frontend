@@ -232,7 +232,7 @@
 		<div class="space-y-2">
 			<p class="text-sm">Search</p>
 			<Input bind:value={searchString} id="finder" placeholder="Search term" />
-			<div class="search-buttons flex justify-between [&>button]:w-1/5">
+			<div class="search-buttons space-y-3 space-x-2">
 				<Button loading={loading} onclick={_ => loadByUsername(searchString)}
 					>Find user by name</Button>
 				<Button loading={loading} onclick={_ => loadById(searchString)}

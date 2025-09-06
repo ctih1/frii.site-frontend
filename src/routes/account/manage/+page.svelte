@@ -410,6 +410,9 @@
 					</Dialog.Footer>
 				</Dialog.Content>
 			</Dialog.Root>
+			{#if data.permissions.get("admin") === true}
+				<Button onclick={_ => goto(localizeHref("/account/admin"))}>Admin dashboard</Button>
+			{/if}
 			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
 			<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
 				>{m.account_api_dashboard_link()}</Button>
