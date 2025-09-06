@@ -21,12 +21,6 @@
 
 <form>
 	<div class="button-container">
-		<Dropdown
-			on:optionchange={event => (selectedType = event.detail)}
-			disabled={false}
-			args={"primary"}
-			options={["A", "CNAME", "NS", "TXT"]}
-			defaultValue={"A"}></Dropdown>
 	</div>
 	<input bind:value={domainInput} placeholder="domain" />
 	{#if selectedType !== "TXT"}

@@ -78,11 +78,6 @@
 			{#each domains as domain, index}
 				<tr>
 					<td>
-						<Dropdown
-							on:optionchange={event => (domain.type = event.detail)}
-							defaultValue={domain.type}
-							options={["A", "CNAME", "NS", "TXT"]}
-							disabled={true} />
 					</td>
 					<td>
 						<div class="container">
@@ -186,11 +181,6 @@
 							<td>
 								<div class="mobile-manage">
 									<div style="width: 35%; height: 100%;">
-										<Dropdown
-											on:optionchange={event => (domain.type = event.detail)}
-											defaultValue={domain.type}
-											options={["A", "CNAME", "NS", "TXT"]}
-											disabled={true} />
 									</div>
 									<input type="text" bind:value={domain.value} />
 								</div>
