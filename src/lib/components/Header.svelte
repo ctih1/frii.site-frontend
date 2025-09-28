@@ -1,13 +1,34 @@
 <script lang="ts">
+	import { browser } from "$app/environment";
 	import * as Select from "$lib/components/ui/select/index.js";
 	import { sidebarOpen } from "$lib/store";
+	import consola from "consola";
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
 	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
-	import { getFlagEmoji } from "../../helperFuncs";
+	import { getFlagEmoji, getFlagImageSrcFromEmoji } from "../../helperFuncs";
 	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
 
 	let { children } = $props();
+
+	// cache the images
+	const images = new Map();
+	if (browser) {
+		const flagCache = locales.map(async locale => {
+			const emoji = getFlagEmoji(locale);
+			const url = getFlagImageSrcFromEmoji(emoji);
+			await fetch(url)
+				.then(req => req.blob())
+				.then(data => {
+					const reader = new FileReader();
+					reader.readAsDataURL(data);
+					reader.onloadend = () => {
+						consola.debug(`Loaded locale flag ${locale}`);
+						images.set(locale, reader.result);
+					};
+				});
+		});
+	}
 </script>
 
 <header
@@ -30,12 +51,21 @@
 	{@render children()}
 
 	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
-		<Select.Trigger class="mr-4 ml-auto w-24"
-			>{getFlagEmoji(getLocale())} - {getLocale()}</Select.Trigger>
+		<Select.Trigger class="mr-4 ml-auto w-24">
+			<img
+				src={getFlagImageSrcFromEmoji(getFlagEmoji(getLocale()))}
+				alt={getFlagEmoji(getLocale())}
+				class="w-[2ch]" />
+			{getLocale()}</Select.Trigger>
 		<Select.Content>
 			{#each locales as locale}
 				<Select.Item value={locale} label={getFlagEmoji(locale) + locale}>
-					{getFlagEmoji(locale)} - {locale}
+					{@const codePoint = Array.from(getFlagEmoji(locale))
+						// @ts-ignore
+						.map(c => c.codePointAt(0).toString(16))
+						.join("-")}
+					<img alt={getFlagEmoji(locale)} src={images.get(locale)} class="w-[2ch]" />
+					- {locale}
 				</Select.Item>
 			{/each}
 		</Select.Content>

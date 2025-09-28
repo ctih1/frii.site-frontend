@@ -13,9 +13,10 @@
 			consola.error(err);
 			danger = true;
 			message = "We are experiencing server difficulties.";
+			return;
 		})
 		.then(status => {
-			if (status["message"]) {
+			if (status && status["message"]) {
 				consola.info("Recieved message on server");
 				hidden = false;
 				danger = true;

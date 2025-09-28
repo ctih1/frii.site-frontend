@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { navigating } from "$app/stores";
-	import Ads from "$lib/components/Ads.svelte";
 	import Analytics from "$lib/components/Analytics.svelte";
 	import Banner from "$lib/components/Banner.svelte";
 	import Button from "$lib/components/Button.svelte";
@@ -10,7 +9,6 @@
 	import "$lib/nprogress.css";
 	import { sidebarOpen } from "$lib/store";
 	import consola from "consola";
-	import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 	import NProgress from "nprogress";
 	import { onMount } from "svelte";
 	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
@@ -48,7 +46,6 @@
 	});
 
 	onMount(() => {
-		polyfillCountryFlagEmojis();
 		userDoesntCareAndWantsAdblock = localStorage.getItem("adblock-warn-surpress") !== null;
 
 		if (!userDoesntCareAndWantsAdblock) {
@@ -106,7 +103,6 @@
 <Banner />
 
 <Analytics />
-<Ads></Ads>
 
 <svelte:head>
 	<link
@@ -130,7 +126,7 @@
 	}
 
 	:global(*) {
-		font-family: "Twemoji Country Flags", "Inter", sans-serif;
+		font-family: "Inter", sans-serif;
 	}
 
 	:global(a) {

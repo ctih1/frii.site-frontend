@@ -70,3 +70,12 @@ export function setAuthToken(token: string) {
 		path: "/"
 	});
 }
+
+export function getFlagImageSrcFromEmoji(emoji: string) {
+	const codePoint = Array.from(emoji)
+		// @ts-ignore
+		.map(c => c.codePointAt(0).toString(16))
+		.join("-");
+
+	return `https://twemoji.maxcdn.com/v/latest/svg/${codePoint}.svg`;
+}

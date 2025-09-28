@@ -57,7 +57,6 @@
 		"cabin": "^14.0.0",
 		"clipboard-copy": "^4.0.1",
 		"consola": "^3.4.2",
-		"country-flag-emoji-polyfill": "^0.1.8",
 		"faker-js": "^1.0.0",
 		"i18next": "^23.12.1",
 		"i18next-http-backend": "^2.5.2",
@@ -65,7 +64,6 @@
 		"lodash": "^4.17.21",
 		"openapi-fetch": "^0.13.5",
 		"sentry": "^0.1.2",
-		"svelte-i18n": "^4.0.0",
 		"svelte-i18next": "^2.2.2",
 		"sveltekit-i18n": "^2.4.2",
 		"ua-parser-js": "^1.0.39"
