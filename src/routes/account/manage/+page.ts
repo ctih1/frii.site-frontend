@@ -49,7 +49,8 @@ export const load = async () => {
 		mfaEnabled,
 		sessions,
 		maxSubdomains,
-		permissions: new Map(Object.entries(accountSettings.permissions)) || new Map()
+		permissions: new Map(Object.entries(accountSettings.permissions)) || new Map(),
+		googleLinked: accountSettings["google-connected"]
 	};
 };
 

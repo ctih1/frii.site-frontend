@@ -1,7 +1,8 @@
 <script lang="ts">
-	import Markdown from "@magidoc/plugin-svelte-marked";
-
 	import Holder from "$lib/components/Holder.svelte";
+	import Markdown from "@magidoc/plugin-svelte-marked";
+	import MaterialSymbolsEditCalendar from "~icons/material-symbols/edit-calendar";
+	import MaterialSymbolsScheduleOutline from "~icons/material-symbols/schedule-outline";
 	interface article {
 		date: number;
 		title: string;
@@ -32,17 +33,14 @@
 	<meta content={`${data.body.substring(0, 32)}...`} name="description" />
 </svelte:head>
 
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <Holder>
 	<h1>{data.title}</h1>
 	<div class="data">
 		<p style="opacity: 0.5;">
-			<span class="material-symbols-outlined">edit_calendar</span>
+			<MaterialSymbolsEditCalendar class="mr-2" />
 			{time}
 		</p>
-		<p><span class="material-symbols-outlined">schedule</span>{calculateReadTime()}</p>
+		<p><MaterialSymbolsScheduleOutline class="mr-2" />{calculateReadTime()}</p>
 	</div>
 	<hr style="opacity: 0.1" />
 	<div class="md">
@@ -60,10 +58,6 @@
 		margin-bottom: 0px;
 		margin-top: 0px;
 	}
-	.material-symbols-outlined {
-		margin-right: 10px;
-	}
-
 	.md :global(em) {
 		background-color: var(--offwhite-color);
 	}

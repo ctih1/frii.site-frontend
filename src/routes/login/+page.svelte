@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
+	import { page } from "$app/state";
 	import {
 		AuthError,
 		CaptchaError,
@@ -10,6 +11,7 @@
 		PermissionError,
 		register,
 		resendEmail,
+		serverURL,
 		setAuthToken,
 		UserError
 	} from "$lib";
@@ -20,6 +22,7 @@
 	import * as InputOTP from "$lib/components/ui/input-otp/index.js";
 	import { Input } from "$lib/components/ui/input/index";
 	import { Label } from "$lib/components/ui/label/index";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import { REGEXP_ONLY_DIGITS } from "bits-ui";
 	import consola from "consola";
 	import Cookies from "js-cookie";
@@ -51,6 +54,11 @@
 	let mfaInvalid: boolean = $state(false);
 	let mfaCode: string = $state("");
 
+	let widgetId: string = "";
+
+	// forces svelte to load the div before onMount
+	let turnstileWidget: HTMLDivElement;
+
 	let captchaToken: string = "";
 	let captchaDone: boolean = $state(false);
 
@@ -69,7 +77,7 @@
 		consola.debug("Resetting captcha");
 		captchaDone = false;
 		// @ts-ignore
-		turnstile.reset();
+		turnstile.reset(widgetId);
 	}
 
 	function logIn() {
@@ -84,7 +92,10 @@
 					accountNeedsEmailVerification = true;
 				} else if (error instanceof MFAError) {
 					if (!requiresMfa) {
+						errorTitle = "";
+						errorDescription = "";
 						requiresMfa = true;
+						resetTurnstile();
 						return;
 					} else {
 						errorDescription = m.mfa_wrong_code_desc();
@@ -144,7 +155,7 @@
 		//@ts-ignore
 		turnstile.ready(function () {
 			// @ts-ignore
-			turnstile.render("#turnstile-container", {
+			widgetId = turnstile.render("#turnstile-container", {
 				sitekey: "0x4AAAAAABiGbbOhSUc5vWl9",
 				callback: function (token: string) {
 					captchaToken = token;
@@ -153,6 +164,26 @@
 				}
 			});
 		});
+
+		if (Number(data.statusCode) && Number(data.statusCode) !== 200) {
+			consola.warn(`Login error ${data.statusCode}`);
+			switch (Number(data.statusCode)) {
+				case 469: {
+					errorTitle = m.login_failed();
+					errorDescription = m.social_login_conflict();
+					break;
+				}
+				default: {
+					errorTitle = m.unhandled_error();
+					errorDescription = m.login_generic_error();
+					break;
+				}
+			}
+
+			const url = page.url;
+			url.searchParams.delete("c");
+			history.pushState({ data }, "", url.href);
+		}
 	});
 
 	$effect(() => {
@@ -182,6 +213,10 @@
 </script>
 
 <svelte:head>
+	<link
+		rel="preload"
+		href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+		as="script" />
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </svelte:head>
 
@@ -198,7 +233,6 @@
 	</div>
 	<InlineAlert title={errorTitle} description={errorDescription} variant={"error"} />
 	<InlineAlert title={alertTitle} description={alertDescription} variant={"note"} />
-
 	{#if accountNeedsEmailVerification}
 		<Button
 			variant={"ghost"}
@@ -261,6 +295,7 @@
 				<div class="grid gap-2">
 					<Label for="username">{m.username_placeholder()}</Label>
 					<Input
+						tabindex={1}
 						bind:value={username}
 						id="username"
 						type="text"
@@ -281,6 +316,7 @@
 						<Label for="password">{m.password_placeholder()}</Label>
 						{#if isLoggingIn}
 							<a
+								tabindex="3"
 								transition:fade={{ duration: 100 }}
 								href={localizeHref("/account/recover/")}
 								class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
@@ -289,6 +325,7 @@
 						{/if}
 					</div>
 					<Input
+						tabindex={2}
 						bind:value={password}
 						id="password"
 						type="password"
@@ -337,10 +374,34 @@
 			{isLoggingIn ? m.signup_instead() : m.login_instead()}
 		</a>
 	{/if}
+	{#if !requiresMfa}
+		<Separator />
+		<Button
+			onclick={_ => {
+				const googleAuthUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+				googleAuthUrl.searchParams.set(
+					"client_id",
+					"596305333437-5n6obnm72ir29vi3kier0csqb7redca2.apps.googleusercontent.com"
+				);
+				const redirectUrl = `${serverURL}/auth/google/callback`;
+
+				googleAuthUrl.searchParams.set("redirect_uri", redirectUrl);
+				googleAuthUrl.searchParams.set("response_type", "code");
+				googleAuthUrl.searchParams.set("scope", "openid email profile");
+				googleAuthUrl.searchParams.set(
+					"state",
+					JSON.stringify({ url: window.origin, mode: "login", redirect: redirectUrl })
+				);
+
+				window.location.href = googleAuthUrl.toString();
+			}}
+			class="mt-2 w-full">{m.login_with_google()}</Button>
+	{/if}
 </div>
 
 <div
-	class="m-auto mt-12 w-fit"
+	bind:this={turnstileWidget}
+	class="m-auto mt-6 w-fit"
 	data-sitekey="0x4AAAAAABiGbbOhSUc5vWl9"
 	data-theme="dark"
 	id="turnstile-container">

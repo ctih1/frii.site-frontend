@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import consola from "consola";
+	import MaterialSymbolsLock from "~icons/material-symbols/lock";
 	import { getStatus } from "../../serverContactor";
 	let height: number;
 	let loaded: boolean = false;
@@ -40,7 +41,7 @@
 
 {#if loaded && danger && !hidden}
 	<div bind:clientHeight={height} class="bar">
-		<span style="margin-right: 0.5em" class="material-symbols-outlined">warning</span>
+		<MaterialSymbolsLock />
 		<p>{message}</p>
 
 		<a

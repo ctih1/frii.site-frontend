@@ -3,13 +3,15 @@
 	import { createFile, getAuthToken, redirectToLogin } from "$lib";
 	import * as Dialog from "$lib/components/ui/dialog/index.js";
 	import * as InputOTP from "$lib/components/ui/input-otp/index.js";
+	import MaterialSymbolsLockOutline from "~icons/material-symbols/lock-outline";
 	import MaterialSymbolsSmartphone from "~icons/material-symbols/smartphone";
 	import {
 		AuthError,
 		CodeError,
 		ConflictError,
 		MFAError,
-		ServerContactor
+		ServerContactor,
+		serverURL
 	} from "../../../serverContactor";
 	import type { Session } from "./+page";
 
@@ -207,7 +209,7 @@
 	<p>{m.account_email({ email: data.email })}</p>
 	<h3 id="username">{m.account_username({ username: data.username })}</h3>
 	<div class="permission flex items-center">
-		<span class="material-symbols-outlined">lock</span>
+		<MaterialSymbolsLockOutline />
 		<p>
 			{m.dashboard_permission_domains()}:
 			<strong>{data.maxDomains}</strong>
@@ -215,7 +217,7 @@
 	</div>
 
 	<div class="permission flex items-center">
-		<span class="material-symbols-outlined">lock</span>
+		<MaterialSymbolsLockOutline />
 		<p>
 			{m.account_max_subdomains()}:
 			<strong>{data.maxSubdomains}</strong>
@@ -359,34 +361,36 @@
 							{m.mfa_login_description()}
 						</Dialog.Description>
 
-						{#if usingBackupCode}
-							<div class="space-y-2">
-								<Label for="backup-code">{m.mfa_use_backup()}</Label>
-								<Input bind:value={mfaCode} id="backup-code" />
-							</div>
-						{:else}
-							<InputOTP.Root
-								bind:value={mfaCode}
-								class="m-auto mt-8 w-fit"
-								maxlength={6}
-								pattern={REGEXP_ONLY_DIGITS}>
-								{#snippet children({ cells })}
-									<InputOTP.Group>
-										{#each cells as cell (cell)}
-											<InputOTP.Slot
-												class="h-16 text-2xl"
-												aria-invalid={mfaInvalid}
-												cell={cell} />
-										{/each}
-									</InputOTP.Group>
-								{/snippet}
-							</InputOTP.Root>
-						{/if}
+						{#if data.mfaEnabled}
+							{#if usingBackupCode}
+								<div class="space-y-2">
+									<Label for="backup-code">{m.mfa_use_backup()}</Label>
+									<Input bind:value={mfaCode} id="backup-code" />
+								</div>
+							{:else}
+								<InputOTP.Root
+									bind:value={mfaCode}
+									class="m-auto mt-8 w-fit"
+									maxlength={6}
+									pattern={REGEXP_ONLY_DIGITS}>
+									{#snippet children({ cells })}
+										<InputOTP.Group>
+											{#each cells as cell (cell)}
+												<InputOTP.Slot
+													class="h-16 text-2xl"
+													aria-invalid={mfaInvalid}
+													cell={cell} />
+											{/each}
+										</InputOTP.Group>
+									{/snippet}
+								</InputOTP.Root>
+							{/if}
 
-						<Button
-							onclick={_ => (usingBackupCode = !usingBackupCode)}
-							variant={"ghost"}
-							>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
+							<Button
+								onclick={_ => (usingBackupCode = !usingBackupCode)}
+								variant={"ghost"}
+								>{#if usingBackupCode}{m.mfa_use_code()}{:else}{m.mfa_use_backup()}{/if}</Button>
+						{/if}
 					</Dialog.Header>
 
 					<Dialog.Footer>
@@ -404,8 +408,9 @@
 								handleDelete(mfaCode);
 							}}
 							disabled={!deleteAccountChecked ||
-								(!usingBackupCode && mfaCode.length != 6) ||
-								(usingBackupCode && mfaCode.length < 16)}
+								(data.mfaEnabled &&
+									((!usingBackupCode && mfaCode.length != 6) ||
+										(usingBackupCode && mfaCode.length < 16)))}
 							variant={"destructive"}>{m.account_delete_account()}</Button>
 					</Dialog.Footer>
 				</Dialog.Content>
@@ -413,10 +418,41 @@
 			{#if data.permissions.get("admin") === true}
 				<Button onclick={_ => goto(localizeHref("/account/admin"))}>Admin dashboard</Button>
 			{/if}
+			{#if !data.googleLinked}
+				<Button
+					onclick={async () => {
+						await serverContactor.getOAuthLinkingCode().then(data => {
+							const googleAuthUrl = new URL(
+								"https://accounts.google.com/o/oauth2/v2/auth"
+							);
+							googleAuthUrl.searchParams.set(
+								"client_id",
+								"596305333437-5n6obnm72ir29vi3kier0csqb7redca2.apps.googleusercontent.com"
+							);
+							const redirectUrl = `${serverURL}/auth/google/callback`;
+							googleAuthUrl.searchParams.set("redirect_uri", redirectUrl);
+							googleAuthUrl.searchParams.set("response_type", "code");
+							googleAuthUrl.searchParams.set("scope", "openid email profile");
+
+							console.log(data);
+							googleAuthUrl.searchParams.set(
+								"state",
+								JSON.stringify({
+									url: window.origin,
+									mode: "link",
+									"linking-code": data["code"],
+									redirect: redirectUrl
+								})
+							);
+
+							window.location.href = googleAuthUrl.toString();
+						});
+					}}>{m.link_google()}</Button>
+			{/if}
 			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
 			<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
 				>{m.account_api_dashboard_link()}</Button>
-			<Button variant={"secondary"} onclick={_ => logOut()}>Log out</Button>
+			<Button variant={"secondary"} onclick={_ => logOut()}>{m.account_log_out()}</Button>
 		</div>
 	</div>
 

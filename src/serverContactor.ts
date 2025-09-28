@@ -1143,4 +1143,28 @@ export class ServerContactor {
 			}
 		}
 	}
+
+	async getOAuthLinkingCode() {
+		const { data, error, response } = await client.POST("/auth/link", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 403:
+					throw new PermissionError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user permission");
+			}
+		}
+
+		return data;
+	}
 }

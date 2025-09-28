@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	const dispatch = createEventDispatcher();
 	export let options: Array<String>;
 	export let defaultValue: string;
@@ -67,7 +66,6 @@
 </div>
 
 <style>
-	@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 	li:not(:hover) {
 		transition: 100ms ease-in-out;
 	}

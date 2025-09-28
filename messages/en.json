@@ -209,5 +209,9 @@
   "api_dashboard_loading": "Loading API keys...",
   "dashboard_suffix_warn_title": "Please remove the .frii.site suffix.",
   "dashboard_suffix_warn_desc": "frii.site automatically adds the \".frii.site\" portion of your domain",
-  "account_api_dashboard_link": "Manage your API Keys"
+  "account_api_dashboard_link": "Manage your API Keys",
+  "social_login_conflict": "Email has already been linked to an existing account! Please connect your account from the settings.",
+  "login_with_google": "Or continue with Google",
+  "link_google": "Link Google account",
+  "account_log_out": "Log out"
 }

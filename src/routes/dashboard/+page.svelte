@@ -7,7 +7,6 @@
 	import * as Select from "$lib/components/ui/select/index.js";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
-	import { onMount } from "svelte";
 	import { toast } from "svelte-sonner";
 	import { redirectToLogin } from "../../helperFuncs";
 	import { m } from "../../paraglide/messages";
@@ -20,6 +19,7 @@
 		ServerContactor
 	} from "../../serverContactor";
 
+	import { browser } from "$app/environment";
 	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
 	import consola from "consola";
 	import Cookies from "js-cookie";
@@ -170,7 +170,7 @@
 		domains = [...domains];
 	}
 
-	onMount(() => {
+	if (browser) {
 		serverContactor = new ServerContactor(
 			getAuthToken() ?? "",
 			localStorage.getItem("server_url")
@@ -205,7 +205,7 @@
 					});
 				}
 			});
-	});
+	}	
 
 	$effect(() => {
 		if (newDomain.includes(".frii.site")) {

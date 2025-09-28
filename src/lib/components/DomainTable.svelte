@@ -3,7 +3,6 @@
 	import { createEventDispatcher } from "svelte";
 	import { m } from "../../paraglide/messages";
 	import Button from "./Button.svelte";
-	import Dropdown from "./Dropdown.svelte";
 	import Modal from "./Modal.svelte";
 	import Placeholder from "./Placeholder.svelte";
 
@@ -39,10 +38,6 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} />
 
-<link
-	rel="preload"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
 {#if !isMobile}
 	<table>
 		<thead>
@@ -77,8 +72,7 @@
 			{/if}
 			{#each domains as domain, index}
 				<tr>
-					<td>
-					</td>
+					<td> </td>
 					<td>
 						<div class="container">
 							{#if domain.type !== "TXT"}
@@ -145,7 +139,7 @@
 			{#each domains as domain, index}
 				<tr>
 					<td>
-						<div class="container domain-row">
+						<div class="domain-row container">
 							{#if domain.type !== "TXT"}
 								<div style="width: 75%" class="container">
 									<input disabled type="text" bind:value={domain.domain} />
@@ -157,7 +151,7 @@
 										value=".frii.site" />
 								</div>
 							{:else}
-								<div style="width: 100%" class="container domain-row">
+								<div style="width: 100%" class="domain-row container">
 									<input disabled type="text" bind:value={domain.domain} />
 								</div>
 							{/if}
@@ -180,8 +174,7 @@
 						<tr class="mobile-expanded">
 							<td>
 								<div class="mobile-manage">
-									<div style="width: 35%; height: 100%;">
-									</div>
+									<div style="width: 35%; height: 100%;"></div>
 									<input type="text" bind:value={domain.value} />
 								</div>
 							</td>
