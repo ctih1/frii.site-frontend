@@ -75,7 +75,7 @@
 	<div
 		transition:fade={{ duration: 100 }}
 		id="popout"
-		class="popout bg-card absolute z-50 hidden h-full w-full max-w-96 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
+		class="popout bg-card absolute z-50 hidden h-full w-full max-w-60 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
 		{@render children()}
 	</div>
 {/if}

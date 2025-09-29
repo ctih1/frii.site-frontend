@@ -213,5 +213,6 @@
   "social_login_conflict": "Email has already been linked to an existing account! Please connect your account from the settings.",
   "login_with_google": "Or continue with Google",
   "link_google": "Link Google account",
-  "account_log_out": "Log out"
+  "account_log_out": "Log out",
+  "login_fail_signout": "Looks like you were signed out"
 }

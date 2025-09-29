@@ -31,7 +31,7 @@ const JWTAuthMiddleware: Middleware = {
 			if (!authCode) {
 				consola.warn("Failed to refresh session");
 				redirectToLogin(465);
-				throw new Error("Redirecting to login");
+				throw new RefreshError("Redirecting to login");
 			} else {
 				let ms = new Date().getTime() - start.getTime();
 				consola.info(`Refreshed session in ${ms}ms`);
@@ -98,6 +98,12 @@ export class AuthError extends Error {
 	constructor(message: string) {
 		super(message);
 		this.name = "AuthError";
+	}
+}
+export class RefreshError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "RefreshError";
 	}
 }
 export class MFAError extends Error {

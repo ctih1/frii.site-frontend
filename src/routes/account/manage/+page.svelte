@@ -357,11 +357,11 @@
 				<Dialog.Content>
 					<Dialog.Header>
 						<Dialog.Title>{m.account_delete_account()}</Dialog.Title>
-						<Dialog.Description>
-							{m.mfa_login_description()}
-						</Dialog.Description>
-
 						{#if data.mfaEnabled}
+							<Dialog.Description>
+								{m.mfa_login_description()}
+							</Dialog.Description>
+
 							{#if usingBackupCode}
 								<div class="space-y-2">
 									<Label for="backup-code">{m.mfa_use_backup()}</Label>

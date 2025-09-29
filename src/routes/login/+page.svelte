@@ -154,9 +154,15 @@
 		// if using synchronous loading, will be called once the DOM is ready
 		//@ts-ignore
 		turnstile.ready(function () {
+			let container = document.getElementById("turnstile-container");
+
+			if (container) {
+				container.innerHTML = "";
+			}
 			// @ts-ignore
 			widgetId = turnstile.render("#turnstile-container", {
 				sitekey: "0x4AAAAAABiGbbOhSUc5vWl9",
+				theme: "dark",
 				callback: function (token: string) {
 					captchaToken = token;
 					captchaDone = true;
@@ -168,6 +174,13 @@
 		if (Number(data.statusCode) && Number(data.statusCode) !== 200) {
 			consola.warn(`Login error ${data.statusCode}`);
 			switch (Number(data.statusCode)) {
+				case 460:
+				case 465: {
+					alertTitle = m.login_failed();
+					alertDescription = m.login_fail_signout();
+					break;
+				}
+
 				case 469: {
 					errorTitle = m.login_failed();
 					errorDescription = m.social_login_conflict();
@@ -399,10 +412,6 @@
 	{/if}
 </div>
 
-<div
-	bind:this={turnstileWidget}
-	class="m-auto mt-6 w-fit"
-	data-sitekey="0x4AAAAAABiGbbOhSUc5vWl9"
-	data-theme="dark"
-	id="turnstile-container">
+<div bind:this={turnstileWidget} class="m-auto mt-6 w-fit" id="turnstile-container">
+	<p>Loading captcha..</p>
 </div>

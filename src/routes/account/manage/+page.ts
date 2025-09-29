@@ -1,4 +1,4 @@
-import { AuthError, getAuthToken, redirectToLogin, ServerContactor } from "$lib";
+import { AuthError, getAuthToken, redirectToLogin, RefreshError, ServerContactor } from "$lib";
 
 export interface Session {
 	hash: string;
@@ -14,11 +14,12 @@ export const load = async () => {
 		var accountSettings = await serverContactor.getAccountSettings();
 	} catch (err) {
 		if (err instanceof AuthError) redirectToLogin(460);
+		else if (err instanceof RefreshError) redirectToLogin(465);
 		else {
 			console.error(err);
 			redirectToLogin(500);
 		}
-		throw new Error("Failed to get account data");
+		return;
 	}
 
 	const username = accountSettings.username;
