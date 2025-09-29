@@ -1,9 +1,9 @@
 import { browser } from "$app/environment";
 import consola from "consola";
+import Cookies from "js-cookie";
 import createClient, { type Middleware } from "openapi-fetch";
 import type { paths } from "./api";
 import { getAuthToken, redirectToLogin, setAuthToken } from "./helperFuncs";
-
 export let serverURL = "https://api.frii.site";
 if (browser) {
 	let subdomain = window.location.hostname.split(".")[0];
@@ -214,7 +214,7 @@ export async function register(
 	const { data, error, response } = await client.POST("/sign-up", {
 		body: { username, password, email, language: navigator.language },
 		params: {
-			header: { "x-captcha-code": captcha }
+			header: { "x-captcha-code": captcha, "x-refer-code": Cookies.get("referrer") }
 		}
 	});
 
@@ -656,6 +656,39 @@ export class ServerContactor {
 		return;
 	}
 
+	async createReferral(requestedCode: string): Promise<void> {
+		consola.info("Logging out session");
+		const { error, response } = await client.POST(`/referral`, {
+			params: {
+				query: {
+					code: requestedCode
+				},
+				//@ts-ignore
+
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			}
+		});
+
+		if (error) {
+			//@ts-ignore
+			switch (response.status) {
+				case 400:
+					throw new TypeError("code is too long or too short");
+				case 409:
+					throw new CodeError("Code has been taken");
+				case 412:
+					throw new UserError("User already has a referral code");
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error(`Failed to delete session Status code: ${response.status}`);
+			}
+		}
+
+		return;
+	}
 	async getApiKeys() {
 		const { data, error, response } = await client.GET("/api/get-keys", {
 			params: {

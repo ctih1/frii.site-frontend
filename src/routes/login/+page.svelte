@@ -171,6 +171,10 @@
 			});
 		});
 
+		if (data.referrerCode) {
+			Cookies.set("referrer", data.referrerCode, { expires: 14 });
+		}
+
 		if (Number(data.statusCode) && Number(data.statusCode) !== 200) {
 			consola.warn(`Login error ${data.statusCode}`);
 			switch (Number(data.statusCode)) {

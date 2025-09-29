@@ -11,13 +11,15 @@
 		ConflictError,
 		MFAError,
 		ServerContactor,
-		serverURL
+		serverURL,
+		UserError
 	} from "../../../serverContactor";
 	import type { Session } from "./+page";
 
 	import { goto } from "$app/navigation";
 	import { Button } from "$lib/components/ui/button";
 	import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
+	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
 	import QR from "@svelte-put/qr/img/QR.svelte";
@@ -49,6 +51,14 @@
 
 	let dialogOpen: boolean = $state(false);
 	let deleteOpen: boolean = $state(false);
+
+	let referralCode: string = $state("");
+	let referralInvalid: boolean = $state(false);
+	let referralCreating: boolean = $state(false);
+
+	let alertTitle = $state("");
+	let alertDescription = $state("");
+	let alertTrigger = $state(0);
 
 	onMount(() => {
 		serverContactor = new ServerContactor(getAuthToken() ?? null);
@@ -201,6 +211,16 @@
 		usingBackupCode; // Since svelte5 doesnt let you declare dependencies $effect
 		dialogOpen; // same with this
 		mfaCode = "";
+	});
+
+	$effect(() => {
+		if (referralCode.length > 50 || referralCode.length < 3) {
+			referralInvalid = true;
+		} else if (!/^[a-zA-Z0-9-]+$/.test(referralCode)) {
+			referralInvalid = true;
+		} else {
+			referralInvalid = false;
+		}
 	});
 </script>
 
@@ -454,6 +474,58 @@
 				>{m.account_api_dashboard_link()}</Button>
 			<Button variant={"secondary"} onclick={_ => logOut()}>{m.account_log_out()}</Button>
 		</div>
+	</div>
+
+	<InlineAlert variant={"error"} title={alertTitle} description={alertDescription} />
+	<div class="referrals mt-4 space-y-2">
+		<h1 class="text-2xl font-semibold">Referrals</h1>
+		{#if data.referralCode}
+			{@const link = `${window.origin}/login?ref=${data.referralCode}`}
+			<div>
+				<h2 class="bg-background w-fit rounded-md p-2 text-xl font-semibold">
+					{data.referralCode}
+				</h2>
+				<a class="ml-4" href={link}>{link}</a>
+				<p class="ml-4"><b>Referred users</b>: {data.referredPeople}</p>
+			</div>
+		{:else}
+			<div class="space-y-2">
+				<Label for="referral">Custom referral code</Label>
+				<Input
+					disabled={referralCreating}
+					bind:value={referralCode}
+					maxlength={50}
+					aria-invalid={referralInvalid}
+					class="max-w-96"
+					id="referral"
+					placeholder="referral-code" />
+			</div>
+			<Button
+				onclick={() => {
+					referralCreating = true;
+
+					serverContactor
+						.createReferral(referralCode)
+						.catch(err => {
+							if (err instanceof UserError || err instanceof TypeError) {
+								alertTitle = m.unhandled_error();
+								alertDescription = m.generic_fail_description();
+							} else if (err instanceof CodeError) {
+								alertTitle = m.referral_create_fail();
+								alertDescription = m.referral_create_fail_used();
+							}
+							alertTrigger++;
+							referralCreating = false;
+
+							return;
+						})
+						.then(_ => {
+							window.location.reload();
+							referralCreating = false;
+						});
+				}}
+				loading={referralCreating}>Create</Button>
+		{/if}
 	</div>
 
 	<div class="mt-4 space-y-4">
