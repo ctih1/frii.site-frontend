@@ -478,7 +478,7 @@
 
 	<InlineAlert variant={"error"} title={alertTitle} description={alertDescription} />
 	<div class="referrals mt-4 space-y-2">
-		<h1 class="text-2xl font-semibold">Referrals</h1>
+		<h1 class="text-2xl font-semibold">{m.referral_title()}</h1>
 		{#if data.referralCode}
 			{@const link = `${window.origin}/login?ref=${data.referralCode}`}
 			<div>
@@ -486,11 +486,11 @@
 					{data.referralCode}
 				</h2>
 				<a class="ml-4" href={link}>{link}</a>
-				<p class="ml-4"><b>Referred users</b>: {data.referredPeople}</p>
+				<p class="ml-4">{m.referred_users({ usersNum: data.referredPeople })}</p>
 			</div>
 		{:else}
 			<div class="space-y-2">
-				<Label for="referral">Custom referral code</Label>
+				<Label for="referral">{m.referral_creation_title()}</Label>
 				<Input
 					disabled={referralCreating}
 					bind:value={referralCode}
@@ -524,7 +524,7 @@
 							referralCreating = false;
 						});
 				}}
-				loading={referralCreating}>Create</Button>
+				loading={referralCreating}>{m.api_dashboard_create_action()}</Button>
 		{/if}
 	</div>
 

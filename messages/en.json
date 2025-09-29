@@ -216,5 +216,8 @@
   "account_log_out": "Log out",
   "login_fail_signout": "Looks like you were signed out",
   "referral_create_fail": "Failed to create a referral code",
-  "referral_create_fail_used": "Referral code already exists!"
+  "referral_create_fail_used": "Referral code already exists!",
+  "referral_title": "Referrals",
+  "referred_users": "Referred users: {usersNum}",
+  "referral_creation_title": "Custom referral code"
 }
