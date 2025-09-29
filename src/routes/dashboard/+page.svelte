@@ -205,7 +205,7 @@
 					});
 				}
 			});
-	}	
+	}
 
 	$effect(() => {
 		if (newDomain.includes(".frii.site")) {
@@ -243,9 +243,9 @@
 		className="mb-6 mt-6"
 		trigger={alertUpdate} />
 
-	<div class="domains space-y-2">
+	<div class="domains space-y-4">
 		{#each domainsLoaded ? domains : new Array(data.domainAmount) as domain}
-			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-x-1">
+			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-y-0.5 space-x-1">
 				<div class="basic-controls flex w-2/5 space-x-1">
 					{#if domainsLoaded}
 						<Select.Root type="single" name="domain" bind:value={domain.type}>

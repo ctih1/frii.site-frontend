@@ -407,7 +407,12 @@
 				googleAuthUrl.searchParams.set("scope", "openid email profile");
 				googleAuthUrl.searchParams.set(
 					"state",
-					JSON.stringify({ url: window.origin, mode: "login", redirect: redirectUrl })
+					JSON.stringify({
+						url: window.origin,
+						mode: "login",
+						redirect: redirectUrl,
+						referrer: Cookies.get("referrer")
+					})
 				);
 
 				window.location.href = googleAuthUrl.toString();
