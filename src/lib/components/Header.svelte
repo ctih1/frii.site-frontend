@@ -81,9 +81,15 @@
 {/if}
 
 <style>
+	:global(#header svg) {
+		display: none;
+	}
 	@media (max-width: 960px) {
 		:global(#header a) {
 			display: none;
+		}
+		:global(#header svg) {
+			display: block;
 		}
 		#header {
 			justify-content: space-between;
