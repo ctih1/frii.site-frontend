@@ -479,6 +479,7 @@
 	<InlineAlert variant={"error"} title={alertTitle} description={alertDescription} />
 	<div class="referrals mt-4 space-y-2">
 		<h1 class="text-2xl font-semibold">{m.referral_title()}</h1>
+		<a href="https://guides.frii.site/faq/referrals.html">{m.blog_read()}</a>
 		{#if data.referralCode}
 			{@const link = `${window.origin}/login?ref=${data.referralCode}`}
 			<div>

@@ -64,8 +64,6 @@
 			<div class="text ml-32 w-3/5">
 				<h2 class="w-fit text-5xl font-semibold">{m.home_selling_point_always_free()}</h2>
 				<p class="mt-4 text-xl">{m.home_selling_point_always_free_description()}</p>
-				<Button class="mt-6" href={localizeHref("/terms/domains")} variant={"outline"}
-					>Read our domain guidelines</Button>
 			</div>
 			<div class="visual w-2/5"></div>
 		</div>
