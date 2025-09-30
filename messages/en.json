@@ -138,7 +138,7 @@
 	"vercel_verification_generic": "Completing verification...",
 	"vercel_verification_queue": "Your position in queue: {position}",
 	"vercel_verification_queue_join": "Joining queue...",
-	"vercel_verification_queue_over": "Succesfully verified! Please click 'refresh' over on Vercel.",
+	"vercel_verification_queue_over": "Successfully verified! Please click 'refresh' over on Vercel.",
 	"vercel_verification_queue_join_action_button": "Join queue",
 	"guides_link_navbar": "Guides",
 	"login_mfa_required": "Two factor authentication",
