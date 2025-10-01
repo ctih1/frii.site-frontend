@@ -138,7 +138,7 @@
 	"vercel_verification_generic": "Завършване на проверката...",
 	"vercel_verification_queue": "Вашата позиция в опашката: {position}",
 	"vercel_verification_queue_join": "Присъединяване към опашката...",
-	"vercel_verification_queue_over": "Успешно потвърдено! Моля, кликнете върху „Обнови“ във Vercel.",
 	"vercel_verification_queue_join_action_button": "Присъединяване към опашка",
-	"guides_link_navbar": "Ръководства"
+	"guides_link_navbar": "Ръководства",
+	"vercel_verification_queue_over": "Успешно потвърдено! Моля, кликнете върху „Обнови“ във Vercel."
 }

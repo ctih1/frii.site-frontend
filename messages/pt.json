@@ -138,7 +138,7 @@
 	"vercel_verification_generic": "Concluindo a verificação...",
 	"vercel_verification_queue": "Sua posição na fila: {position}",
 	"vercel_verification_queue_join": "Entrando na fila...",
-	"vercel_verification_queue_over": "Verificado com sucesso! Clique em \"atualizar\" no Vercel.",
 	"vercel_verification_queue_join_action_button": "Entrar na fila",
-	"guides_link_navbar": "Guias"
+	"guides_link_navbar": "Guias",
+	"vercel_verification_queue_over": "Verificado com sucesso! Clique em \"atualizar\" no Vercel."
 }

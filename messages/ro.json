@@ -138,7 +138,6 @@
 	"vercel_verification_generic": "Se finalizează verificarea...",
 	"vercel_verification_queue": "Poziția ta în coadă: {position}",
 	"vercel_verification_queue_join": "Se alătură cozii...",
-	"vercel_verification_queue_over": "Verificat cu succes! Vă rugăm să faceți clic pe „Actualizare” pe Vercel.",
 	"vercel_verification_queue_join_action_button": "Alătură-te cozii",
 	"guides_link_navbar": "Ghizi",
 	"login_mfa_required": "2FA",
@@ -165,5 +164,6 @@
 	"mfa_already_disabled": "2FA deja este oprit.",
 	"mfa_recovery_send": "Opriți 2FA",
 	"captcha_fail": "Rezolvați captacha-ul înainte să continuați",
-	"mfa_login_description": "Introduceți codul one time din aplicația de autentificare"
+	"mfa_login_description": "Introduceți codul one time din aplicația de autentificare",
+	"vercel_verification_queue_over": "Verificat cu succes! Vă rugăm să faceți clic pe „Actualizare” pe Vercel."
 }
