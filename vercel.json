@@ -9,8 +9,5 @@
                 }
             ]
         }
-    ],
-    "rewrites": [
-        { "source": "/guides/:path*", "destination": "https://guides.frii.site/:path*" }
     ]
 }

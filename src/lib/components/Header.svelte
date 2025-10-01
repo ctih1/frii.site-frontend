@@ -6,17 +6,23 @@
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
 	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
-	import { getFlagEmoji, getFlagImageSrcFromEmoji } from "../../helperFuncs";
+	import { getFlagEmoji } from "../../helperFuncs";
 	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
 
 	let { children } = $props();
 
 	// cache the images
-	const images = new Map();
+	const images = $state(new Map());
 	if (browser) {
 		const flagCache = locales.map(async locale => {
-			const emoji = getFlagEmoji(locale);
-			const url = getFlagImageSrcFromEmoji(emoji);
+			let flag = locale.toString();
+			if (locale === "en") {
+				flag = "gb";
+			} else if (locale === "ar") {
+				flag = "sa";
+			}
+
+			const url = `https://flagcdn.com/${flag}.svg`;
 			await fetch(url)
 				.then(req => req.blob())
 				.then(data => {
@@ -52,10 +58,12 @@
 
 	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
 		<Select.Trigger class="mr-4 ml-auto w-24">
-			<img
-				src={getFlagImageSrcFromEmoji(getFlagEmoji(getLocale()))}
-				alt={getFlagEmoji(getLocale())}
-				class="w-[2ch]" />
+			{#if images.size > 2}
+				<img
+					src={images.get(getLocale())}
+					alt={getFlagEmoji(getLocale())}
+					class="w-[2ch] rounded-md" />
+			{/if}
 			{getLocale()}</Select.Trigger>
 		<Select.Content>
 			{#each locales as locale}

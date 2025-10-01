@@ -34,17 +34,18 @@
 				{m.home_description()}
 			</p>
 
-			<div class="details mt-12 mb-12 flex w-full justify-between text-3xl">
+			<div
+				class="details mt-12 mb-12 flex w-full justify-between text-3xl [&>div]:items-center">
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class=" text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded class=" h-8 text-blue-600" />
 					<Label class="text-lg">{m.home_talking_point_1()}</Label>
 				</div>
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded class="h-8 text-blue-600" />
 					<Label class="text-lg">{m.home_talking_point_2()}</Label>
 				</div>
 				<div class="item flex">
-					<MaterialSymbolsCheckCircleRounded class="text-blue-600" />
+					<MaterialSymbolsCheckCircleRounded class="h-8 text-blue-600" />
 					<Label class="text-lg">{m.home_talking_point_3()}</Label>
 				</div>
 			</div>
