@@ -138,7 +138,7 @@
 	"vercel_verification_generic": "Завершение проверки...",
 	"vercel_verification_queue": "Ваша позиция в очереди: {position}",
 	"vercel_verification_queue_join": "Присоединение к очереди...",
-	"vercel_verification_queue_over": "Успешно проверено! Нажмите «обновить» на Vercel.",
 	"vercel_verification_queue_join_action_button": "Присоединиться к очереди",
-	"guides_link_navbar": "Руководства"
+	"guides_link_navbar": "Руководства",
+	"vercel_verification_queue_over": "Успешно проверено! Нажмите «обновить» на Vercel."
 }
