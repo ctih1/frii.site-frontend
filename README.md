@@ -64,7 +64,7 @@ More info can be found on [our wiki](https://guides.frii.site)
 ## Languages available
 
 | Language   | Contributor                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------|
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Finnish    | [ctih1](https://github.com/ctih1)                                                                                       |
 | English    | [ctih1](https://github.com/ctih1)                                                                                       |
 | German     | [Lugosieben](https://github.com/lugosieben) and [Planethac](https://github.com/Planethac)                               |
@@ -85,7 +85,7 @@ frii.site is an open-source project written in Svelte(Kit). We use MongoDB for o
 
 ## API
 
-Our API is completely free to use. To get started, [read our post about it](https://github.com/ctih1/frii.site-frontend/discussions/90). If you wish to create apps using our API, you can submit them to the [partner program](https://github.com/ctih1/frii.site-frontend/discussions/67) to get rewards.
+Our API is completely free to use. To get started, [read our wiki page about it](https://guides.frii.site/guides/api.html). If you wish to create apps using our API, you can submit them to the [partner program](https://github.com/ctih1/frii.site-frontend/discussions/67) to get rewards.
 
 ## Contributing
 
