@@ -19,7 +19,7 @@
 	"index_goto_dashboard": "Siirry kojelautaan",
 	"dashboard_title": "Kojelauta",
 	"dashboard_your_domains": "Verkkotunnuksesi",
-	"dashboard_domain_explanation": "Tässä on Verkkotunnuksesi. Voit muokkaa parametrejä klikkaamalla vastaavia kenttiä",
+	"dashboard_domain_explanation": "Tässä on Verkkotunnuksesi. Voit muuttaa kenttiä klikkaamalla niistä",
 	"dashboard_delete_error": "Verkkotunnuksen poistaminen epäonnistui",
 	"unhandled_error": "Virhe tapahtui.",
 	"dashboard_delete_success": "Poistetiin {domain}",
