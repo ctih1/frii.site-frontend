@@ -1,6 +1,23 @@
 <!doctype html>
-<html class="dark" lang="%lang%">
+<html lang="%lang%">
 	<head>
+		<script>
+			const theme = localStorage.getItem("theme");
+			if (theme === "light") {
+				document.documentElement.classList.remove("dark");
+			} else if (theme === "dark") {
+				document.documentElement.classList.add("dark");
+			} else if (theme === "auto") {
+				if (
+					window.matchMedia &&
+					window.matchMedia("(prefers-color-scheme: dark)").matches
+				) {
+					document.documentElement.classList.add("dark");
+				} else {
+					document.documentElement.classList.add("light");
+				}
+			}
+		</script>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" type="image/png" sizes="any" />

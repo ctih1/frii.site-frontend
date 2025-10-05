@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { navigating } from "$app/stores";
+	import { updateThemeBody } from "$lib";
 	import Analytics from "$lib/components/Analytics.svelte";
 	import Banner from "$lib/components/Banner.svelte";
 	import Button from "$lib/components/Button.svelte";
@@ -59,6 +60,15 @@
 					consola.info("Adblock detected");
 				});
 		}
+
+		window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", _ => {
+			consola.info("Recieved theme update");
+			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				updateThemeBody("dark");
+			} else {
+				updateThemeBody("light");
+			}
+		});
 	});
 
 	function userDoesntWantToSupportUs() {

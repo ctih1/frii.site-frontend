@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import * as Select from "$lib/components/ui/select/index.js";
-	import { sidebarOpen } from "$lib/store";
+	import { activeTheme, sidebarOpen } from "$lib/store";
 	import consola from "consola";
 	import { fade } from "svelte/transition";
+	import MaterialSymbolsAutorenewRounded from "~icons/material-symbols/autorenew-rounded";
 	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
+	import MaterialSymbolsDarkModeRounded from "~icons/material-symbols/dark-mode-rounded";
+	import MaterialSymbolsLightModeRounded from "~icons/material-symbols/light-mode-rounded";
 	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
-	import { getFlagEmoji } from "../../helperFuncs";
+	import { changeTheme, getFlagEmoji } from "../../helperFuncs";
+	import { m } from "../../paraglide/messages";
 	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
 
 	let { children } = $props();
@@ -56,28 +60,55 @@
 	</button>
 	{@render children()}
 
-	<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
-		<Select.Trigger class="mr-4 ml-auto w-24">
-			{#if images.size > 2}
-				<img
-					src={images.get(getLocale())}
-					alt={getFlagEmoji(getLocale())}
-					class="w-[2ch] rounded-md" />
-			{/if}
-			{getLocale()}</Select.Trigger>
-		<Select.Content>
-			{#each locales as locale}
-				<Select.Item value={locale} label={getFlagEmoji(locale) + locale}>
-					{@const codePoint = Array.from(getFlagEmoji(locale))
-						// @ts-ignore
-						.map(c => c.codePointAt(0).toString(16))
-						.join("-")}
-					<img alt={getFlagEmoji(locale)} src={images.get(locale)} class="w-[2ch]" />
-					- {locale}
+	<div class="mr-4 ml-auto flex">
+		<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
+			<Select.Trigger class="w-24">
+				{#if images.size > 2}
+					<img
+						src={images.get(getLocale())}
+						alt={getFlagEmoji(getLocale())}
+						class="w-[2ch] rounded-md" />
+				{/if}
+				{getLocale()}</Select.Trigger>
+			<Select.Content>
+				{#each locales as locale}
+					<Select.Item value={locale} label={getFlagEmoji(locale) + locale}>
+						{@const codePoint = Array.from(getFlagEmoji(locale))
+							// @ts-ignore
+							.map(c => c.codePointAt(0).toString(16))
+							.join("-")}
+						<img alt={getFlagEmoji(locale)} src={images.get(locale)} class="w-[2ch]" />
+						- {locale}
+					</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
+
+		<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
+			<Select.Trigger class="w-24">
+				{#if $activeTheme === "light"}
+					{m.light_theme_select()}
+				{:else if $activeTheme === "dark"}
+					{m.dark_theme_select()}
+				{:else if $activeTheme === "auto"}
+					{m.auto_theme_select()}
+				{/if}
+			</Select.Trigger>
+			<Select.Content>
+				<Select.Item aria-selected={$activeTheme === "dark"} value="dark" label="dark">
+					<MaterialSymbolsDarkModeRounded />
+					{m.dark_theme_select()}
 				</Select.Item>
-			{/each}
-		</Select.Content>
-	</Select.Root>
+				<Select.Item aria-selected={$activeTheme === "light"} value="light" label="light">
+					<MaterialSymbolsLightModeRounded />
+					{m.light_theme_select()}
+				</Select.Item>
+				<Select.Item aria-selected={$activeTheme === "auto"} value="auto" label="auto">
+					<MaterialSymbolsAutorenewRounded />
+					{m.auto_theme_select()}</Select.Item>
+			</Select.Content>
+		</Select.Root>
+	</div>
 </header>
 {#if $sidebarOpen}
 	<div

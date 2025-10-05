@@ -538,9 +538,9 @@
 				class="session bg-popover w-full max-w-96 rounded-xl p-4">
 				<div class="device flex items-center">
 					{#if ua.getDevice().type === "mobile"}
-						<MaterialSymbolsSmartphone class="text-4xl" />
+						<MaterialSymbolsSmartphone class="text-foreground/70 text-4xl" />
 					{:else}
-						<MaterialSymbolsDesktopMac class="text-4xl" />
+						<MaterialSymbolsDesktopMac class="text-foreground/70 text-4xl" />
 					{/if}
 					<h1 class="text-2xl font-semibold">
 						{ua.getOS().name}
@@ -561,7 +561,7 @@
 							logOut(session);
 						}}
 						variant={"destructive"}>Log out</Button>
-					<p class="text-right opacity-50">{session.ip}</p>
+					<p class="mt-auto mb-0 text-right opacity-50">{session.ip}</p>
 				</div>
 			</div>
 		{/each}

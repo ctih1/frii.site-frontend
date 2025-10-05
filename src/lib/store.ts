@@ -26,4 +26,10 @@ domainAmount.subscribe(value => {
 	setKey(StoredDomainKey, `${Number(value) || DefaultDomainAmount}`);
 });
 
+export const activeTheme = writable(getLocalStorageKey("theme", "dark"));
+
+activeTheme.subscribe(value => {
+	setKey("theme", value);
+});
+
 export const sidebarOpen = writable(false);

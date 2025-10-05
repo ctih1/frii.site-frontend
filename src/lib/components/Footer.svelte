@@ -7,7 +7,7 @@
 	const time = __BUILD_TIME__;
 </script>
 
-<div class="footer bg-secondary pt-8">
+<div class="footer bg-footer pt-8">
 	<div class="contact">
 		<h3 class="text-lg font-medium">{m.footer_contact()}</h3>
 		<Separator />
@@ -61,7 +61,7 @@
 		flex-direction: column;
 	}
 	a {
-		color: white;
+		color: var(--color-foreground);
 		text-decoration: underline;
 		width: fit-content;
 		margin-right: auto;

@@ -1,4 +1,5 @@
 import { dev } from "$app/environment";
+import { activeTheme } from "$lib/store";
 import consola from "consola";
 import Cookies from "js-cookie";
 import { localizeHref } from "./paraglide/runtime";
@@ -78,4 +79,24 @@ export function getFlagImageSrcFromEmoji(emoji: string) {
 		.join("-");
 
 	return `https://twemoji.maxcdn.com/v/latest/svg/${codePoint}.svg`;
+}
+
+export function updateThemeBody(theme: string) {
+	if (theme === "light") {
+		document.body.classList.remove("dark");
+	} else if (theme === "dark") {
+		document.body.classList.add("dark");
+	} else if (theme === "auto") {
+		if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			document.body.classList.add("dark");
+		} else {
+			document.body.classList.add("light");
+		}
+	}
+}
+
+export function changeTheme(theme: string) {
+	updateThemeBody(theme);
+	activeTheme.set(theme);
+	window.location.reload();
 }
