@@ -2,7 +2,7 @@
 <html lang="%lang%">
 	<head>
 		<script>
-			const theme = localStorage.getItem("theme");
+			const theme = localStorage.getItem("theme") || "dark";
 			if (theme === "light") {
 				document.documentElement.classList.remove("dark");
 			} else if (theme === "dark") {
