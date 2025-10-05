@@ -222,5 +222,6 @@
 	"home_selling_point_open_source_description": "Our frontend and backend are both completely open source, and open to contributions. Our backend uses fully typed Python code, FastAPI, and MongoDB, which makes it easy for other developers to quickly jump into our codebase. Our frontend is written in Svelte (with Typescript).",
 	"dark_theme_select": "Dark",
 	"light_theme_select": "Light",
-	"auto_theme_select": "Auto"
+	"auto_theme_select": "Auto",
+	"theme_selector_label": "Theme"
 }

@@ -136,6 +136,21 @@
 			url("data:image/svg+xml,%3Csvg viewBox='0 0 362 362' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='10' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 	}
 
+	@media (max-width: 1250px) {
+		.description {
+			width: 40%;
+			margin-left: 0px;
+		}
+		.description h1 {
+			margin-left: 0px;
+		}
+		.right-side {
+			width: 50%;
+			margin-left: auto;
+			margin-right: 24px;
+		}
+	}
+
 	@media (max-width: 900px), (orientation: portrait) {
 		.right-side {
 			margin-right: 0px;

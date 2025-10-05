@@ -3,6 +3,7 @@
 	import * as Select from "$lib/components/ui/select/index.js";
 	import { activeTheme, sidebarOpen } from "$lib/store";
 	import consola from "consola";
+	import { SvelteMap } from "svelte/reactivity";
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsAutorenewRounded from "~icons/material-symbols/autorenew-rounded";
 	import MaterialSymbolsCloseRounded from "~icons/material-symbols/close-rounded";
@@ -12,11 +13,12 @@
 	import { changeTheme, getFlagEmoji } from "../../helperFuncs";
 	import { m } from "../../paraglide/messages";
 	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
+	import Label from "./ui/label/label.svelte";
 
 	let { children } = $props();
 
 	// cache the images
-	const images = $state(new Map());
+	let images = $state(new SvelteMap<string, string | undefined>());
 	if (browser) {
 		const flagCache = locales.map(async locale => {
 			let flag = locale.toString();
@@ -33,8 +35,9 @@
 					const reader = new FileReader();
 					reader.readAsDataURL(data);
 					reader.onloadend = () => {
-						consola.debug(`Loaded locale flag ${locale}`);
-						images.set(locale, reader.result);
+						consola.verbose(`Loaded locale flag ${locale}`);
+						images.set(locale, reader.result?.toString());
+						images = images;
 					};
 				});
 		});
@@ -60,14 +63,14 @@
 	</button>
 	{@render children()}
 
-	<div class="mr-4 ml-auto flex">
+	<div class="mr-4 ml-auto flex space-x-2">
 		<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
 			<Select.Trigger class="w-24">
-				{#if images.size > 2}
+				{#if images.get(getLocale().toString())}
 					<img
-						src={images.get(getLocale())}
-						alt={getFlagEmoji(getLocale())}
-						class="w-[2ch] rounded-md" />
+						alt={getFlagEmoji(getLocale().toString())}
+						src={images.get(getLocale().toString())}
+						class="w-[2ch]" />
 				{/if}
 				{getLocale()}</Select.Trigger>
 			<Select.Content>
@@ -83,39 +86,74 @@
 				{/each}
 			</Select.Content>
 		</Select.Root>
-
-		<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
-			<Select.Trigger class="w-24">
-				{#if $activeTheme === "light"}
-					{m.light_theme_select()}
-				{:else if $activeTheme === "dark"}
-					{m.dark_theme_select()}
-				{:else if $activeTheme === "auto"}
-					{m.auto_theme_select()}
-				{/if}
-			</Select.Trigger>
-			<Select.Content>
-				<Select.Item aria-selected={$activeTheme === "dark"} value="dark" label="dark">
-					<MaterialSymbolsDarkModeRounded />
-					{m.dark_theme_select()}
-				</Select.Item>
-				<Select.Item aria-selected={$activeTheme === "light"} value="light" label="light">
-					<MaterialSymbolsLightModeRounded />
-					{m.light_theme_select()}
-				</Select.Item>
-				<Select.Item aria-selected={$activeTheme === "auto"} value="auto" label="auto">
-					<MaterialSymbolsAutorenewRounded />
-					{m.auto_theme_select()}</Select.Item>
-			</Select.Content>
-		</Select.Root>
+		<div id="lang-picker-navbar">
+			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
+				<Select.Trigger class="w-24">
+					{#if $activeTheme === "light"}
+						{m.light_theme_select()}
+					{:else if $activeTheme === "dark"}
+						{m.dark_theme_select()}
+					{:else if $activeTheme === "auto"}
+						{m.auto_theme_select()}
+					{/if}
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Item aria-selected={$activeTheme === "dark"} value="dark" label="dark">
+						<MaterialSymbolsDarkModeRounded />
+						{m.dark_theme_select()}
+					</Select.Item>
+					<Select.Item
+						aria-selected={$activeTheme === "light"}
+						value="light"
+						label="light">
+						<MaterialSymbolsLightModeRounded />
+						{m.light_theme_select()}
+					</Select.Item>
+					<Select.Item aria-selected={$activeTheme === "auto"} value="auto" label="auto">
+						<MaterialSymbolsAutorenewRounded />
+						{m.auto_theme_select()}</Select.Item>
+				</Select.Content>
+			</Select.Root>
+		</div>
 	</div>
 </header>
 {#if $sidebarOpen}
 	<div
 		transition:fade={{ duration: 100 }}
 		id="popout"
-		class="popout bg-card absolute z-50 hidden h-full w-full max-w-60 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
+		class="popout bg-card absolute z-50 hidden h-[calc(100vh-48px)] w-full max-w-60 flex-col space-y-4 rounded-br-2xl pl-4 opacity-95">
 		{@render children()}
+
+		<div class="mt-auto mb-4">
+			<Label class="text-md mb-0">{m.theme_selector_label()}</Label>
+			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
+				<Select.Trigger class="w-24">
+					{#if $activeTheme === "light"}
+						{m.light_theme_select()}
+					{:else if $activeTheme === "dark"}
+						{m.dark_theme_select()}
+					{:else if $activeTheme === "auto"}
+						{m.auto_theme_select()}
+					{/if}
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Item aria-selected={$activeTheme === "dark"} value="dark" label="dark">
+						<MaterialSymbolsDarkModeRounded />
+						{m.dark_theme_select()}
+					</Select.Item>
+					<Select.Item
+						aria-selected={$activeTheme === "light"}
+						value="light"
+						label="light">
+						<MaterialSymbolsLightModeRounded />
+						{m.light_theme_select()}
+					</Select.Item>
+					<Select.Item aria-selected={$activeTheme === "auto"} value="auto" label="auto">
+						<MaterialSymbolsAutorenewRounded />
+						{m.auto_theme_select()}</Select.Item>
+				</Select.Content>
+			</Select.Root>
+		</div>
 	</div>
 {/if}
 
@@ -132,6 +170,10 @@
 		}
 		#header {
 			justify-content: space-between;
+		}
+
+		#lang-picker-navbar {
+			display: none;
 		}
 		#popout-toggle {
 			display: block;
