@@ -219,5 +219,9 @@
 	"referred_users": "Suosittelun kautta liittyneet käyttäjät: {usersNum}",
 	"referral_creation_title": "Mukautettu suosittelukoodi",
 	"vercel_verification_queue_over": "Vahvistettiin onnistuneesti! Paina 'refresh'-näppäintä Vercelissä",
-	"home_selling_point_open_source_description": "Nettisivumme ja serverimme lähdekoodi on täysin avoin, ja kannustamme yhteistyötä. Serverimme käyttää täysin tyyppi-turvallista Python koodia, FastAPI:tä, ja MongoDB:tä, joka tekee koodikannasta helppoa lukea. Nettisivumme on kirjoitettu Sveltellä (Typescriptin kanssa)"
+	"home_selling_point_open_source_description": "Nettisivumme ja serverimme lähdekoodi on täysin avoin, ja kannustamme yhteistyötä. Serverimme käyttää täysin tyyppi-turvallista Python koodia, FastAPI:tä, ja MongoDB:tä, joka tekee koodikannasta helppoa lukea. Nettisivumme on kirjoitettu Sveltellä (Typescriptin kanssa)",
+	"dark_theme_select": "Tumma",
+	"light_theme_select": "Vaalea",
+	"auto_theme_select": "Auto",
+	"theme_selector_label": "Teema"
 }
