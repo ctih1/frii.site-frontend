@@ -46,6 +46,8 @@
 }
   
 .dark {
+  --alert: rgba(240,12,12, 0.2);
+  --note: rgba(0, 87, 199, 0.2);
   --background: rgb(12,12,12);
   --foreground: oklch(0.984 0.003 247.858);
   --card: rgb(20,20,20);
