@@ -23,6 +23,7 @@
 	import { Input } from "$lib/components/ui/input/index";
 	import { Label } from "$lib/components/ui/label/index";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import { activeTheme } from "$lib/store";
 	import { REGEXP_ONLY_DIGITS } from "bits-ui";
 	import consola from "consola";
 	import Cookies from "js-cookie";
@@ -162,7 +163,7 @@
 			// @ts-ignore
 			widgetId = turnstile.render("#turnstile-container", {
 				sitekey: "0x4AAAAAABiGbbOhSUc5vWl9",
-				theme: "dark",
+				theme: $activeTheme,
 				callback: function (token: string) {
 					captchaToken = token;
 					captchaDone = true;
@@ -312,7 +313,6 @@
 				<div class="grid gap-2">
 					<Label for="username">{m.username_placeholder()}</Label>
 					<Input
-						tabindex={1}
 						bind:value={username}
 						id="username"
 						type="text"
@@ -333,7 +333,7 @@
 						<Label for="password">{m.password_placeholder()}</Label>
 						{#if isLoggingIn}
 							<a
-								tabindex="3"
+								tabindex="-1"
 								transition:fade={{ duration: 100 }}
 								href={localizeHref("/account/recover/")}
 								class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
@@ -342,7 +342,6 @@
 						{/if}
 					</div>
 					<Input
-						tabindex={2}
 						bind:value={password}
 						id="password"
 						type="password"

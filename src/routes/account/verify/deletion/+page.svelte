@@ -10,6 +10,7 @@
 	let clicked: boolean = $state(false);
 
 	function confirmDeletion() {
+		clicked = true;
 		const urlParams = new URLSearchParams(window.location.search);
 
 		verifyDeletion(urlParams.get("code") || "undefined")
@@ -28,7 +29,6 @@
 
 	$effect(() => {
 		if (valid) redirectToLogin(200, 3);
-		if (clicked) confirmDeletion();
 	});
 </script>
 
@@ -43,7 +43,7 @@
 			<li>{m.account_del_steps_3()}</li>
 			<li>{m.account_del_steps_4()}</li>
 		</ol>
-		<Button onclick={_ => (clicked = true)} variant={"destructive"}
+		<Button onclick={_ => confirmDeletion()} variant={"destructive"}
 			>{m.account_del_agree()}</Button>
 	{/if}
 	<h2>
