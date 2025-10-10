@@ -1,4 +1,8 @@
-<div class="dot-flashing-wrapper">
+<script lang="ts">
+	let { asForeground = false } = $props();
+</script>
+
+<div class={`dot-flashing-wrapper ${asForeground ? "fg" : ""}`}>
 	<div class="dot-flashing"></div>
 	<div class="dot-flashing"></div>
 	<div class="dot-flashing"></div>
@@ -13,9 +17,13 @@
 		height: 1.25rem;
 	}
 
+	.fg .dot-flashing {
+		background-color: var(--color-secondary-foreground);
+	}
+
 	.dot-flashing {
 		width: 8px;
-        aspect-ratio: 1;
+		aspect-ratio: 1;
 		border-radius: 50%;
 		background-color: var(--color-primary-foreground);
 		animation: dot-flashing 0.6s infinite linear alternate;

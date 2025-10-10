@@ -223,5 +223,14 @@
 	"dark_theme_select": "Dark",
 	"light_theme_select": "Light",
 	"auto_theme_select": "Auto",
-	"theme_selector_label": "Theme"
+	"theme_selector_label": "Theme",
+	"activation_code_label": "Activation code",
+	"activation_title": "Service Activation",
+	"activation_guide": "Please enter your activation code below",
+	"activation_fail_desc": "Perhaps the code has already been used?",
+	"activation_fail": "Activation failed",
+	"activation_support_link": "Contact support",
+	"activation_loading": "Activating...",
+	"activation_thanks": "Thank you for your purchase!",
+	"activation_success": "Succesfully activated!"
 }

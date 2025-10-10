@@ -1206,4 +1206,31 @@ export class ServerContactor {
 
 		return data;
 	}
+
+	async redeemCode(code: string) {
+		const { data, error, response } = await client.POST("/redeem", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					code: code
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 412:
+					throw new CodeError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user permission");
+			}
+		}
+
+		return data;
+	}
 }

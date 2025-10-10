@@ -37,6 +37,7 @@
 		"super-sitemap": "^1.0.3",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
+		"svelte-confetti": "^2.3.2",
 		"svelte-sonner": "^1.0.5",
 		"tailwind-merge": "^3.3.1",
 		"tailwind-variants": "^1.0.0",

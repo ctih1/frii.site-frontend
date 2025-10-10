@@ -264,6 +264,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/redeem": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Redeem Code */
+        post: operations["redeem_code_redeem_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/email/send": {
         parameters: {
             query?: never;
@@ -578,10 +595,10 @@ export interface paths {
             cookie?: never;
         };
         /** Google Oauth2 */
-        get: operations["google_oauth2_auth_google_callback_post"];
+        get: operations["google_oauth2_auth_google_callback_get"];
         put?: never;
         /** Google Oauth2 */
-        post: operations["google_oauth2_auth_google_callback_post"];
+        post: operations["google_oauth2_auth_google_callback_get"];
         delete?: never;
         options?: never;
         head?: never;
@@ -637,6 +654,23 @@ export interface paths {
         head?: never;
         /** Logout */
         patch: operations["logout_logout_patch"];
+        trace?: never;
+    };
+    "/kofi/webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Webhook */
+        post: operations["webhook_kofi_webhook_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/admin/domain/delete": {
@@ -858,9 +892,9 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code"?: string;
+            "referral-code": string;
             /** Referred-People */
-            "referred-people"?: number;
+            "referred-people": number;
             /** Domains */
             domains: {
                 [key: string]: components["schemas"]["DomainFormat"];
@@ -920,6 +954,11 @@ export interface components {
             title: string;
             /** Body */
             body: string;
+        };
+        /** Body_webhook_kofi_webhook_post */
+        Body_webhook_kofi_webhook_post: {
+            /** Data */
+            data: string;
         };
         /** CountryType */
         CountryType: {
@@ -1079,9 +1118,9 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code"?: string;
+            "referral-code": string;
             /** Referred-People */
-            "referred-people"?: number;
+            "referred-people": number;
         };
         /** ValidationError */
         ValidationError: {
@@ -1365,7 +1404,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Domain is available */
+            /** @description Retrieved domains */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1376,8 +1415,15 @@ export interface operations {
                     };
                 };
             };
-            /** @description Domain is not available */
-            409: {
+            /** @description Invalid API */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid API permissions */
+            461: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1865,6 +1911,51 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserPageType"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    redeem_code_redeem_post: {
+        parameters: {
+            query: {
+                code: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Succesfully redeemed code */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid code */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Invalid session */
@@ -2662,7 +2753,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_post: {
+    google_oauth2_auth_google_callback_get: {
         parameters: {
             query: {
                 code: string;
@@ -2693,7 +2784,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_post: {
+    google_oauth2_auth_google_callback_get: {
         parameters: {
             query: {
                 code: string;
@@ -2829,6 +2920,46 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    webhook_kofi_webhook_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/x-www-form-urlencoded": components["schemas"]["Body_webhook_kofi_webhook_post"];
+            };
+        };
+        responses: {
+            /** @description Succesfully registered event */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid verification token passed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };
