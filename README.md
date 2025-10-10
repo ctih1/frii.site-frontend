@@ -4,6 +4,10 @@ A free subdomain hosting website that has a dashboard and an API
 
 ![frii site](https://github.com/user-attachments/assets/81506c74-981e-4f73-a440-6ce7d4f95513)
 
+## Want to support us while getting rewards? Contribute just 1€ and get perks!
+
+https://ko-fi.com/s/65a532e32b
+
 <details>
 <summary>Getting started</summary>
 ## Getting started
@@ -77,15 +81,7 @@ More info can be found on [our wiki](https://guides.frii.site)
 | Portuguese | [ShyMike](https://github.com/ImShyMike)                                                                                 |
 | Spanish    | [Rage65](https://github.com/Rage65)                                                                                     |
 
-Do you want to contribute to the translations? Take a look at our [translation guide](https://github.com/ctih1/frii.site-frontend/wiki/Translation-guide)
-
-## Information about us
-
-frii.site is an open-source project written in Svelte(Kit). We use MongoDB for our database, Cloudflare for DNS (Becoming self-hosted soon?), Vercel for website and backend hosting, and Resend for emails. This project has no sponsors, or advertisments on the website [Information about frii.site (analytics, price to run, users etc)](https://github.com/ctih1/frii.site-frontend/discussions/88) .
-
-## API
-
-Our API is completely free to use. To get started, [read our wiki page about it](https://guides.frii.site/guides/api.html). If you wish to create apps using our API, you can submit them to the [partner program](https://github.com/ctih1/frii.site-frontend/discussions/67) to get rewards.
+Do you want to contribute to the translations? Take a look at our [translation guide]()
 
 ## Contributing
 
