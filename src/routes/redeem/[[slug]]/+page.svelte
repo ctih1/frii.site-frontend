@@ -6,41 +6,42 @@
 	import Input from "$lib/components/ui/input/input.svelte";
 	import Label from "$lib/components/ui/label/label.svelte";
 	import Loader from "$lib/components/ui/loader/loader.svelte";
+	import consola from "consola";
 	import { Confetti } from "svelte-confetti";
-	import { m } from "../../paraglide/messages";
+	import { m } from "../../../paraglide/messages";
+
+	let { data } = $props();
 
 	let success: boolean | undefined = $state(undefined);
 	let inputValue: string = $state("");
 	let inputRequired: boolean = $state(false);
 
 	if (browser) {
-		let params = new URLSearchParams(window.location.search);
-
-		if (!params.get("c")) {
+		if (!data["code"]) {
 			inputRequired = true;
 		} else {
-			redeem(params.get("c")!);
+			redeem(data["code"]);
 		}
 	}
 
-	function redeem(code: string) {
+	async function redeem(code: string) {
 		inputRequired = false;
+		success = undefined;
 		let serverContactor = new ServerContactor(getAuthToken() ?? "");
-		serverContactor
-			.redeemCode(code)
-			.catch(error => {
-				if (error instanceof AuthError) {
-					redirectToLogin(460);
-				}
+		try {
+			await serverContactor.redeemCode(code);
+			consola.log("Succesfully redeemed!");
 
-				inputRequired = true;
-				success = false;
+			success = true;
+		} catch (error) {
+			consola.log("Failed to redeem");
+			if (error instanceof AuthError) {
+				redirectToLogin(460);
+			}
 
-				return;
-			})
-			.then(_ => {
-				success = true;
-			});
+			inputRequired = true;
+			success = false;
+		}
 	}
 </script>
 

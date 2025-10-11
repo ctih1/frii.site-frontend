@@ -595,10 +595,10 @@ export interface paths {
             cookie?: never;
         };
         /** Google Oauth2 */
-        get: operations["google_oauth2_auth_google_callback_get"];
+        get: operations["google_oauth2_auth_google_callback_post"];
         put?: never;
         /** Google Oauth2 */
-        post: operations["google_oauth2_auth_google_callback_get"];
+        post: operations["google_oauth2_auth_google_callback_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1007,6 +1007,15 @@ export interface components {
             type: string;
             /** Id */
             id: string;
+        };
+        /** DomainRetrieve */
+        DomainRetrieve: {
+            /** Domains */
+            domains: {
+                [key: string]: components["schemas"]["DomainFormat"];
+            };
+            /** Owned Tlds */
+            owned_tlds: string[];
         };
         /** DomainType */
         DomainType: {
@@ -1658,9 +1667,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: components["schemas"]["DomainFormat"];
-                    };
+                    "application/json": components["schemas"]["DomainRetrieve"];
                 };
             };
             /** @description Invalid session */
@@ -2753,7 +2760,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_get: {
+    google_oauth2_auth_google_callback_post: {
         parameters: {
             query: {
                 code: string;
@@ -2784,7 +2791,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_get: {
+    google_oauth2_auth_google_callback_post: {
         parameters: {
             query: {
                 code: string;

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getAuthToken } from "$lib";
-	import type { Domain } from "$lib/components/DomainTable.svelte";
 	import Loader from "$lib/components/Loader.svelte";
 	import Button from "$lib/components/ui/button/button.svelte";
 	import Input from "$lib/components/ui/input/input.svelte";
@@ -8,6 +7,7 @@
 	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
 	import { toast } from "svelte-sonner";
+	import MaterialSymbolsAttachMoneyRounded from "~icons/material-symbols/attach-money-rounded";
 	import { redirectToLogin } from "../../helperFuncs";
 	import { m } from "../../paraglide/messages";
 	import {
@@ -25,14 +25,42 @@
 	import Cookies from "js-cookie";
 	import { fade } from "svelte/transition";
 
+	interface Domain {
+		type: string;
+		domain: string;
+		value: string;
+	}
+
 	interface DashboardDomain extends Domain {
+		tld: string;
+		name: string;
 		deletionWarned: boolean;
 		isLoading: boolean;
 		buttonDisabled: boolean;
 		deletionLoading: boolean;
 	}
 
+	interface TLD {
+		tld: string;
+		purchaseLink?: string;
+	}
+	const AVAILABLE_TLDS: TLD[] = [
+		{
+			tld: ".frii.site"
+		},
+		{
+			tld: ".arr.ovh",
+			purchaseLink: "https://ko-fi.com/s/ee4b5170a6"
+		},
+		{
+			tld: ".pill.ovh",
+			purchaseLink: "https://ko-fi.com/s/38e30ddc66"
+		}
+	];
+
 	let { data } = $props();
+
+	let ownedTlds: string[] = $state([]);
 
 	let domains: DashboardDomain[] = $state([]);
 	let domainsLoaded: boolean = $state(false);
@@ -40,6 +68,7 @@
 	let registerNewDomainLoading: boolean = $state(false);
 	let newDomain: string = $state("");
 	let newDomainType: string = $state("A");
+	let newDomainTld: string = $state(".frii.site");
 
 	let registerErrorTitle: string = $state("");
 	let registerErrorDescription: string = $state("");
@@ -86,11 +115,11 @@
 			});
 	}
 
-	function registerDomain(domain: string, type: string) {
+	function registerDomain(domain: string, type: string, tld: string) {
 		consola.info("Regsitering a domain");
 
 		serverContactor
-			.registerDomain(domain, type)
+			.registerDomain(domain + tld, type)
 			.catch(error => {
 				consola.warn("Failed to register a domain");
 				registerNewDomainLoading = false;
@@ -118,12 +147,14 @@
 				toast.success(m.dashboard_register_success({ domain: domain }));
 				domains.push({
 					type,
-					domain,
+					domain: domain + tld,
 					value,
 					isLoading: false,
 					deletionWarned: false,
 					buttonDisabled: false,
-					deletionLoading: false
+					deletionLoading: false,
+					tld: tld,
+					name: domain
 				});
 				Cookies.set("domain-amount", domains.length.toString());
 			});
@@ -166,7 +197,7 @@
 			return domain.domain !== name;
 		});
 
-		// Triggers svelte's reactivity. This was a bug in svelte4, but I'm not sure if its necessary anymore. Keeping in case.
+		// Triggers svelte's reactivity. This was a bug in svelte 4, but I'm not sure if its necessary anymore. Keeping in case.
 		domains = [...domains];
 	}
 
@@ -190,10 +221,18 @@
 			.then(data => {
 				domainsLoaded = true;
 				// @ts-expect-error
-				const userDomains = Object.entries(data);
+				ownedTlds = data["owned-tlds"];
+				// @ts-expect-error
+				const userDomains = Object.entries(data["domains"]);
 				Cookies.set("domain-amount", userDomains.length.toString());
 
 				for (let [key, value] of userDomains) {
+					const lastDot = key.lastIndexOf(".");
+					const secondLastDot = key.lastIndexOf(".", lastDot - 1);
+
+					const name = key.slice(0, secondLastDot);
+					const tld = key.slice(secondLastDot + 1);
+
 					domains.push({
 						type: value.type,
 						domain: key,
@@ -201,7 +240,9 @@
 						isLoading: false,
 						deletionWarned: false,
 						buttonDisabled: false,
-						deletionLoading: false
+						deletionLoading: false,
+						tld: tld,
+						name: name
 					});
 				}
 			});
@@ -263,10 +304,10 @@
 					{/if}
 					<div class="domain-name flex w-full">
 						{#if domainsLoaded}
-							<Input class="rounded-r-none" value={domain.domain} disabled={true} />
+							<Input class="rounded-r-none" value={domain.name} disabled={true} />
 							<Input
 								class="w-1/4 min-w-20 rounded-l-none"
-								value=".frii.site"
+								value={domain.tld}
 								disabled={true} />
 						{:else}
 							<Skeleton class="w-full" />
@@ -344,15 +385,42 @@
 				{/each}
 			</Select.Content>
 		</Select.Root>
-		<div class="domain-bar flex w-full">
-			<Input bind:value={newDomain} class="rounded-r-none" placeholder="domain" />
-			<Input class="w-1/4 min-w-20 rounded-l-none" disabled={true} value=".frii.site" />
+		<div class="domain-bar flex">
+			<Input bind:value={newDomain} class="max-w-2xl rounded-r-none" placeholder="domain" />
+			<Select.Root
+				onValueChange={val => {
+					if (ownedTlds.indexOf(val.slice(1)) == -1) {
+						let link = AVAILABLE_TLDS.find(v => val === v.tld)?.purchaseLink;
+						consola.log(`Opening ${link}`);
+						newDomainTld = ".frii.site";
+						window.open(link, "_blank")?.focus();
+					}
+				}}
+				bind:value={newDomainTld}
+				type="single"
+				name="domain">
+				<Select.Trigger class="w-1/8 min-w-24 rounded-l-none"
+					>{newDomainTld}</Select.Trigger>
+				<Select.Content>
+					{#each AVAILABLE_TLDS as tld}
+						<Select.Item value={tld.tld} label={tld.tld}>
+							<div class="flex flex-row items-center">
+								{tld.tld}
+								{#if tld.purchaseLink && ownedTlds.indexOf(tld.tld.slice(1)) == -1}
+									<MaterialSymbolsAttachMoneyRounded
+										class="text-primary-secondary" />
+								{/if}
+							</div>
+						</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</div>
 		<Button
 			loading={registerNewDomainLoading}
 			onclick={_ => {
 				registerNewDomainLoading = true;
-				registerDomain(newDomain, newDomainType);
+				registerDomain(newDomain, newDomainType, newDomainTld);
 			}}
 			disabled={!newDomain}
 			class="w-24">{m.dashboard_register_domain_button()}</Button>

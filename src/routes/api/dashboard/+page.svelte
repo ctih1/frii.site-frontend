@@ -273,7 +273,7 @@
 				<Select.Content>
 					<Select.Item value="*">{m.api_dashboard_domain_any()}</Select.Item>
 					{#each domains as domain}
-						<Select.Item value={domain.domain}>{domain.domain}.frii.site</Select.Item>
+						<Select.Item value={domain.domain}>{domain.domain}</Select.Item>
 					{/each}
 				</Select.Content>
 			</Select.Root>
