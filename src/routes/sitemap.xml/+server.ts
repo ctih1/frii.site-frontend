@@ -18,7 +18,7 @@ const Priorities: { [key: string]: 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8
 export const GET: RequestHandler = async () => {
 	return await sitemap.response({
 		origin: "https://www.frii.site",
-		excludeRoutePatterns: ["^/account.*", "^/blog.*", "componenttest"],
+		excludeRoutePatterns: ["^/account.*", "^/blog.*", "componenttest", "^/redeem.*"],
 		defaultChangefreq: "daily",
 		defaultPriority: 0.7,
 		sort: "alpha",
