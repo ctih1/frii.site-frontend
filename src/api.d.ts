@@ -595,10 +595,10 @@ export interface paths {
             cookie?: never;
         };
         /** Google Oauth2 */
-        get: operations["google_oauth2_auth_google_callback_post"];
+        get: operations["google_oauth2_auth_google_callback_get"];
         put?: never;
         /** Google Oauth2 */
-        post: operations["google_oauth2_auth_google_callback_post"];
+        post: operations["google_oauth2_auth_google_callback_get"];
         delete?: never;
         options?: never;
         head?: never;
@@ -701,6 +701,57 @@ export interface paths {
         put?: never;
         /** Reinstate User */
         post: operations["reinstate_user_admin_user_reinstate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify */
+        post: operations["verify_admin_user_verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/tld/add": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Tld */
+        post: operations["add_tld_admin_user_tld_add_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/tld/remove": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Remove Tld */
+        post: operations["remove_tld_admin_user_tld_remove_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -878,11 +929,15 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: Record<string, never>;
+            permissions: {
+                [key: string]: unknown;
+            };
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
+                [key: string]: unknown;
+            }[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -892,9 +947,9 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code": string;
+            "referral-code": string | null;
             /** Referred-People */
-            "referred-people": number;
+            "referred-people": number | null;
             /** Domains */
             domains: {
                 [key: string]: components["schemas"]["DomainFormat"];
@@ -904,7 +959,7 @@ export interface components {
             /** Banned */
             banned: boolean;
             /** Ban Reasons */
-            ban_reasons: string[] | string[][];
+            ban_reasons: string[] | string[][] | null;
             /** Last Login */
             last_login: number;
             /** Api Key Amount */
@@ -987,11 +1042,17 @@ export interface components {
             /** Country Flag Url */
             country_flag_url: string;
             /** Country Flag */
-            country_flag: Record<string, never>;
+            country_flag: {
+                [key: string]: unknown;
+            };
             /** Country Currency */
-            country_currency: Record<string, never>;
+            country_currency: {
+                [key: string]: unknown;
+            };
             /** Continent */
-            continent: Record<string, never>;
+            continent: {
+                [key: string]: unknown;
+            };
             /** Latitude */
             latitude: string;
             /** Longitude */
@@ -1113,11 +1174,15 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: Record<string, never>;
+            permissions: {
+                [key: string]: unknown;
+            };
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
+                [key: string]: unknown;
+            }[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -1127,9 +1192,9 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code": string;
+            "referral-code": string | null;
             /** Referred-People */
-            "referred-people": number;
+            "referred-people": number | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -1235,7 +1300,7 @@ export interface operations {
         parameters: {
             query: {
                 domain: string;
-                type?: string;
+                type?: string | null;
             };
             header?: never;
             path?: never;
@@ -1420,7 +1485,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        [key: string]: components["schemas"]["DomainFormat"];
+                        [key: string]: components["schemas"]["DomainFormat"] | null;
                     };
                 };
             };
@@ -1464,6 +1529,13 @@ export interface operations {
             };
             /** @description Invalid domain name */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description TLD not owned */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1834,7 +1906,7 @@ export interface operations {
         parameters: {
             query?: {
                 n?: number;
-                content?: number;
+                content?: number | null;
             };
             header?: never;
             path?: never;
@@ -2240,7 +2312,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Invalid session */
@@ -2562,8 +2636,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-mfa-code"?: string;
-                "x-backup-code"?: string;
+                "x-mfa-code"?: string | null;
+                "x-backup-code"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -2670,8 +2744,8 @@ export interface operations {
             header: {
                 "x-auth-request": string;
                 "x-captcha-code": string;
-                "x-mfa-code"?: string;
-                "x-plain-username"?: string;
+                "x-mfa-code"?: string | null;
+                "x-plain-username"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -2760,7 +2834,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_post: {
+    google_oauth2_auth_google_callback_get: {
         parameters: {
             query: {
                 code: string;
@@ -2791,7 +2865,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_post: {
+    google_oauth2_auth_google_callback_get: {
         parameters: {
             query: {
                 code: string;
@@ -2837,7 +2911,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
         };
@@ -3080,6 +3156,115 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    verify_admin_user_verify_post: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User verified */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_tld_admin_user_tld_add_post: {
+        parameters: {
+            query: {
+                id: string;
+                tld: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description TLD added */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid TLD */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_tld_admin_user_tld_remove_post: {
+        parameters: {
+            query: {
+                id: string;
+                tld: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description TLD added */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Invalid TLD */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };

@@ -1130,6 +1130,89 @@ export class ServerContactor {
 		return data;
 	}
 
+	async addTld(account: string, tld: string) {
+		const { data, error, response } = await client.POST("/admin/user/tld/add", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					id: account,
+					tld: tld
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async removeTld(account: string, tld: string) {
+		const { data, error, response } = await client.POST("/admin/user/tld/remove", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					id: account,
+					tld: tld
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
+	async verify(account: string) {
+		const { data, error, response } = await client.POST("/admin/user/verify", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				},
+				query: {
+					id: account
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
 	async adminDeleteDomain(account: string, domain: string, reason: string) {
 		const { data, error, response } = await client.DELETE("/admin/domain/delete", {
 			params: {

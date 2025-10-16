@@ -20,13 +20,13 @@
 	import { Label } from "$lib/components/ui/label";
 	import * as Select from "$lib/components/ui/select/index.js";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import { AVAILABLE_TLDS } from "$lib/types";
 	import { onMount } from "svelte";
 	import { toast } from "svelte-sonner";
 	import { UAParser } from "ua-parser-js";
 	import type { components } from "../../../api";
 	import { m } from "../../../paraglide/messages";
 	import { getLocale } from "../../../paraglide/runtime";
-
 	// You can create a type alias for easier use
 	type AccountData = components["schemas"]["AccountData"];
 
@@ -298,6 +298,8 @@
 						Email: <a href={`mailto:${user.email}`}>{user.email}</a> ({user.verified
 							? "verified"
 							: "not verified"})
+						<Button variant={"ghost"} onclick={_ => serverContactor.verify(user.id)}
+							>Force verify</Button>
 					</p>
 					<p>Created at {createdAt}</p>
 					<p>Last login: {new Date(user.last_login * 1000)}</p>
@@ -411,11 +413,31 @@
 									)}>Create</Button>
 						</div>
 					</div>
+
+					<div class="space-y-2">
+						<h2>TLDs</h2>
+						<div class="flex flex-col">
+							{#each AVAILABLE_TLDS as tld}
+								{tld.tld}
+								{#if ((user["owned-tlds"] as Array<string>) ?? []).includes(tld.tld.slice(1))}<Button
+										variant="destructive"
+										onclick={_ =>
+											serverContactor.removeTld(user.id, tld.tld.slice(1))}
+										>Remove</Button>
+								{:else}
+									<Button
+										onclick={_ =>
+											serverContactor.addTld(user.id, tld.tld.slice(1))}
+										variant={"outline"}>Add</Button>
+								{/if}
+							{/each}
+						</div>
+					</div>
 					<div class="domains space-y-2">
 						{#each obj as key}
 							{@const val = user.domains[key]}
 							<div class="domain space-y-1">
-								<h4>{key.replaceAll("[dot]", ".")}.frii.site</h4>
+								<h4>{key.replaceAll("[dot]", ".")}</h4>
 								<div class="domain-info flex space-x-2">
 									<Input class="w-24" disabled value={val?.type} />
 									<Input class="w-full" disabled value={val?.ip} />

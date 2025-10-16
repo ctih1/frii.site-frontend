@@ -21,6 +21,7 @@
 
 	import { browser } from "$app/environment";
 	import InlineAlert from "$lib/components/ui/inline-alert/inline-alert.svelte";
+	import { AVAILABLE_TLDS } from "$lib/types";
 	import consola from "consola";
 	import Cookies from "js-cookie";
 	import { fade } from "svelte/transition";
@@ -39,24 +40,6 @@
 		buttonDisabled: boolean;
 		deletionLoading: boolean;
 	}
-
-	interface TLD {
-		tld: string;
-		purchaseLink?: string;
-	}
-	const AVAILABLE_TLDS: TLD[] = [
-		{
-			tld: ".frii.site"
-		},
-		{
-			tld: ".arr.ovh",
-			purchaseLink: "https://ko-fi.com/s/ee4b5170a6"
-		},
-		{
-			tld: ".pill.ovh",
-			purchaseLink: "https://ko-fi.com/s/38e30ddc66"
-		}
-	];
 
 	let { data } = $props();
 
