@@ -7,7 +7,7 @@
 	const time = __BUILD_TIME__;
 </script>
 
-<div class="footer bg-footer pt-8">
+<div class="footer bg-footer space-y-3 pt-8">
 	<div class="contact">
 		<h3 class="text-lg font-medium">{m.footer_contact()}</h3>
 		<Separator />
