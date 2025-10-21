@@ -7,8 +7,9 @@ const html = `
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </head>
 
-<div style="position: absolute; top: 0px; left: 0px" id="turnstile-container"></div>
-
+<body style="width: fit-content; height: fit-content; margin: 0px;">
+    <div id="turnstile-container"></div>
+</body>
 <script>
     turnstile.ready(function () {
         let container = document.getElementById("turnstile-container");
