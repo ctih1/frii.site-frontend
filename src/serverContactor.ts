@@ -792,10 +792,10 @@ export class ServerContactor {
 		return data;
 	}
 
-	async joinVercelQueue(value: string) {
+	async joinVercelQueue(value: string, tld: string) {
 		const { data, error, response } = await client.POST("/domain/vercel/join", {
 			params: {
-				query: { value: value },
+				query: { value: value, tld: tld },
 				//@ts-ignore
 				header: {
 					"X-Auth-Token": getAuthToken()

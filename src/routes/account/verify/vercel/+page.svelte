@@ -11,10 +11,14 @@
 	import Holder from "$lib/components/Holder.svelte";
 	import { Button } from "$lib/components/ui/button";
 	import Input from "$lib/components/ui/input/input.svelte";
+	import * as Select from "$lib/components/ui/select/index.js";
+	import { AVAILABLE_TLDS } from "$lib/types";
 	import { m } from "../../../../paraglide/messages";
 
 	let value = $state("");
 	let json = $state("");
+
+	let tld = $state(".frii.site");
 	let currentPosition: number = $state(-1);
 	let userHasConencted: boolean = $state(false);
 	let userWasVerified: boolean = $state(false);
@@ -46,7 +50,7 @@
 
 	function connectToQueue() {
 		console.log("connecting to queue");
-		serverContactor.joinVercelQueue(value).catch(err => {
+		serverContactor.joinVercelQueue(value, tld).catch(err => {
 			alert("Failed to join queue");
 			throw new Error("Failed to join queue");
 		});
@@ -73,10 +77,26 @@
 	{:else if userWasVerified}
 		<p>{m.vercel_verification_queue_over()}</p>
 	{:else}
-		<Input
-			bind:value={value}
-			placeholder="vc-domain-verify=***.frii.site,********************" />
-		<Button class="mt-4" onclick={() => connectToQueue()}
+		<div class="mt-4 flex items-center space-x-2">
+			<Input
+				bind:value={value}
+				placeholder="vc-domain-verify=***.frii.site,********************" />
+
+			<Select.Root bind:value={tld} type="single" name="domain">
+				<Select.Trigger class="w-1/8 min-w-24">{tld}</Select.Trigger>
+				<Select.Content>
+					{#each AVAILABLE_TLDS as tld}
+						<Select.Item value={tld.tld} label={tld.tld}>
+							<div class="flex flex-row items-center">
+								{tld.tld}
+							</div>
+						</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
+		</div>
+
+		<Button onclick={() => connectToQueue()}
 			>{m.vercel_verification_queue_join_action_button()}</Button>
 	{/if}
 </Holder>

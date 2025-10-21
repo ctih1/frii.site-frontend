@@ -929,15 +929,11 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: {
-                [key: string]: unknown;
-            };
+            permissions: Record<string, never>;
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
-                [key: string]: unknown;
-            }[];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -947,9 +943,11 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code": string | null;
+            "referral-code": string;
             /** Referred-People */
-            "referred-people": number | null;
+            "referred-people": number;
+            /** Owned-Tlds */
+            "owned-tlds": string[];
             /** Domains */
             domains: {
                 [key: string]: components["schemas"]["DomainFormat"];
@@ -959,7 +957,7 @@ export interface components {
             /** Banned */
             banned: boolean;
             /** Ban Reasons */
-            ban_reasons: string[] | string[][] | null;
+            ban_reasons: string[] | string[][];
             /** Last Login */
             last_login: number;
             /** Api Key Amount */
@@ -1042,17 +1040,11 @@ export interface components {
             /** Country Flag Url */
             country_flag_url: string;
             /** Country Flag */
-            country_flag: {
-                [key: string]: unknown;
-            };
+            country_flag: Record<string, never>;
             /** Country Currency */
-            country_currency: {
-                [key: string]: unknown;
-            };
+            country_currency: Record<string, never>;
             /** Continent */
-            continent: {
-                [key: string]: unknown;
-            };
+            continent: Record<string, never>;
             /** Latitude */
             latitude: string;
             /** Longitude */
@@ -1174,15 +1166,11 @@ export interface components {
             /** Verified */
             verified: boolean;
             /** Permissions */
-            permissions: {
-                [key: string]: unknown;
-            };
+            permissions: Record<string, never>;
             /** Beta-Enroll */
             "beta-enroll": boolean;
             /** Sessions */
-            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | {
-                [key: string]: unknown;
-            }[];
+            sessions: (components["schemas"]["NewSessionType"] | components["schemas"]["OldSessionType"])[] | Record<string, never>[];
             /** Invites */
             invites: {
                 [key: string]: components["schemas"]["InviteType"];
@@ -1192,9 +1180,11 @@ export interface components {
             /** Google-Connected */
             "google-connected": boolean;
             /** Referral-Code */
-            "referral-code": string | null;
+            "referral-code": string;
             /** Referred-People */
-            "referred-people": number | null;
+            "referred-people": number;
+            /** Owned-Tlds */
+            "owned-tlds": string[];
         };
         /** ValidationError */
         ValidationError: {
@@ -1300,7 +1290,7 @@ export interface operations {
         parameters: {
             query: {
                 domain: string;
-                type?: string | null;
+                type?: string;
             };
             header?: never;
             path?: never;
@@ -1485,7 +1475,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        [key: string]: components["schemas"]["DomainFormat"] | null;
+                        [key: string]: components["schemas"]["DomainFormat"];
                     };
                 };
             };
@@ -1755,6 +1745,7 @@ export interface operations {
         parameters: {
             query: {
                 value: string;
+                tld: string;
             };
             header?: never;
             path?: never;
@@ -1906,7 +1897,7 @@ export interface operations {
         parameters: {
             query?: {
                 n?: number;
-                content?: number | null;
+                content?: number;
             };
             header?: never;
             path?: never;
@@ -2312,9 +2303,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
             /** @description Invalid session */
@@ -2636,8 +2625,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-mfa-code"?: string | null;
-                "x-backup-code"?: string | null;
+                "x-mfa-code"?: string;
+                "x-backup-code"?: string;
             };
             path?: never;
             cookie?: never;
@@ -2744,8 +2733,8 @@ export interface operations {
             header: {
                 "x-auth-request": string;
                 "x-captcha-code": string;
-                "x-mfa-code"?: string | null;
-                "x-plain-username"?: string | null;
+                "x-mfa-code"?: string;
+                "x-plain-username"?: string;
             };
             path?: never;
             cookie?: never;
@@ -2911,9 +2900,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": Record<string, never>;
                 };
             };
         };
