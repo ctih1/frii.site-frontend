@@ -232,5 +232,7 @@
 	"activation_support_link": "Contact support",
 	"activation_loading": "Activating...",
 	"activation_thanks": "Thank you for your purchase!",
-	"activation_success": "Succesfully activated!"
+	"activation_success": "Succesfully activated!",
+	"dashboard_vercel_hint": "Trying to verify a Vercel domain?",
+	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel"
 }

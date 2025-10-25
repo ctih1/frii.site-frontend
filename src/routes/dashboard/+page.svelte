@@ -232,13 +232,27 @@
 	}
 
 	$effect(() => {
-		if (newDomain.includes(".frii.site")) {
-			registerNoteTitle = m.dashboard_suffix_warn_title();
-			registerNoteDescription = m.dashboard_suffix_warn_desc();
-			alertUpdate++;
-		} else if (registerNoteTitle || registerNoteDescription) {
-			registerNoteTitle = "";
-			registerNoteDescription = "";
+		const isFrii = newDomain.includes(".frii.site");
+		const isVercel = newDomain.includes("_vercel");
+
+		let newTitle = null;
+		let newDesc = null;
+
+		if (isFrii) {
+			newTitle = m.dashboard_suffix_warn_title();
+			newDesc = m.dashboard_suffix_warn_desc();
+		} else if (isVercel) {
+			newTitle = m.dashboard_vercel_hint();
+			newDesc = m.dashboard_vercel_hint_description({
+				baseDomain: window.location.origin
+			});
+		}
+
+		const changed = registerNoteTitle !== newTitle || registerNoteDescription !== newDesc;
+
+		if (changed) {
+			registerNoteTitle = newTitle!;
+			registerNoteDescription = newDesc!;
 			alertUpdate++;
 		}
 	});
