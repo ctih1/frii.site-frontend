@@ -49,6 +49,8 @@
 
 	let domainDeleteReason = $state("");
 
+	let tldLoading = $state(false);
+
 	onMount(() => {
 		serverContactor = new ServerContactor(getAuthToken());
 		serverContactor
@@ -198,6 +200,24 @@
 			});
 	}
 
+	function loadByReferral(referral: string) {
+		loading = true;
+		serverContactor
+			.findByReferral(referral)
+			.catch(error => {
+				loading = false;
+				if (error instanceof AuthError) redirectToLogin(460);
+				if (error instanceof PermissionError) redirectToLogin(461);
+				if (error instanceof UserError)
+					modal.open("No matches found", "your query returned no matches");
+				throw new Error("Failed to get user data");
+			})
+			.then(data => {
+				loading = false;
+				collectedUserData.push(data!);
+			});
+	}
+
 	function loadByEmail(email: string) {
 		loader.show();
 		serverContactor
@@ -241,6 +261,8 @@
 					>Find user by domain</Button>
 				<Button loading={loading} onclick={_ => loadByEmail(searchString)}
 					>Find user by email</Button>
+				<Button loading={loading} onclick={_ => loadByReferral(searchString)}
+					>Find user by referral</Button>
 			</div>
 		</div>
 
@@ -421,13 +443,22 @@
 								{tld.tld}
 								{#if ((user["owned-tlds"] as Array<string>) ?? []).includes(tld.tld.slice(1))}<Button
 										variant="destructive"
+										class="w-32"
 										onclick={_ =>
 											serverContactor.removeTld(user.id, tld.tld.slice(1))}
 										>Remove</Button>
 								{:else}
 									<Button
-										onclick={_ =>
-											serverContactor.addTld(user.id, tld.tld.slice(1))}
+										loading={tldLoading}
+										onclick={_ => {
+											tldLoading = true;
+											serverContactor
+												.addTld(user.id, tld.tld.slice(1))
+												.then(_ => {
+													tldLoading = false;
+												});
+										}}
+										class="w-32"
 										variant={"outline"}>Add</Button>
 								{/if}
 							{/each}

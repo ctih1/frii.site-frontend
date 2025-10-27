@@ -877,6 +877,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/get/referral": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find User By Referral */
+        get: operations["find_user_by_referral_admin_user_get_referral_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/permission": {
         parameters: {
             query?: never;
@@ -3542,6 +3559,58 @@ export interface operations {
         parameters: {
             query: {
                 email: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountData"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid permissions */
+            461: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    find_user_by_referral_admin_user_get_referral_get: {
+        parameters: {
+            query: {
+                referral: string;
             };
             header?: never;
             path?: never;
