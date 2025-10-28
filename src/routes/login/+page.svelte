@@ -410,7 +410,7 @@
 						url: window.origin,
 						mode: "login",
 						redirect: redirectUrl,
-						referrer: Cookies.get("referrer")
+						referrer: data.referrerCode || Cookies.get("referrer")
 					})
 				);
 
