@@ -27,6 +27,9 @@
 			} else if (locale === "ar") {
 				flag = "sa";
 			}
+			if (locale.startsWith("zh_")) {
+				flag = locale.slice(3).toLowerCase();
+			}
 
 			const url = `https://flagcdn.com/${flag}.svg`;
 			await fetch(url)
@@ -49,7 +52,7 @@
 	class="bg-card flex h-full w-screen max-w-screen items-center space-x-6 pt-1 pr-4 pb-1 pl-4">
 	<button
 		id="popout-toggle"
-		class="hidden h-12 w-12"
+		class="relative hidden h-12 w-12"
 		onclick={_ => ($sidebarOpen = !$sidebarOpen)}>
 		{#key $sidebarOpen}
 			<div transition:fade={{ duration: 100 }} class="absolute top-0">
@@ -61,7 +64,10 @@
 			</div>
 		{/key}
 	</button>
-	{@render children()}
+
+	<div class="flex gap-4.5">
+		{@render children()}
+	</div>
 
 	<div class="mr-4 ml-auto flex space-x-2">
 		<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
@@ -158,9 +164,6 @@
 {/if}
 
 <style>
-	:global(#header svg) {
-		display: none;
-	}
 	@media (max-width: 960px) {
 		:global(#header a) {
 			display: none;
