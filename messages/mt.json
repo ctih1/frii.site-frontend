@@ -236,4 +236,3 @@
 	"dashboard_vercel_hint": "Trying to verify a Vercel domain?",
 	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel"
 }
-}
