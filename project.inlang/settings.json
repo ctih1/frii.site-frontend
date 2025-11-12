@@ -14,7 +14,8 @@
     "pt",
     "ro",
     "ru",
-    "zh_CN"
+    "zh_CN",
+    "mt"
   ],
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-empty-pattern@latest/dist/index.js",
