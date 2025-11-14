@@ -16,7 +16,8 @@
 	import Label from "./ui/label/label.svelte";
 
 	let { children } = $props();
-
+	
+	// cache the images
 	let images = $state(new SvelteMap<string, string | undefined>());
 
 	if (browser) {
