@@ -73,6 +73,7 @@ More info can be found on [our wiki](https://guides.frii.site)
 | English    | [ctih1](https://github.com/ctih1)                                                                                       |
 | German     | [Lugosieben](https://github.com/lugosieben) and [Planethac](https://github.com/Planethac)                               |
 | Italian    | [DanielProfessional](https://github.com/danielprofessional) and [WhatDidYouExpect](https://github.com/whatdidyouexpect) |
+| Maltese    | [WhatDidYouExpect](https://github.com/whatdidyouexpect) and @exvitilus                                                  |
 | Polish     | [Win81VMUser](https://github.com/win81vmuser)                                                                           |
 | Arabic     | [rock3tsprocket](https://github.com/rock3tsprocket)                                                                     |
 | Romanian   | [KotlVeridian](https://github.com/KotlVeridian)                                                                         |
@@ -80,6 +81,7 @@ More info can be found on [our wiki](https://guides.frii.site)
 | Russian    | [Coobyk](https://github.com/Coobyk)                                                                                     |
 | Portuguese | [ShyMike](https://github.com/ImShyMike)                                                                                 |
 | Spanish    | [Rage65](https://github.com/Rage65)                                                                                     |
+| Chinese    | [Wolffyhtl](https://github.com/Wolffyhtl)                                                                               |
 
 Do you want to contribute to the translations? Take a look at our [translation guide]()
 
