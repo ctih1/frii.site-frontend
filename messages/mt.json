@@ -2,7 +2,6 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"account_manage_account": "Immaniġġja l-kont tiegħek",
 	"account_delete_account": "Ħassar il-kont tiegħek",
-	"account_delete_confirm_description": "Din l-azzjoni ma tistax tiġi rrimedjata. Int żgur trid tkompli?",
 	"account_deletion_fail": "Ma setgħux jitħassar il-kont tiegħek",
 	"account_check_email": "Jekk jogħġbok iċċekkja l-email tiegħek",
 	"account_check_email_description": "Link biex tħassar il-kont tiegħek ġie mibgħut fl-email tiegħek. Jekk ma ssibhiex, iċċekkja l-folder tal-ispam",
