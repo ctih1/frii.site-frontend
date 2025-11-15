@@ -112,12 +112,15 @@
 		</Select.Root>
 		<div id="lang-picker-navbar">
 			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
-				<Select.Trigger class="w-24">
+				<Select.Trigger class="w-24 flex items-center gap-1">
 					{#if $activeTheme === "light"}
+						<MaterialSymbolsLightModeRounded class="h-5 w-5" />
 						{m.light_theme_select()}
 					{:else if $activeTheme === "dark"}
+						<MaterialSymbolsDarkModeRounded class="h-5 w-5" />
 						{m.dark_theme_select()}
 					{:else if $activeTheme === "auto"}
+						<MaterialSymbolsAutorenewRounded class="h-5 w-5" />
 						{m.auto_theme_select()}
 					{/if}
 				</Select.Trigger>
