@@ -234,5 +234,11 @@
 	"activation_thanks": "Thank you for your purchase!",
 	"activation_success": "Succesfully activated!",
 	"dashboard_vercel_hint": "Trying to verify a Vercel domain?",
-	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel"
+	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel",
+	"security_report_what_would_you_like_to_report": "What would you like to report?",
+	"security_report_vulnerability": "Security Vulnerability",
+	"security_report_bug": "A bug",
+	"security_report_abuse": "Abuse"
+
+
 }
