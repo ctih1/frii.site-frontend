@@ -234,10 +234,5 @@
 	"activation_thanks": "Grazie per il tuo acquisto!",
 	"activation_success": "Attivato con successo!",
 	"dashboard_vercel_hint": "Stai cercando di verificare un dominio Vercel?",
-	"dashboard_vercel_hint_description": "Per favore vai su {baseDomain}/account/verify/vercel",
-	"security_report_what_would_you_like_to_report": "Cosa desideri segnalare?",
-	"security_report_vulnerability": "Vulnerabilità di Sicurezza",
-	"security_report_bug": "Bug",
-	"security_report_abuse": "Abuso"
-
+	"dashboard_vercel_hint_description": "Per favore vai su {baseDomain}/account/verify/vercel"
 }
