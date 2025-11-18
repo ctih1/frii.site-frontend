@@ -138,7 +138,7 @@
 	"dashboard_domain_load_fail": "加载域名失败",
 	"vercel_verification_generic": "正在完成验证...",
 	"vercel_verification_queue": "队列位置: {position}",
-	"vercel_verification_queue_join": "正在派对中...",
+	"vercel_verification_queue_join": "正在排队中...",
 	"vercel_verification_queue_join_action_button": "加入队列",
 	"guides_link_navbar": "指南",
 	"login_mfa_required": "2FA",
