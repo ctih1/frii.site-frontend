@@ -80,7 +80,7 @@ More info can be found on [our wiki](https://guides.frii.site)
 | Russian    | [Coobyk](https://github.com/Coobyk)                                                                                     |
 | Portuguese | [ShyMike](https://github.com/ImShyMike)                                                                                 |
 | Spanish    | [Rage65](https://github.com/Rage65)                                                                                     |
-
+| Chinese    |[Wolffyhtl](https://github.com/Wolffyhtl)                                                                          |
 Do you want to contribute to the translations? Take a look at our [translation guide]()
 
 ## Contributing
