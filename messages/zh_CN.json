@@ -155,7 +155,7 @@
 	"account_disable_mfa": "移除 2FA",
 	"mfa_use_code": "使用身份验证器应用",
 	"mfa_use_backup": "使用备用代码",
-	"mfa_disabled_message": "2 因认证已禁用",
+	"mfa_disabled_message": "2FA 因认证已禁用",
 	"mfa_wrong_code_desc": "无效的 2FA 代码。",
 	"mfa_unable_to_login": "无法登录？请联系支持。",
 	"mfa_disable_with_backup": "使用备用代码禁用 2FA",
