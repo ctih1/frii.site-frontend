@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from "$app/stores";
+	import { navigating } from "$app/state";
 	import Analytics from "$lib/components/Analytics.svelte";
 	import Banner from "$lib/components/Banner.svelte";
 	import Header from "$lib/components/Header.svelte";
@@ -8,7 +8,7 @@
 	import { sidebarOpen } from "$lib/store";
 	import consola from "consola";
 	import NProgress from "nprogress";
-	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
+	import type { Component } from "svelte";
 	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
 	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
@@ -28,12 +28,12 @@
 	});
 
 	$effect(() => {
-		if ($navigating) {
+		if (navigating) {
 			consola.debug("Starting navigation");
 			NProgress.start();
 		}
 
-		if (!$navigating) {
+		if (!navigating) {
 			$sidebarOpen = false;
 			NProgress.done();
 			consola.debug("Navigation done");
@@ -43,24 +43,41 @@
 	});
 </script>
 
+{#snippet navbarLink(Icon: Component, href: string, text: string, preload: boolean = true)}
+	{@const preloadValue = preload ? "hover" : "off"}
+
+	<a
+		class="hover:text-accent flex flex-row items-center justify-start gap-1.5 text-xl font-medium"
+		href={href}
+		data-sveltekit-preload-data={preloadValue}>
+		<Icon />{text}
+	</a>
+{/snippet}
+
 <Toaster />
+
 <Header>
-	<a class="flex flex-row text-xl font-medium" href={localizeHref("/")}
-		><MaterialSymbolsHomeRounded />{m.dashboard_home()}</a>
-	<a
-		class="flex flex-row items-center text-xl font-medium"
-		href={localizeHref("/dashboard")}
-		data-sveltekit-preload-data="off"><MaterialSymbolsTeamDashboard />{m.dashboard_navbar()}</a>
-	<a
-		class="flex flex-row text-xl font-medium"
-		href={localizeHref("/account/manage")}
-		data-sveltekit-preload-data="off"
-		><MaterialSymbolsAccountCircle />{m.dashboard_account()}</a>
-	<a class="flex flex-row text-xl font-medium" href={localizeHref("/report")}
-		><MaterialSymbolsFlagRounded />{m.dashboard_abuse()}</a>
-	<a class="flex flex-row items-center text-xl font-medium" href="https://guides.frii.site"
-		><MaterialSymbolsMenuBookRounded />{m.guides_link_navbar()}</a>
+	{@render navbarLink(MaterialSymbolsHomeRounded, localizeHref("/"), m.dashboard_home())}
+	{@render navbarLink(
+		MaterialSymbolsTeamDashboard,
+		localizeHref("/dashboard"),
+		m.dashboard_navbar(),
+		false
+	)}
+	{@render navbarLink(
+		MaterialSymbolsTeamDashboard,
+		localizeHref("/account/manage"),
+		m.dashboard_account(),
+		false
+	)}
+	{@render navbarLink(MaterialSymbolsFlagRounded, localizeHref("/report"), m.dashboard_abuse())}
+	{@render navbarLink(
+		MaterialSymbolsMenuBookRounded,
+		"https://guides.frii.site",
+		m.guides_link_navbar()
+	)}
 </Header>
+
 <Banner />
 
 <Analytics />
@@ -92,6 +109,7 @@
 
 	:global(a) {
 		color: var(--color-primary);
+		transition: color 0.2s ease-in-out;
 	}
 
 	:global(body) {

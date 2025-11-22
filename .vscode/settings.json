@@ -1,46 +1,40 @@
 {
-    "i18n-ally.localesPaths": [
-        "src/locales"
-    ],
-    "i18n-ally.sourceLanguage": "en",
-    "i18n-ally.keystyle": "nested",
-    "editor.formatOnSave": true,
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[svelte]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.quickSuggestions": {
-            "strings": true
-        },
-        "editor.suggest.insertMode": "replace",
-        "editor.defaultFormatter": "vscode.json-language-features",
-        "editor.formatOnSave": false
-    },
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "always",
-        "source.fixAll.eslint": "always"
-    },
-    "gitlens.advanced.blame.customArguments": [
-        "--ignore-revs-file",
-        ".git-blame-ignore-revs"
-    ],
-    "sherlock.editorColors": {
-    "info": {
-        "foreground": "#color",
-        "background": "rgba(number, number, number, 0.2)", // needs transparency
-        "border": "#color"
-    },
-    "error": {
-        "foreground": "#color",
-        "background": "rgba(number, number, number, 0.2)", // needs transparency
-        "border": "#color"
-    },
-    "messageLintRuleLevels": {
-		"messageLintRule.inlang.messageWithoutSource": "error",
+	"i18n-ally.localesPaths": ["src/locales"],
+	"i18n-ally.sourceLanguage": "en",
+	"i18n-ally.keystyle": "nested",
+	"editor.formatOnSave": true,
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[svelte]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace",
+		"editor.defaultFormatter": "vscode.json-language-features",
+		"editor.formatOnSave": false
+	},
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "always",
+		"source.fixAll.eslint": "always"
+	},
+	"gitlens.advanced.blame.customArguments": ["--ignore-revs-file", ".git-blame-ignore-revs"],
+	"sherlock.editorColors": {
+		"info": {
+			"foreground": "#color",
+			"background": "rgba(number, number, number, 0.2)", // needs transparency
+			"border": "#color"
+		},
+		"error": {
+			"foreground": "#color",
+			"background": "rgba(number, number, number, 0.2)", // needs transparency
+			"border": "#color"
+		},
+		"messageLintRuleLevels": {
+			"messageLintRule.inlang.messageWithoutSource": "error"
+		}
 	}
-}
-
 }

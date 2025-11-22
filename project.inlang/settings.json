@@ -13,7 +13,8 @@
     "pl",
     "pt",
     "ro",
-    "ru"
+    "ru",
+    "zh_CN"
   ],
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-empty-pattern@latest/dist/index.js",
