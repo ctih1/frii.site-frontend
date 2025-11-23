@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from "$app/state";
+	import { afterNavigate, beforeNavigate } from "$app/navigation";
 	import Analytics from "$lib/components/Analytics.svelte";
 	import Banner from "$lib/components/Banner.svelte";
 	import Header from "$lib/components/Header.svelte";
@@ -27,19 +27,17 @@
 		trickleSpeed: 200
 	});
 
-	$effect(() => {
-		if (navigating) {
-			consola.debug("Starting navigation");
-			NProgress.start();
-		}
+	afterNavigate(() => {
+		$sidebarOpen = false;
+		consola.debug("Navigation done");
+		NProgress.done();
 
-		if (!navigating) {
-			$sidebarOpen = false;
-			NProgress.done();
-			consola.debug("Navigation done");
+		localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
+	});
 
-			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
-		}
+	beforeNavigate(() => {
+		consola.debug("Starting navigation");
+		NProgress.start();
 	});
 </script>
 
