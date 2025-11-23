@@ -9,6 +9,7 @@
 	import consola from "consola";
 	import NProgress from "nprogress";
 	import type { Component } from "svelte";
+	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
 	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
 	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
@@ -63,7 +64,7 @@
 		false
 	)}
 	{@render navbarLink(
-		MaterialSymbolsTeamDashboard,
+		MaterialSymbolsAccountCircle,
 		localizeHref("/account/manage"),
 		m.dashboard_account(),
 		false
