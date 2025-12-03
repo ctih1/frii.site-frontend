@@ -53,7 +53,6 @@
 	"security_report_submit": "提交",
 	"api_title": "您的 API 密钥",
 	"api_dashboard_key_warning": "警告！您即将查看您的 API 密钥。",
-
 	"api_dashboard_key_warning_description": "泄露您的 API 密钥可能导致您域名的未经授权更改。您确定要继续吗？",
 	"api_dashboard_key_title": "您的 API 密钥",
 	"api_dashboard_key_description": "您的 API 密钥是 \"{key}\"。请勿分享此 API 密钥，因为它可能导致您域名的未经授权更改。",
