@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from "$app/state";
+	import { afterNavigate, beforeNavigate } from "$app/navigation";
 	import Analytics from "$lib/components/Analytics.svelte";
 	import Banner from "$lib/components/Banner.svelte";
 	import Header from "$lib/components/Header.svelte";
@@ -9,10 +9,13 @@
 	import consola from "consola";
 	import NProgress from "nprogress";
 	import type { Component } from "svelte";
+	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
+	import MaterialSymbolsCelebrationRounded from "~icons/material-symbols/celebration-rounded";
 	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
 	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
 	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
+
 	import "../app.css";
 	import { m } from "../paraglide/messages";
 	import { localizeHref } from "../paraglide/runtime";
@@ -27,19 +30,17 @@
 		trickleSpeed: 200
 	});
 
-	$effect(() => {
-		if (navigating) {
-			consola.debug("Starting navigation");
-			NProgress.start();
-		}
+	afterNavigate(() => {
+		$sidebarOpen = false;
+		consola.debug("Navigation done");
+		NProgress.done();
 
-		if (!navigating) {
-			$sidebarOpen = false;
-			NProgress.done();
-			consola.debug("Navigation done");
+		localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
+	});
 
-			localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
-		}
+	beforeNavigate(() => {
+		consola.debug("Starting navigation");
+		NProgress.start();
 	});
 </script>
 
@@ -65,11 +66,12 @@
 		false
 	)}
 	{@render navbarLink(
-		MaterialSymbolsTeamDashboard,
+		MaterialSymbolsAccountCircle,
 		localizeHref("/account/manage"),
 		m.dashboard_account(),
 		false
 	)}
+	{@render navbarLink(MaterialSymbolsCelebrationRounded, localizeHref("/wrapped"), "Wrapped")}
 	{@render navbarLink(MaterialSymbolsFlagRounded, localizeHref("/report"), m.dashboard_abuse())}
 	{@render navbarLink(
 		MaterialSymbolsMenuBookRounded,

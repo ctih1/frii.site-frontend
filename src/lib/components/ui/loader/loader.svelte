@@ -1,8 +1,9 @@
 <script lang="ts">
-	let { asForeground = false } = $props();
+	let { asForeground = false, className }: { asForeground?: boolean; className?: string } =
+		$props();
 </script>
 
-<div class={`dot-flashing-wrapper ${asForeground ? "fg" : ""}`}>
+<div class={`dot-flashing-wrapper ${asForeground ? "fg" : ""} ${className}`}>
 	<div class="dot-flashing"></div>
 	<div class="dot-flashing"></div>
 	<div class="dot-flashing"></div>
