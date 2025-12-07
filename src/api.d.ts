@@ -400,6 +400,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/profile/wrapped": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Year Wrapped */
+        get: operations["year_wrapped_profile_wrapped_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/referral": {
         parameters: {
             query?: never;
@@ -940,7 +957,8 @@ export interface components {
             email: string;
             /** Lang */
             lang: string;
-            country: components["schemas"]["CountryType"];
+            /** Country */
+            country: components["schemas"]["CountryType"] | Record<string, never>;
             /** Created */
             created: number;
             /** Verified */
@@ -1177,7 +1195,8 @@ export interface components {
             email: string;
             /** Lang */
             lang: string;
-            country: components["schemas"]["CountryType"];
+            /** Country */
+            country: components["schemas"]["CountryType"] | Record<string, never>;
             /** Created */
             created: number;
             /** Verified */
@@ -1211,6 +1230,19 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** YearWrapped */
+        YearWrapped: {
+            /** Account Created */
+            account_created: number;
+            /** Domains Registered */
+            domains_registered: number;
+            /** Unique Ips */
+            unique_ips: number;
+            /** Accounts Made After */
+            accounts_made_after: number;
+            /** Total Users */
+            total_users: number;
         };
     };
     responses: never;
@@ -2321,6 +2353,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": Record<string, never>;
+                };
+            };
+            /** @description Invalid session */
+            460: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    year_wrapped_profile_wrapped_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wrapped sent */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["YearWrapped"];
                 };
             };
             /** @description Invalid session */

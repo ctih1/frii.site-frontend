@@ -10,10 +10,12 @@
 	import NProgress from "nprogress";
 	import type { Component } from "svelte";
 	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
+	import MaterialSymbolsCelebrationRounded from "~icons/material-symbols/celebration-rounded";
 	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
 	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
 	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
+
 	import "../app.css";
 	import { m } from "../paraglide/messages";
 	import { localizeHref } from "../paraglide/runtime";
@@ -69,6 +71,7 @@
 		m.dashboard_account(),
 		false
 	)}
+	{@render navbarLink(MaterialSymbolsCelebrationRounded, localizeHref("/wrapped"), "Wrapped")}
 	{@render navbarLink(MaterialSymbolsFlagRounded, localizeHref("/report"), m.dashboard_abuse())}
 	{@render navbarLink(
 		MaterialSymbolsMenuBookRounded,

@@ -16,36 +16,54 @@
 	import Label from "./ui/label/label.svelte";
 
 	let { children } = $props();
-
+	
 	// cache the images
 	let images = $state(new SvelteMap<string, string | undefined>());
+
 	if (browser) {
-		const flagCache = locales.map(async locale => {
-			let flag = locale.toString();
-			if (locale === "en") {
-				flag = "gb";
-			} else if (locale === "ar") {
-				flag = "sa";
-			}
-			if (locale.startsWith("zh_")) {
-				flag = locale.slice(3).toLowerCase();
-			}
+		const savedLocale = localStorage.getItem("user-locale");
+
+		if (!savedLocale) {
+			const userLocale = navigator.language || navigator.languages[0] || "en";
+			const matchedLocale =
+				locales.find((locale) =>
+					userLocale.toLowerCase().startsWith(locale.toLowerCase())
+				) || "en";
+			setLocale(matchedLocale);
+			localStorage.setItem("user-locale", matchedLocale);
+		}
+
+		const handleLocaleChange = (value: string) => {
+			setLocale(value);
+			localStorage.setItem("user-locale", value);
+		};
+
+		locales.forEach(async (locale) => {
+			let flag = locale;
+			if (locale === "en") flag = "gb";
+			else if (locale === "ar") flag = "sa";
+			else if (locale.startsWith("zh_")) flag = locale.slice(3).toLowerCase();
 
 			const url = `https://flagcdn.com/${flag}.svg`;
-			await fetch(url)
-				.then(req => req.blob())
-				.then(data => {
-					const reader = new FileReader();
-					reader.readAsDataURL(data);
-					reader.onloadend = () => {
-						consola.verbose(`Loaded locale flag ${locale}`);
-						images.set(locale, reader.result?.toString());
-						images = images;
-					};
-				});
+			try {
+				const res = await fetch(url);
+				const blob = await res.blob();
+				const reader = new FileReader();
+				reader.readAsDataURL(blob);
+				reader.onloadend = () => {
+					images.set(locale, reader.result?.toString());
+					images = images;
+					consola.verbose(`Loaded locale flag ${locale}`);
+				};
+			} catch (e) {
+				consola.warn(`Failed to load flag for ${locale}`, e);
+			}
 		});
 	}
+
 </script>
+
+
 
 <header
 	id="header"
@@ -94,12 +112,15 @@
 		</Select.Root>
 		<div id="lang-picker-navbar">
 			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
-				<Select.Trigger class="w-24">
+				<Select.Trigger class="w-24 flex items-center gap-1">
 					{#if $activeTheme === "light"}
+						<MaterialSymbolsLightModeRounded class="h-5 w-5" />
 						{m.light_theme_select()}
 					{:else if $activeTheme === "dark"}
+						<MaterialSymbolsDarkModeRounded class="h-5 w-5" />
 						{m.dark_theme_select()}
 					{:else if $activeTheme === "auto"}
+						<MaterialSymbolsAutorenewRounded class="h-5 w-5" />
 						{m.auto_theme_select()}
 					{/if}
 				</Select.Trigger>
