@@ -3,6 +3,7 @@
 	import * as Select from "$lib/components/ui/select/index.js";
 	import { activeTheme, sidebarOpen } from "$lib/store";
 	import consola from "consola";
+	import Cookies from "js-cookie";
 	import { SvelteMap } from "svelte/reactivity";
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsAutorenewRounded from "~icons/material-symbols/autorenew-rounded";
@@ -12,34 +13,27 @@
 	import MaterialSymbolsMenuRounded from "~icons/material-symbols/menu-rounded";
 	import { changeTheme, getFlagEmoji } from "../../helperFuncs";
 	import { m } from "../../paraglide/messages";
-	import { getLocale, locales, setLocale } from "../../paraglide/runtime";
+	import { getLocale, type Locale, locales, setLocale } from "../../paraglide/runtime";
 	import Label from "./ui/label/label.svelte";
 
 	let { children } = $props();
-	
+
 	// cache the images
 	let images = $state(new SvelteMap<string, string | undefined>());
 
 	if (browser) {
-		const savedLocale = localStorage.getItem("user-locale");
+		const savedLocale = Cookies.get("PARAGLIDE_LOCALE");
 
 		if (!savedLocale) {
 			const userLocale = navigator.language || navigator.languages[0] || "en";
 			const matchedLocale =
-				locales.find((locale) =>
-					userLocale.toLowerCase().startsWith(locale.toLowerCase())
-				) || "en";
+				locales.find(locale => userLocale.toLowerCase().startsWith(locale.toLowerCase())) ||
+				"en";
 			setLocale(matchedLocale);
-			localStorage.setItem("user-locale", matchedLocale);
 		}
 
-		const handleLocaleChange = (value: string) => {
-			setLocale(value);
-			localStorage.setItem("user-locale", value);
-		};
-
-		locales.forEach(async (locale) => {
-			let flag = locale;
+		locales.forEach(async locale => {
+			let flag: string = locale;
 			if (locale === "en") flag = "gb";
 			else if (locale === "ar") flag = "sa";
 			else if (locale.startsWith("zh_")) flag = locale.slice(3).toLowerCase();
@@ -60,10 +54,7 @@
 			}
 		});
 	}
-
 </script>
-
-
 
 <header
 	id="header"
@@ -88,7 +79,10 @@
 	</div>
 
 	<div class="mr-4 ml-auto flex space-x-2">
-		<Select.Root onValueChange={value => setLocale(value)} type="single" name="Language">
+		<Select.Root
+			onValueChange={value => setLocale(value as Locale)}
+			type="single"
+			name="Language">
 			<Select.Trigger class="w-24">
 				{#if images.get(getLocale().toString())}
 					<img
@@ -112,7 +106,7 @@
 		</Select.Root>
 		<div id="lang-picker-navbar">
 			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
-				<Select.Trigger class="w-24 flex items-center gap-1">
+				<Select.Trigger class="flex w-28 items-center gap-1">
 					{#if $activeTheme === "light"}
 						<MaterialSymbolsLightModeRounded class="h-5 w-5" />
 						{m.light_theme_select()}
