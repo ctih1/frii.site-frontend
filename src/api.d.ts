@@ -570,6 +570,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/discord": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Conn Code */
+        post: operations["create_conn_code_discord_post"];
+        /** Remove Discord Conn */
+        delete: operations["remove_discord_conn_discord_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/discord/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify Discord Link */
+        post: operations["verify_discord_link_discord_link_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/login": {
         parameters: {
             query?: never;
@@ -612,10 +647,10 @@ export interface paths {
             cookie?: never;
         };
         /** Google Oauth2 */
-        get: operations["google_oauth2_auth_google_callback_get"];
+        get: operations["google_oauth2_auth_google_callback_post"];
         put?: never;
         /** Google Oauth2 */
-        post: operations["google_oauth2_auth_google_callback_get"];
+        post: operations["google_oauth2_auth_google_callback_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -983,6 +1018,8 @@ export interface components {
             "referred-people": number;
             /** Owned-Tlds */
             "owned-tlds": string[];
+            /** Discord-Linked */
+            "discord-linked": boolean;
             /** Domains */
             domains: {
                 [key: string]: components["schemas"]["DomainFormat"];
@@ -1221,6 +1258,8 @@ export interface components {
             "referred-people": number;
             /** Owned-Tlds */
             "owned-tlds": string[];
+            /** Discord-Linked */
+            "discord-linked": boolean;
         };
         /** ValidationError */
         ValidationError: {
@@ -2803,6 +2842,99 @@ export interface operations {
             };
         };
     };
+    create_conn_code_discord_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Code created succesfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
+                };
+            };
+            /** @description Account has linked discord but code isn't stored */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    remove_discord_conn_discord_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Discord account detached */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    verify_discord_link_discord_link_post: {
+        parameters: {
+            query: {
+                code: string;
+                discord_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Code created succesfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Code does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Code has been linked already */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     login_login_post: {
         parameters: {
             query?: never;
@@ -2899,7 +3031,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_get: {
+    google_oauth2_auth_google_callback_post: {
         parameters: {
             query: {
                 code: string;
@@ -2930,7 +3062,7 @@ export interface operations {
             };
         };
     };
-    google_oauth2_auth_google_callback_get: {
+    google_oauth2_auth_google_callback_post: {
         parameters: {
             query: {
                 code: string;

@@ -53,7 +53,8 @@ export const load = async () => {
 		permissions: new Map(Object.entries(accountSettings.permissions)) || new Map(),
 		googleLinked: accountSettings["google-connected"],
 		referralCode: accountSettings["referral-code"],
-		referredPeople: accountSettings["referred-people"] ?? 0
+		referredPeople: accountSettings["referred-people"] ?? 0,
+		discordLinked: accountSettings["discord-linked"]
 	};
 };
 

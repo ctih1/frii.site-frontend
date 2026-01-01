@@ -234,5 +234,12 @@
 	"activation_thanks": "Thank you for your purchase!",
 	"activation_success": "Succesfully activated!",
 	"dashboard_vercel_hint": "Trying to verify a Vercel domain?",
-	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel"
+	"dashboard_vercel_hint_description": "Please go to {baseDomain}/account/verify/vercel",
+	"account_discord_link": "Link Discord account",
+	"account_discord_link_desc": "By linking your Discord account to your frii.site account, you can recieve login alerts directly through Discord.",
+	"account_discord_link_server": "Click the link below to join our Discord server",
+	"account_discord_link_code_button": "Generate new linking code",
+	"account_discord_link_code": "Your linking code: \"{code}\"",
+	"account_discord_link_bot": "Next, join our Discord server, and inside #bot-commands run /link",
+	"account_discord_link_remove": "Disconnect Discord"
 }

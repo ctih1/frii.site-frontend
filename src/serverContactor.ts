@@ -1369,4 +1369,48 @@ export class ServerContactor {
 
 		return data;
 	}
+
+	async generateDiscordLinkCode(): Promise<string | undefined> {
+		const { data, error, response } = await client.POST("/discord", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to load user permission");
+			}
+		}
+
+		return data;
+	}
+
+	async removeDiscordLinkCode(): Promise<string | undefined> {
+		const { data, error, response } = await client.DELETE("/discord", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			}
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				default:
+					throw new Error("Failed to load user permission");
+			}
+		}
+
+		return data;
+	}
 }
