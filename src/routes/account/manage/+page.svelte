@@ -530,11 +530,11 @@
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
-				<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
-				<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
-					>{m.account_api_dashboard_link()}</Button>
-				<Button variant={"secondary"} onclick={_ => logOut()}>{m.account_log_out()}</Button>
 			{/if}
+			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
+			<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
+				>{m.account_api_dashboard_link()}</Button>
+			<Button variant={"secondary"} onclick={_ => logOut()}>{m.account_log_out()}</Button>
 		</div>
 	</div>
 
