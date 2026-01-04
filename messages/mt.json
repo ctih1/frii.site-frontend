@@ -2,6 +2,7 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"account_manage_account": "Immaniġġja l-kont tiegħek",
 	"account_delete_account": "Ħassar il-kont tiegħek",
+	"acount_delete_confirm_description": "Din hija azzjoni distruttiva li ma tistax titneħħa. Żgur li trid tkompli?",
 	"account_deletion_fail": "Ma setgħux jitħassar il-kont tiegħek",
 	"account_check_email": "Jekk jogħġbok iċċekkja l-email tiegħek",
 	"account_check_email_description": "Link biex tħassar il-kont tiegħek ġie mibgħut fl-email tiegħek. Jekk ma ssibhiex, iċċekkja l-folder tal-ispam",
@@ -233,5 +234,12 @@
 	"activation_thanks": "Grazzi għall-xiri tiegħek!",
 	"activation_success": "Attivazzjoni b’suċċess!",
 	"dashboard_vercel_hint": "Qed tipprova tivverifika dominju Vercel?",
-	"dashboard_vercel_hint_description": "Jekk jogħġbok mur f’{baseDomain}/account/verify/vercel"
+	"dashboard_vercel_hint_description": "Jekk jogħġbok mur f’{baseDomain}/account/verify/vercel",
+	"account_discord_link": "Ikkonnettja kont Discord",
+	"account_discord_link_desc": "Billi tgħaqqad il-kont Discord tiegħek mal-kont frii.site tiegħek, tista' tirċievi allerti ta' login direttament permezz ta' Discord.",
+	"account_discord_link_server": "Ikklikkja l-link t'hawn taħt biex tingħaqad mas-server Discord tagħna",
+	"account_discord_link_code_button": "Iġġenera kodiċi ta' linking ġdid",
+	"account_discord_link_code": "Il-kodiċi tal-linking tiegħek: \" {code} \"",
+	"account_discord_link_bot": "Imbagħad, ingħaqad mas-server Discord tagħna, u mexxi /link fil-kanal #bot-commands.",
+	"account_discord_link_remove": "Skonnettja d-Diskord"
 }
