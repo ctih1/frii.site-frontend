@@ -241,5 +241,8 @@
 	"account_discord_link_code_button": "Luo uusi yhdistyskoodi",
 	"account_discord_link_code": "Yhdistyskoodisi on \"{code}\"",
 	"account_discord_link_bot": "Seuraavaksi liity meidän Discord palvelimelle, ja suorita /link-komento #bot-commands kanavalla",
-	"account_discord_link_remove": "Poista yhteys Discordiin"
+	"account_discord_link_remove": "Poista yhteys Discordiin",
+	"api_dashboard_userdetails_perm": "Näe tilin tiedot",
+	"generic_warning": "VAROITUS:",
+	"api_dashboard_userdetails_warning": "\"{permission}\"-oikeuden antaminen API-avaimelle on erittäin vaarallista, sillä se voi paljastaa IP-osoitteesi, sähköpostisi, käyttäjänimesi, aktiiviset istuntosi sekä laitteesi, ja muita henkilökohtaisia tietoja. On suositeltavaa pitää tämä pois päältä, ellet tiedä mitä olet tekemässä."
 }
