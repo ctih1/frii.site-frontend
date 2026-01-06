@@ -241,5 +241,8 @@
 	"account_discord_link_code_button": "Generate new linking code",
 	"account_discord_link_code": "Your linking code: \"{code}\"",
 	"account_discord_link_bot": "Next, join our Discord server, and run /link in the #bot-commands channel.",
-	"account_discord_link_remove": "Disconnect Discord"
+	"account_discord_link_remove": "Disconnect Discord",
+	"api_dashboard_userdetails_perm": "View account details",
+	"generic_warning": "WARNING:",
+	"api_dashboard_userdetails_warning": "Giving the API key the \"{permission}\" permission is extremely dangerous, as it can expose your IP-address, email, username, list of sessions, list of devices, and other sensitive data. It is advised to turn this off unless you absolutely know what you are doing."
 }
