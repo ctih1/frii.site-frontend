@@ -1369,6 +1369,7 @@ export class ServerContactor {
 
 		return data;
 	}
+<<<<<<< HEAD
 
 	async generateDiscordLinkCode(): Promise<string | undefined> {
 		const { data, error, response } = await client.POST("/discord", {
@@ -1413,4 +1414,6 @@ export class ServerContactor {
 
 		return data;
 	}
+=======
+>>>>>>> master
 }
