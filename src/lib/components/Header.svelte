@@ -17,21 +17,16 @@
 	import Label from "./ui/label/label.svelte";
 
 	let { children } = $props();
-	
+
 	// cache the images
 	let images = $state(new SvelteMap<string, string | undefined>());
 
 	if (browser) {
-<<<<<<< HEAD
 		const savedLocale = Cookies.get("PARAGLIDE_LOCALE");
-=======
-		const savedLocale = localStorage.getItem("user-locale");
->>>>>>> master
 
 		if (!savedLocale) {
 			const userLocale = navigator.language || navigator.languages[0] || "en";
 			const matchedLocale =
-<<<<<<< HEAD
 				locales.find(locale => userLocale.toLowerCase().startsWith(locale.toLowerCase())) ||
 				"en";
 			setLocale(matchedLocale);
@@ -42,26 +37,6 @@
 			if (locale === "en") flag = "gb";
 			else if (locale === "ar") flag = "sa";
 			else if (locale.startsWith("zh-")) flag = locale.slice(3).toLowerCase();
-=======
-				locales.find((locale) =>
-					userLocale.toLowerCase().startsWith(locale.toLowerCase())
-				) || "en";
-			setLocale(matchedLocale);
-			localStorage.setItem("user-locale", matchedLocale);
-		}
-
-		const handleLocaleChange = (value: string) => {
-			setLocale(value);
-			localStorage.setItem("user-locale", value);
-		};
-
-		locales.forEach(async (locale) => {
-			let flag = locale;
-			if (locale === "en") flag = "gb";
-			else if (locale === "ar") flag = "sa";
-			else if (locale.startsWith("zh_")) flag = locale.slice(3).toLowerCase();
->>>>>>> master
-
 			const url = `https://flagcdn.com/${flag}.svg`;
 			try {
 				const res = await fetch(url);
@@ -78,10 +53,7 @@
 			}
 		});
 	}
-
 </script>
-
-
 
 <header
 	id="header"
@@ -133,11 +105,7 @@
 		</Select.Root>
 		<div id="lang-picker-navbar">
 			<Select.Root onValueChange={changeTheme} type="single" name="Theme mode">
-<<<<<<< HEAD
 				<Select.Trigger class="flex w-28 items-center gap-1">
-=======
-				<Select.Trigger class="w-24 flex items-center gap-1">
->>>>>>> master
 					{#if $activeTheme === "light"}
 						<MaterialSymbolsLightModeRounded class="h-5 w-5" />
 						{m.light_theme_select()}

@@ -234,7 +234,6 @@
 	"activation_thanks": "Grazie per il tuo acquisto!",
 	"activation_success": "Attivato con successo!",
 	"dashboard_vercel_hint": "Stai cercando di verificare un dominio Vercel?",
-<<<<<<< HEAD
 	"dashboard_vercel_hint_description": "Per favore vai su {baseDomain}/account/verify/vercel",
 	"account_discord_link": "Collega l'account Discord",
 	"account_discord_link_desc": "Collegando il tuo account Discord al tuo account frii.site, puoi ricevere gli avvisi di accesso direttamente tramite Discord.",
@@ -243,7 +242,4 @@
 	"account_discord_link_code": "Il tuo codice di collegamento: \" {code} \"",
 	"account_discord_link_bot": "Quindi, unisciti al nostro server Discord e, nel canale #bot-commands, esegui /link.",
 	"account_discord_link_remove": "Disconnetti Discord"
-=======
-	"dashboard_vercel_hint_description": "Per favore vai su {baseDomain}/account/verify/vercel"
->>>>>>> master
 }
