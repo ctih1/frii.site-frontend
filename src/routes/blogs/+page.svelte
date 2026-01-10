@@ -5,6 +5,7 @@
 	import { serverURL } from "../../serverContactor";
 
 	import Holder from "$lib/components/Holder.svelte";
+	import Loader from "$lib/components/ui/loader/loader.svelte";
 	interface Iblog {
 		url: string;
 		date: number;
@@ -32,12 +33,20 @@
 </script>
 
 <Holder>
-	<h1>{m.blogs_title()}</h1>
+	<h1 class="text-4xl font-bold">{m.blogs_title()}</h1>
 	<p>{m.blogs_description()}</p>
 
-	{#each blogs as blog}
-		<a href={blog.url}>{blog.title} ({new Date(blog.date / 1000)})</a>
-	{/each}
+	{#if blogs.length === 0}
+		<Loader className="w-12" />
+	{/if}
+	<ul>
+		{#each blogs as blog}
+			<li>
+				<a class="text-lg" href={blog.url}
+					>{blog.title} ({new Date(blog.date * 1000).toLocaleDateString()})</a>
+			</li>
+		{/each}
+	</ul>
 </Holder>
 
 <style>
