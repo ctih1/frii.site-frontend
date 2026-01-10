@@ -145,7 +145,7 @@
 				domainsLoaded = true;
 				// @ts-expect-error
 				const userDomains = Object.entries(data["domains"]);
-
+				
 				for (let [key, value] of userDomains) {
 					domains.push({
 						type: value.type,
