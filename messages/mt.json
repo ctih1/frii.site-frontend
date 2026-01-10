@@ -242,6 +242,7 @@
 	"account_discord_link_code": "Il-kodiċi tal-linking tiegħek: \" {code} \"",
 	"account_discord_link_bot": "Imbagħad, ingħaqad mas-server Discord tagħna, u mexxi /link fil-kanal #bot-commands.",
 	"account_discord_link_remove": "Skonnettja d-Diskord",
+	"api_dashboard_userdetails_perm": "Ara d-dettalji tal-kont",
 	"generic_warning": "TWISSIJA:",
 	"api_dashboard_userdetails_warning": "Li tagħti l-permess \" {permission} \" lill-API key huwa estremament perikoluż, għax jista' jesponi l-indirizz IP tiegħek, l-email, l-username, il-lista ta' sessjonijiet, il-lista ta' apparati, u data sensittiva oħra. Huwa rrakkomandat li titfi dan sakemm ma tkunx taf assolutament x'qed tagħmel.",
 	"blogs_navbar": "Blogs",
