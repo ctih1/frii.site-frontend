@@ -18,7 +18,7 @@
 	import { AuthError, ServerContactor } from "../../../serverContactor";
 	interface Key {
 		hash: string;
-		perms: ("delete" | "register" | "modify" | "list")[];
+		perms: ("delete" | "register" | "modify" | "list" | "userdetails")[];
 		domains: string[];
 		comment: string;
 		decrypted?: string;
@@ -27,7 +27,7 @@
 		dialogOpen: boolean;
 	}
 
-	const Permissions = ["register", "modify", "delete", "list"] as const;
+	const Permissions = ["register", "modify", "delete", "list", "userdetails"] as const;
 
 	let apiKeys: Key[] = $state([]);
 	let keysLoaded: boolean = $state(false);
@@ -103,7 +103,7 @@
 	}
 
 	onMount(() => {
-		serverContactor = new ServerContactor(getAuthToken());
+		serverContactor = new ServerContactor(getAuthToken()!);
 		serverContactor
 			.getApiKeys()
 			.catch(error => {
@@ -144,8 +144,8 @@
 			.then(data => {
 				domainsLoaded = true;
 				// @ts-expect-error
-				const userDomains = Object.entries(data);
-
+				const userDomains = Object.entries(data["domains"]);
+				
 				for (let [key, value] of userDomains) {
 					domains.push({
 						type: value.type,
@@ -205,6 +205,9 @@
 							{/if}
 							{#if permission === "list"}
 								<li>{m.api_dashboard_list_perm()}</li>
+							{/if}
+							{#if permission === "userdetails"}
+								<li>{m.api_dashboard_userdetails_perm()}</li>
 							{/if}
 						{/each}
 					</ul>
@@ -291,6 +294,15 @@
 				</Select.Content>
 			</Select.Root>
 		</div>
+
+		{#if selectedPermissions.includes("userdetails")}
+			<h2>
+				<span class="text-red-500">{m.generic_warning()}</span>
+				{m.api_dashboard_userdetails_warning({
+					permission: m.api_dashboard_userdetails_perm()
+				})}
+			</h2>
+		{/if}
 
 		<Button
 			disabled={!comment}

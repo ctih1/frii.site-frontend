@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Holder from "$lib/components/Holder.svelte";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import Markdown from "@magidoc/plugin-svelte-marked";
 	import MaterialSymbolsEditCalendar from "~icons/material-symbols/edit-calendar";
 	import MaterialSymbolsScheduleOutline from "~icons/material-symbols/schedule-outline";
@@ -34,15 +35,16 @@
 </svelte:head>
 
 <Holder>
-	<h1>{data.title}</h1>
-	<div class="data">
+	<h1 class="text-4xl font-bold">{data.title}</h1>
+	<Separator />
+	<div class="data mt-2">
 		<p style="opacity: 0.5;">
 			<MaterialSymbolsEditCalendar class="mr-2" />
 			{time}
 		</p>
 		<p><MaterialSymbolsScheduleOutline class="mr-2" />{calculateReadTime()}</p>
 	</div>
-	<hr style="opacity: 0.1" />
+	<Separator class="mt-2 mb-4" />
 	<div class="md">
 		<Markdown source={source} />
 	</div>
@@ -65,5 +67,38 @@
 		background-color: var(--offwhite-color);
 		font-family: "Fira Code", monospace;
 		font-weight: 500;
+	}
+
+	.md :global(h1) {
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	.md :global(h2) {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+	.md :global(h3) {
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.md :global(p:has(em)) {
+		padding-left: 1em;
+		opacity: 0.9;
+	}
+
+	.md :global(thead) {
+		background-color: var(--background);
+	}
+
+	.md :global(thead tr th) {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+	.md :global(td) {
+		padding-left: 4px;
+		padding-right: 4px;
 	}
 </style>

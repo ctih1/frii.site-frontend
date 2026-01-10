@@ -37,7 +37,6 @@
 			if (locale === "en") flag = "gb";
 			else if (locale === "ar") flag = "sa";
 			else if (locale.startsWith("zh-")) flag = locale.slice(3).toLowerCase();
-
 			const url = `https://flagcdn.com/${flag}.svg`;
 			try {
 				const res = await fetch(url);
