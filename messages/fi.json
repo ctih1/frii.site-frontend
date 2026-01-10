@@ -244,5 +244,10 @@
 	"account_discord_link_remove": "Poista yhteys Discordiin",
 	"api_dashboard_userdetails_perm": "Näe tilin tiedot",
 	"generic_warning": "VAROITUS:",
-	"api_dashboard_userdetails_warning": "\"{permission}\"-oikeuden antaminen API-avaimelle on erittäin vaarallista, sillä se voi paljastaa IP-osoitteesi, sähköpostisi, käyttäjänimesi, aktiiviset istuntosi sekä laitteesi, ja muita henkilökohtaisia tietoja. On suositeltavaa pitää tämä pois päältä, ellet tiedä mitä olet tekemässä."
+	"api_dashboard_userdetails_warning": "\"{permission}\"-oikeuden antaminen API-avaimelle on erittäin vaarallista, sillä se voi paljastaa IP-osoitteesi, sähköpostisi, käyttäjänimesi, aktiiviset istuntosi sekä laitteesi, ja muita henkilökohtaisia tietoja. On suositeltavaa pitää tämä pois päältä, ellet tiedä mitä olet tekemässä.",
+	"blogs_navbar": "Blogit",
+	"donate_beg_title": "Oletko harkinnut lahjoittamista?",
+	"donate_beg_description": "frii.site ei ole ikinä ollut taloudellisesti kannattava, mutta menetämme enemmän rahaa kuin ikinä Namecheapin hintojen nousun takia. Jopa pienet lahjoitukset <nobr>(esim. 1€ tai $1)</nobr> auttaisivat erittäin paljon.",
+	"donate_beg_options": "Katso lahjoitusvaihtoehtoja",
+	"donate_beg_ignore": "Älä ikinä muistuta minua uudelleen"
 }
