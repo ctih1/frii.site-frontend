@@ -10,19 +10,20 @@
 	import NProgress from "nprogress";
 	import type { Component } from "svelte";
 	import MaterialSymbolsAccountCircle from "~icons/material-symbols/account-circle";
-	import MaterialSymbolsCelebrationRounded from "~icons/material-symbols/celebration-rounded";
+	import MaterialSymbolsCollectionsBookmarkOutlineRounded from "~icons/material-symbols/collections-bookmark-outline-rounded";
 	import MaterialSymbolsFlagRounded from "~icons/material-symbols/flag-rounded";
 	import MaterialSymbolsHomeRounded from "~icons/material-symbols/home-rounded";
 	import MaterialSymbolsMenuBookRounded from "~icons/material-symbols/menu-book-rounded";
 	import MaterialSymbolsTeamDashboard from "~icons/material-symbols/team-dashboard";
 
+	import Button from "$lib/components/ui/button/button.svelte";
+	import { isBrowser } from "@sentry/core";
 	import "../app.css";
 	import { m } from "../paraglide/messages";
 	import { localizeHref } from "../paraglide/runtime";
 
 	let { children } = $props();
-	let userRespectsPrivacyInsane = $state(false);
-	let userDoesntCareAndWantsAdblock = $state(false);
+	let localSponsorHidden = $state(false);
 
 	NProgress.configure({
 		minimum: 0.55,
@@ -71,7 +72,11 @@
 		m.dashboard_account(),
 		false
 	)}
-	{@render navbarLink(MaterialSymbolsCelebrationRounded, localizeHref("/wrapped"), "Wrapped")}
+	{@render navbarLink(
+		MaterialSymbolsCollectionsBookmarkOutlineRounded,
+		localizeHref("/blogs"),
+		m.blogs_navbar()
+	)}
 	{@render navbarLink(MaterialSymbolsFlagRounded, localizeHref("/report"), m.dashboard_abuse())}
 	{@render navbarLink(
 		MaterialSymbolsMenuBookRounded,
@@ -84,6 +89,25 @@
 
 <Analytics />
 
+{#if isBrowser() && Number(localStorage.getItem("views")) > 7 && !localStorage.getItem("donation-dismissed") && !localSponsorHidden}
+	<div class="flex w-full items-center justify-around p-4">
+		<div>
+			<h1 class="text-2xl font-semibold">{m.donate_beg_title()}</h1>
+			<p class="max-w-[60ch]">
+				{@html m.donate_beg_description()}
+			</p>
+			<a href="https://ko-fi.com/ctih1">{m.donate_beg_options()}</a>
+		</div>
+
+		<Button
+			variant={"destructive"}
+			onclick={_ => {
+				localSponsorHidden = true;
+				localStorage.setItem("donation-dismissed", "true");
+			}}>{m.donate_beg_ignore()}</Button>
+	</div>
+{/if}
+
 <svelte:head>
 	<link
 		rel="preload"
@@ -92,6 +116,7 @@
 		type="font/woff2"
 		crossorigin="anonymous" />
 </svelte:head>
+
 <main>
 	{@render children()}
 </main>

@@ -6,6 +6,7 @@
 
 	import Holder from "$lib/components/Holder.svelte";
 	import Loader from "$lib/components/ui/loader/loader.svelte";
+	import { localizeHref } from "../../paraglide/runtime";
 	interface Iblog {
 		url: string;
 		date: number;
@@ -42,7 +43,7 @@
 	<ul>
 		{#each blogs as blog}
 			<li>
-				<a class="text-lg" href={blog.url}
+				<a class="text-lg" href={localizeHref(`/blog/${blog.url}`)}
 					>{blog.title} ({new Date(blog.date * 1000).toLocaleDateString()})</a>
 			</li>
 		{/each}

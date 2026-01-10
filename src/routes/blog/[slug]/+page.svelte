@@ -88,4 +88,17 @@
 		padding-left: 1em;
 		opacity: 0.9;
 	}
+
+	.md :global(thead) {
+		background-color: var(--background);
+	}
+
+	.md :global(thead tr th) {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+	.md :global(td) {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
 </style>
