@@ -51,6 +51,9 @@
 
 	let dialogOpen: boolean = $state(false);
 	let deleteOpen: boolean = $state(false);
+	let discordConnOpen: boolean = $state(false);
+	let discordCode: string | undefined = $state();
+	let discordButtonLoading: boolean = $state(false);
 
 	let referralCode: string = $state("");
 	let referralInvalid: boolean = $state(false);
@@ -205,6 +208,22 @@
 					});
 				}
 			});
+	}
+
+	function generateDiscordLinkingCode() {
+		discordButtonLoading = true;
+		serverContactor.generateDiscordLinkCode().then(code => {
+			discordCode = code;
+			discordButtonLoading = false;
+		});
+	}
+
+	function removeDiscordLinkingCode() {
+		discordButtonLoading = true;
+		serverContactor.removeDiscordLinkCode().then(_ => {
+			discordButtonLoading = false;
+			window.location.reload();
+		});
 	}
 
 	$effect(() => {
@@ -435,7 +454,7 @@
 					</Dialog.Footer>
 				</Dialog.Content>
 			</Dialog.Root>
-			{#if data.permissions.get("admin") === true}
+			{#if data.permissions?.get("admin") === true}
 				<Button onclick={_ => goto(localizeHref("/account/admin"))}>Admin dashboard</Button>
 			{/if}
 			{#if !data.googleLinked}
@@ -468,6 +487,49 @@
 							window.location.href = googleAuthUrl.toString();
 						});
 					}}>{m.link_google()}</Button>
+			{/if}
+			{#if data.discordLinked}
+				<Button
+					onclick={_ => removeDiscordLinkingCode()}
+					variant={"destructive"}
+					loading={discordButtonLoading}>{m.account_discord_link_remove()}</Button>
+			{:else}
+				<Dialog.Root onOpenChange={open => (discordConnOpen = open)} open={discordConnOpen}>
+					<Dialog.Trigger>
+						<Button>{m.account_discord_link()}</Button>
+					</Dialog.Trigger>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>{m.account_discord_link()}</Dialog.Title>
+							<Dialog.Description>
+								{m.account_discord_link_desc()}
+							</Dialog.Description>
+						</Dialog.Header>
+
+						<div class="space-y-2">
+							<p class="text-sm">{m.account_discord_link_server()}</p>
+							<a href="https://discord.gg/ANeVwQ5yWq"
+								>https://discord.gg/ANeVwQ5yWq</a>
+						</div>
+
+						{#if discordCode}
+							<h3 class="m-0 text-xl font-semibold">
+								{m.account_discord_link_code({ code: discordCode })}
+							</h3>
+
+							<h3 class="m-0 text-lg font-medium">
+								{m.account_discord_link_bot()}
+							</h3>
+						{/if}
+
+						<Dialog.Footer>
+							<Button
+								loading={discordButtonLoading}
+								onclick={_ => generateDiscordLinkingCode()}
+								>{m.account_discord_link_code_button()}</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
 			{/if}
 			<Button onclick={_ => gpdrData()}>{m.account_download_data()}</Button>
 			<Button onclick={_ => goto(localizeHref("/api/dashboard"))}
