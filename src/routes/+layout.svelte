@@ -115,6 +115,12 @@
 		href="/fonts/InterVariable.woff2"
 		type="font/woff2"
 		crossorigin="anonymous" />
+
+	<script
+		async
+		src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2958231337684546"
+		crossorigin="anonymous">
+	</script>
 </svelte:head>
 
 <main>
