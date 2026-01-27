@@ -91,8 +91,8 @@
 
 				window.gtag?.("event", "domain_delete");
 				button.deletionLoading = false;
-				toast.success(m.dashboard_delete_success({ domain: domain }), {
-					description: m.dashboard_delete_success_description({ domain: domain })
+				toast.success(m.dashboard_delete_success({ domain: domain + tld }), {
+					description: m.dashboard_delete_success_description({ domain: domain + tld })
 				});
 				removeDomain(domain);
 			});
@@ -106,7 +106,7 @@
 			.catch(error => {
 				consola.warn("Failed to register a domain");
 				registerNewDomainLoading = false;
-				registerErrorTitle = m.dashboard_register_fail({ domain: domain });
+				registerErrorTitle = m.dashboard_register_fail({ domain: domain + tld });
 
 				if (error instanceof AuthError) redirectToLogin(460);
 				else if (error instanceof DNSError)
@@ -127,7 +127,7 @@
 				consola.info("Registered domain");
 				registerNewDomainLoading = false;
 				window.gtag?.("event", "domain_register");
-				toast.success(m.dashboard_register_success({ domain: domain }));
+				toast.success(m.dashboard_register_success({ domain: domain + tld }));
 				domains.push({
 					type,
 					domain: domain + tld,
@@ -169,7 +169,7 @@
 
 				window.gtag?.("event", "domain_modify");
 				domain.isLoading = false;
-				toast.success(m.dashboard_modify_success({ domain: domain.domain + ".frii.site" }));
+				toast.success(m.dashboard_modify_success({ domain: domain.domain }));
 			});
 	}
 
