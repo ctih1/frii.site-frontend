@@ -219,7 +219,6 @@
 	"referred_users": "推荐用户: {usersNum}",
 	"referral_creation_title": "自定义邀请码",
 	"vercel_verification_queue_over": "验证成功！请在 Vercel 上点击'刷新'。",
-	"home_selling_point_open_source_description": "我们的前端和后端完全开源，欢迎贡献。我们的后端使用完全类型化的 Python 代码、FastAPI 和 MongoDB，这使得其他开发者可以轻松参与我们的代码库。我们的前端使用 Svelte（配合 TypeScript）。",
 	"dark_theme_select": "深色",
 	"light_theme_select": "浅色",
 	"auto_theme_select": "自动",
@@ -234,5 +233,6 @@
 	"activation_thanks": "感谢您的购买！",
 	"activation_success": "已成功激活！",
 	"dashboard_vercel_hint": "正在验证 Vercel 域名",
-	"dashboard_vercel_hint_description": "请访问 {baseDomain}/account/verify/vercel"
+	"dashboard_vercel_hint_description": "请访问 {baseDomain}/account/verify/vercel",
+	"home_selling_point_open_source_description": "我们的前端和后端完全开源，欢迎贡献。我们的后端使用完全类型化的 Python 代码、FastAPI 和 MongoDB，这使得其他开发者可以轻松参与我们的代码库。我们的前端使用 Svelte（配合 TypeScript）。"
 }
