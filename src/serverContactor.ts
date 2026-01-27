@@ -41,9 +41,9 @@ const JWTAuthMiddleware: Middleware = {
 				req.headers.set("X-Auth-Token", authCode);
 				return await options.fetch(req);
 			}
+		} else {
+			return response;
 		}
-
-		return response;
 	}
 };
 
@@ -393,6 +393,14 @@ export async function recoverMfaCode(username: string, password: string, backupC
 	return data;
 }
 
+export async function domainAvailable(domain: string): Promise<boolean> {
+	const { data, error, response } = await client.GET(`/domain/available`, {
+		params: { query: { name: domain } }
+	});
+
+	return error ? false : true;
+}
+
 export class ServerContactor {
 	serverURL: string;
 
@@ -405,14 +413,6 @@ export class ServerContactor {
 		if (getAuthToken() === null && window.location.pathname !== "/account") {
 			redirectToLogin(302);
 		}
-	}
-
-	async domainAvailable(domain: string): Promise<boolean> {
-		const { data, error, response } = await client.GET(`/domain/available`, {
-			params: { query: { name: domain } }
-		});
-
-		return error ? false : true;
 	}
 
 	async modifyDomain(

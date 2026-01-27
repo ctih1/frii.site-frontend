@@ -249,5 +249,10 @@
 	"donate_beg_title": "Have you considered donating?",
 	"donate_beg_description": "frii.site has never been profitable, but due to Namecheap raising our domain's prices, we are losing more money than we ever have. Even small donations <nobr>(e.g. 1€ or $1)</nobr> would help out immensely.",
 	"donate_beg_options": "View donation options",
-	"donate_beg_ignore": "Never remind me again"
+	"donate_beg_ignore": "Never remind me again",
+	"index_test_header": "Claim yourself a piece of the internet",
+	"index_test_description": "Let's start from the basics. <b>Try out a domain you'd like to own!</b>",
+	"index_test_result_positive": "The domain {domain}.frii.site is <span class=\"text-blue-400\">available!</span>",
+	"index_test_result_negative": "Unfortunately, the domain {domain}.frii.site <b>has already been registered</b>, or is invalid.",
+	"index_test_try_else": "Try something else!"
 }
