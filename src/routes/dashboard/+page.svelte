@@ -205,6 +205,7 @@
 				domainsLoaded = true;
 				// @ts-expect-error
 				ownedTlds = data["owned-tlds"];
+
 				// @ts-expect-error
 				const userDomains = Object.entries(data["domains"]);
 				Cookies.set("domain-amount", userDomains.length.toString());
@@ -399,7 +400,7 @@
 				<Select.Trigger class="w-1/8 min-w-24 rounded-l-none"
 					>{newDomainTld}</Select.Trigger>
 				<Select.Content>
-					{#each AVAILABLE_TLDS as tld}
+					{#each AVAILABLE_TLDS.filter(tld => !(tld.hidden && !ownedTlds.includes(tld.tld.slice(1)))) as tld}
 						<Select.Item value={tld.tld} label={tld.tld}>
 							<div class="flex flex-row items-center">
 								{tld.tld}
