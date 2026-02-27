@@ -21,5 +21,9 @@ export const AVAILABLE_TLDS: TLD[] = [
 	{
 		tld: ".suomi.dev",
 		hidden: true
+	},
+	{
+		tld: "expect.ovh",
+		hidden: true
 	}
 ];

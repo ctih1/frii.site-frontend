@@ -91,8 +91,8 @@
 
 				window.gtag?.("event", "domain_delete");
 				button.deletionLoading = false;
-				toast.success(m.dashboard_delete_success({ domain: domain + tld }), {
-					description: m.dashboard_delete_success_description({ domain: domain + tld })
+				toast.success(m.dashboard_delete_success({ domain: domain }), {
+					description: m.dashboard_delete_success_description({ domain: domain })
 				});
 				removeDomain(domain);
 			});
