@@ -98,7 +98,7 @@
 	<div class="selling-points mt-16">
 		<div class="services flex">
 			<div class="visual ml-32 w-2/5"></div>
-			<div class="text mr-32 w-3/5 rounded-2xl border-2 bg-white/5 p-4">
+			<div class="text bg-primary/10 mr-32 w-3/5 rounded-2xl border-2 p-4 dark:bg-black/30">
 				<h1 class="mb-2 text-5xl font-semibold">{m.index_test_header()}</h1>
 				<p class="text-lg">{@html m.index_test_description()}</p>
 
