@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { domainAvailable } from "$lib";
 	import Github from "$lib/assets/github.svg";
 	import Footer from "$lib/components/Footer.svelte";
 	import Button from "$lib/components/ui/button/button.svelte";
+	import Input from "$lib/components/ui/input/input.svelte";
 	import Label from "$lib/components/ui/label/label.svelte";
+	import Loader from "$lib/components/ui/loader/loader.svelte";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import { fade } from "svelte/transition";
 	import MaterialSymbolsCheckCircleRounded from "~icons/material-symbols/check-circle-rounded";
@@ -11,11 +14,43 @@
 	import { m } from "../paraglide/messages.js";
 	import { localizeHref } from "../paraglide/runtime.js";
 
-	//@ts-ignore
+	let placeholderMessages = ["project", "username", "something-cool", "important", "personal"];
+
+	let testDomain: string = $state("");
+	let placeholderInputFocused: boolean = $state(false);
+	let testPlaceholder: string = $state(placeholderMessages[0]!);
+	let placeholderIndex = 1;
+	let timeoutId: ReturnType<typeof setTimeout>;
+	let isTestAvailable: boolean = $state(false);
+	let checkingDomainAvailability: boolean = $state(false);
+	let latestCheckedDomain = $state("");
 
 	let { data } = $props();
 
 	let scrollY: number = $state(0);
+
+	setInterval(() => {
+		if (placeholderIndex > placeholderMessages.length - 1) {
+			placeholderIndex = 0;
+		}
+		testPlaceholder = placeholderMessages[placeholderIndex]!;
+
+		placeholderIndex++;
+	}, 1500);
+
+	function getDomainAvailability() {
+		if (latestCheckedDomain === testDomain || !testDomain) return;
+		checkingDomainAvailability = true;
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		timeoutId = setTimeout(async () => {
+			isTestAvailable = await domainAvailable(testDomain + ".frii.site");
+			checkingDomainAvailability = false;
+			latestCheckedDomain = testDomain;
+		}, 600);
+	}
 </script>
 
 <svelte:head>
@@ -25,7 +60,7 @@
 <svelte:window bind:scrollY={scrollY} />
 
 <div class="content pb-44">
-	<div class="introduction flex h-screen w-screen items-center p-10">
+	<div class="introduction flex min-h-screen w-screen items-center p-10">
 		<div class="description w-3/5">
 			<h1 class="ml-8 w-fit text-9xl font-bold">frii.site</h1>
 		</div>
@@ -56,6 +91,59 @@
 					variant={"secondary"}
 					onclick={_ => goto(localizeHref("/dashboard"))}
 					class="w-[49%]">{m.index_goto_dashboard()}</Button>
+			</div>
+		</div>
+	</div>
+
+	<div class="selling-points mt-16">
+		<div class="services flex">
+			<div class="visual ml-32 w-2/5"></div>
+			<div class="text bg-primary/10 mr-32 w-3/5 rounded-2xl border-2 p-4 dark:bg-black/30">
+				<h1 class="mb-2 text-5xl font-semibold">{m.index_test_header()}</h1>
+				<p class="text-lg">{@html m.index_test_description()}</p>
+
+				<div class="flex items-center pt-2 pb-2">
+					<div class="absolute">
+						<Input
+							onkeyup={_ => getDomainAvailability()}
+							onfocus={_ => (placeholderInputFocused = true)}
+							onfocusout={_ => (placeholderInputFocused = false)}
+							bind:value={testDomain}
+							type="text"
+							class="w-48" />
+					</div>
+					{#if !testDomain && !placeholderInputFocused}
+						{#key testPlaceholder}
+							<span
+								transition:fade={{ duration: 150 }}
+								class="pointer-events-none absolute ml-4 w-48 opacity-90">
+								{testPlaceholder}
+							</span>
+						{/key}
+					{/if}
+					<span class="ml-48 text-lg">.frii.site</span>
+				</div>
+
+				{#if checkingDomainAvailability}
+					<Loader className="w-8" asForeground={true} />
+				{:else if testDomain && latestCheckedDomain === testDomain}
+					<div class="domain-results">
+						{#if isTestAvailable}
+							<h1 class="mt-4 text-2xl font-semibold">
+								{@html m.index_test_result_positive({ domain: testDomain })}
+							</h1>
+							<Button
+								class="mt-2 w-full"
+								onclick={_ => goto(localizeHref("/login?register=true"))}
+								>{m.home_signup_action()}</Button>
+						{:else}
+							<h1>
+								{@html m.index_test_result_negative({ domain: testDomain })}
+							</h1>
+							<p class="text-lg">{m.index_test_try_else()}</p>
+						{/if}
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -177,6 +265,10 @@
 		.description h1 {
 			margin-left: auto;
 			margin-right: auto;
+		}
+
+		.selling-point-dreams {
+			margin-top: 12rem;
 		}
 
 		.visual {

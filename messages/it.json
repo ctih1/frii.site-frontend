@@ -219,7 +219,6 @@
 	"referred_users": "Utenti di riferimento: {usersNum}",
 	"referral_creation_title": "Codice di riferimento personalizzato",
 	"vercel_verification_queue_over": "Verificato con successo! Clicca su \"Aggiorna\" su Vercel.",
-	"home_selling_point_open_source_description": "Il nostro frontend e backend sono completamente open source e aperti ai contributi. Il nostro backend utilizza codice Python completamente tipizzato, FastAPI e MongoDB, il che rende facile per altri sviluppatori accedere rapidamente al nostro codice. Il nostro frontend è scritto in Svelte (con TypeScript).",
 	"dark_theme_select": "Scuro",
 	"light_theme_select": "Chiaro",
 	"auto_theme_select": "Auto",
@@ -249,5 +248,6 @@
 	"donate_beg_title": "Hai mai pensato di fare una donazione?",
 	"donate_beg_description": "frii.site non è mai stato redditizio, ma a causa dell'aumento del prezzo del nostro dominio da parte di Namecheap, stiamo perdendo più soldi di quanto abbiamo mai fatto. Anche piccole donazioni <nobr>(ad esempio €1 o 1 CHF)</nobr> sarebbero di grande aiuto.",
 	"donate_beg_options": "Visualizza le opzioni di donazione",
-	"donate_beg_ignore": "Non ricordarmelo mai più"
+	"donate_beg_ignore": "Non ricordarmelo mai più",
+	"home_selling_point_open_source_description": "Il nostro frontend e backend sono completamente open source e aperti ai contributi. Il nostro backend utilizza codice Python completamente tipizzato, FastAPI e MongoDB, il che rende facile per altri sviluppatori accedere rapidamente al nostro codice. Il nostro frontend è scritto in Svelte (con TypeScript)."
 }

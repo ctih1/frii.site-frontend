@@ -219,7 +219,6 @@
 	"referred_users": "Utenti riferuti: {usersNum}",
 	"referral_creation_title": "Kòdċi ta’ referral personalizzat",
 	"vercel_verification_queue_over": "Verifika b’suċċess! Jekk jogħġbok ikklikkja 'refresh' fuq Vercel.",
-	"home_selling_point_open_source_description": "Il-frontend u l-backend tagħna huma kompletament open source, u miftuħa għal kontribuzzjonijiet. Il-backend juża Python fully typed, FastAPI, u MongoDB, li jagħmilha faċli għal developers oħra biex jidħlu fil-codebase tagħna malajr. Il-frontend huwa miktub f’Svelte (bl-Typescript).",
 	"dark_theme_select": "Skur",
 	"light_theme_select": "Dawl",
 	"auto_theme_select": "Awto",
@@ -249,5 +248,6 @@
 	"donate_beg_title": "Ikkunsidrajt li tagħti donazzjoni?",
 	"donate_beg_description": "frii.site qatt ma kien profittabbli, iżda minħabba li Namecheap żiedet il-prezzijiet tad-dominju tagħna, qed nitilfu aktar flus milli qatt kellna. Anke donazzjonijiet żgħar <nobr>(eż. €1)</nobr> ikunu ta’ għajnuna kbira.",
 	"donate_beg_options": "Ara l-għażliet tad-donazzjoni",
-	"donate_beg_ignore": "Qatt ma fakkarni aktar"
+	"donate_beg_ignore": "Qatt ma fakkarni aktar",
+	"home_selling_point_open_source_description": "Il-frontend u l-backend tagħna huma kompletament open source, u miftuħa għal kontribuzzjonijiet. Il-backend juża Python fully typed, FastAPI, u MongoDB, li jagħmilha faċli għal developers oħra biex jidħlu fil-codebase tagħna malajr. Il-frontend huwa miktub f’Svelte (bl-Typescript)."
 }
