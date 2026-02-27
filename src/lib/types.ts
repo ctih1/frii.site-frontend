@@ -23,7 +23,7 @@ export const AVAILABLE_TLDS: TLD[] = [
 		hidden: true
 	},
 	{
-		tld: "expect.ovh",
+		tld: ".expect.ovh",
 		hidden: true
 	}
 ];
