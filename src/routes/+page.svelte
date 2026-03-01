@@ -25,8 +25,6 @@
 	let checkingDomainAvailability: boolean = $state(false);
 	let latestCheckedDomain = $state("");
 
-	let { data } = $props();
-
 	let scrollY: number = $state(0);
 
 	setInterval(() => {
