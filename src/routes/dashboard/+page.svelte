@@ -29,7 +29,7 @@
 	interface Domain {
 		type: string;
 		domain: string;
-		value: string;
+		values: string[];
 	}
 
 	interface DashboardDomain extends Domain {
@@ -123,7 +123,7 @@
 				alertUpdate++;
 				throw new Error("Failed to register dommain!");
 			})
-			.then(value => {
+			.then(values => {
 				consola.info("Registered domain");
 				registerNewDomainLoading = false;
 				window.gtag?.("event", "domain_register");
@@ -131,7 +131,7 @@
 				domains.push({
 					type,
 					domain: domain + tld,
-					value,
+					values,
 					isLoading: false,
 					deletionWarned: false,
 					buttonDisabled: false,
@@ -147,7 +147,7 @@
 		consola.info(`Modifying domain ${domain.domain}`);
 
 		serverContactor
-			.modifyDomain(domain.domain, domain.value, domain.type)
+			.modifyDomain(domain.domain, domain.values, domain.type)
 			.catch(error => {
 				consola.warn("Failed to modify domain");
 				domain.isLoading = false;
@@ -216,18 +216,18 @@
 
 					const name = key.slice(0, secondLastDot);
 					const tld = key.slice(secondLastDot + 1);
-
-					domains.push({
+					const domain = {
 						type: value.type,
 						domain: key,
-						value: value.ip,
+						values: value.ip,
 						isLoading: false,
 						deletionWarned: false,
 						buttonDisabled: false,
 						deletionLoading: false,
 						tld: tld,
 						name: name
-					});
+					};
+					domains.push(domain);
 				}
 			});
 	}
@@ -284,7 +284,7 @@
 
 	<div class="domains space-y-4">
 		{#each domainsLoaded ? domains : new Array(data.domainAmount) as domain}
-			<div transition:fade class="domain mt-1 mb-1 flex h-10 space-y-0.5 space-x-1">
+			<div transition:fade class="domain mt-1 mb-1 flex min-h-10 space-y-0.5 space-x-1">
 				<div class="basic-controls flex w-2/5 space-x-1">
 					{#if domainsLoaded}
 						<Select.Root type="single" name="domain" bind:value={domain.type}>
@@ -304,7 +304,7 @@
 						{#if domainsLoaded}
 							<Input class="rounded-r-none" value={domain.name} disabled={true} />
 							<Input
-								class="w-1/4 min-w-20 rounded-l-none"
+								class="w-1/4 min-w-20 rounded-l-none border-l-0"
 								value={domain.tld}
 								disabled={true} />
 						{:else}
@@ -313,13 +313,23 @@
 					</div>
 				</div>
 				<div class="value w-2/5">
-					{#if domainsLoaded}
-						<Input bind:value={domain.value} />
+					{#if domainsLoaded && domain.values}
+						{#each domain.values as value, i}
+							<div class="flex">
+								<Input
+									class="mb-1 w-[90%] rounded-r-none"
+									bind:value={domain.values[i]} />
+								<Button
+									class="w-[10%] rounded-l-none"
+									onclick={_ => domain.values.push("0.0.0.0")}
+									variant="secondary">+</Button>
+							</div>
+						{/each}
 					{:else}
 						<Skeleton class="h-full w-full" />
 					{/if}
 				</div>
-				<div class="actions flex w-1/4 space-x-0.5">
+				<div class="actions flex h-full w-1/4 space-x-0.5">
 					{#if domainsLoaded}
 						<Button
 							loading={domain.isLoading}
@@ -327,7 +337,8 @@
 								domain.isLoading = true;
 								modifyDomain(domain);
 							}}
-							class="w-1/2 max-w-40">{m.dashboard_save_modification()}</Button>
+							class="h-full min-h-8 w-1/2 max-w-40"
+							>{m.dashboard_save_modification()}</Button>
 						<Separator orientation={"vertical"} />
 						<Button
 							loading={domain.deletionLoading}
@@ -344,14 +355,14 @@
 									deleteDomain(domain.domain, domain);
 								}
 							}}
-							class="w-1/2 max-w-40"
+							class="h-full min-h-8 w-1/2 max-w-40"
 							variant={"destructive"}
 							>{#if domain.deletionWarned}
 								{m.dashboard_delete_domain_confirm()}{:else}{m.dashboard_delete_domain_button()}
 							{/if}</Button>
 					{:else}
-						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
-						<Skeleton class="h-full w-1/2 max-w-40"></Skeleton>
+						<Skeleton class="h-full min-h-10 w-1/2 max-w-40"></Skeleton>
+						<Skeleton class="h-full min-h-10 w-1/2 max-w-40"></Skeleton>
 					{/if}
 				</div>
 			</div>
