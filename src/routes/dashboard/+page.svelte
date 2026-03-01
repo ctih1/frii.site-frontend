@@ -25,6 +25,7 @@
 	import consola from "consola";
 	import Cookies from "js-cookie";
 	import { fade } from "svelte/transition";
+	import type { components } from "../../api";
 
 	interface Domain {
 		type: string;
@@ -184,6 +185,10 @@
 		domains = [...domains];
 	}
 
+	function createPlaceholders(amount: number): DashboardDomain[] {
+		return new Array(amount) as DashboardDomain[];
+	}
+
 	if (browser) {
 		serverContactor = new ServerContactor(
 			getAuthToken() ?? "",
@@ -202,12 +207,14 @@
 				}
 			})
 			.then(data => {
+				if (!data) return;
 				domainsLoaded = true;
 				// @ts-expect-error
 				ownedTlds = data["owned-tlds"];
 
-				// @ts-expect-error
-				const userDomains = Object.entries(data["domains"]);
+				const userDomains: [string, components["schemas"]["DomainFormat"]][] =
+					Object.entries(data["domains"]);
+
 				Cookies.set("domain-amount", userDomains.length.toString());
 
 				for (let [key, value] of userDomains) {
@@ -219,7 +226,7 @@
 					const domain = {
 						type: value.type,
 						domain: key,
-						values: value.ip,
+						values: value.ip as string[],
 						isLoading: false,
 						deletionWarned: false,
 						buttonDisabled: false,
@@ -283,7 +290,7 @@
 		trigger={alertUpdate} />
 
 	<div class="domains space-y-4">
-		{#each domainsLoaded ? domains : new Array(data.domainAmount) as domain}
+		{#each domainsLoaded ? domains : createPlaceholders(data.domainAmount) as domain}
 			<div transition:fade class="domain mt-1 mb-1 flex min-h-10 space-y-0.5 space-x-1">
 				<div class="basic-controls flex w-2/5 space-x-1">
 					{#if domainsLoaded}
@@ -314,7 +321,7 @@
 				</div>
 				<div class="value w-2/5">
 					{#if domainsLoaded && domain.values}
-						{#each domain.values as value, i}
+						{#each domain.values as _, i}
 							<div class="flex">
 								<Input
 									class="mb-1 w-[90%] rounded-r-none"
