@@ -417,13 +417,14 @@ export class ServerContactor {
 
 	async modifyDomain(
 		domain: string,
-		value: string,
+		values: string[],
 		type: string
 	): Promise<
 		paths["/domain/modify"]["patch"]["responses"]["200"]["content"]["application/json"]
 	> {
+		console.log(`Value: ${values}`);
 		const { data, error, response } = await client.PATCH("/domain/modify", {
-			body: { domain, type, value },
+			body: { domain, type, values: values },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": getAuthToken() }
@@ -445,7 +446,7 @@ export class ServerContactor {
 		return data;
 	}
 
-	async registerDomain(domain: string, type: string): Promise<string> {
+	async registerDomain(domain: string, type: string): Promise<string[]> {
 		let value: string = "0.0.0.0";
 		if (type === "CNAME" || type === "NS") {
 			value = "example.com";
@@ -458,7 +459,7 @@ export class ServerContactor {
 		}
 
 		const { data, error, response } = await client.POST("/domain/register", {
-			body: { domain, type, value },
+			body: { domain, type, values: [value] },
 			params: {
 				//@ts-ignore
 				header: { "X-Auth-Token": getAuthToken() }
@@ -484,7 +485,7 @@ export class ServerContactor {
 			}
 		}
 
-		return value;
+		return [value];
 	}
 
 	async deleteDomain(

@@ -25,8 +25,6 @@
 	let checkingDomainAvailability: boolean = $state(false);
 	let latestCheckedDomain = $state("");
 
-	let { data } = $props();
-
 	let scrollY: number = $state(0);
 
 	setInterval(() => {
@@ -60,7 +58,8 @@
 <svelte:window bind:scrollY={scrollY} />
 
 <div class="content pb-44">
-	<div class="introduction flex min-h-screen w-screen items-center p-10">
+	<div
+		class="introduction mr-auto ml-auto flex min-h-screen w-screen max-w-screen items-center p-10 lg:w-11/12">
 		<div class="description w-3/5">
 			<h1 class="ml-8 w-fit text-9xl font-bold">frii.site</h1>
 		</div>
