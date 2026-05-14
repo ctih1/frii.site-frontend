@@ -22,7 +22,7 @@ export const AVAILABLE_TLDS: TLD[] = [
 		tld: ".srvr.be",
 		purchaseLink: "https://ko-fi.com/s/50a9f34469",
 		hidden: false
-	}
+	},
 	{
 		tld: ".suomi.dev",
 		hidden: true
