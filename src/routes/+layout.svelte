@@ -137,6 +137,10 @@
 		src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2958231337684546"
 		crossorigin="anonymous">
 	</script>
+	<script
+		defer
+		src="https://analytics.koti.frii.site/script.js"
+		data-website-id="34175ac9-02fb-4df0-96b9-0e847365184e"></script>
 </svelte:head>
 <svelte:window bind:innerWidth={innerWidth} />
 
