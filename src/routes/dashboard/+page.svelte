@@ -326,14 +326,26 @@
 								<Input
 									class="mb-1 w-[90%] rounded-r-none"
 									bind:value={domain.values[i]} />
-								<Button
-									class="w-[10%] rounded-l-none"
-									onclick={_ => domain.values.push("0.0.0.0")}
-									variant="secondary">+</Button>
+								<div class="flex w-[10%]">
+									<Button
+										class="w-[50%] rounded-none"
+										onclick={_ => domain.values.push("0.0.0.0")}
+										variant="secondary">+</Button>
+
+									<Button
+										class="bg-destructive/30! w-[50%] rounded-l-none"
+										onclick={_ => {
+											domain.values = domain.values.filter(
+												(val, idx) => idx != i
+											);
+										}}
+										disabled={domain.values.length <= 1}
+										variant="destructive">-</Button>
+								</div>
 							</div>
 						{/each}
 					{:else}
-						<Skeleton class="h-full w-full" />
+						<Skeleton class="h-10 w-full" />
 					{/if}
 				</div>
 				<div class="actions flex h-full w-1/4 space-x-0.5">
@@ -450,10 +462,10 @@
 		}
 		.domain {
 			flex-direction: column;
-			height: 8rem;
+			min-height: 8rem;
 		}
 		.domain div {
-			height: 2.5em;
+			min-height: 2.5em;
 		}
 		.value {
 			width: 100%;

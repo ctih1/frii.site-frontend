@@ -24,6 +24,10 @@
 
 	let { children } = $props();
 	let localSponsorHidden = $state(false);
+	let innerWidth = $state(0);
+	let adsVisible = $state(true);
+	let towerAdsVisible = $state(false);
+	let navigationTrigger = $state(0);
 
 	NProgress.configure({
 		minimum: 0.55,
@@ -37,6 +41,7 @@
 		NProgress.done();
 
 		localStorage.setItem("views", (Number(localStorage.getItem("views")) + 1).toString());
+		navigationTrigger++;
 	});
 
 	beforeNavigate(() => {
@@ -108,6 +113,17 @@
 	</div>
 {/if}
 
+{#if isBrowser() && navigationTrigger && innerWidth > 1450 && window.location.pathname !== "/" && window.location.pathname !== "/dashboard" && towerAdsVisible}
+	<iframe
+		title="Tower Advertisement"
+		class="absolute top-[25%] left-0 z-20 aspect-[320/600] h-[50vh] w-fit"
+		src="https://scontent.frii.site/tower"></iframe>
+	<iframe
+		title="Tower Advertisement"
+		class="absolute top-[25%] right-0 z-20 aspect-[320/600] h-[50vh] pr-2"
+		src="https://scontent.frii.site/tower"></iframe>
+{/if}
+
 <svelte:head>
 	<link
 		rel="preload"
@@ -122,10 +138,20 @@
 		crossorigin="anonymous">
 	</script>
 </svelte:head>
+<svelte:window bind:innerWidth={innerWidth} />
 
 <main>
 	{@render children()}
 </main>
+
+{#if isBrowser() && navigationTrigger && window.location.pathname !== "/" && adsVisible}
+	<div class="sm:[220px] relative h-full w-full md:pt-[360px]">
+		<iframe
+			title="Banner Advertisement"
+			class="absolute bottom-4 left-[50%] aspect-[600/320] translate-x-[-50%] text-center sm:w-[300px] md:w-[600px]"
+			src="https://scontent.frii.site/banner"></iframe>
+	</div>
+{/if}
 
 <style>
 	@font-face {

@@ -164,6 +164,29 @@
 			});
 	}
 
+	function loadByIps(ips: string[]) {
+		loading = true;
+		serverContactor
+			.findByIps(ips)
+			.catch(error => {
+				loading = false;
+				console.error(error);
+				if (error instanceof AuthError) redirectToLogin(460);
+				if (error instanceof PermissionError) redirectToLogin(461);
+				if (error instanceof UserError)
+					modal.open("No matches found", "your query returned no matches");
+				throw new Error("Failed to get user data");
+			})
+			.then(data => {
+				loading = false;
+				replaceLastResult = false;
+				for (let user of data) {
+					// @ts-ignore
+					collectedUserData.push(user);
+				}
+			});
+	}
+
 	function loadById(id: string) {
 		loading = true;
 		serverContactor
@@ -378,6 +401,8 @@
 								</h2></Accordion.Trigger>
 							<Accordion.Content>
 								<Accordion.Root type="multiple">
+									<Button onclick={_ => loadByIps(user.accessed_from)}
+										>Find IPs</Button>
 									{#each user.accessed_from as ip}
 										<p>{ip}</p>
 									{/each}

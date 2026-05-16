@@ -977,6 +977,35 @@ export class ServerContactor {
 		return data;
 	}
 
+	async findByIps(
+		ips: string[]
+	): Promise<ReturnType<Awaited<ServerContactor["findByUsername"]>>[]> {
+		const { data, error, response } = await client.POST("/admin/user/get/ips", {
+			params: {
+				//@ts-ignore
+				header: {
+					"X-Auth-Token": getAuthToken()
+				}
+			},
+			body: { ips: ips }
+		});
+
+		if (error) {
+			switch (response.status) {
+				case 460:
+					throw new AuthError("Invalid session");
+				case 461:
+					throw new PermissionError("Invalid permissions");
+				case 404:
+					throw new UserError("User not found");
+				default:
+					throw new Error("Failed to load user data");
+			}
+		}
+
+		return data;
+	}
+
 	async findByDomain(domain: string) {
 		const { data, error, response } = await client.GET("/admin/user/get/domain", {
 			params: {
