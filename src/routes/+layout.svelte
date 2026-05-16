@@ -144,7 +144,7 @@
 	{@render children()}
 </main>
 
-{#if isBrowser() && navigationTrigger && window.location.pathname !== "/" && adsVisible}
+{#if isBrowser() && navigationTrigger && window.location.pathname !== localizeHref("/") && adsVisible}
 	<div class="sm:[220px] relative h-full w-full md:pt-[360px]">
 		<iframe
 			title="Banner Advertisement"
