@@ -13,6 +13,7 @@
 	import MaterialSymbolsKeyboardArrowDownRounded from "~icons/material-symbols/keyboard-arrow-down-rounded";
 	import { m } from "../paraglide/messages.js";
 	import { localizeHref } from "../paraglide/runtime.js";
+	import { browser } from "$app/environment";
 
 	let placeholderMessages = ["project", "username", "something-cool", "important", "personal"];
 
@@ -24,6 +25,8 @@
 	let isTestAvailable: boolean = $state(false);
 	let checkingDomainAvailability: boolean = $state(false);
 	let latestCheckedDomain = $state("");
+	let currentDate = $state(new Date());
+	let goodbyeHidden = $state(false);
 
 	let scrollY: number = $state(0);
 
@@ -34,6 +37,7 @@
 		testPlaceholder = placeholderMessages[placeholderIndex]!;
 
 		placeholderIndex++;
+		currentDate = new Date();
 	}, 1500);
 
 	function getDomainAvailability() {
@@ -57,6 +61,51 @@
 
 <svelte:window bind:scrollY={scrollY} />
 
+{#if currentDate > new Date("2026-08-25") && browser && !goodbyeHidden}
+	<div
+		class="absolute top-0 left-0 z-50 h-screen w-full min-w-screen bg-black opacity-0"
+		id="goodbye-card">
+		<div class="mt-16">
+			<h1 class="w-full text-center text-2xl font-bold lg:text-3xl">
+				Thank you for using frii.site &lt;3
+			</h1>
+			<p class="mt-2 mr-auto ml-auto w-full max-w-[60ch] p-8 pt-0 text-center">
+				I want to thank every contributor, translator, and user for shaping frii.site into
+				what it is today. <br /><br /> The website will remain up for some time, but user domains
+				have stopped working. You can still manage your account and migrate your domains elsewhere.
+			</p>
+			<div class="flex w-full justify-center">
+				<Button
+					onclick={_ => {
+						window.location.reload();
+					}}
+					class="mr-auto ml-auto"
+					variant="link">Close and explore the site</Button>
+			</div>
+		</div>
+	</div>
+
+	<script lang="ts">
+		if (!localStorage.getItem("goodbye-seen")) {
+			document.body.style["heigt"] = "100vh";
+			document.body.style["overflow-y"] = "hidden";
+			window.scrollTo(0, 0);
+
+			for (let i = 0; i < 100; i++) {
+				setTimeout(
+					() => (document.getElementById("goodbye-card").style["opacity"] = `${i}%`),
+					i * 10
+				);
+			}
+
+			localStorage.setItem("goodbye-seen", "yes");
+		} else {
+			document.getElementById("goodbye-card").remove();
+		}
+
+		console.log("Thank you everyone for the amazing community!");
+	</script>
+{/if}
 <div class="content pb-44">
 	<div
 		class="introduction mr-auto ml-auto flex min-h-screen w-screen max-w-screen items-center p-10 lg:w-11/12">
