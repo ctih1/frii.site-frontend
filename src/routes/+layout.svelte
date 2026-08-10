@@ -144,18 +144,9 @@
 </svelte:head>
 <svelte:window bind:innerWidth={innerWidth} />
 
-<main>
+<main class="h-full min-h-screen">
 	{@render children()}
 </main>
-
-{#if isBrowser() && navigationTrigger && window.location.pathname.replaceAll("/", "") !== localizeHref("/").replaceAll("/", "") && adsVisible}
-	<div class="sm:[220px] relative h-full w-full md:pt-[360px]">
-		<iframe
-			title="Banner Advertisement"
-			class="absolute bottom-4 left-[50%] aspect-[600/320] translate-x-[-50%] text-center sm:w-[300px] md:w-[600px]"
-			src="https://scontent.frii.site/banner"></iframe>
-	</div>
-{/if}
 
 <style>
 	@font-face {
